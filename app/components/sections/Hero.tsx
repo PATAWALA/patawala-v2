@@ -113,11 +113,8 @@ export default function HeroSection() {
             </h1>
 
             <div className="space-y-1.5 sm:space-y-2 md:space-y-3 lg:space-y-4 mb-4 sm:mb-5 md:mb-6 lg:mb-7 xl:mb-8 px-2 sm:px-3 md:px-4 lg:px-0">
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-300 font-medium">
-                Passez de l'idée au produit en un temps record avec une expertise sur-mesure.
-              </p>
               <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white font-bold">
-                Gagnez en visibilité et automatisez vos ventes avec un site conçu pour convertir.
+                Créez un impact réel avec votre business grâce à des sites et applications pensés pour maximiser vos ventes.
               </p>
             </div>
 
