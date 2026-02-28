@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,13 +16,137 @@
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Amélioration de la visibilité du texte sur dégradé */
+.text-white\/90 {
+  opacity: 0.9;
+}
+
+.text-white\/80 {
+  opacity: 0.8;
+}
+
+/* Styles pour les cartes de filtre */
+.filter-card-active {
+  box-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.3);
+}
+
+.filter-card-inactive {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Animation pour l'indicateur actif */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
   }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@layer base {
+  :root {
+    --background: 10 15 28;     /* #0A0F1C */
+    --foreground: 229 231 235;  /* #E5E7EB */
+    --primary: 59 130 246;      /* #3B82F6 */
+    --primary-foreground: 255 255 255;
+    --secondary: 6 182 212;     /* #06B6D4 */
+    --secondary-foreground: 255 255 255;
+    --surface: 20 27 43;        /* #141B2B */
+    --surface-hover: 30 38 56;  /* #1E2638 */
+    --text-muted: 107 114 128;  /* #6B7280 */
+    --border: 31 41 55;         /* #1F2937 */
+    --border-hover: 55 65 81;   /* #374151 */
+    --radius: 0.5rem;
+  }
+}
+
+body {
+  background-color: #0A0F1C;
+  color: #E5E7EB;
+}
+
+/* Animations existantes */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Styles personnalisés */
+.text-gradient {
+  background: linear-gradient(to right, #3B82F6, #06B6D4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(to right, #3B82F6, #06B6D4);
+}
+
+/* Amélioration du contraste des cartes */
+.card {
+  background-color: #141B2B;
+  border-color: #1F2937;
+}
+
+.card:hover {
+  background-color: #1E2638;
 }
