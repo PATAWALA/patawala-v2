@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { ServiceProvider } from './services/context/ServiceContext';
 import Navigation from './components/layout/Navigation';
@@ -12,15 +12,23 @@ import LoadingScreen from './components/ui/LoadingScreen';
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
 
-const inter = Inter({ 
-  subsets: ['latin'],
+const inter = localFont({
+  src: './fonts/Inter-VariableFont_opsz,wght.ttf',
+  weight: '100 900',
   variable: '--font-inter',
+  display: 'swap',
 });
 
-const poppins = Poppins({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
+const poppins = localFont({
+  src: [
+    { path: './fonts/Poppins-Regular.ttf', weight: '400' },
+    { path: './fonts/Poppins-Medium.ttf', weight: '500' },
+    { path: './fonts/Poppins-SemiBold.ttf', weight: '600' },
+    { path: './fonts/Poppins-Bold.ttf', weight: '700' },
+    { path: './fonts/Poppins-ExtraBold.ttf', weight: '800' },
+  ],
   variable: '--font-poppins',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
