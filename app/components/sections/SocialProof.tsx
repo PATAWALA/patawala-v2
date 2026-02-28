@@ -1,9 +1,11 @@
 'use client';
 
 import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
-import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, CheckCircle, ArrowRight } from 'lucide-react';
+import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, CheckCircle, ArrowRight, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import clientImage from '../../assets/images/profile2.jpeg';
+import chimeneImage from '../../assets/images/profile4.png';
+import cesarImage from '../../assets/images/profile5.jpg';
 import { useRef, useState, useEffect } from 'react';
 
 const testimonials = [
@@ -12,56 +14,72 @@ const testimonials = [
     content: 'Merci Patawala, mon site commence à donner des résultats !',
     rating: 5,
     image: clientImage,
-    isRealImage: true
+    isRealImage: true,
+    country: 'Côte d\'Ivoire',
+    flag: '🇨🇮'
   },
   {
     name: 'Marie Abani',
     content: 'Excellent travail, mon site est vivant maintenant !',
     rating: 5,
     initials: 'MA',
-    gradient: 'from-blue-500 to-cyan-500'
+    gradient: 'from-blue-500 to-cyan-500',
+    country: 'France',
+    flag: '🇫🇷'
   },
   {
     name: 'César Dossou',
     content: 'Service impeccable, résultats au rendez-vous.',
     rating: 5,
-    initials: 'CD',
-    gradient: 'from-purple-500 to-pink-500'
+    image: cesarImage,
+    isRealImage: true,
+    country: 'Congo',
+    flag: '🇨🇬'
   },
   {
     name: 'Maurice Acoumba',
     content: 'Un accompagnement hors pair, je recommande !',
     rating: 5,
-    initials: 'SC',
-    gradient: 'from-emerald-500 to-teal-500'
+    initials: 'MA',
+    gradient: 'from-emerald-500 to-teal-500',
+    country: 'Cameroun',
+    flag: '🇨🇲'
   },
   {
     name: 'Jean Edikou',
     content: 'Site magnifique et équipe à l\'écoute. Parfait !',
     rating: 5,
-    initials: 'JD',
-    gradient: 'from-amber-500 to-orange-500'
+    initials: 'JE',
+    gradient: 'from-amber-500 to-orange-500',
+    country: 'Bénin',
+    flag: '🇧🇯'
   },
   {
     name: 'Chimène Koumai',
     content: 'Travail rapide et professionnel, merci !',
     rating: 5,
-    initials: 'JL',
-    gradient: 'from-red-500 to-pink-500'
+    image: chimeneImage,
+    isRealImage: true,
+    country: 'Togo',
+    flag: '🇹🇬'
   },
   {
     name: 'Gérard Agatou\'n',
     content: 'Je recommande les yeux fermés, super expérience.',
     rating: 5,
-    initials: 'PL',
-    gradient: 'from-green-500 to-emerald-500'
+    initials: 'GA',
+    gradient: 'from-green-500 to-emerald-500',
+    country: 'Sénégal',
+    flag: '🇸🇳'
   },
   {
-    name: 'Camille Bayo',
+    name: 'Camille Benerd',
     content: 'Enfin un site qui me ressemble, merci infiniment !',
     rating: 5,
-    initials: 'CR',
-    gradient: 'from-indigo-500 to-purple-500'
+    initials: 'CB',
+    gradient: 'from-indigo-500 to-purple-500',
+    country: 'Belgique',
+    flag: '🇧🇪'
   }
 ];
 
@@ -444,9 +462,13 @@ export default function SocialProof() {
                         </div>
                       )}
                       
-                      <div>
+                      <div className="flex-1">
                         <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base">
                           {testimonial.name}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+                          <MapPin size={10} className="text-blue-400" />
+                          <span>{testimonial.flag} {testimonial.country}</span>
                         </div>
                       </div>
                     </div>
