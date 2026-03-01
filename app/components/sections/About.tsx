@@ -28,25 +28,25 @@ const visionCards = [
     number: "01",
     icon: Lightbulb, // Changé pour illustrer le conseil
     title: "Conseil & Stratégie Technologique",
-    description: "Vous avez l'idée, je trouve le chemin. Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
+    description: "Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
   },
   {
   number: "02",
   icon: Handshake,
   title: "Partenariat Stratégique & Vision Long Terme",
-  description: "Je ne travaille pas pour vous, mais avec vous. En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+  description: "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
 },
   {
     number: "03",
     icon: Sparkles, // Changé pour illustrer l'innovation simplifiée
     title: "Innovation Utile & Humaine",
-    description: "L'innovation ne vaut rien si elle est complexe. Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs finaux."
+    description: "Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs finaux."
   },
   {
     number: "04",
     icon: MessagesSquare, // Changé pour illustrer l'écoute et l'échange
     title: "Engagement & Co-conception",
-    description: "La réussite est un sport d'équipe. Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
+    description: "Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
   }
 ];
   const scrollToSection = useCallback((sectionId: string) => {

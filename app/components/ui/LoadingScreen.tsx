@@ -41,38 +41,25 @@ export default function LoadingScreen() {
           role="status"
           aria-label="Chargement"
         >
-          {/* Pas de fond */}
-          <div className="relative">
-            {/* Nom avec dégradé */}
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.2 }}
-              className="text-4xl sm:text-5xl font-bold"
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                Patawala
-              </span>
-            </motion.div>
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.2 }}
+            className="relative"
+          >
+            {/* Nom en grand et orange */}
+            <span className="text-5xl sm:text-6xl font-black text-[#FF9800] tracking-tight">
+              Patawala
+            </span>
             
-            {/* Point qui pulse */}
+            {/* Trait épais qui apparaît en dessous */}
             <motion.div
-              animate={{ 
-                scale: [1, 1.8, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{ duration: 1.2, repeat: Infinity }}
-              className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="h-2 bg-[#FF9800] rounded-full mt-2"
             />
-            <motion.div
-              animate={{ 
-                scale: [1, 1.8, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: 0.4 }}
-              className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-cyan-400 rounded-full"
-            />
-          </div>
+          </motion.div>
 
           <span className="sr-only">Chargement Patawala...</span>
         </motion.div>
