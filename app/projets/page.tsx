@@ -1,116 +1,40 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Globe, Smartphone, ShoppingBag, Truck, Building2, Users, ArrowLeft, MessageSquare } from 'lucide-react';
+import { ArrowRight, Sparkles, ArrowLeft, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
-
-// Données des projets (identiques)
-const allProjets = [
-  {
-    id: 1,
-    title: 'E-commerce Mode Africaine',
-    description: 'Plateforme de vente en ligne pour créateurs africains avec paiements locaux. Interface moderne, panier intelligent, gestion des stocks.',
-    tags: ['Next.js', 'Stripe', 'Tailwind', 'MongoDB'],
-    icon: ShoppingBag,
-    category: 'E-commerce',
-    client: 'AfroStyle',
-    annee: '2024'
-  },
-  {
-    id: 2,
-    title: 'Application Livraison',
-    description: 'App de livraison de repas avec suivi en temps réel, géolocalisation et paiement intégré.',
-    tags: ['React Native', 'Node.js', 'MongoDB', 'Google Maps'],
-    icon: Truck,
-    category: 'Mobile',
-    client: 'FoodExpress',
-    annee: '2024'
-  },
-  {
-    id: 3,
-    title: 'Dashboard Gestion PME',
-    description: 'Outil de gestion complet pour PME : factures, stocks, clients, rapports.',
-    tags: ['Vue.js', 'Laravel', 'MySQL', 'Chart.js'],
-    icon: Building2,
-    category: 'SaaS',
-    client: 'GestionPro',
-    annee: '2023'
-  },
-  {
-    id: 4,
-    title: 'Site Vitrine Immobilier',
-    description: 'Site pour agence immobilière avec visites virtuelles, filtres avancés et formulaire de contact.',
-    tags: ['WordPress', 'Elementor', 'Maps API', 'ACF'],
-    icon: Globe,
-    category: 'Web',
-    client: 'ImmoPlus',
-    annee: '2023'
-  },
-  {
-    id: 5,
-    title: 'App Fitness',
-    description: 'Application de coaching sportif avec suivi des performances, vidéos et programme personnalisé.',
-    tags: ['Flutter', 'Firebase', 'GraphQL', 'Stripe'],
-    icon: Users,
-    category: 'Mobile',
-    client: 'FitLife',
-    annee: '2023'
-  },
-  {
-    id: 6,
-    title: 'Plateforme E-learning',
-    description: 'Plateforme de cours en ligne avec quiz, certifications et espace membre.',
-    tags: ['React', 'Django', 'PostgreSQL', 'AWS'],
-    icon: Smartphone,
-    category: 'Web',
-    client: 'EduLearn',
-    annee: '2024'
-  },
-  {
-    id: 7,
-    title: 'Site Association Caritative',
-    description: 'Site de donation avec campagne de crowdfunding et suivi des dons en temps réel.',
-    tags: ['Next.js', 'Stripe', 'Tailwind', 'Prisma'],
-    icon: Globe,
-    category: 'Web',
-    client: 'Solidarité+',
-    annee: '2023'
-  },
-  {
-    id: 8,
-    title: 'Application Santé',
-    description: 'Application de suivi médical avec rappels de médicaments et partage de données sécurisé.',
-    tags: ['React Native', 'Node.js', 'MongoDB', 'JWT'],
-    icon: Smartphone,
-    category: 'Mobile',
-    client: 'MediCare',
-    annee: '2024'
-  },
-  {
-    id: 9,
-    title: 'ERP pour Logistique',
-    description: 'Système de gestion logistique avec suivi de flotte, gestion des commandes et reporting.',
-    tags: ['Vue.js', 'Laravel', 'MySQL', 'WebSockets'],
-    icon: Truck,
-    category: 'SaaS',
-    client: 'LogiTech',
-    annee: '2023'
-  },
-  {
-    id: 10,
-    title: 'Marketplace Artisanat',
-    description: 'Marketplace pour artisans locaux avec gestion des vendeurs et paiements sécurisés.',
-    tags: ['Next.js', 'Stripe', 'PostgreSQL', 'Redis'],
-    icon: ShoppingBag,
-    category: 'E-commerce',
-    client: 'Artisans du Monde',
-    annee: '2024'
-  }
-];
+import Image from 'next/image';
+import { useState } from 'react';
+import { projets } from '@/app/projets/data/projets'; // Import des données communes
+import ProjectModal from '@/app/components/ui/ProjectModal';
+import type { Project } from '@/app/projets/data/projets';
 
 export default function ProjetsPage() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const openModal = (project: Project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'unset';
+    setTimeout(() => setSelectedProject(null), 300);
+  };
+
+  // Fonction pour vérifier si l'image est valide
+  const hasValidImage = (image: any): boolean => {
+    if (!image) return false;
+    if (typeof image === 'object') return true;
+    if (typeof image === 'string') return !image.includes('/images/projects/');
+    return false;
   };
 
   return (
@@ -193,10 +117,11 @@ export default function ProjetsPage() {
           </motion.p>
         </div>
 
-        {/* Grille des projets */}
+        {/* Grille des projets - Utilisation de projets depuis le fichier de données */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
-          {allProjets.map((projet, index) => {
+          {projets.map((projet, index) => {
             const Icon = projet.icon;
+            const showImage = hasValidImage(projet.image);
             
             return (
               <motion.div
@@ -205,13 +130,25 @@ export default function ProjetsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -8 }}
-                className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937]"
+                className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer"
+                onClick={() => openModal(projet)}
               >
-                {/* En-tête avec icône */}
-                <div className="relative h-40 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-[#0A0F1C] rounded-2xl shadow-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-[#1F2937]">
-                    <Icon size={40} className="text-blue-400" />
-                  </div>
+                {/* Image ou placeholder avec icône */}
+                <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden">
+                  {showImage ? (
+                    <Image
+                      src={projet.image}
+                      alt={projet.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 bg-[#0A0F1C] rounded-2xl shadow-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-[#1F2937]">
+                        <Icon size={40} className="text-blue-400" />
+                      </div>
+                    </div>
+                  )}
                   
                   {/* Badge catégorie */}
                   <div className="absolute top-4 right-4 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20">
@@ -233,8 +170,14 @@ export default function ProjetsPage() {
 
                   {/* Infos client/année */}
                   <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
-                    <span className="px-2 py-1 bg-[#0A0F1C] rounded-full border border-[#1F2937]">{projet.client}</span>
-                    <span>{projet.annee}</span>
+                    {projet.client && (
+                      <span className="px-2 py-1 bg-[#0A0F1C] rounded-full border border-[#1F2937]">
+                        {projet.client}
+                      </span>
+                    )}
+                    {projet.date && (
+                      <span>{projet.date}</span>
+                    )}
                   </div>
 
                   {/* Tags */}
@@ -254,9 +197,15 @@ export default function ProjetsPage() {
                     )}
                   </div>
 
-                  {/* Lien fictif pour l'exemple */}
-                  <button className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group/link hover:text-blue-300 transition-colors">
-                    <span>Étude de cas</span>
+                  {/* Bouton En savoir plus */}
+                  <button 
+                    className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group/link hover:text-blue-300 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openModal(projet);
+                    }}
+                  >
+                    <span>En savoir plus</span>
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -308,6 +257,13 @@ export default function ProjetsPage() {
           * Chaque projet est unique et a fait l'objet d'une collaboration étroite avec le client
         </motion.p>
       </div>
+
+      {/* Modal des détails du projet */}
+      <ProjectModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
     </main>
   );
 }

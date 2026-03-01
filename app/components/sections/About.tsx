@@ -1,8 +1,9 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Lightbulb, HeartHandshake, Rocket, Target, MessageSquare, CheckCircle, Sparkles, Globe, Smartphone, Award, Cpu, Zap, TrendingUp, User, Handshake, Briefcase, Users } from 'lucide-react';
+import { Lightbulb,MessagesSquare, HeartHandshake, Rocket, Target, MessageSquare, CheckCircle, Sparkles, Globe, Smartphone, Award, Cpu, Zap, TrendingUp, User, Handshake, Briefcase, Users } from 'lucide-react';
 import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile1.png';
 
@@ -22,34 +23,32 @@ const AboutSection = memo(function AboutSection() {
     }))
   ).current;
 
-  // CARTES MA VISION - Avec l'angle "partenaire long terme" pour entrepreneurs
-  const visionCards = [
-    {
-      number: "01",
-      icon: Rocket,
-      title: "Créativité & Innovation",
-      description: "Des sites et applications qui captivent. Je pense chaque projet pour qu'il soit unique, fonctionnel et en phase avec vos ambitions."
-    },
-    {
-      number: "02",
-      icon: Handshake,
-      title: "Partenaire de confiance",
-      description: "Au-delà des projets, je construis des relations durables. Que vous soyez client ou entrepreneur, je suis là pour collaborer sur le long terme."
-    },
-    {
-      number: "03",
-      icon: Target,
-      title: "Objectifs & Résultats",
-      description: "Un beau site ne suffit pas. Je crée des solutions pensées pour convertir, fidéliser et faire grandir votre activité."
-    },
-    {
-      number: "04",
-      icon: Users,
-      title: "Esprit de collaboration",
-      description: "Vous avez une idée ? Vous cherchez un développeur pour vos projets ? Travaillons ensemble pour créer quelque chose de grand."
-    }
-  ];
-
+const visionCards = [
+  {
+    number: "01",
+    icon: Lightbulb, // Changé pour illustrer le conseil
+    title: "Conseil & Stratégie Technologique",
+    description: "Vous avez l'idée, je trouve le chemin. Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
+  },
+  {
+  number: "02",
+  icon: Handshake,
+  title: "Partenariat Stratégique & Vision Long Terme",
+  description: "Je ne travaille pas pour vous, mais avec vous. En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+},
+  {
+    number: "03",
+    icon: Sparkles, // Changé pour illustrer l'innovation simplifiée
+    title: "Innovation Utile & Humaine",
+    description: "L'innovation ne vaut rien si elle est complexe. Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs finaux."
+  },
+  {
+    number: "04",
+    icon: MessagesSquare, // Changé pour illustrer l'écoute et l'échange
+    title: "Engagement & Co-conception",
+    description: "La réussite est un sport d'équipe. Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
+  }
+];
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {

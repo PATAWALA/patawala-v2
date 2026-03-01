@@ -56,23 +56,27 @@ export default function Navigation() {
   const servicesRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLButtonElement>(null);
 
-  // Détection des sections pour la classe active
+  // Détection des sections pour la classe active - CORRIGÉ
   useEffect(() => {
     if (pathname === '/') {
-      const accueilSections = ['hero', 'socialproof', 'valueproposition', 'techexpertise'];
-      const specificSections = ['about', 'projets', 'contact'];
+      // Toutes les sections de la page d'accueil
+      const allSections = [
+        'hero', 
+        'about',      // ← AJOUTÉ (manquait avant)
+        'socialproof', 
+        'valueproposition', 
+        'techexpertise', 
+        'projets', 
+        'contact'
+      ];
       
       observerRef.current = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const sectionId = entry.target.id;
-              if (specificSections.includes(sectionId)) {
-                setActiveSection(sectionId);
-              } 
-              else if (accueilSections.includes(sectionId)) {
-                setActiveSection('hero');
-              }
+              setActiveSection(sectionId);
+              console.log('Section active:', sectionId); // Pour debug
             }
           });
         },
@@ -82,8 +86,8 @@ export default function Navigation() {
         }
       );
 
-      const sections = ['hero', 'about', 'socialproof', 'valueproposition', 'techexpertise', 'projets', 'contact'];
-      sections.forEach((section) => {
+      // Observer toutes les sections
+      allSections.forEach((section) => {
         const element = document.getElementById(section);
         if (element) observerRef.current?.observe(element);
       });
@@ -135,6 +139,11 @@ export default function Navigation() {
   const isLinkActive = (item: typeof NAV_ITEMS[0]) => {
     if (pathname === '/') {
       if (item.section) {
+        // Pour "À propos", on vérifie directement
+        if (item.label === 'À propos') {
+          return activeSection === 'about';
+        }
+        // Pour les autres sections
         return activeSection === item.section;
       }
       if (item.label === 'Accueil') {
@@ -161,6 +170,7 @@ export default function Navigation() {
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
           window.history.pushState(null, '', href);
+          setActiveSection(targetId); // Force l'activation immédiate
         }
       } else {
         router.push(href);

@@ -1,52 +1,52 @@
 {
-  "badge": "Here to help",
-  "title": "Bring your ideas to life",
-  "subtitle": "with a passionate expert",
-  "description": "Every project is designed to reflect you and precisely meet your goals and those of your users and clients.",
-  "whoami": "Who am I?",
+  "badge": "Expertise on demand",
+  "title": "Scale your digital vision",
+  "subtitle": "with a strategic partner",
+  "description": "I don't just build interfaces; I engineer high-performance ecosystems designed to exceed your business goals and captivate your audience.",
+  "whoami": "Expertise & Commitment",
   "vision": {
     "cards": [
       {
-        "title": "Creativity & Innovation",
-        "description": "Captivating websites and apps. I design each project to be unique, functional, and aligned with your ambitions."
+        "title": "Strategic Partnership & Long-Term Vision",
+        "description": "I don't just work for you; I work with you. By immersing myself in your business, I become your trusted tech advisor to build a lasting partnership, securing your choices and evolving your tools alongside your long-term growth."
+     },
+      {
+        "title": "Partnership & Business Immersion",
+        "description": "I don't just work for you; I work with you. I dive into your world to understand your daily challenges and become the technical right hand you can truly rely on."
       },
       {
-        "title": "Trusted Partner",
-        "description": "Beyond projects, I build lasting relationships. Whether you're a client or entrepreneur, I'm here to collaborate long-term."
+        "title": "Human-Centric Innovation",
+        "description": "Innovation is worthless if it's overcomplicated. I simplify technology (AI, automation) so it becomes a natural, invisible, and powerful tool for your users."
       },
       {
-        "title": "Goals & Results",
-        "description": "A beautiful site isn't enough. I create solutions designed to convert, retain, and grow your business."
-      },
-      {
-        "title": "Collaborative Spirit",
-        "description": "Have an idea? Looking for a developer for your projects? Let's work together to create something great."
+        "title": "Commitment & Co-creation",
+        "description": "Success is a team sport. My method is built on active listening and constant feedback: you keep control of your vision while I ensure its technical integrity."
       }
     ]
   },
   "profile": {
     "greeting": "Hello, I'm",
     "name": "Abdoulaye Patawala",
-    "role": "Web & Mobile Developer",
+    "role": "Web & Mobile Solutions Architect",
     "mission": "My mission:",
-    "missionText": "to handle your digital presence so you can focus on your core business.",
-    "description": "From showcase sites to complex applications, I transform your ideas into high-performance solutions, designed to last and evolve with you.",
+    "missionText": "To lead your digital strategy, freeing you from technical constraints so you can focus entirely on scaling your core business.",
+    "description": "From strategic MVPs to complex applications, I transform your concepts into high-performance, scalable solutions built to last.",
     "message": {
-      "question": "Questions about your project?",
-      "text": "I listen and advise you to find the best solution for your needs."
+      "question": "Need a diagnostic for your project?",
+      "text": "I provide expert advice to help you define the most cost-effective and suitable technological solution for your goals."
     },
     "badges": {
-      "webMobile": "Web & Mobile",
-      "available": "Available"
+      "webMobile": "Web & Mobile Expert",
+      "available": "Available for new ventures"
     }
   },
   "buttons": {
-    "talk": "Talk about my project",
-    "services": "View my services"
+    "talk": "Start my project",
+    "services": "Explore solutions"
   },
   "microCTA": {
-    "quote": "Free quote",
-    "response": "24h response",
-    "commitment": "No commitment"
+    "quote": "Free diagnostic",
+    "response": "24h response time",
+    "commitment": "Commitment to excellence"
   }
 }

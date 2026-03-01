@@ -1,0 +1,76 @@
+{
+  "badge": "La joie de mes clients, ma fierté",
+  "title": "Leur satisfaction",
+  "titleHighlight": "parle pour moi",
+  "subtitle": "Chaque projet est une rencontre, chaque retour une preuve de confiance.",
+  
+  "testimonials": [
+    {
+      "name": "Ninsemouh Gbeo",
+      "content": "Mon site commence à porter ses fruits. Merci pour cet accompagnement.",
+      "country": "Côte d'Ivoire"
+    },
+    {
+      "name": "Marie Abani",
+      "content": "Enfin un site à mon image. Vivant, moderne, efficace.",
+      "country": "France"
+    },
+    {
+      "name": "César Dossou",
+      "content": "Service impeccable, résultat au rendez-vous. Je recommande.",
+      "country": "Congo"
+    },
+    {
+      "name": "Maurice Acoumba",
+      "content": "Un vrai partenaire à l'écoute. Je suis satisfait du travail accompli.",
+      "country": "Cameroun"
+    },
+    {
+      "name": "Jean Edikou",
+      "content": "Site soigné, équipe attentive. Une belle collaboration.",
+      "country": "Bénin"
+    },
+    {
+      "name": "Chimène Koumai",
+      "content": "Rapide, professionnel, à l'écoute. Merci pour tout.",
+      "country": "Togo"
+    },
+    {
+      "name": "Gérard Agatou'n",
+      "content": "Les yeux fermés. Une expérience de travail agréable et efficace.",
+      "country": "Sénégal"
+    },
+    {
+      "name": "Camille Benerd",
+      "content": "Un site qui me ressemble enfin. Merci pour votre patience et votre écoute.",
+      "country": "Belgique"
+    }
+  ],
+  
+  "autoScroll": {
+    "playing": "Défilement automatique",
+    "paused": "Défilement arrêté"
+  },
+  
+  "projectTypes": {
+    "title": "Un accompagnement sur mesure",
+    "startup": {
+      "title": "Startups & Scale-ups",
+      "description": "Développement de MVPs et solutions évolutives",
+      "cta": "Discuter de startup"
+    },
+    "sme": {
+      "title": "PME & Grands Comptes",
+      "description": "Accompagnement sur mesure pour votre transformation digitale",
+      "cta": "Discuter de mon projet"
+    }
+  },
+  
+  "guarantees": {
+    "quote": "Devis gratuit",
+    "response": "Réponse sous 24h",
+    "commitment": "Sans engagement"
+  },
+  
+  "rating": "étoiles"
+}

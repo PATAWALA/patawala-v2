@@ -1,0 +1,76 @@
+{
+  "badge": "My clients' joy, my pride",
+  "title": "Their satisfaction",
+  "titleHighlight": "speaks for me",
+  "subtitle": "Every project is a meeting, every feedback a proof of trust.",
+  
+  "testimonials": [
+    {
+      "name": "Ninsemouh Gbeo",
+      "content": "My website is starting to bear fruit. Thank you for this support.",
+      "country": "Ivory Coast"
+    },
+    {
+      "name": "Marie Abani",
+      "content": "Finally a website that reflects me. Vibrant, modern, effective.",
+      "country": "France"
+    },
+    {
+      "name": "César Dossou",
+      "content": "Impeccable service, results delivered. I recommend.",
+      "country": "Congo"
+    },
+    {
+      "name": "Maurice Acoumba",
+      "content": "A true partner who listens. I'm satisfied with the work done.",
+      "country": "Cameroon"
+    },
+    {
+      "name": "Jean Edikou",
+      "content": "Polished website, attentive team. A great collaboration.",
+      "country": "Benin"
+    },
+    {
+      "name": "Chimène Koumai",
+      "content": "Fast, professional, attentive. Thank you for everything.",
+      "country": "Togo"
+    },
+    {
+      "name": "Gérard Agatou'n",
+      "content": "Blind trust. A pleasant and efficient work experience.",
+      "country": "Senegal"
+    },
+    {
+      "name": "Camille Benerd",
+      "content": "A website that finally reflects me. Thank you for your patience and attention.",
+      "country": "Belgium"
+    }
+  ],
+  
+  "autoScroll": {
+    "playing": "Auto-scrolling",
+    "paused": "Scrolling paused"
+  },
+  
+  "projectTypes": {
+    "title": "Tailored support",
+    "startup": {
+      "title": "Startups & Scale-ups",
+      "description": "MVP development and scalable solutions",
+      "cta": "Discuss startup"
+    },
+    "sme": {
+      "title": "SMEs & Large Companies",
+      "description": "Custom support for your digital transformation",
+      "cta": "Discuss my project"
+    }
+  },
+  
+  "guarantees": {
+    "quote": "Free quote",
+    "response": "24h response",
+    "commitment": "No commitment"
+  },
+  
+  "rating": "stars"
+}

@@ -6,8 +6,23 @@ export interface Author {
   id: string;
   name: string;
   role: string;
+  expertise: string[];          // Liste des domaines d'expertise
   avatar?: string;
   bio?: string;
+  social?: {                     // Réseaux sociaux (optionnel)
+    twitter?: string;
+    linkedin?: string;
+    github?: string;
+    website?: string;
+  };
+  stats?: {                      // Statistiques (optionnel)
+    articlesCount?: number;
+    yearsExperience?: number;
+    projectsCompleted?: number;
+  };
+  badge?: string;                // Badge spécial (ex: "Expert certifié", "Top voice")
+  company?: string;              // Entreprise actuelle
+  location?: string;             // Localisation
 }
 
 export interface Article {

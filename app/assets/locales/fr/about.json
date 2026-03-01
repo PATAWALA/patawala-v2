@@ -1,52 +1,52 @@
 {
-  "badge": "À votre écoute",
-  "title": "Donnez vie à vos idées",
-  "subtitle": "avec un expert passionné",
-  "description": "Chaque projet est pensé pour vous ressembler et répondre précisément à vos objectifs et à ceux de vos utilisateurs et clients.",
-  "whoami": "Qui suis-je ?",
+  "badge": "Expert à votre écoute",
+  "title": "Propulsez votre vision digitale",
+  "subtitle": "avec un partenaire stratégique",
+  "description": "Je ne crée pas de simples interfaces, mais des écosystèmes performants conçus pour surpasser vos objectifs business et captiver vos utilisateurs.",
+  "whoami": "Expertise & Engagement",
   "vision": {
-    "cards": [
+"cards": [
       {
-        "title": "Créativité & Innovation",
-        "description": "Des sites et applications qui captivent. Je pense chaque projet pour qu'il soit unique, fonctionnel et en phase avec vos ambitions."
+        "title": "Partenariat Stratégique & Vision Long Terme",
+        "description": "Je ne travaille pas pour vous, mais avec vous. En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
       },
       {
-        "title": "Partenaire de confiance",
-        "description": "Au-delà des projets, je construis des relations durables. Que vous soyez client ou entrepreneur, je suis là pour collaborer sur le long terme."
+        "title": "Partenariat & Immersion Métier",
+        "description": "Je ne travaille pas pour vous, mais avec vous. Je m'immerge dans votre univers pour comprendre vos enjeux quotidiens et devenir le bras droit technique sur lequel vous pouvez vous reposer."
       },
       {
-        "title": "Objectifs & Résultats",
-        "description": "Un beau site ne suffit pas. Je crée des solutions pensées pour convertir, fidéliser et faire grandir votre activité."
+        "title": "Innovation Utile & Humaine",
+        "description": "L'innovation ne vaut rien si elle est complexe. Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs."
       },
       {
-        "title": "Esprit de collaboration",
-        "description": "Vous avez une idée ? Vous cherchez un développeur pour vos projets ? Travaillons ensemble pour créer quelque chose de grand."
+        "title": "Engagement & Co-conception",
+        "description": "La réussite est un sport d'équipe. Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité technique."
       }
     ]
   },
   "profile": {
     "greeting": "Hello, je suis",
     "name": "Abdoulaye Patawala",
-    "role": "Développeur web & mobile",
+    "role": "Architecte Solutions Web & Mobile",
     "mission": "Ma mission :",
-    "missionText": "prendre en charge votre présence digitale pour que vous puissiez vous concentrer sur votre cœur de métier.",
-    "description": "Du site vitrine à l'application complexe, je transforme vos idées en solutions performantes, pensées pour durer et évoluer avec vous.",
+    "missionText": "Piloter votre stratégie digitale pour vous libérer des contraintes techniques et vous permettre de vous concentrer sur votre croissance.",
+    "description": "Du MVP stratégique à l'application complexe, je transforme vos concepts en solutions performantes, scalables et pensées pour durer dans le temps.",
     "message": {
-      "question": "Une question sur votre projet ?",
-      "text": "Je vous écoute et vous conseille pour trouver la solution la mieux adaptée à vos besoins."
+      "question": "Besoin d'un diagnostic pour votre projet ?",
+      "text": "Je vous apporte une expertise conseil pour définir la solution technologique la plus rentable et adaptée à vos besoins."
     },
     "badges": {
-      "webMobile": "Web & Mobile",
-      "available": "Disponible"
+      "webMobile": "Web & Mobile Expert",
+      "available": "Disponible pour nouveaux défis"
     }
   },
   "buttons": {
-    "talk": "Parler de mon projet",
-    "services": "Voir mes offres"
+    "talk": "Lancer mon projet",
+    "services": "Explorer mes solutions"
   },
   "microCTA": {
-    "quote": "Devis gratuit",
+    "quote": "Diagnostic gratuit",
     "response": "Réponse sous 24h",
-    "commitment": "Sans engagement"
+    "commitment": "Engagement d'excellence"
   }
 }

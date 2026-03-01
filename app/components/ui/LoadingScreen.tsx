@@ -20,7 +20,7 @@ export default function LoadingScreen() {
     const handleComplete = () => {
       timeout = setTimeout(() => {
         setIsLoading(false);
-      }, 400); // Plus court, plus discret
+      }, 400);
     };
 
     handleStart();
@@ -37,47 +37,44 @@ export default function LoadingScreen() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-[100] pointer-events-none flex items-center justify-center"
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          role="status"
+          aria-label="Chargement"
         >
-          {/* Fond très léger */}
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]" />
-          
-          {/* Loader minimaliste */}
+          {/* Pas de fond */}
           <div className="relative">
-            {/* Anneau principal */}
+            {/* Nom avec dégradé */}
             <motion.div
-              animate={{
-                rotate: 360,
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              className="w-12 h-12 border-2 border-[#FF9800]/20 border-t-[#FF9800] rounded-full"
-            />
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+              className="text-4xl sm:text-5xl font-bold"
+            >
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                Patawala
+              </span>
+            </motion.div>
             
-            {/* Point central */}
+            {/* Point qui pulse */}
             <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
+              animate={{ 
+                scale: [1, 1.8, 1],
+                opacity: [0.5, 1, 0.5]
               }}
-              transition={{
-                duration: 1,
-                repeat: Infinity,
-                ease: "easeInOut"
+              transition={{ duration: 1.2, repeat: Infinity }}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"
+            />
+            <motion.div
+              animate={{ 
+                scale: [1, 1.8, 1],
+                opacity: [0.5, 1, 0.5]
               }}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FF9800] rounded-full"
+              transition={{ duration: 1.2, repeat: Infinity, delay: 0.4 }}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-cyan-400 rounded-full"
             />
           </div>
 
-          {/* Mini barre en bas */}
-          <motion.div
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-[#FF9800] to-amber-400"
-          />
+          <span className="sr-only">Chargement Patawala...</span>
         </motion.div>
       )}
     </AnimatePresence>

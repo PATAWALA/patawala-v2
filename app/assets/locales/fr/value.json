@@ -1,0 +1,56 @@
+{
+  "badge": "Pourquoi travailler avec moi ?",
+  "title": "Une approche orientée",
+  "titleHighlight": "résultats",
+  "subtitle": "Chaque projet est pensé pour répondre à vos objectifs, avec une exigence de qualité et de performance.",
+  
+  "benefits": [
+    {
+      "title": "Optimisation des conversions",
+      "description": "Des interfaces pensées pour guider naturellement vos visiteurs vers l'action souhaitée.",
+      "features": [
+        "Taux de conversion optimisé",
+        "Parcours client fluide",
+        "Design orienté performance"
+      ]
+    },
+    {
+      "title": "Fiabilité et sécurité",
+      "description": "Une infrastructure robuste et des pratiques de développement sécurisées.",
+      "features": [
+        "Sécurité renforcée",
+        "Sauvegardes automatiques",
+        "Maintenance préventive"
+      ]
+    },
+    {
+      "title": "Expérience utilisateur",
+      "description": "Des interfaces intuitives accessibles sur tous les appareils.",
+      "features": [
+        "Navigation simplifiée",
+        "Adaptation mobile parfaite",
+        "Accessibilité renforcée"
+      ]
+    },
+    {
+      "title": "Performance technique",
+      "description": "Des sites optimisés pour offrir la meilleure expérience de navigation.",
+      "features": [
+        "Temps de charge réduits",
+        "Référencement naturel optimisé",
+        "Expérience utilisateur fluide"
+      ]
+    }
+  ],
+  
+  "cta": {
+    "discuss": "Discuter de mon projet",
+    "services": "Voir mes services"
+  },
+  
+  "guarantees": {
+    "quote": "Devis gratuit",
+    "response": "Réponse sous 24h",
+    "commitment": "Sans engagement"
+  }
+}

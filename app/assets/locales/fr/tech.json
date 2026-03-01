@@ -1,0 +1,103 @@
+{
+  "badge": "Technologies que je maîtrise",
+  "title": "Une expertise au service",
+  "titleHighlight": "de vos ambitions",
+  "subtitle": "Je sélectionne les technologies les plus adaptées à chaque projet. L'essentiel n'est pas l'outil, mais ce qu'il permet de construire avec vous.",
+  
+  "techStack": [
+    {
+      "name": "Next.js / React",
+      "level": "Expert",
+      "desc": "Sites modernes ultra-rapides et applications web complexes",
+      "expertise": [
+        "Sites vitrines performants",
+        "Applications SaaS",
+        "E-commerce sur-mesure"
+      ]
+    },
+    {
+      "name": "WordPress",
+      "level": "Expert",
+      "desc": "Sites faciles à gérer, blogs, boutiques et vitrines",
+      "expertise": [
+        "Thèmes sur-mesure",
+        "WooCommerce",
+        "Optimisation performance"
+      ]
+    },
+    {
+      "name": "Odoo / ERP",
+      "level": "Avancé",
+      "desc": "Gestion d'entreprise, CRM, facturation, inventaire",
+      "expertise": [
+        "Modules sur-mesure",
+        "Automatisation",
+        "Intégration"
+      ]
+    },
+    {
+      "name": "Systeme.io",
+      "level": "Intermédiaire",
+      "desc": "Marketing automation, entonnoirs de vente, plateforme tout-en-un",
+      "expertise": [
+        "Entonnoirs de vente",
+        "Email marketing",
+        "Membership sites"
+      ]
+    },
+    {
+      "name": "Infrastructure & DevOps",
+      "level": "Avancé",
+      "desc": "Déploiement, hébergement, mise à l'échelle sans souci",
+      "expertise": [
+        "Vercel / Netlify",
+        "AWS",
+        "CI/CD"
+      ]
+    },
+    {
+      "name": "Sécurité & Performance",
+      "level": "Avancé",
+      "desc": "Sites sécurisés et rapides, vos visiteurs adorent",
+      "expertise": [
+        "Sécurité renforcée",
+        "Optimisation",
+        "Monitoring"
+      ]
+    }
+  ],
+  
+  "workingMethods": {
+    "title": "Ma façon de travailler",
+    "methods": [
+      {
+        "title": "Code propre & maintenable",
+        "desc": "Architecture évolutive et documentée"
+      },
+      {
+        "title": "Performance avant tout",
+        "desc": "Optimisation des temps de chargement"
+      },
+      {
+        "title": "Sécurité intégrée",
+        "desc": "Bonnes pratiques de sécurité"
+      },
+      {
+        "title": "UX/Design soigné",
+        "desc": "Interface intuitive et accessible"
+      }
+    ]
+  },
+  
+  "note": "Je ne choisis pas un outil parce qu'il est à la mode, mais parce qu'il est le bon pour ce que nous voulons construire ensemble.",
+  
+  "cta": "Discuter de mon projet",
+  
+  "levelLabels": {
+    "expert": "Expert",
+    "advanced": "Avancé",
+    "intermediate": "Intermédiaire"
+  },
+  
+  "mastery": "Maîtrise"
+}

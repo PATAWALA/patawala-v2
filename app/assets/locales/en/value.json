@@ -1,0 +1,56 @@
+{
+  "badge": "Why work with me?",
+  "title": "A results-oriented",
+  "titleHighlight": "approach",
+  "subtitle": "Every project is designed to meet your goals, with a commitment to quality and performance.",
+  
+  "benefits": [
+    {
+      "title": "Conversion Optimization",
+      "description": "Interfaces designed to naturally guide your visitors toward the desired action.",
+      "features": [
+        "Optimized conversion rates",
+        "Smooth customer journey",
+        "Performance-driven design"
+      ]
+    },
+    {
+      "title": "Reliability & Security",
+      "description": "Robust infrastructure and secure development practices.",
+      "features": [
+        "Enhanced security",
+        "Automatic backups",
+        "Preventive maintenance"
+      ]
+    },
+    {
+      "title": "User Experience",
+      "description": "Intuitive interfaces accessible on all devices.",
+      "features": [
+        "Simplified navigation",
+        "Perfect mobile adaptation",
+        "Enhanced accessibility"
+      ]
+    },
+    {
+      "title": "Technical Performance",
+      "description": "Optimized sites for the best browsing experience.",
+      "features": [
+        "Reduced load times",
+        "Optimized SEO",
+        "Smooth user experience"
+      ]
+    }
+  ],
+  
+  "cta": {
+    "discuss": "Discuss my project",
+    "services": "View my services"
+  },
+  
+  "guarantees": {
+    "quote": "Free quote",
+    "response": "24h response",
+    "commitment": "No commitment"
+  }
+}
