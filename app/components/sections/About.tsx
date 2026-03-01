@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Lightbulb, HeartHandshake, Rocket, Target, MessageSquare, CheckCircle, Sparkles, Globe, Smartphone } from 'lucide-react';
+import { Lightbulb, HeartHandshake, Rocket, Target, MessageSquare, CheckCircle, Sparkles, Globe, Smartphone, Award, Cpu, Zap, TrendingUp, User, Handshake, Briefcase, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile1.png';
@@ -22,31 +22,31 @@ const AboutSection = memo(function AboutSection() {
     }))
   ).current;
 
-  // CARTES MA VISION - 4 cartes inspirantes
+  // CARTES MA VISION - Avec l'angle "partenaire long terme" pour entrepreneurs
   const visionCards = [
     {
       number: "01",
       icon: Rocket,
-      title: "Innovation & Excellence",
-      description: "Je reste à la pointe des technologies pour vous offrir des solutions modernes, durables et évolutives. Chaque projet est l'occasion de repousser les limites."
+      title: "Créativité & Innovation",
+      description: "Des sites et applications qui captivent. Je pense chaque projet pour qu'il soit unique, fonctionnel et en phase avec vos ambitions."
     },
     {
       number: "02",
-      icon: HeartHandshake,
-      title: "Partenariat de confiance",
-      description: "Votre réussite est la mienne. Je construis une relation solide basée sur l'écoute et la transparence, bien au-delà d'une simple relation prestataire-client."
+      icon: Handshake,
+      title: "Partenaire de confiance",
+      description: "Au-delà des projets, je construis des relations durables. Que vous soyez client ou entrepreneur, je suis là pour collaborer sur le long terme."
     },
     {
       number: "03",
       icon: Target,
-      title: "Vision à long terme",
-      description: "Chaque projet est pensé pour grandir avec vous, anticiper vos besoins et s'adapter à l'évolution de votre activité dans le temps."
+      title: "Objectifs & Résultats",
+      description: "Un beau site ne suffit pas. Je crée des solutions pensées pour convertir, fidéliser et faire grandir votre activité."
     },
     {
       number: "04",
-      icon: Lightbulb,
-      title: "Accompagnement humain",
-      description: "Pas de jargon technique. Des explications claires et un vrai dialogue pour avancer ensemble sereinement, à votre rythme et selon vos objectifs."
+      icon: Users,
+      title: "Esprit de collaboration",
+      description: "Vous avez une idée ? Vous cherchez un développeur pour vos projets ? Travaillons ensemble pour créer quelque chose de grand."
     }
   ];
 
@@ -100,7 +100,7 @@ const AboutSection = memo(function AboutSection() {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-5xl mx-auto">
           
-          {/* Badge centré */}
+          {/* Badge centré principal - inchangé */}
           <div className="w-full flex justify-center mb-6 sm:mb-8">
             {isMounted ? (
               <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-sm border border-blue-500/20 backdrop-blur-sm">
@@ -114,7 +114,7 @@ const AboutSection = memo(function AboutSection() {
             )}
           </div>
 
-          {/* Titre et sous-titre */}
+          {/* Titre et sous-titre - SOUS-TITRE ALLÉGÉ */}
           <div className="text-center mb-10 sm:mb-12 md:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
               Donnez vie à vos idées
@@ -124,34 +124,36 @@ const AboutSection = memo(function AboutSection() {
             </h2>
 
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-              Ensemble, construisons une solution digitale à votre image : 
-              performante, durable et pensée pour vous.
+              Chaque projet est pensé pour vous ressembler et répondre précisément à vos objectifs 
+              et à ceux de vos utilisateurs et clients.
             </p>
 
             {/* Séparateur */}
             <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
           </div>
           
-          {/* CARTES MA VISION - 4 cartes restaurées */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
+          {/* CARTES MA VISION - 4 cartes avec angle partenaire long terme */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
             {visionCards.map((card, index) => (
               <div
                 key={index}
-                className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-4 sm:p-5 md:p-6 lg:p-8 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative"
+                className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 lg:p-8 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative"
               >
                 <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
                 <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-2xl sm:text-3xl font-bold text-blue-400/50 group-hover:text-blue-400 transition-colors">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-3xl sm:text-4xl font-bold text-blue-400/80 group-hover:text-blue-400 transition-colors">
                       {card.number}
                     </span>
-                    <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
-                      {card.title}
-                    </h3>
+                    <card.icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" />
                   </div>
                   
-                  <p className="text-xs sm:text-sm md:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed pl-0">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+                    {card.title}
+                  </h3>
+                  
+                  <p className="text-xs sm:text-sm md:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                     {card.description}
                   </p>
                 </div>
@@ -159,10 +161,18 @@ const AboutSection = memo(function AboutSection() {
             ))}
           </div>
 
+          {/* BADGE "Qui suis-je ?" - CENTRÉ AU-DESSUS DE L'IMAGE ET DE LA BIO (inchangé) */}
+          <div className="flex justify-center mb-6 md:mb-8">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
+              <User size={16} className="text-blue-400" />
+              <span className="text-sm sm:text-base font-semibold tracking-wide">Qui suis-je ?</span>
+            </div>
+          </div>
+
           {/* Section image et bio */}
           <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
             
-            {/* Image à gauche - OPTIMISÉE comme dans Hero */}
+            {/* Image à gauche - OPTIMISÉE */}
             <div className="flex-1 flex justify-center lg:justify-end w-full">
               <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
                 
@@ -172,7 +182,7 @@ const AboutSection = memo(function AboutSection() {
                 <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl -z-10 will-change-transform" aria-hidden="true" />
                 <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
                 
-                {/* Points lumineux optimisés */}
+                {/* Points lumineux */}
                 {lightPoints.map((point, i) => (
                   <div
                     key={i}
@@ -195,7 +205,7 @@ const AboutSection = memo(function AboutSection() {
                   <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                     <Globe size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
                     <Smartphone size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
-                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">Multi-support</span>
+                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">Web & Mobile</span>
                   </div>
                 </div>
 
@@ -210,7 +220,7 @@ const AboutSection = memo(function AboutSection() {
                   </div>
                 </div>
 
-                {/* Photo avec optimisation */}
+                {/* Photo */}
                 <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-3 sm:border-4 border-[#1F2937] bg-[#141B2B]">
                   <Image
                     src={profileImage}
@@ -228,25 +238,26 @@ const AboutSection = memo(function AboutSection() {
               </div>
             </div>
 
-            {/* BIO à droite - Version professionnelle */}
+            {/* BIO à droite */}
             <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
               
-              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 text-white">
-                Abdoulaye Patawala
+              {/* Hello, je suis... */}
+              <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 text-white">
+                Hello, je suis <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Abdoulaye Patawala</span>
               </h3>
               
-              <p className="text-sm sm:text-base md:text-lg text-blue-400 font-medium mb-3 sm:mb-4 md:mb-5">
-                Concepteur de solutions digitales
+              <p className="text-sm sm:text-base md:text-lg text-blue-400/90 font-medium mb-4">
+                Développeur web & mobile
               </p>
 
-              {/* BIO - Professionnelle et inspirante */}
+              {/* Mission */}
               <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
                 <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                  <span className="text-white font-medium">Ma mission :</span> prendre en charge votre présence digitale pour vous permettre de vous consacrer pleinement à votre cœur d'activité.
+                  <span className="text-white font-semibold">Ma mission :</span> prendre en charge votre présence digitale pour que vous puissiez vous concentrer sur votre cœur de métier.
                 </p>
                 
                 <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                  De la stratégie à la réalisation, je transforme vos ambitions en solutions performantes qui vous ressemblent et répondent précisément à vos objectifs.
+                  Du site vitrine à l'application complexe, je transforme vos idées en solutions performantes, pensées pour durer et évoluer avec vous.
                 </p>
               </div>
               
@@ -283,19 +294,19 @@ const AboutSection = memo(function AboutSection() {
                 </button>
               </div>
 
-              {/* Micro-CTA - SUR UNE SEULE LIGNE (corrigé) */}
-              <div className="flex justify-center w-full mt-4 sm:mt-5 md:mt-6">
-                <div className="flex items-center justify-center gap-1.5 sm:gap-1.5 md:gap-2 px-0 py-0 sm:px-4 sm:py-2 md:px-5 md:py-2.5 lg:px-6 lg:py-3 sm:rounded-full sm:shadow-lg sm:border sm:border-[#1F2937] sm:bg-[#141B2B]/80 sm:backdrop-blur-sm whitespace-nowrap">
-                  <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Devis gratuit</span>
-                  <span className="text-gray-600 hidden sm:inline mx-0.5" aria-hidden="true">•</span>
+              {/* Micro-CTA - PLUS PETIT */}
+              <div className="flex justify-center w-full mt-3 sm:mt-4">
+                <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-gray-800/50 whitespace-nowrap">
+                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Devis gratuit</span>
+                  <span className="text-gray-700 hidden sm:inline mx-0.5 text-[8px]" aria-hidden="true">•</span>
                   
-                  <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Réponse sous 24h</span>
-                  <span className="text-gray-600 hidden sm:inline mx-0.5" aria-hidden="true">•</span>
+                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Réponse sous 24h</span>
+                  <span className="text-gray-700 hidden sm:inline mx-0.5 text-[8px]" aria-hidden="true">•</span>
                   
-                  <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Sans engagement</span>
+                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
+                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Sans engagement</span>
                 </div>
               </div>
             </div>

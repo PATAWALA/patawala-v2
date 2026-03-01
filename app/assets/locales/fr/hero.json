@@ -1,0 +1,28 @@
+{
+  "badge": "Expert en solutions digitales sur mesure",
+  "typed": {
+    "strings": [
+      "votre visibilité en ligne",
+      "votre prochaine application mobile",
+      "un e-commerce qui convertit",
+      "vos outils métier sur-mesure",
+      "votre croissance digitale",
+      "notre collaboration gagnante"
+    ]
+  },
+  "title": "Construisons ensemble :",
+  "subtitle": "Créez un impact réel avec votre business grâce à des sites et applications pensés pour maximiser vos ventes.",
+  "buttons": {
+    "project": "Lancer mon projet",
+    "portfolio": "Voir mes réalisations"
+  },
+  "badges": {
+    "multisupport": "Multi-support",
+    "available": "Disponible"
+  },
+  "microCTA": {
+    "response": "Réponse sous 24h",
+    "quote": "Devis gratuit",
+    "support": "Accompagnement A à Z"
+  }
+}

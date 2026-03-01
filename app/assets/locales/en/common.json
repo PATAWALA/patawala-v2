@@ -1,0 +1,14 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "services": "Services",
+    "contact": "Contact"
+  },
+  "buttons": {
+    "readMore": "Read more",
+    "close": "Close",
+    "back": "Back"
+  }
+}

@@ -1,115 +1,29 @@
 'use client';
 
-import { motion, useMotionValue, useTransform, animate, useInView } from 'framer-motion';
-import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, CheckCircle, ArrowRight, MapPin } from 'lucide-react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, CheckCircle, ArrowRight, MapPin, Award } from 'lucide-react';
 import Image from 'next/image';
 import clientImage from '../../assets/images/profile2.jpeg';
 import chimeneImage from '../../assets/images/profile4.png';
 import cesarImage from '../../assets/images/profile5.jpg';
-import { useRef, useState, useEffect } from 'react';
 
-const testimonials = [
-  {
-    name: 'Ninsemouh Gbeo',
-    content: 'Merci Patawala, mon site commence à donner des résultats !',
-    rating: 5,
-    image: clientImage,
-    isRealImage: true,
-    country: 'Côte d\'Ivoire',
-    flag: '🇨🇮'
-  },
-  {
-    name: 'Marie Abani',
-    content: 'Excellent travail, mon site est vivant maintenant !',
-    rating: 5,
-    initials: 'MA',
-    gradient: 'from-blue-500 to-cyan-500',
-    country: 'France',
-    flag: '🇫🇷'
-  },
-  {
-    name: 'César Dossou',
-    content: 'Service impeccable, résultats au rendez-vous.',
-    rating: 5,
-    image: cesarImage,
-    isRealImage: true,
-    country: 'Congo',
-    flag: '🇨🇬'
-  },
-  {
-    name: 'Maurice Acoumba',
-    content: 'Un accompagnement hors pair, je recommande !',
-    rating: 5,
-    initials: 'MA',
-    gradient: 'from-emerald-500 to-teal-500',
-    country: 'Cameroun',
-    flag: '🇨🇲'
-  },
-  {
-    name: 'Jean Edikou',
-    content: 'Site magnifique et équipe à l\'écoute. Parfait !',
-    rating: 5,
-    initials: 'JE',
-    gradient: 'from-amber-500 to-orange-500',
-    country: 'Bénin',
-    flag: '🇧🇯'
-  },
-  {
-    name: 'Chimène Koumai',
-    content: 'Travail rapide et professionnel, merci !',
-    rating: 5,
-    image: chimeneImage,
-    isRealImage: true,
-    country: 'Togo',
-    flag: '🇹🇬'
-  },
-  {
-    name: 'Gérard Agatou\'n',
-    content: 'Je recommande les yeux fermés, super expérience.',
-    rating: 5,
-    initials: 'GA',
-    gradient: 'from-green-500 to-emerald-500',
-    country: 'Sénégal',
-    flag: '🇸🇳'
-  },
-  {
-    name: 'Camille Benerd',
-    content: 'Enfin un site qui me ressemble, merci infiniment !',
-    rating: 5,
-    initials: 'CB',
-    gradient: 'from-indigo-500 to-purple-500',
-    country: 'Belgique',
-    flag: '🇧🇪'
-  }
-];
-
-const projectTypes = [
-  {
-    icon: Building2,
-    title: 'Startups & Scale-ups',
-    description: 'Développement rapide de MVPs et solutions scalables',
-    cta: 'Discuter de startup',
-    message: 'Discuter de mon projet startup'
-  },
-  {
-    icon: Users,
-    title: 'PME & Grands Comptes',
-    description: 'Solutions sur mesure pour transformation digitale',
-    cta: 'Discuter de mon projet',
-    message: 'Discuter de mon projet d\'entreprise'
-  }
-];
-
-export default function SocialProof() {
+const SocialProof = memo(function SocialProof() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const animationRef = useRef<number>();
-  const [scrollPosition, setScrollPosition] = useState(0);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const timeRef = useRef(Date.now());
+  const animationFrameRef = useRef<number>();
+
+  // Détection hydratation
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Détection desktop/mobile
   useEffect(() => {
@@ -121,23 +35,126 @@ export default function SocialProof() {
     return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
+  // Témoignages
+  const testimonials = [
+    {
+      name: 'Ninsemouh Gbeo',
+      content: 'Mon site commence à porter ses fruits. Merci pour cet accompagnement.',
+      rating: 5,
+      image: clientImage,
+      isRealImage: true,
+      country: 'Côte d\'Ivoire',
+      flag: '🇨🇮'
+    },
+    {
+      name: 'Marie Abani',
+      content: 'Enfin un site à mon image. Vivant, moderne, efficace.',
+      rating: 5,
+      initials: 'MA',
+      gradient: 'from-blue-500 to-cyan-500',
+      country: 'France',
+      flag: '🇫🇷'
+    },
+    {
+      name: 'César Dossou',
+      content: 'Service impeccable, résultat au rendez-vous. Je recommande.',
+      rating: 5,
+      image: cesarImage,
+      isRealImage: true,
+      country: 'Congo',
+      flag: '🇨🇬'
+    },
+    {
+      name: 'Maurice Acoumba',
+      content: 'Un vrai partenaire à l\'écoute. Je suis satisfait du travail accompli.',
+      rating: 5,
+      initials: 'MA',
+      gradient: 'from-emerald-500 to-teal-500',
+      country: 'Cameroun',
+      flag: '🇨🇲'
+    },
+    {
+      name: 'Jean Edikou',
+      content: 'Site soigné, équipe attentive. Une belle collaboration.',
+      rating: 5,
+      initials: 'JE',
+      gradient: 'from-amber-500 to-orange-500',
+      country: 'Bénin',
+      flag: '🇧🇯'
+    },
+    {
+      name: 'Chimène Koumai',
+      content: 'Rapide, professionnel, à l\'écoute. Merci pour tout.',
+      rating: 5,
+      image: chimeneImage,
+      isRealImage: true,
+      country: 'Togo',
+      flag: '🇹🇬'
+    },
+    {
+      name: 'Gérard Agatou\'n',
+      content: 'Les yeux fermés. Une expérience de travail agréable et efficace.',
+      rating: 5,
+      initials: 'GA',
+      gradient: 'from-green-500 to-emerald-500',
+      country: 'Sénégal',
+      flag: '🇸🇳'
+    },
+    {
+      name: 'Camille Benerd',
+      content: 'Un site qui me ressemble enfin. Merci pour votre patience et votre écoute.',
+      rating: 5,
+      initials: 'CB',
+      gradient: 'from-indigo-500 to-purple-500',
+      country: 'Belgique',
+      flag: '🇧🇪'
+    }
+  ];
+
+  // Types de projets
+  const projectTypes = [
+    {
+      icon: Building2,
+      title: 'Startups & Scale-ups',
+      description: 'Développement de MVPs et solutions évolutives',
+      cta: 'Discuter de startup',
+      message: 'Discuter de mon projet startup'
+    },
+    {
+      icon: Users,
+      title: 'PME & Grands Comptes',
+      description: 'Accompagnement sur mesure pour votre transformation digitale',
+      cta: 'Discuter de mon projet',
+      message: 'Discuter de mon projet d\'entreprise'
+    }
+  ];
+
+  const scrollToContact = useCallback(() => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      window.history.pushState(null, '', '/#contact');
+    }
+  }, []);
+
   // Fonction de défilement continu
-  const continuousScroll = () => {
+  const continuousScroll = useCallback(() => {
     if (scrollRef.current && isAutoScrolling) {
       const { current } = scrollRef;
       const maxScroll = current.scrollWidth - current.clientWidth;
       
-      let newScrollLeft = current.scrollLeft + 0.5;
+      const speed = isDesktop ? 0.6 : 1.2;
+      
+      let newScrollLeft = current.scrollLeft + speed;
       if (newScrollLeft >= maxScroll) {
         newScrollLeft = 0;
       }
       
       current.scrollLeft = newScrollLeft;
-      setScrollPosition(newScrollLeft);
       
       animationRef.current = requestAnimationFrame(continuousScroll);
     }
-  };
+  }, [isAutoScrolling, isDesktop]);
 
   useEffect(() => {
     if (isAutoScrolling) {
@@ -151,17 +168,67 @@ export default function SocialProof() {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isAutoScrolling]);
+  }, [isAutoScrolling, continuousScroll]);
 
-  // Mettre à jour la position de scroll manuellement
-  const handleScroll = () => {
+  // Animation des cartes (montée/descente) - OPTIMISÉE
+  useEffect(() => {
+    if (!isDesktop) return;
+
+    const updateCardPositions = () => {
+      timeRef.current = Date.now() / 1000;
+      
+      cardRefs.current.forEach((card, index) => {
+        if (card) {
+          const containerRect = containerRef.current?.getBoundingClientRect();
+          const cardRect = card.getBoundingClientRect();
+          
+          if (containerRect) {
+            const containerCenter = containerRect.left + containerRect.width / 2;
+            const cardCenter = cardRect.left + cardRect.width / 2;
+            
+            const distance = (cardCenter - containerCenter) / (containerRect.width / 2);
+            const proximity = Math.max(0, 1 - Math.abs(distance));
+            
+            const phase = index * 2;
+            const baseAmplitude = 25;
+            const amplitude = proximity * baseAmplitude;
+            const verticalMovement = amplitude * Math.sin(timeRef.current * 3 + phase);
+            const centerBoost = proximity > 0.7 ? (proximity - 0.7) * 40 : 0;
+            const finalY = verticalMovement + centerBoost;
+            const scale = 1 + (proximity * 0.05);
+            
+            // Appliquer la transformation directement (pas de React state)
+            card.style.transform = `translateY(${finalY}px) scale(${scale})`;
+          }
+        }
+      });
+      
+      animationFrameRef.current = requestAnimationFrame(updateCardPositions);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(updateCardPositions);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [isDesktop]);
+
+  // Vérification des boutons de défilement
+  const checkScrollButtons = useCallback(() => {
     if (scrollRef.current) {
-      setScrollPosition(scrollRef.current.scrollLeft);
-      checkScrollButtons();
+      const { current } = scrollRef;
+      setShowLeftArrow(current.scrollLeft > 20);
+      setShowRightArrow(current.scrollLeft + current.clientWidth < current.scrollWidth - 20);
     }
-  };
+  }, []);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const handleScroll = useCallback(() => {
+    checkScrollButtons();
+  }, [checkScrollButtons]);
+
+  const scroll = useCallback((direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { current } = scrollRef;
       const cardWidth = 360;
@@ -170,158 +237,91 @@ export default function SocialProof() {
       
       current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       
-      setTimeout(() => {
-        checkScrollButtons();
-        setScrollPosition(current.scrollLeft);
-      }, 300);
+      setTimeout(checkScrollButtons, 300);
     }
-  };
+  }, [checkScrollButtons]);
 
-  const checkScrollButtons = () => {
-    if (scrollRef.current) {
-      const { current } = scrollRef;
-      setShowLeftArrow(current.scrollLeft > 20);
-      setShowRightArrow(current.scrollLeft + current.clientWidth < current.scrollWidth - 20);
-    }
-  };
-
-  // Arrêt du défilement au survol (desktop) et au toucher (mobile)
-  const handleMouseEnter = () => {
-    setIsAutoScrolling(false);
-  };
-
-  const handleMouseLeave = () => {
-    setIsAutoScrolling(true);
-  };
-
-  const handleTouchStart = () => {
-    setIsAutoScrolling(false);
-  };
-
-  const handleTouchEnd = () => {
-    setTimeout(() => {
-      setIsAutoScrolling(true);
-    }, 2000);
-  };
-
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-      window.history.pushState(null, '', '/#contact');
-    }
-  };
+  // Arrêt du défilement
+  const handleMouseEnter = useCallback(() => setIsAutoScrolling(false), []);
+  const handleMouseLeave = useCallback(() => setIsAutoScrolling(true), []);
+  const handleTouchStart = useCallback(() => setIsAutoScrolling(false), []);
+  const handleTouchEnd = useCallback(() => {
+    setTimeout(() => setIsAutoScrolling(true), 2000);
+  }, []);
 
   useEffect(() => {
     checkScrollButtons();
     window.addEventListener('resize', checkScrollButtons);
-    
     return () => window.removeEventListener('resize', checkScrollButtons);
-  }, []);
+  }, [checkScrollButtons]);
 
-  // Calculer la position centrale
-  const getCardPosition = (cardElement: HTMLDivElement | null) => {
-    if (!cardElement || !containerRef.current || !scrollRef.current) return 0.5;
-    
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const cardRect = cardElement.getBoundingClientRect();
-    
-    const containerCenter = containerRect.left + containerRect.width / 2;
-    const cardCenter = cardRect.left + cardRect.width / 2;
-    
-    const distance = (cardCenter - containerCenter) / (containerRect.width / 2);
-    const proximity = Math.max(0, 1 - Math.abs(distance));
-    
-    return proximity;
-  };
+  // Points lumineux statiques
+  const lightPoints = useRef(
+    [...Array(8)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`
+    }))
+  ).current;
 
+  // Duplication pour effet infini
   const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
   return (
-    <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
-      {/* BEAU FOND - avec dégradé et formes floues */}
+    <section 
+      className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
+      aria-label="Témoignages clients"
+    >
+      {/* FOND OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
         <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, 
-            rgba(59,130,246,0.05) 0px, 
-            rgba(59,130,246,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.03) 0px, rgba(59,130,246,0.03) 1px, transparent 1px, transparent 60px)`
+        }} />
         <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, 
-            rgba(6,182,212,0.05) 0px, 
-            rgba(6,182,212,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
+          backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.03) 0px, rgba(6,182,212,0.03) 1px, transparent 1px, transparent 60px)`
+        }} />
         
-        {/* Éléments décoratifs flous */}
-        <motion.div
-          animate={{ 
-            x: [0, 40, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
-          transition={{ duration: 18, repeat: Infinity }}
-          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2]
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"
-        />
+        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl will-change-transform" />
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl will-change-transform" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl will-change-transform" />
+        
+        {lightPoints.map((point, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
+            style={{
+              left: point.left,
+              top: point.top,
+            }}
+            aria-hidden="true"
+          />
+        ))}
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        {/* En-tête */}
         <div className="text-center mb-12 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm"
-          >
-            <Sparkles className="w-4 h-4 text-blue-400" />
-            <span className="text-xs sm:text-sm font-medium text-blue-400">
-              +11 projets livrés
-            </span>
-          </motion.div>
+          {isMounted && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
+              <Award size={14} className="text-blue-400" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-blue-400">
+                La joie de mes clients, ma fierté
+              </span>
+            </div>
+          )}
           
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white"
-          >
-            La satisfaction de nos<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              clients en témoigne
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
+            Leur satisfaction
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
+              parle pour moi
             </span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4"
-          >
-            Découvrez les retours d'expérience de ceux qui nous ont fait confiance
-          </motion.p>
+          </h2>
+          
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
+            Chaque projet est une rencontre, chaque retour une preuve de confiance.
+          </p>
         </div>
 
-        {/* Carrousel à défilement CONTINU */}
+        {/* Carrousel */}
         <div 
           ref={containerRef}
           className="relative max-w-7xl mx-auto mb-16 md:mb-20"
@@ -331,36 +331,39 @@ export default function SocialProof() {
           onTouchEnd={handleTouchEnd}
         >
           {/* Flèches de navigation */}
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: showLeftArrow ? 1 : 0 }}
-            onClick={() => scroll('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200"
-            style={{ display: showLeftArrow ? 'flex' : 'none' }}
-          >
-            <ChevronLeft size={20} className="md:w-6 md:h-6" />
-          </motion.button>
+          {isDesktop && (
+            <>
+              <button
+                onClick={() => scroll('left')}
+                className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
+                style={{ opacity: showLeftArrow ? 1 : 0 }}
+                aria-label="Témoignages précédents"
+                disabled={!showLeftArrow}
+              >
+                <ChevronLeft size={20} aria-hidden="true" />
+              </button>
 
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: showRightArrow ? 1 : 0 }}
-            onClick={() => scroll('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-2 md:p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200"
-            style={{ display: showRightArrow ? 'flex' : 'none' }}
-          >
-            <ChevronRight size={20} className="md:w-6 md:h-6" />
-          </motion.button>
+              <button
+                onClick={() => scroll('right')}
+                className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
+                style={{ opacity: showRightArrow ? 1 : 0 }}
+                aria-label="Témoignages suivants"
+                disabled={!showRightArrow}
+              >
+                <ChevronRight size={20} aria-hidden="true" />
+              </button>
+            </>
+          )}
 
-          {/* Indicateur de défilement visible */}
-          <motion.div 
-            animate={{ opacity: isAutoScrolling ? 1 : 0.5 }}
-            className="absolute -top-8 right-0 text-xs md:text-sm font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm border border-[#1F2937]"
-          >
-            <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
-              {isAutoScrolling ? "▶ Défilement automatique" : "❚❚ Défilement arrêté"}
-            </span>
-            <div className={`w-2 h-2 rounded-full ${isAutoScrolling ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`}></div>
-          </motion.div>
+          {/* Indicateur de défilement */}
+          {isDesktop && (
+            <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937]">
+              <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
+                {isAutoScrolling ? "Défilement automatique" : "Défilement arrêté"}
+              </span>
+              <div className={`w-2 h-2 rounded-full ${isAutoScrolling ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`} />
+            </div>
+          )}
 
           {/* Conteneur des témoignages */}
           <div 
@@ -377,62 +380,20 @@ export default function SocialProof() {
               const setCardRef = (el: HTMLDivElement | null) => {
                 cardRefs.current[index] = el;
               };
-              
-              const proximity = getCardPosition(cardRefs.current[index]);
-              
-              // Mouvement vertical UNIQUEMENT sur desktop
-              const time = Date.now() / 1000;
-              const phase = index * 2;
-              const baseAmplitude = isDesktop ? 25 : 0;
-              const amplitude = proximity * baseAmplitude;
-              const verticalMovement = amplitude * Math.sin(time * 3 + phase);
-              const centerBoost = isDesktop && proximity > 0.7 ? (proximity - 0.7) * 40 : 0;
-              const finalY = verticalMovement + centerBoost;
 
               return (
-                <motion.div
+                <div
                   key={`${testimonial.name}-${index}`}
                   ref={setCardRef}
-                  animate={isDesktop ? { 
-                    y: finalY,
-                    scale: 1 + (proximity * 0.05),
-                    transition: {
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 15,
-                      mass: 0.5
-                    }
-                  } : {}}
-                  whileHover={isDesktop ? { 
-                    y: finalY - 8,
-                    scale: 1.08,
-                    transition: { duration: 0.2 }
-                  } : { scale: 1.02 }}
-                  className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-2xl transition-all duration-200 group relative flex-shrink-0"
+                  className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-2xl transition-all duration-200 group relative flex-shrink-0 will-change-transform"
+                  style={isDesktop ? { willChange: 'transform' } : {}}
                 >
-                  {proximity > 0.8 && isDesktop && (
-                    <motion.div 
-                      className="absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-t from-blue-500/10 to-transparent pointer-events-none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: proximity * 0.3 }}
-                    />
-                  )}
-                  
-                  <div 
-                    className="absolute inset-0 rounded-xl md:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
-                    style={{
-                      boxShadow: `0 25px 40px -12px rgba(59, 130, 246, ${0.3 + proximity * 0.3})`,
-                      zIndex: -1,
-                      transform: 'translateY(4px)'
-                    }}
-                  />
-                  
                   <div className="relative z-10">
-                    <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" />
+                    <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" aria-hidden="true" />
                     
-                    <div className="flex mb-2 md:mb-3">
+                    <div className="flex mb-2 md:mb-3" aria-label={`Note: ${testimonial.rating} étoiles`}>
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="fill-blue-400 text-blue-400" size={14} />
+                        <Star key={i} className="fill-blue-400 text-blue-400" size={14} aria-hidden="true" />
                       ))}
                     </div>
                     
@@ -442,68 +403,54 @@ export default function SocialProof() {
                     
                     <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
                       {testimonial.isRealImage ? (
-                        <div className="relative">
-                          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all">
-                            <Image
-                              src={testimonial.image}
-                              alt={testimonial.name}
-                              width={48}
-                              height={48}
-                              className="object-cover w-full h-full"
-                              loading="lazy"
-                            />
-                          </div>
+                        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
+                          <Image
+                            src={testimonial.image}
+                            alt={`Photo de ${testimonial.name}`}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                            quality={75}
+                          />
                         </div>
                       ) : (
-                        <div className="relative">
-                          <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all`}>
-                            {testimonial.initials}
-                          </div>
+                        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
+                          {testimonial.initials}
                         </div>
                       )}
                       
-                      <div className="flex-1">
-                        <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base truncate">
                           {testimonial.name}
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-                          <MapPin size={10} className="text-blue-400" />
-                          <span>{testimonial.flag} {testimonial.country}</span>
+                          <MapPin size={10} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
+                          <span className="truncate">{testimonial.flag} {testimonial.country}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
 
-        {/* Types de projets accompagnés */}
+        {/* Types de projets */}
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 text-white"
-          >
-            Accompagnement sur mesure
-          </motion.h3>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 text-white">
+            Un accompagnement sur mesure
+          </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
             {projectTypes.map((type, index) => (
-              <motion.div
+              <div
                 key={type.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
                 className="group bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-md hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300"
               >
                 <div className="flex items-start gap-3 sm:gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors flex-shrink-0">
-                    <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
+                    <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" aria-hidden="true" />
                   </div>
                   <div>
                     <h4 className="text-base sm:text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
@@ -519,44 +466,40 @@ export default function SocialProof() {
                   <button
                     onClick={scrollToContact}
                     className="w-full flex items-center justify-between group/btn"
+                    aria-label={type.cta}
                   >
                     <span className="text-blue-400 font-medium text-sm sm:text-base md:text-lg group-hover/btn:translate-x-1 transition-transform duration-200">
                       {type.cta}
                     </span>
                     <div className="bg-blue-500/10 p-2 rounded-full group-hover/btn:bg-blue-500/20 transition-colors duration-200">
-                      <ArrowRight size={16} className="text-blue-400 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
+                      <ArrowRight size={16} className="text-blue-400 group-hover/btn:translate-x-0.5 transition-transform duration-200" aria-hidden="true" />
                     </div>
                   </button>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Garanties - Sans fond sur mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          className="flex justify-center"
-        >
+        {/* Garanties */}
+        <div className="flex justify-center">
           <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4 px-0 py-0 sm:px-4 sm:py-2 sm:rounded-full sm:shadow-lg sm:border sm:border-[#1F2937] sm:bg-[#141B2B]/80 sm:backdrop-blur-sm">
             <div className="flex items-center gap-1.5">
-              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" />
+              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
               <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Devis gratuit</span>
             </div>
-            <span className="text-gray-600 hidden xs:inline">•</span>
+            <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
             <div className="flex items-center gap-1.5">
-              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" />
+              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
               <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Réponse sous 24h</span>
             </div>
-            <span className="text-gray-600 hidden xs:inline">•</span>
+            <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
             <div className="flex items-center gap-1.5">
-              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" />
+              <CheckCircle size={12} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
               <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Sans engagement</span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <style jsx>{`
@@ -566,4 +509,6 @@ export default function SocialProof() {
       `}</style>
     </section>
   );
-}
+});
+
+export default SocialProof;

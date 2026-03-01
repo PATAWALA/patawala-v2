@@ -1,0 +1,28 @@
+{
+  "badge": "Custom digital solutions expert",
+  "typed": {
+    "strings": [
+      "your online visibility",
+      "your next mobile app",
+      "an e-commerce that converts",
+      "your custom business tools",
+      "your digital growth",
+      "our winning collaboration"
+    ]
+  },
+  "title": "Let's build together:",
+  "subtitle": "Create real impact for your business with websites and apps designed to maximize your sales.",
+  "buttons": {
+    "project": "Start my project",
+    "portfolio": "View my work"
+  },
+  "badges": {
+    "multisupport": "Multi-platform",
+    "available": "Available"
+  },
+  "microCTA": {
+    "response": "24h response",
+    "quote": "Free quote",
+    "support": "End-to-end support"
+  }
+}
