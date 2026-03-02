@@ -6,7 +6,7 @@ import {
   X, Calendar, Clock, User, Mail, Phone, 
   CheckCircle, MessageSquare, ChevronLeft, 
   ChevronRight, Sparkles, MessageCircle,
-  ChevronDown, Info, AlertCircle, ThumbsUp
+  ChevronDown, Info, ThumbsUp
 } from 'lucide-react';
 
 interface BookingModalProps {
@@ -25,7 +25,7 @@ const weekDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 type ContactMethod = 'whatsapp' | 'email';
 
-// Liste des pays avec indicatifs et drapeaux (simplifiée pour la lisibilité)
+// Liste des pays avec indicatifs et drapeaux
 const countries = [
   { code: 'FR', name: 'France', dialCode: '+33', flag: '🇫🇷' },
   { code: 'BE', name: 'Belgique', dialCode: '+32', flag: '🇧🇪' },
@@ -54,6 +54,9 @@ const countries = [
   { code: 'TN', name: 'Tunisie', dialCode: '+216', flag: '🇹🇳' },
 ];
 
+// Numéro WhatsApp cible
+const WHATSAPP_NUMBER = '22962278090';
+
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState('');
@@ -63,7 +66,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [calendarDays, setCalendarDays] = useState<Date[]>([]);
   const [contactMethod, setContactMethod] = useState<ContactMethod>('whatsapp');
-  const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.code === 'CI') || countries[0]);
+  const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.code === 'BJ') || countries[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -80,6 +83,17 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [dateSelectedMessage, setDateSelectedMessage] = useState(false);
   
   const countryDropdownRef = useRef<HTMLDivElement>(null);
+  const modalContentRef = useRef<HTMLDivElement>(null);
+
+  // Scroll en haut du modal quand on passe à l'étape 2 (surtout pour mobile)
+  useEffect(() => {
+    if (step === 2 && modalContentRef.current) {
+      // Petit délai pour laisser le temps à l'animation de se faire
+      setTimeout(() => {
+        modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
+  }, [step]);
 
   // Fermer le dropdown quand on clique dehors
   useEffect(() => {
@@ -139,11 +153,21 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setSelectedTime('');
     setShowTimeField(true);
     setDateSelectedMessage(true);
-    
-    // Auto-hide le message après 3 secondes
-    setTimeout(() => {
-      setDateSelectedMessage(false);
-    }, 3000);
+  };
+
+  // Fonction pour cacher le message quand on interagit avec le champ heure
+  const handleTimeInputFocus = () => {
+    setDateSelectedMessage(false);
+  };
+
+  const handleTimeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTimeInput(e.target.value);
+    setDateSelectedMessage(false); // Cache le message dès qu'on tape
+  };
+
+  const handleExampleTimeClick = (example: string) => {
+    setTimeInput(example);
+    setDateSelectedMessage(false); // Cache le message quand on choisit un exemple
   };
 
   const handleTimeSubmit = () => {
@@ -192,6 +216,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     let targetUrl = '';
     
     if (contactMethod === 'whatsapp') {
+      // Formatage du message pour WhatsApp
       message = `🔔 *NOUVELLE DEMANDE DE RENDEZ-VOUS* 🔔
       
 👤 *Nom:* ${formData.name}
@@ -200,7 +225,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 ⏰ *Heure:* ${selectedTime}
 💬 *Message:* ${formData.message || 'Pas de message'}`;
       
-      targetUrl = `https://wa.me/${selectedCountry.dialCode.replace('+', '')}${formData.phone.replace(/\s/g, '')}?text=${encodeURIComponent(message)}`;
+      // Redirection vers le numéro cible
+      targetUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     } else {
       message = `🔔 NOUVELLE DEMANDE DE RENDEZ-VOUS 🔔
       
@@ -213,12 +239,16 @@ Message: ${formData.message || 'Pas de message'}`;
       targetUrl = `mailto:contact@patawala.com?subject=Rendez-vous le ${formattedDate}&body=${encodeURIComponent(message)}`;
     }
     
+    // Ouvrir WhatsApp ou email
     window.open(targetUrl, '_blank');
     
+    // Afficher le message de confirmation
     setIsSubmitted(true);
     
+    // Fermer le modal après 2 secondes
     setTimeout(() => {
       onClose();
+      // Réinitialiser tout
       setStep(1);
       setSelectedDate('');
       setSelectedTime('');
@@ -228,21 +258,14 @@ Message: ${formData.message || 'Pas de message'}`;
       setFormData({ name: '', email: '', phone: '', message: '' });
       setFormErrors({ name: false, email: false, phone: false });
       setIsSubmitted(false);
+      setDateSelectedMessage(false);
     }, 2000);
   };
 
   const isDateSelectable = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return date >= today; // Toutes les dates futures sont disponibles
-  };
-
-  const formatDisplayDate = (date: Date) => {
-    return date.toLocaleDateString('fr-FR', { 
-      weekday: 'long', 
-      day: 'numeric', 
-      month: 'long' 
-    });
+    return date >= today;
   };
 
   const formatShortDate = (date: Date) => {
@@ -251,35 +274,6 @@ Message: ${formData.message || 'Pas de message'}`;
       day: 'numeric', 
       month: 'short' 
     });
-  };
-
-  // Fonction pour parser l'heure saisie par l'utilisateur
-  const parseTimeInput = (input: string) => {
-    // Nettoyer l'entrée
-    const cleaned = input.toLowerCase().trim();
-    
-    // Patterns courants
-    const patterns = [
-      /(\d{1,2})\s*h(?:\s*(\d{1,2})\s*(?:min|mn|minutes?)?)?/i, // 17h, 17h30, 17 h 30
-      /(\d{1,2}):(\d{2})/, // 17:30
-      /(\d{1,2})\s*heures?\s*(\d{1,2})?/i, // 17 heures 30
-    ];
-
-    for (const pattern of patterns) {
-      const match = input.match(pattern);
-      if (match) {
-        let hours = match[1].padStart(2, '0');
-        let minutes = match[2] ? match[2].padStart(2, '0') : '00';
-        
-        // Valider les heures et minutes
-        if (parseInt(hours) >= 0 && parseInt(hours) <= 23 && 
-            parseInt(minutes) >= 0 && parseInt(minutes) <= 59) {
-          return `${hours}:${minutes}`;
-        }
-      }
-    }
-    
-    return null;
   };
 
   if (!isOpen) return null;
@@ -302,19 +296,19 @@ Message: ${formData.message || 'Pas de message'}`;
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative bg-[#0A0F1C] rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto border border-[#1F2937]"
+          className="relative bg-[#0A0F1C] rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-[#1F2937]"
         >
-          {/* Bouton fermer - plus accessible sur mobile */}
+          {/* Bouton fermer */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-3 sm:p-2 hover:bg-[#1E2638] rounded-full transition-colors bg-[#1E2638] sm:bg-transparent"
+            className="absolute top-4 right-4 z-20 p-3 sm:p-2 hover:bg-[#1E2638] rounded-full transition-colors bg-[#1E2638] sm:bg-transparent"
             aria-label="Fermer"
           >
             <X size={20} className="text-gray-400" />
           </button>
 
-          {/* En-tête */}
-          <div className="p-5 sm:p-8 border-b border-[#1F2937] bg-gradient-to-r from-blue-500/10 to-transparent">
+          {/* En-tête - Fixe en haut */}
+          <div className="sticky top-0 z-10 p-5 sm:p-8 border-b border-[#1F2937] bg-gradient-to-r from-blue-500/10 to-transparent bg-[#0A0F1C]">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles size={18} className="text-blue-400" />
               <span className="text-xs sm:text-sm font-medium text-blue-400">30 minutes offertes</span>
@@ -336,11 +330,15 @@ Message: ${formData.message || 'Pas de message'}`;
             </div>
           </div>
 
-          {/* Corps du modal */}
-          <div className="p-5 sm:p-8">
+          {/* Corps du modal - Scrollable */}
+          <div 
+            ref={modalContentRef}
+            className="p-5 sm:p-8 overflow-y-auto"
+            style={{ maxHeight: 'calc(95vh - 180px)' }}
+          >
             {step === 1 ? (
               <div className="space-y-6">
-                {/* Message d'accueil simplifié */}
+                {/* Message d'accueil */}
                 <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                   <div className="flex items-start gap-3">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
@@ -389,7 +387,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     ))}
                   </div>
 
-                  {/* Grille du calendrier - plus facile à taper sur mobile */}
+                  {/* Grille du calendrier */}
                   <div className="grid grid-cols-7 gap-1 mb-4">
                     {calendarDays.map((date, index) => {
                       const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
@@ -423,7 +421,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   </div>
                 </div>
 
-                {/* Message de confirmation de date */}
+                {/* Message de confirmation de date - RESTE TANT QU'ON N'INTERAGIT PAS AVEC L'HEURE */}
                 <AnimatePresence>
                   {dateSelectedMessage && (
                     <motion.div
@@ -465,7 +463,8 @@ Message: ${formData.message || 'Pas de message'}`;
                         <input
                           type="text"
                           value={timeInput}
-                          onChange={(e) => setTimeInput(e.target.value)}
+                          onChange={handleTimeInputChange}
+                          onFocus={handleTimeInputFocus}
                           onKeyPress={(e) => e.key === 'Enter' && handleTimeSubmit()}
                           placeholder="Ex: 14h30, 17h, 20 heures, 09:45..."
                           className="w-full px-4 py-4 sm:py-3 bg-[#0A0F1C] border border-[#1F2937] rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500"
@@ -477,7 +476,7 @@ Message: ${formData.message || 'Pas de message'}`;
                           {['14h', '15h30', '17h45', '20h', '21h15'].map((example) => (
                             <button
                               key={example}
-                              onClick={() => setTimeInput(example)}
+                              onClick={() => handleExampleTimeClick(example)}
                               className="px-3 py-1.5 bg-[#1E2638] rounded-lg text-xs text-gray-300 hover:bg-[#2A3442] transition-colors"
                             >
                               {example}
@@ -510,7 +509,7 @@ Message: ${formData.message || 'Pas de message'}`;
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Récapitulatif du rendez-vous - plus clair */}
+                {/* Récapitulatif du rendez-vous - Visible directement en haut */}
                 {selectedDate && selectedTime && (
                   <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                     <p className="text-xs text-gray-400 mb-2">Récapitulatif de votre rendez-vous :</p>
@@ -652,7 +651,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     )}
                     <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                       <MessageCircle size={12} className="text-green-500" />
-                      Gratuit - Vous serez redirigé vers WhatsApp
+                      Gratuit - Votre demande sera envoyée directement sur WhatsApp
                     </p>
                   </div>
                 ) : (
@@ -740,15 +739,6 @@ Message: ${formData.message || 'Pas de message'}`;
               </form>
             )}
           </div>
-
-          {/* Pied du modal simplifié */}
-          {step === 1 && !showTimeField && (
-            <div className="p-5 sm:p-8 border-t border-[#1F2937] bg-[#0A0F1C]/50">
-              <p className="text-xs text-center text-gray-500">
-                🔒 Vos informations sont confidentielles
-              </p>
-            </div>
-          )}
         </motion.div>
       </div>
     </AnimatePresence>

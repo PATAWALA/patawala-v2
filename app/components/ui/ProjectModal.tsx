@@ -102,20 +102,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
       <div className="text-sm font-semibold text-white">{project.client}</div>
     </div>
   )}
-  {project.date && (  // N'affiche la date que si elle existe
-    <div className="bg-[#1F2937] p-3 rounded-xl">
-      <Calendar size={18} className="text-blue-400 mb-1" />
-      <div className="text-xs text-gray-400">Année</div>
-      <div className="text-sm font-semibold text-white">{project.date}</div>
-    </div>
-  )}
-  {project.duree && (  // N'affiche la durée que si elle existe
-    <div className="bg-[#1F2937] p-3 rounded-xl">
-      <Code size={18} className="text-blue-400 mb-1" />
-      <div className="text-xs text-gray-400">Durée</div>
-      <div className="text-sm font-semibold text-white">{project.duree}</div>
-    </div>
-  )}
 </div>
               {/* Objectif */}
               {project.objectif && (

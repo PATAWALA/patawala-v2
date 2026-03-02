@@ -44,20 +44,19 @@ const CTASection = memo(function CTASection() {
   const contactInfo = {
     whatsapp: ['22962278090', '+229 62 27 80 90'],
     calls: ['22962278090', '+229 62 27 80 90'],
-    emergency: ['22962278090', '+229 62 27 80 90'],
-    email: 'contact@votredomaine.com',
-    website: 'www.votredomaine.com',
+    emergency: ['22962278090', '+22946495875'],
+    email: 'patawalaabdoulaye2003@gmail.com',
     location: 'Cotonou, Bénin'
   };
 
   // Réseaux sociaux
   const socialLinks = [
     { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '+229 62 27 80 90', primary: true },
-    { name: 'Instagram', icon: Instagram, url: 'https://instagram.com/votrecompte', color: 'hover:bg-pink-500/20', username: '@votrecompte' },
-    { name: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com/in/votreprofil', color: 'hover:bg-blue-600/20', username: 'Votre Nom' },
-    { name: 'Twitter/X', icon: Twitter, url: 'https://twitter.com/votrecompte', color: 'hover:bg-blue-400/20', username: '@votrecompte' },
-    { name: 'GitHub', icon: Github, url: 'https://github.com/votrecompte', color: 'hover:bg-gray-500/20', username: 'votrecompte' },
-    { name: 'Facebook', icon: Facebook, url: 'https://facebook.com/votrepage', color: 'hover:bg-blue-700/20', username: 'Votre Page' },
+    { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: 'Abdoulaye Patawala' },
+    { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/abdoulaye-patawala-84b138381/', color: 'hover:bg-blue-600/20', username: 'Abdoulaye Patawala' },
+    { name: 'Twitter/X', icon: Twitter, url: 'https://x.com/AbdoulayeP79682', color: 'hover:bg-blue-400/20', username: 'Abdoulaye Patawala' },
+    { name: 'GitHub', icon: Github, url: 'https://github.com/PATAWALA', color: 'hover:bg-gray-500/20', username: 'Abdoulaye Patawala' },
+    { name: 'Facebook', icon: Facebook, url: 'https://web.facebook.com/Patawala', color: 'hover:bg-blue-700/20', username: 'Abdoulaye Patawala' },
   ];
 
   return (
@@ -242,28 +241,6 @@ const CTASection = memo(function CTASection() {
                     aria-label="Envoyer un email"
                   >
                     <Send size={16} className="text-blue-400" />
-                  </a>
-                </div>
-
-                {/* Site web */}
-                <div className="flex items-center justify-between p-3 bg-[#1F2937] rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-                      <Globe size={16} className="text-purple-400" />
-                    </div>
-                    <div className="text-left">
-                      <p className="text-xs text-gray-400">Site web</p>
-                      <p className="text-sm text-white">{contactInfo.website}</p>
-                    </div>
-                  </div>
-                  <a
-                    href={`https://${contactInfo.website}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 bg-purple-500/20 rounded-lg hover:bg-purple-500/30 transition-colors"
-                    aria-label="Visiter le site"
-                  >
-                    <ChevronRight size={16} className="text-purple-400" />
                   </a>
                 </div>
 
