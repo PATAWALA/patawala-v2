@@ -26,25 +26,25 @@ const AboutSection = memo(function AboutSection() {
 const visionCards = [
   {
     number: "01",
-    icon: Lightbulb, // Changé pour illustrer le conseil
+    icon: Lightbulb,
     title: "Conseil & Stratégie Technologique",
     description: "Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
   },
   {
-  number: "02",
-  icon: Handshake,
-  title: "Partenariat Stratégique & Vision Long Terme",
-  description: "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
-},
+    number: "02",
+    icon: Handshake,
+    title: "Partenariat Stratégique & Vision Long Terme",
+    description: "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+  },
   {
     number: "03",
-    icon: Sparkles, // Changé pour illustrer l'innovation simplifiée
-    title: "Innovation Utile & Humaine",
-    description: "Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs finaux."
+    icon: Sparkles,
+    title: "Innovation & Performance Commerciale",
+    description: "J'intègre l'intelligence artificielle et les outils web les plus modernes pour concevoir des solutions qui maximisent vos ventes et offrent une expérience fluide à vos utilisateurs."
   },
   {
     number: "04",
-    icon: MessagesSquare, // Changé pour illustrer l'écoute et l'échange
+    icon: MessagesSquare,
     title: "Engagement & Co-conception",
     description: "Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
   }
@@ -259,19 +259,6 @@ const visionCards = [
                   Du site vitrine à l'application complexe, je transforme vos idées en solutions performantes, pensées pour durer et évoluer avec vous.
                 </p>
               </div>
-              
-              {/* Message professionnel */}
-              <div className="bg-blue-500/5 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-5 mb-4 sm:mb-5 md:mb-6 lg:mb-7 border border-blue-500/20">
-                <div className="flex items-start gap-2 sm:gap-3">
-                  <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <p className="text-xs sm:text-sm md:text-base text-gray-300 text-left">
-                      <span className="font-semibold text-blue-400">Une question sur votre projet ?</span><br />
-                      <span className="text-xs sm:text-sm md:text-base">Je vous écoute et vous conseille pour trouver la solution la mieux adaptée à vos besoins.</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
 
               {/* BOUTONS */}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start">
@@ -291,22 +278,6 @@ const visionCards = [
                 >
                   Voir mes offres
                 </button>
-              </div>
-
-              {/* Micro-CTA - PLUS PETIT */}
-              <div className="flex justify-center w-full mt-3 sm:mt-4">
-                <div className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 bg-black/20 backdrop-blur-sm rounded-full border border-gray-800/50 whitespace-nowrap">
-                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Devis gratuit</span>
-                  <span className="text-gray-700 hidden sm:inline mx-0.5 text-[8px]" aria-hidden="true">•</span>
-                  
-                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Réponse sous 24h</span>
-                  <span className="text-gray-700 hidden sm:inline mx-0.5 text-[8px]" aria-hidden="true">•</span>
-                  
-                  <CheckCircle size={8} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
-                  <span className="text-[8px] xs:text-[9px] sm:text-[10px] text-gray-300 font-medium">Sans engagement</span>
-                </div>
               </div>
             </div>
           </div>

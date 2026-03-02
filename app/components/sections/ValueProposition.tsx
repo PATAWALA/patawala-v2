@@ -206,28 +206,6 @@ const ValueProposition = memo(function ValueProposition() {
               Voir mes services
             </button>
           </div>
-
-          {/* Micro-garanties */}
-          <div className="flex justify-center mt-6 md:mt-8">
-            <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4 px-0 py-0 sm:px-4 sm:py-2 sm:rounded-full sm:shadow-lg sm:border sm:border-[#1F2937] sm:bg-[#141B2B]/80 sm:backdrop-blur-sm">
-              <div className="flex items-center gap-1.5">
-                <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Devis gratuit</span>
-              </div>
-              <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
-              
-              <div className="flex items-center gap-1.5">
-                <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Réponse sous 24h</span>
-              </div>
-              <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
-              
-              <div className="flex items-center gap-1.5">
-                <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">Sans engagement</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

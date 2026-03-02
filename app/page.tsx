@@ -25,11 +25,6 @@ export default function Home() {
         <SocialProof />
       </section>
 
-      {/* Section ValueProposition - active Accueil */}
-      <section id="valueproposition">
-        <ValueProposition /> 
-      </section>
-
       {/* Section TechExpertise - active Accueil */}
       <section id="techexpertise">
         <TechExpertise />

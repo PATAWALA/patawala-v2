@@ -143,11 +143,6 @@ const CTASection = memo(function CTASection() {
                 2 créneaux disponibles
               </span>
             </div>
-
-            {/* Note */}
-            <p className="text-xs sm:text-sm text-gray-500 mt-8 sm:mt-10">
-              Je prends seulement 2 projets par mois pour un accompagnement de qualité.
-            </p>
           </div>
         </div>
       </section>

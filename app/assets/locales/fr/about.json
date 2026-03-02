@@ -15,8 +15,8 @@
         "description": "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
       },
       {
-        "title": "Innovation Utile & Humaine",
-        "description": "Je simplifie la technologie (IA, automatisation) pour qu'elle devienne un outil naturel, invisible et puissant au service de vos utilisateurs finaux."
+        "title": "Innovation & Performance Commerciale",
+        "description": "J'intègre l'intelligence artificielle et les outils web les plus modernes pour concevoir des solutions qui maximisent vos ventes et offrent une expérience fluide à vos utilisateurs."
       },
       {
         "title": "Engagement & Co-conception",
@@ -43,10 +43,5 @@
   "buttons": {
     "talk": "Lancer mon projet",
     "services": "Explorer mes solutions"
-  },
-  "microCTA": {
-    "quote": "Diagnostic gratuit",
-    "response": "Réponse sous 24h",
-    "commitment": "Engagement d'excellence"
   }
 }

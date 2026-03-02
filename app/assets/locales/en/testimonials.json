@@ -64,13 +64,5 @@
       "description": "Custom support for your digital transformation",
       "cta": "Discuss my project"
     }
-  },
-  
-  "guarantees": {
-    "quote": "Free quote",
-    "response": "24h response",
-    "commitment": "No commitment"
-  },
-  
-  "rating": "stars"
+  }
 }

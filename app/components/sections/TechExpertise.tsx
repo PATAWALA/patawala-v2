@@ -71,13 +71,6 @@ const TechExpertise = memo(function TechExpertise() {
     }
   ];
 
-  const workingMethods = [
-    { icon: Layers, title: 'Code propre & maintenable', desc: 'Architecture évolutive et documentée' },
-    { icon: Gauge, title: 'Performance avant tout', desc: 'Optimisation des temps de chargement' },
-    { icon: Shield, title: 'Sécurité intégrée', desc: 'Bonnes pratiques de sécurité' },
-    { icon: Sparkles, title: 'UX/Design soigné', desc: 'Interface intuitive et accessible' }
-  ];
-
   const scrollToContact = useCallback(() => {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
@@ -225,37 +218,6 @@ const TechExpertise = memo(function TechExpertise() {
             </div>
           ))}
         </div>
-
-        {/* Méthodologies de travail - AVEC ANIMATION AU SURVOL */}
-        <div className="max-w-4xl mx-auto mb-16 md:mb-20">
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 text-white">
-            Ma façon de travailler
-          </h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
-            {workingMethods.map((method, index) => (
-              <div
-                key={method.title}
-                className="group bg-[#141B2B] rounded-lg sm:rounded-xl p-4 sm:p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-300">
-                    <method.icon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
-                      {method.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm text-gray-400">
-                      {method.desc}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Note de crédibilité avec CTA */}
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-6 p-6 md:p-8 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-md max-w-2xl mx-auto hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300">

@@ -15,9 +15,9 @@
         "description": "By immersing myself in your business, I become your trusted tech advisor to build a solid partnership, securing your choices and evolving your tools alongside your sustainable growth."
       },
       {
-        "title": "Human-Centric Innovation",
-        "description": "I simplify technology (AI, automation) so it becomes a natural, invisible, and powerful tool for your end users."
-      },
+        "title": "Innovation & Sales Performance",
+        "description": "I integrate artificial intelligence and modern web tools to design solutions that maximize your sales and provide a seamless experience for your users."
+     },
       {
         "title": "Commitment & Co-creation",
         "description": "My method is built on active listening and constant feedback: you keep control of your vision while I ensure its technical integrity and longevity."
@@ -43,10 +43,5 @@
   "buttons": {
     "talk": "Start my project",
     "services": "Explore solutions"
-  },
-  "microCTA": {
-    "quote": "Free diagnostic",
-    "response": "24h response time",
-    "commitment": "Commitment to excellence"
   }
 }

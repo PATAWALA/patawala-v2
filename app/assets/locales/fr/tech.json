@@ -67,28 +67,6 @@
     }
   ],
   
-  "workingMethods": {
-    "title": "Ma façon de travailler",
-    "methods": [
-      {
-        "title": "Code propre & maintenable",
-        "desc": "Architecture évolutive et documentée"
-      },
-      {
-        "title": "Performance avant tout",
-        "desc": "Optimisation des temps de chargement"
-      },
-      {
-        "title": "Sécurité intégrée",
-        "desc": "Bonnes pratiques de sécurité"
-      },
-      {
-        "title": "UX/Design soigné",
-        "desc": "Interface intuitive et accessible"
-      }
-    ]
-  },
-  
   "note": "Je ne choisis pas un outil parce qu'il est à la mode, mais parce qu'il est le bon pour ce que nous voulons construire ensemble.",
   
   "cta": "Discuter de mon projet",
