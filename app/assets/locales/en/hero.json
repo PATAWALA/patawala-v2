@@ -1,5 +1,5 @@
 {
-  "badge": "Custom digital solutions expert",
+  "badge": "Specializing in custom digital solutions",
   "typed": {
     "strings": [
       "your online visibility",
@@ -12,17 +12,30 @@
   },
   "title": "Let's build together:",
   "subtitle": "Create real impact for your business with websites and apps designed to maximize your sales.",
+  
+  "socialProof": {
+    "stars": "{{count}} entrepreneurs supported",
+    "entrepreneurs": "entrepreneurs supported"
+  },
+  
   "buttons": {
     "project": "Start my project",
     "portfolio": "View my work"
   },
+  
   "badges": {
     "multisupport": "Multi-platform",
     "available": "Available"
   },
+  
   "microCTA": {
     "response": "24h response",
     "quote": "Free quote",
     "support": "End-to-end support"
+  },
+  
+  "altImages": {
+    "avatar": "Happy client",
+    "profile": "Abdoulaye Patawala - Web & Mobile Developer"
   }
 }

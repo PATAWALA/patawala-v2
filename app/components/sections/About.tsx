@@ -29,19 +29,19 @@ const AboutSection = memo(function AboutSection() {
       number: "01",
       icon: Lightbulb,
       title: "Conseil & Stratégie Technologique",
-      description: "Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
+      description: "Je sélectionne les technologies les plus rentables pour votre business, en éliminant les surcoûts et les risques techniques dès la conception."
     },
     {
       number: "02",
       icon: Handshake,
       title: "Partenariat Stratégique & Vision Long Terme",
-      description: "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+      description: "Plus qu'un développeur, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
     },
     {
       number: "03",
       icon: Sparkles,
       title: "Innovation & Performance Commerciale",
-      description: "J'intègre l'intelligence artificielle et les outils web les plus modernes pour concevoir des solutions qui maximisent vos ventes et offrent une expérience fluide à vos utilisateurs."
+      description: "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
     },
     {
       number: "04",
@@ -123,15 +123,14 @@ const AboutSection = memo(function AboutSection() {
             {/* Titre et sous-titre */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
-                Donnez vie à vos idées
+                Transformez vos ambitions en
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 sm:mt-2">
-                  avec un expert passionné
+                  actifs numériques performants.
                 </span>
               </h2>
 
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-                Chaque projet est pensé pour vous ressembler et répondre précisément à vos objectifs 
-                et à ceux de vos utilisateurs et clients.
+                Chaque projet est conçu pour s'aligner sur vos objectifs commerciaux et offrir une expérience utilisateur sans compromis.
               </p>
 
               {/* Séparateur */}
@@ -247,23 +246,18 @@ const AboutSection = memo(function AboutSection() {
               {/* BIO à droite */}
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
                 
-                {/* Hello, je suis... */}
                 <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 text-white">
-                  Hello, je suis <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Abdoulaye Patawala</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Abdoulaye Patawala</span>
                 </h3>
                 
                 <p className="text-sm sm:text-base md:text-lg text-blue-400/90 font-medium mb-4">
-                  Développeur web & mobile
+                  Spécialisé en Développement Web & Mobile
                 </p>
 
                 {/* Mission */}
                 <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                    <span className="text-white font-semibold">Ma mission :</span> prendre en charge votre présence digitale pour que vous puissiez vous concentrer sur votre cœur de métier.
-                  </p>
-                  
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                    Du site vitrine à l'application complexe, je transforme vos idées en solutions performantes, pensées pour durer et évoluer avec vous.
+                    Ma mission est de devenir le socle technique de votre entreprise. Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.
                   </p>
                 </div>
 
@@ -275,7 +269,7 @@ const AboutSection = memo(function AboutSection() {
                     aria-label="Parler de mon projet"
                   >
                     <MessageSquare size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
-                    Parler de mon projet
+                    Me contacter
                   </button>
                   
                   <button

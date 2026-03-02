@@ -1,47 +1,47 @@
 {
-  "badge": "Expertise on demand",
-  "title": "Scale your digital vision",
-  "subtitle": "with a strategic partner",
-  "description": "I don't just build interfaces; I engineer high-performance ecosystems designed to exceed your business goals and captivate your audience.",
+  "badge": "At your service",
+  "title": "Transform your ambitions",
+  "subtitle": "into high-performance digital assets",
+  "description": "Every project is designed to align with your business goals and deliver an uncompromised user experience.",
   "whoami": "Expertise & Commitment",
   "vision": {
     "cards": [
       {
         "title": "Tech Strategy & Advisory",
-        "description": "I guide you toward the most relevant technologies for your business, avoiding unnecessary costs and technical dead ends from day one."
+        "description": "I select the most profitable technologies for your business, eliminating unnecessary costs and technical risks from the design phase."
       },
       {
         "title": "Strategic Partnership & Long-Term Vision",
-        "description": "By immersing myself in your business, I become your trusted tech advisor to build a solid partnership, securing your choices and evolving your tools alongside your sustainable growth."
+        "description": "More than just a developer, I become your trusted advisor to build a solid partnership, secure your choices, and evolve your tools alongside your growth."
       },
       {
         "title": "Innovation & Sales Performance",
-        "description": "I integrate artificial intelligence and modern web tools to design solutions that maximize your sales and provide a seamless experience for your users."
-     },
+        "description": "I leverage Artificial Intelligence and modern web architectures to design solutions that automate your processes and boost your sales."
+      },
       {
         "title": "Commitment & Co-creation",
-        "description": "My method is built on active listening and constant feedback: you keep control of your vision while I ensure its technical integrity and longevity."
+        "description": "My method is built on active listening and constant feedback: you maintain control of your vision while I ensure its technical integrity and longevity."
       }
     ]
   },
   "profile": {
     "greeting": "Hello, I'm",
     "name": "Abdoulaye Patawala",
-    "role": "Web & Mobile Solutions Architect",
+    "role": "Specializing in Web & Mobile Development",
     "mission": "My mission:",
-    "missionText": "To lead your digital strategy, freeing you from technical constraints so you can focus entirely on scaling your core business.",
-    "description": "From strategic MVPs to complex applications, I transform your concepts into high-performance, scalable solutions built to last.",
+    "missionText": "To become the technical foundation of your business, allowing you to focus entirely on your core growth.",
+    "description": "From strategic landing pages to complex application ecosystems, I transform your ideas into robust production tools built to last.",
     "message": {
       "question": "Need a diagnostic for your project?",
-      "text": "I provide expert advice to help you define the most cost-effective and suitable technological solution for your goals."
+      "text": "I provide expert consulting to help you define the most cost-effective and suitable technological solution for your goals."
     },
     "badges": {
-      "webMobile": "Web & Mobile Expert",
-      "available": "Available for new ventures"
+      "webMobile": "Web & Mobile",
+      "available": "Available"
     }
   },
   "buttons": {
-    "talk": "Start my project",
-    "services": "Explore solutions"
+    "talk": "Contact me",
+    "services": "View my offers"
   }
 }

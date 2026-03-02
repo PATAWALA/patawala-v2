@@ -298,28 +298,28 @@ const SocialProof = memo(function SocialProof() {
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* En-tête */}
-        <div className="text-center mb-12 md:mb-16">
-          {isMounted && (
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-              <Award size={14} className="text-blue-400" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-medium text-blue-400">
-                La joie de mes clients, ma fierté
-              </span>
-            </div>
-          )}
-          
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
-            Leur satisfaction
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
-              parle pour moi
-            </span>
-          </h2>
-          
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
-            Chaque projet est une rencontre, chaque retour une preuve de confiance.
-          </p>
-        </div>
+        {/* En-tête de section Témoignages / Projets */}
+<div className="text-center mb-12 md:mb-16">
+  {isMounted && (
+    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
+      <Award size={14} className="text-blue-400" aria-hidden="true" />
+      <span className="text-xs sm:text-sm font-medium text-blue-400">
+        Projets réussis
+      </span>
+    </div>
+  )}
+  
+  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
+    Ils me font confiance
+    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
+      pour bâtir leurs solutions
+    </span>
+  </h2>
+  
+  <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
+    Découvrez les retours d'expérience de mes partenaires sur la qualité de mon accompagnement technique.
+  </p>
+</div>
 
         {/* Carrousel */}
         <div 

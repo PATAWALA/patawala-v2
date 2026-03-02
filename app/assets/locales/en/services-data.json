@@ -1,0 +1,168 @@
+{
+  "services": {
+    "web-vitrine": {
+      "title": "Showcase Website",
+      "shortDesc": "A professional site to present your business",
+      "description": "Modern and responsive showcase website to present your company, services and achievements.",
+      "ctaText": "Create my site",
+      "pricing": {
+        "startingAt": "150 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Custom design",
+        "Mobile optimized",
+        "Unlimited pages",
+        "Contact form",
+        "Photo gallery",
+        "Optional blog"
+      ]
+    },
+    "web-ecommerce": {
+      "title": "E-commerce",
+      "shortDesc": "Turnkey online store",
+      "description": "Complete e-commerce solution to sell your products online with inventory management and secure payments.",
+      "ctaText": "Launch my store",
+      "pricing": {
+        "startingAt": "350 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Product catalog",
+        "Shopping cart",
+        "Secure payments",
+        "Inventory management",
+        "Orders and invoices",
+        "Admin dashboard"
+      ]
+    },
+    "web-app": {
+      "title": "Web Application",
+      "shortDesc": "SaaS and business applications",
+      "description": "Complex custom web applications: CRM, ERP, SaaS platforms, marketplaces.",
+      "ctaText": "Develop my app",
+      "pricing": {
+        "startingAt": "500 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Scalable architecture",
+        "Database",
+        "RESTful API",
+        "Authentication",
+        "Dashboard",
+        "Data export"
+      ]
+    },
+    "mobile-app": {
+      "title": "Mobile App",
+      "shortDesc": "iOS, Android and cross-platform",
+      "description": "Native or hybrid mobile apps (React Native, Flutter) for all your needs.",
+      "ctaText": "Create my mobile app",
+      "pricing": {
+        "startingAt": "600 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "iOS and Android",
+        "Native interface",
+        "Push notifications",
+        "Offline capable",
+        "App store ready",
+        "Integrated analytics"
+      ]
+    },
+    "design-ux": {
+      "title": "UX/UI Design",
+      "shortDesc": "Intuitive and modern interfaces",
+      "description": "Creation of wireframes, interactive mockups and prototypes to validate your concept.",
+      "ctaText": "Design my project",
+      "pricing": {
+        "startingAt": "75 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Wireframes",
+        "High-fidelity mockups",
+        "Interactive prototype",
+        "Design system",
+        "User testing",
+        "Dev specifications"
+      ]
+    },
+    "design-graphique": {
+      "title": "Visual Identity",
+      "shortDesc": "Logo, brand guidelines, materials",
+      "description": "Creation of your complete visual identity: logo, colors, typography, business cards.",
+      "ctaText": "Create my identity",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Logo and variations",
+        "Brand guidelines",
+        "Business cards",
+        "Stationery",
+        "Moodboard",
+        "Source files"
+      ]
+    },
+    "consulting-audit": {
+      "title": "Technical Audit",
+      "shortDesc": "Complete analysis of your project",
+      "description": "Audit of your existing project: performance, security, SEO, technical architecture.",
+      "ctaText": "Audit my project",
+      "pricing": {
+        "startingAt": "100 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Performance analysis",
+        "Security audit",
+        "SEO recommendations",
+        "Code review",
+        "Detailed report",
+        "Action plan"
+      ]
+    },
+    "consulting-strategie": {
+      "title": "Strategic Consulting",
+      "shortDesc": "Define the right approach",
+      "description": "Support to define your digital strategy and choose the right technologies.",
+      "ctaText": "Get advice",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA",
+        "type": "hourly"
+      },
+      "features": [
+        "Needs analysis",
+        "Technology choices",
+        "Roadmap",
+        "Budget estimate",
+        "Project support",
+        "Recommendations"
+      ]
+    },
+    "maintenance-support": {
+      "title": "Maintenance",
+      "shortDesc": "Monitoring and updates",
+      "description": "Maintenance packages to keep your site updated, secure and performant.",
+      "ctaText": "Maintain my site",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA",
+        "type": "monthly"
+      },
+      "features": [
+        "Security updates",
+        "Backups",
+        "24/7 monitoring",
+        "Priority support",
+        "Minor updates",
+        "Monthly reports"
+      ]
+    }
+  }
+}

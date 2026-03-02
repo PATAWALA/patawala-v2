@@ -92,17 +92,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </span>
                 ))}
               </div>
-
-              {/* Grille d'infos */}
-<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-  {project.client && (
-    <div className="bg-[#1F2937] p-3 rounded-xl">
-      <User size={18} className="text-blue-400 mb-1" />
-      <div className="text-xs text-gray-400">Client</div>
-      <div className="text-sm font-semibold text-white">{project.client}</div>
-    </div>
-  )}
-</div>
               {/* Objectif */}
               {project.objectif && (
                 <div className="mb-8">

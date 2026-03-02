@@ -24,5 +24,29 @@
     "backToBlog": "Back to blog",
     "relatedArticles": "Related articles",
     "shareArticle": "Share this article"
+  },
+  "services": {
+    "popular": "Popular",
+    "from": "From",
+    "perHour": "/hour",
+    "perMonth": "/month",
+    "moreFeatures": "+{{count}} more features",
+    "learnMore": "Learn more",
+    "allServices": "All services"
+  },
+  "modal": {
+    "close": "Close",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading..."
+  },
+  "form": {
+    "required": "Required",
+    "optional": "Optional",
+    "submit": "Submit",
+    "success": "Success!",
+    "error": "Error"
   }
 }

@@ -24,5 +24,29 @@
     "backToBlog": "Retour au blog",
     "relatedArticles": "Articles similaires",
     "shareArticle": "Partager cet article"
+  },
+    "services": {
+    "popular": "Populaire",
+    "from": "À partir de",
+    "perHour": "/heure",
+    "perMonth": "/mois",
+    "moreFeatures": "+{{count}} autres fonctionnalités",
+    "learnMore": "En savoir plus",
+    "allServices": "Tous les services"
+  },
+    "modal": {
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "back": "Retour",
+    "next": "Suivant",
+    "loading": "Chargement..."
+  },
+  "form": {
+    "required": "Requis",
+    "optional": "Optionnel",
+    "submit": "Envoyer",
+    "success": "Succès !",
+    "error": "Erreur"
   }
 }

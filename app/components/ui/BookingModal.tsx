@@ -339,21 +339,28 @@ Message: ${formData.message || 'Pas de message'}`;
             {step === 1 ? (
               <div className="space-y-6">
                 {/* Message d'accueil */}
-                <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Info size={16} className="text-blue-400" />
-                    </div>
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-200 font-medium">
-                        Je suis disponible tous les jours, à l'heure que vous voulez !
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        Choisissez d'abord votre date, puis indiquez l'heure qui vous arrange.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+{/* Message d'accueil avec tes 3 instructions spécifiques */}
+<div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
+  <div className="flex items-start gap-3">
+    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+      <Info size={16} className="text-blue-400" />
+    </div>
+    <div>
+      {/* Phrase 1 : L'accroche pro */}
+      <p className="text-xs sm:text-sm text-gray-200 font-medium">
+        Planifiez notre rencontre selon vos disponibilités.
+      </p>
+      
+      <div className="text-xs text-gray-400 mt-1 space-y-1">
+        {/* Phrase 2 : Ton instruction de navigation (obligatoire) */}
+        <p>Choisissez d'abord votre date, puis indiquez l'heure qui vous arrange.</p>
+        
+        {/* Phrase 3 : Ta confirmation finale */}
+        <p>Je validerai personnellement votre créneau dès réception de votre demande.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
                 {/* Calendrier */}
                 <div>

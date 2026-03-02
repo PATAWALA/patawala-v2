@@ -1,5 +1,5 @@
 {
-  "badge": "Expert en solutions digitales sur mesure",
+  "badge": "Spécialisé en solutions digitales sur mesure",
   "typed": {
     "strings": [
       "votre visibilité en ligne",
@@ -12,17 +12,30 @@
   },
   "title": "Construisons ensemble :",
   "subtitle": "Créez un impact réel avec votre business grâce à des sites et applications pensés pour maximiser vos ventes.",
+  
+  "socialProof": {
+    "stars": "{{count}} entrepreneurs accompagnés",
+    "entrepreneurs": "entrepreneurs accompagnés"
+  },
+  
   "buttons": {
     "project": "Lancer mon projet",
     "portfolio": "Voir mes réalisations"
   },
+  
   "badges": {
     "multisupport": "Multi-support",
     "available": "Disponible"
   },
+  
   "microCTA": {
     "response": "Réponse sous 24h",
     "quote": "Devis gratuit",
     "support": "Accompagnement A à Z"
+  },
+  
+  "altImages": {
+    "avatar": "Client satisfait",
+    "profile": "Abdoulaye Patawala - Développeur web & mobile"
   }
 }

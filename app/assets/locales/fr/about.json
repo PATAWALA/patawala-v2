@@ -1,22 +1,22 @@
 {
-  "badge": "Expert à votre écoute",
-  "title": "Propulsez votre vision digitale",
-  "subtitle": "avec un partenaire stratégique",
-  "description": "Je ne crée pas de simples interfaces, mais des écosystèmes performants conçus pour surpasser vos objectifs business et captiver vos utilisateurs.",
+  "badge": "À votre écoute",
+  "title": "Transformez vos ambitions",
+  "subtitle": "en actifs numériques performants",
+  "description": "Chaque projet est conçu pour s'aligner sur vos objectifs commerciaux et offrir une expérience utilisateur sans compromis.",
   "whoami": "Expertise & Engagement",
   "vision": {
-"cards": [
+    "cards": [
       {
         "title": "Conseil & Stratégie Technologique",
-        "description": "Je vous oriente vers les technologies les plus pertinentes pour votre business, en évitant les surcoûts inutiles et les impasses techniques dès le premier jour."
+        "description": "Je sélectionne les technologies les plus rentables pour votre business, en éliminant les surcoûts et les risques techniques dès la conception."
       },
       {
         "title": "Partenariat Stratégique & Vision Long Terme",
-        "description": "En m'immergeant dans votre univers, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+        "description": "Plus qu'un développeur, je deviens votre conseiller de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
       },
       {
         "title": "Innovation & Performance Commerciale",
-        "description": "J'intègre l'intelligence artificielle et les outils web les plus modernes pour concevoir des solutions qui maximisent vos ventes et offrent une expérience fluide à vos utilisateurs."
+        "description": "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
       },
       {
         "title": "Engagement & Co-conception",
@@ -27,21 +27,21 @@
   "profile": {
     "greeting": "Hello, je suis",
     "name": "Abdoulaye Patawala",
-    "role": "Architecte Solutions Web & Mobile",
+    "role": "Spécialisé en Développement Web & Mobile",
     "mission": "Ma mission :",
-    "missionText": "Piloter votre stratégie digitale pour vous libérer des contraintes techniques et vous permettre de vous concentrer sur votre croissance.",
-    "description": "Du MVP stratégique à l'application complexe, je transforme vos concepts en solutions performantes, scalables et pensées pour durer dans le temps.",
+    "missionText": "Devenir le socle technique de votre entreprise pour vous permettre de vous concentrer sur votre cœur de métier.",
+    "description": "Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.",
     "message": {
       "question": "Besoin d'un diagnostic pour votre projet ?",
       "text": "Je vous apporte une expertise conseil pour définir la solution technologique la plus rentable et adaptée à vos besoins."
     },
     "badges": {
-      "webMobile": "Web & Mobile Expert",
-      "available": "Disponible pour nouveaux défis"
+      "webMobile": "Web & Mobile",
+      "available": "Disponible"
     }
   },
   "buttons": {
-    "talk": "Lancer mon projet",
-    "services": "Explorer mes solutions"
+    "talk": "Me contacter",
+    "services": "Voir mes offres"
   }
 }

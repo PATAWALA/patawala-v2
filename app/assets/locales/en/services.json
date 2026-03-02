@@ -1,0 +1,65 @@
+{
+  "badge": "Tailored solutions",
+  "title": "Digital solutions",
+  "titleHighlight": "adapted to your needs",
+  "subtitle": "Websites, applications, design or consulting — I accompany you from idea to realization.",
+
+  "filters": {
+    "all": "All services",
+    "web": "Websites",
+    "mobile": "Applications",
+    "design": "Design & UX",
+    "consulting": "Consulting & Strategy",
+    "ecommerce": "E-commerce",
+    "maintenance": "Maintenance",
+    "description": {
+      "all": "Discover all my services for your digital presence",
+      "web": "From showcase sites to complex web applications, performant and scalable",
+      "mobile": "Native and hybrid applications for iOS and Android",
+      "design": "Intuitive interfaces and memorable user experiences",
+      "consulting": "Technical and strategic advice for your digital projects",
+      "ecommerce": "Online stores optimized for conversion",
+      "maintenance": "Monitoring, updates and continuous technical support"
+    }
+  },
+
+  "card": {
+    "popular": "Popular",
+    "from": "From",
+    "hourly": "/h",
+    "features": {
+      "more": "+{{count}} more features"
+    },
+    "cta": "Learn more"
+  },
+
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "To clarify how I work",
+    "items": [
+      {
+        "question": "What is the average duration of a project?",
+        "answer": "It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application."
+      },
+      {
+        "question": "Do you offer post-delivery support?",
+        "answer": "Yes, one month of support is included after launch. Maintenance packages are also available."
+      },
+      {
+        "question": "Can I modify the project along the way?",
+        "answer": "Absolutely! We work in stages with regular validations to adjust as closely as possible to your needs."
+      },
+      {
+        "question": "Are the displayed prices final?",
+        "answer": "They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs."
+      }
+    ]
+  },
+
+  "cta": {
+    "title": "Can't find what you're looking for?",
+    "button": "Discuss my project"
+  },
+
+  "disclaimer": "* Prices are indicative. Each project receives a personalized quote."
+}

@@ -1,0 +1,168 @@
+{
+  "services": {
+    "web-vitrine": {
+      "title": "Site Vitrine",
+      "shortDesc": "Un site professionnel pour présenter votre activité",
+      "description": "Site vitrine moderne et responsive pour présenter votre entreprise, vos services et vos réalisations.",
+      "ctaText": "Créer mon site",
+      "pricing": {
+        "startingAt": "150 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Design sur mesure",
+        "Optimisé mobile",
+        "Pages illimitées",
+        "Formulaire de contact",
+        "Galerie photos",
+        "Blog optionnel"
+      ]
+    },
+    "web-ecommerce": {
+      "title": "E-commerce",
+      "shortDesc": "Boutique en ligne clé en main",
+      "description": "Solution e-commerce complète pour vendre vos produits en ligne avec gestion des stocks et paiements sécurisés.",
+      "ctaText": "Lancer ma boutique",
+      "pricing": {
+        "startingAt": "350 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Catalogue produits",
+        "Panier d'achat",
+        "Paiements sécurisés",
+        "Gestion des stocks",
+        "Commandes et factures",
+        "Dashboard admin"
+      ]
+    },
+    "web-app": {
+      "title": "Application Web",
+      "shortDesc": "SaaS et applications métier",
+      "description": "Applications web complexes sur mesure : CRM, ERP, plateformes SaaS, places de marché.",
+      "ctaText": "Développer mon app",
+      "pricing": {
+        "startingAt": "500 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Architecture scalable",
+        "Base de données",
+        "API RESTful",
+        "Authentification",
+        "Tableau de bord",
+        "Export de données"
+      ]
+    },
+    "mobile-app": {
+      "title": "Application Mobile",
+      "shortDesc": "iOS, Android et cross-platform",
+      "description": "Applications mobiles natives ou hybrides (React Native, Flutter) pour tous vos besoins.",
+      "ctaText": "Créer mon app mobile",
+      "pricing": {
+        "startingAt": "600 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "iOS et Android",
+        "Interface native",
+        "Push notifications",
+        "Hors ligne possible",
+        "App store ready",
+        "Analytics intégrés"
+      ]
+    },
+    "design-ux": {
+      "title": "Design UX/UI",
+      "shortDesc": "Interfaces intuitives et modernes",
+      "description": "Création de wireframes, maquettes interactives et prototypes pour valider votre concept.",
+      "ctaText": "Designer mon projet",
+      "pricing": {
+        "startingAt": "75 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Wireframes",
+        "Maquettes haute-fidélité",
+        "Prototype interactif",
+        "Design system",
+        "Tests utilisateurs",
+        "Spécifications dev"
+      ]
+    },
+    "design-graphique": {
+      "title": "Identité Visuelle",
+      "shortDesc": "Logo, charte graphique, supports",
+      "description": "Création de votre identité visuelle complète : logo, couleurs, typographies, carte de visite.",
+      "ctaText": "Créer mon identité",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Logo et déclinaisons",
+        "Charte graphique",
+        "Cartes de visite",
+        "Papeterie",
+        "Moodboard",
+        "Fichiers sources"
+      ]
+    },
+    "consulting-audit": {
+      "title": "Audit Technique",
+      "shortDesc": "Analyse complète de votre projet",
+      "description": "Audit de votre projet existant : performance, sécurité, SEO, architecture technique.",
+      "ctaText": "Auditer mon projet",
+      "pricing": {
+        "startingAt": "100 000",
+        "currency": "FCFA"
+      },
+      "features": [
+        "Analyse performance",
+        "Audit sécurité",
+        "Recommandations SEO",
+        "Revue de code",
+        "Rapport détaillé",
+        "Plan d'action"
+      ]
+    },
+    "consulting-strategie": {
+      "title": "Conseil Stratégique",
+      "shortDesc": "Définir la bonne approche",
+      "description": "Accompagnement pour définir votre stratégie digitale et choisir les bonnes technologies.",
+      "ctaText": "Être conseillé",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA",
+        "type": "horaire"
+      },
+      "features": [
+        "Analyse des besoins",
+        "Choix technologiques",
+        "Feuille de route",
+        "Estimation budget",
+        "Accompagnement projet",
+        "Recommandations"
+      ]
+    },
+    "maintenance-support": {
+      "title": "Maintenance",
+      "shortDesc": "Suivi et évolutions",
+      "description": "Forfaits de maintenance pour garder votre site à jour, sécurisé et performant.",
+      "ctaText": "Maintenir mon site",
+      "pricing": {
+        "startingAt": "50 000",
+        "currency": "FCFA",
+        "type": "mensuel"
+      },
+      "features": [
+        "Mises à jour sécurité",
+        "Sauvegardes",
+        "Monitoring 24/7",
+        "Support prioritaire",
+        "Petites évolutions",
+        "Rapports mensuels"
+      ]
+    }
+  }
+}

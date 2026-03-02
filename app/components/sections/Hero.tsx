@@ -8,7 +8,10 @@ import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile.png';
 import profile2Image from '../../assets/images/profile2.jpeg';
 import profile5Image from '../../assets/images/profile5.png';
+import profile6Image from '../../assets/images/profile6.jpg';
 import profile4Image from '../../assets/images/profile4.png';
+import profile7Image from '../../assets/images/profile7.jpg';
+import profile8Image from '../../assets/images/profile8.jpg';
 import BookingModal from '../ui/BookingModal';
 
 const HeroSection = memo(function HeroSection() {
@@ -75,7 +78,10 @@ const HeroSection = memo(function HeroSection() {
   const avatarImages = [
     { src: profile2Image, alt: "Client satisfait 1" },
     { src: profile5Image, alt: "Client satisfait 2" },
-    { src: profile4Image, alt: "Client satisfait 3" }
+    { src: profile4Image, alt: "Client satisfait 3" },
+    { src: profile6Image, alt: "Client satisfait 4" },
+    { src: profile7Image, alt: "Client satisfait 5" },
+    { src: profile8Image, alt: "Client satisfait 6" },
   ];
 
   return (
@@ -113,7 +119,7 @@ const HeroSection = memo(function HeroSection() {
           <div className="w-full hidden lg:flex justify-center mb-8 lg:mb-10 xl:mb-12">
             <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
               <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
-              <span className="text-sm font-semibold whitespace-nowrap">Expert en solutions digitales sur mesure</span>
+              <span className="text-sm font-semibold whitespace-nowrap">Spécialisé en solutions digitales sur mesure</span>
             </div>
           </div>
 
@@ -139,14 +145,14 @@ const HeroSection = memo(function HeroSection() {
                 </p>
               </div>
 
-              {/* CERCLE D'AVATARS avec étoiles et compteur */}
-              <div className="flex flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-6 sm:mb-7 px-2 sm:px-3 lg:px-0">
-                {/* Avatars superposés */}
-                <div className="flex items-center -space-x-3 sm:-space-x-4">
-                  {avatarImages.map((avatar, index) => (
+              {/* CERCLE D'AVATARS - VERSION COMPACTE */}
+              <div className="flex flex-row items-center justify-center lg:justify-start gap-3 mb-6 sm:mb-7 px-2 sm:px-3 lg:px-0">
+                {/* Avatars superposés - plus petits et chevauchement plus fort */}
+                <div className="flex items-center -space-x-4 sm:-space-x-5">
+                  {avatarImages.slice(0, 5).map((avatar, index) => (
                     <div 
                       key={index}
-                      className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
+                      className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
                       style={{ zIndex: 10 - index }}
                     >
                       <Image
@@ -154,26 +160,30 @@ const HeroSection = memo(function HeroSection() {
                         alt={avatar.alt}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 32px, 40px"
+                        sizes="(max-width: 640px) 28px, 32px"
                       />
                     </div>
                   ))}
+                  {/* +1 badge pour montrer qu'il y a plus d'avatars */}
+                  <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-[#1F2937] bg-blue-500/20 flex items-center justify-center text-[10px] sm:text-xs font-bold text-blue-400 shadow-lg">
+                    +{avatarImages.length - 5}
+                  </div>
                 </div>
 
-                {/* Étoiles et texte */}
+                {/* Étoiles et texte - plus compact */}
                 <div className="flex flex-col items-start">
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        size={14} 
-                        className="sm:w-4 sm:h-4 fill-orange-400 text-orange-400" 
+                        size={16} 
+                        className="sm:w-3 sm:h-3 fill-orange-400 text-orange-400" 
                       />
                     ))}
                   </div>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <span className="text-sm sm:text-base font-bold text-white">30+</span>
-                    <span className="text-xs sm:text-sm text-gray-400">entrepreneurs accompagnés</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs sm:text-sm font-bold text-white">30+</span>
+                    <span className="text-[9px] sm:text-xs text-gray-400 whitespace-nowrap">entrepreneurs accompagnés</span>
                   </div>
                 </div>
               </div>
