@@ -1,0 +1,54 @@
+{
+  "badge": "Tous mes contacts",
+  "title": "Restons en contact",
+  "titleHighlight": "Je suis à votre écoute",
+  "subtitle": "Choisissez le moyen qui vous convient le mieux pour échanger. WhatsApp, appel, email ou réseaux sociaux, je suis disponible.",
+
+  "contactCards": {
+    "direct": {
+      "title": "Contact direct",
+      "whatsapp": "WhatsApp",
+      "calls": "Appels / SMS",
+      "emergency": "Urgence / Projet urgent"
+    },
+    "info": {
+      "title": "Infos & Email",
+      "email": "Email",
+      "website": "Site web",
+      "location": "Localisation"
+    }
+  },
+
+  "social": {
+    "title": "Suivez-moi sur les réseaux"
+  },
+
+  "guarantees": {
+    "firstExchange": "Premier échange gratuit",
+    "free30min": "30 minutes offertes",
+    "noCommitment": "Sans engagement"
+  },
+
+  "buttons": {
+    "whatsapp": "WhatsApp direct",
+    "schedule": "Planifier un appel",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "send": "Envoyer",
+    "visit": "Visiter"
+  },
+
+  "availability": {
+    "thisWeek": "Cette semaine :",
+    "slots": "créneaux disponibles"
+  },
+
+  "contactInfo": {
+    "whatsapp": "+229 62 27 80 90",
+    "calls": "+229 62 27 80 90",
+    "emergency": "+229 62 27 80 90",
+    "email": "contact@votredomaine.com",
+    "website": "www.votredomaine.com",
+    "location": "Cotonou, Bénin"
+  }
+}

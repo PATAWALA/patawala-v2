@@ -9,6 +9,14 @@
   "buttons": {
     "readMore": "Lire la suite",
     "close": "Fermer",
-    "back": "Retour"
+    "back": "Retour",
+    "copy": "Copier",
+    "copied": "Copié !",
+    "send": "Envoyer"
+  },
+  "availability": {
+    "available": "Disponible",
+    "busy": "Occupé",
+    "slots": "créneaux"
   }
 }

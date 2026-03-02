@@ -288,7 +288,7 @@ const CTASection = memo(function CTASection() {
               Suivez-moi sur les réseaux
             </h3>
             
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}

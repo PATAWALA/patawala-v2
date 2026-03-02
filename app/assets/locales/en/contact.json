@@ -1,0 +1,54 @@
+{
+  "badge": "All my contacts",
+  "title": "Let's stay in touch",
+  "titleHighlight": "I'm here to listen",
+  "subtitle": "Choose the way that suits you best to connect. WhatsApp, call, email or social networks, I'm available.",
+
+  "contactCards": {
+    "direct": {
+      "title": "Direct contact",
+      "whatsapp": "WhatsApp",
+      "calls": "Calls / SMS",
+      "emergency": "Emergency / Urgent project"
+    },
+    "info": {
+      "title": "Info & Email",
+      "email": "Email",
+      "website": "Website",
+      "location": "Location"
+    }
+  },
+
+  "social": {
+    "title": "Follow me on social media"
+  },
+
+  "guarantees": {
+    "firstExchange": "First exchange free",
+    "free30min": "30 minutes free",
+    "noCommitment": "No commitment"
+  },
+
+  "buttons": {
+    "whatsapp": "WhatsApp direct",
+    "schedule": "Schedule a call",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "send": "Send",
+    "visit": "Visit"
+  },
+
+  "availability": {
+    "thisWeek": "This week:",
+    "slots": "slots available"
+  },
+
+  "contactInfo": {
+    "whatsapp": "+229 62 27 80 90",
+    "calls": "+229 62 27 80 90",
+    "emergency": "+229 62 27 80 90",
+    "email": "contact@yourdomain.com",
+    "website": "www.yourdomain.com",
+    "location": "Cotonou, Benin"
+  }
+}
