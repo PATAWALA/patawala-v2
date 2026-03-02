@@ -48,5 +48,36 @@
     "submit": "Submit",
     "success": "Success!",
     "error": "Error"
+  },
+    "project": {
+    "category": "Category",
+    "client": "Client",
+    "duration": "Duration",
+    "technologies": "Technologies",
+    "viewDetails": "View details",
+    "close": "Close",
+    "features": "Features"
+  },
+  "navigation-projet": {
+    "back": "Back",
+    "home": "Home"
+  },
+    "navbar": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "projects": "Projects",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menu": "Menu",
+    "close": "Close",
+    "back": "Back"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "change": "Change language",
+    "current": "Current language"
   }
+  
 }

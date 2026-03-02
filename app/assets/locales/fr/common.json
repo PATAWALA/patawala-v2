@@ -48,5 +48,35 @@
     "submit": "Envoyer",
     "success": "Succès !",
     "error": "Erreur"
+  },
+    "project": {
+    "category": "Catégorie",
+    "client": "Client",
+    "duration": "Durée",
+    "technologies": "Technologies",
+    "viewDetails": "Voir les détails",
+    "close": "Fermer",
+    "features": "Fonctionnalités"
+  },
+  "navigaprojettion-": {
+    "back": "Retour",
+    "home": "Accueil"
+  },
+    "navbar": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À propos",
+    "projects": "Réalisations",
+    "blog": "Blog",
+    "contact": "Contact",
+    "menu": "Menu",
+    "close": "Fermer",
+    "back": "Retour"
+  },
+  "language": {
+    "french": "Français",
+    "english": "English",
+    "change": "Changer de langue",
+    "current": "Langue actuelle"
   }
 }

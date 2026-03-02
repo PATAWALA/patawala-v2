@@ -1,0 +1,26 @@
+{
+  "badge": "Réalisations",
+  "title": "Projets",
+  "titleHighlight": "accompagnés",
+  "subtitle": "Une sélection de sites web et applications conçus pour répondre à des besoins variés, du MVP au projet d'envergure.",
+
+  "card": {
+    "client": "Client",
+    "learnMore": "En savoir plus",
+    "tags": {
+      "more": "+{{count}}"
+    }
+  },
+
+  "buttons": {
+    "backToHome": "Retour à l'accueil",
+    "discuss": "Parler de mon projet",
+    "backToTop": "Retour en haut"
+  },
+
+  "footer": {
+    "note": "* Chaque projet est unique et a fait l'objet d'une collaboration étroite avec le client"
+  },
+
+  "altImage": "Image du projet {{title}}"
+}

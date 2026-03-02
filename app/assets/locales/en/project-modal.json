@@ -1,0 +1,17 @@
+{
+  "close": "Close",
+  "category": "Category",
+  
+  "sections": {
+    "objective": "Objective",
+    "challenge": "Challenge overcome",
+    "solution": "Solution provided",
+    "features": "Key features"
+  },
+
+  "buttons": {
+    "discuss": "Discuss a similar project"
+  },
+
+  "altImage": "Project image {{title}}"
+}

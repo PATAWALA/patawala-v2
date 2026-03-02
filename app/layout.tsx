@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { ServiceProvider } from './services/context/ServiceContext';
+// import { LanguageProvider } from './context/LanguageContext'; // À décommenter quand le contexte sera prêt
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
 import { PopupProvider } from './components/layout/PopupContext';
@@ -54,29 +55,31 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-[#0A0F1C] text-gray-200`}>
-        <ServiceProvider>
-          <PopupProvider> 
-            <Toaster 
-              position="top-right"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: '#1e40af',
-                  color: '#fff',
-                },
-              }}
-            />
-            <LoadingScreen />
-            <Navigation />
-            <main className="min-h-screen">
-              {children}
-            </main>
-            <Footer />
-            <Chatbot />
-            <ExitIntentPopup />
-            <Analytics />
-          </PopupProvider>
-        </ServiceProvider>
+        {/* <LanguageProvider> */} {/* À décommenter quand le contexte sera prêt */}
+          <ServiceProvider>
+            <PopupProvider> 
+              <Toaster 
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#1e40af',
+                    color: '#fff',
+                  },
+                }}
+              />
+              <LoadingScreen />
+              <Navigation />
+              <main className="min-h-screen">
+                {children}
+              </main>
+              <Footer />
+              <Chatbot />
+              <ExitIntentPopup />
+              <Analytics />
+            </PopupProvider>
+          </ServiceProvider>
+        {/* </LanguageProvider> */} {/* À décommenter quand le contexte sera prêt */}
       </body>
     </html>
   );

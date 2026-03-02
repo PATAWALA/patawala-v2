@@ -1,0 +1,39 @@
+{
+  "badge": "Portfolio",
+  "title": "Some projects",
+  "titleHighlight": "I've accompanied",
+  "subtitle": "A selection of websites and applications designed to meet specific needs.",
+
+  "card": {
+    "learnMore": "Learn more",
+    "tags": "Tags",
+    "category": "Category"
+  },
+
+  "buttons": {
+    "viewAll": "View all projects"
+  },
+
+  "stats": {
+    "projects": "Projects delivered",
+    "rating": "Average rating"
+  },
+
+  "modal": {
+    "client": "Client",
+    "duration": "Duration",
+    "objective": "Objective",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "features": "Features",
+    "close": "Close",
+    "viewProject": "View project"
+  },
+
+  "categories": {
+    "ecommerce": "E-commerce",
+    "mobile": "Mobile",
+    "saas": "SaaS",
+    "web": "Web"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "badge": "Portfolio",
+  "title": "Quelques projets",
+  "titleHighlight": "que j'ai accompagnés",
+  "subtitle": "Une sélection de sites et applications conçus pour répondre à des besoins spécifiques.",
+
+  "card": {
+    "learnMore": "En savoir plus",
+    "tags": "Tags",
+    "category": "Catégorie"
+  },
+
+  "buttons": {
+    "viewAll": "Voir tous les projets"
+  },
+
+  "stats": {
+    "projects": "Projets livrés",
+    "rating": "Note moyenne"
+  },
+
+  "modal": {
+    "client": "Client",
+    "duration": "Durée",
+    "objective": "Objectif",
+    "challenge": "Défi",
+    "solution": "Solution",
+    "features": "Fonctionnalités",
+    "close": "Fermer",
+    "viewProject": "Voir le projet"
+  },
+
+  "categories": {
+    "ecommerce": "E-commerce",
+    "mobile": "Mobile",
+    "saas": "SaaS",
+    "web": "Web"
+  }
+}

@@ -5,6 +5,7 @@ import { Menu, X, ChevronDown, Gift, Globe, Smartphone, Palette, TrendingUp, Boo
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import LanguageSwitcher from '../ui/LanguageSwitcher';
 
 const NAV_ITEMS = [
   { label: 'Accueil', href: '/', section: 'hero' },
@@ -62,7 +63,7 @@ export default function Navigation() {
       // Toutes les sections de la page d'accueil
       const allSections = [
         'hero', 
-        'about',      // ← AJOUTÉ (manquait avant)
+        'about',      
         'socialproof', 
         'valueproposition', 
         'techexpertise', 
@@ -329,19 +330,15 @@ export default function Navigation() {
               ))}
             </div>
 
-            {/* Bouton Guide Gratuit */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="ml-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-semibold text-sm flex items-center gap-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 whitespace-nowrap"
-            >
-              <Gift size={16} />
-              <span>Guide</span>
-            </motion.button>
+            {/* Language Switcher - À LA PLACE DU BOUTON GUIDE */}
+            <LanguageSwitcher />
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 lg:hidden">
+            {/* Language Switcher mobile */}
+            <LanguageSwitcher />
+            
             <button
               className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors"
               onClick={() => setIsOpen(!isOpen)}
@@ -427,7 +424,7 @@ export default function Navigation() {
                   </div>
                 ))}
                 
-                {/* Bouton Guide Gratuit mobile */}
+                {/* Bouton Guide mobile (optionnel) - si vous voulez le garder */}
                 <button
                   onClick={() => setIsOpen(false)}
                   className="w-full mt-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-200"

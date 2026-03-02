@@ -6,7 +6,7 @@ import {
   X, Calendar, Clock, User, Mail, Phone, 
   CheckCircle, MessageSquare, ChevronLeft, 
   ChevronRight, Sparkles, MessageCircle,
-  ChevronDown, Info, ThumbsUp
+  ChevronDown, Info, ThumbsUp, AlertCircle
 } from 'lucide-react';
 
 interface BookingModalProps {
@@ -81,6 +81,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     phone: false,
   });
   const [dateSelectedMessage, setDateSelectedMessage] = useState(false);
+  const [timeError, setTimeError] = useState<string | null>(null);
   
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -137,6 +138,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setSelectedTime('');
     setShowTimeField(false);
     setDateSelectedMessage(false);
+    setTimeError(null);
   };
 
   const handleNextMonth = () => {
@@ -145,33 +147,117 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setSelectedTime('');
     setShowTimeField(false);
     setDateSelectedMessage(false);
+    setTimeError(null);
   };
 
   const handleDateSelect = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
+    // Formater la date en gardant le fuseau horaire local
+    // On crée une nouvelle date à minuit en heure locale
+    const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    // Format YYYY-MM-DD pour le stockage
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0');
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    
     setSelectedDate(dateStr);
     setSelectedTime('');
     setShowTimeField(true);
     setDateSelectedMessage(true);
+    setTimeError(null);
   };
 
   // Fonction pour cacher le message quand on interagit avec le champ heure
   const handleTimeInputFocus = () => {
     setDateSelectedMessage(false);
+    setTimeError(null);
+  };
+
+  // Fonction pour parser l'heure saisie
+  const parseTime = (input: string): { hours: number; minutes: number } | null => {
+    // Patterns courants
+    const patterns = [
+      /(\d{1,2})\s*h(?:\s*(\d{1,2})\s*(?:min|mn|minutes?)?)?/i,
+      /(\d{1,2}):(\d{2})/,
+      /(\d{1,2})\s*heures?\s*(\d{1,2})?/i,
+    ];
+
+    for (const pattern of patterns) {
+      const match = input.match(pattern);
+      if (match) {
+        const hours = parseInt(match[1]);
+        const minutes = match[2] ? parseInt(match[2]) : 0;
+        
+        if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+          return { hours, minutes };
+        }
+      }
+    }
+    return null;
+  };
+
+  // Fonction pour vérifier si l'heure est déjà passée (CORRIGÉE)
+  const isTimePast = (dateStr: string, timeStr: string): boolean => {
+    const parsedTime = parseTime(timeStr);
+    if (!parsedTime) return false;
+
+    // Extraire l'année, mois et jour de la date string
+    const [year, month, day] = dateStr.split('-').map(Number);
+    
+    // Créer la date avec l'heure en heure locale
+    // Note: mois - 1 car les mois vont de 0 à 11 en JS
+    const selectedDateTime = new Date(year, month - 1, day, parsedTime.hours, parsedTime.minutes, 0);
+    
+    const now = new Date();
+    
+    return selectedDateTime < now;
   };
 
   const handleTimeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTimeInput(e.target.value);
-    setDateSelectedMessage(false); // Cache le message dès qu'on tape
+    const input = e.target.value;
+    setTimeInput(input);
+    setDateSelectedMessage(false);
+    
+    // Vérifier si l'heure est valide et pas dans le passé
+    if (input.trim() && selectedDate) {
+      const parsedTime = parseTime(input);
+      if (parsedTime) {
+        if (isTimePast(selectedDate, input)) {
+          setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+        } else {
+          setTimeError(null);
+        }
+      } else {
+        setTimeError("Format d'heure non reconnu. Utilisez par exemple: 14h30, 17h, 09:45");
+      }
+    } else {
+      setTimeError(null);
+    }
   };
 
   const handleExampleTimeClick = (example: string) => {
     setTimeInput(example);
-    setDateSelectedMessage(false); // Cache le message quand on choisit un exemple
+    setDateSelectedMessage(false);
+    
+    // Vérifier si l'heure exemple est dans le passé
+    if (selectedDate) {
+      if (isTimePast(selectedDate, example)) {
+        setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+      } else {
+        setTimeError(null);
+      }
+    }
   };
 
   const handleTimeSubmit = () => {
     if (timeInput.trim()) {
+      // Vérifier une dernière fois si l'heure est dans le passé
+      if (selectedDate && isTimePast(selectedDate, timeInput)) {
+        setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+        return;
+      }
+      
       setSelectedTime(timeInput);
       setStep(2);
     }
@@ -205,7 +291,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       return;
     }
     
-    const selectedDay = new Date(selectedDate);
+    // Formater la date pour l'affichage - UTILISER L'HEURE LOCALE
+    const [year, month, day] = selectedDate.split('-').map(Number);
+    // Créer une date en heure locale (mois-1 car les mois vont de 0 à 11)
+    const selectedDay = new Date(year, month - 1, day);
+    
     const formattedDate = selectedDay.toLocaleDateString('fr-FR', { 
       weekday: 'long', 
       day: 'numeric', 
@@ -259,16 +349,26 @@ Message: ${formData.message || 'Pas de message'}`;
       setFormErrors({ name: false, email: false, phone: false });
       setIsSubmitted(false);
       setDateSelectedMessage(false);
+      setTimeError(null);
     }, 2000);
   };
 
   const isDateSelectable = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return date >= today;
+    
+    // Créer une copie de la date à comparer avec les heures mises à 0
+    const compareDate = new Date(date);
+    compareDate.setHours(0, 0, 0, 0);
+    
+    return compareDate >= today;
   };
 
-  const formatShortDate = (date: Date) => {
+  // Fonction pour formater la date pour l'affichage dans le récapitulatif
+  const formatDisplayDate = (dateStr: string) => {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    // Créer la date en heure locale (mois-1 car les mois vont de 0 à 11)
+    const date = new Date(year, month - 1, day);
     return date.toLocaleDateString('fr-FR', { 
       weekday: 'short', 
       day: 'numeric', 
@@ -339,28 +439,23 @@ Message: ${formData.message || 'Pas de message'}`;
             {step === 1 ? (
               <div className="space-y-6">
                 {/* Message d'accueil */}
-{/* Message d'accueil avec tes 3 instructions spécifiques */}
-<div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-  <div className="flex items-start gap-3">
-    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-      <Info size={16} className="text-blue-400" />
-    </div>
-    <div>
-      {/* Phrase 1 : L'accroche pro */}
-      <p className="text-xs sm:text-sm text-gray-200 font-medium">
-        Planifiez notre rencontre selon vos disponibilités.
-      </p>
-      
-      <div className="text-xs text-gray-400 mt-1 space-y-1">
-        {/* Phrase 2 : Ton instruction de navigation (obligatoire) */}
-        <p>Choisissez d'abord votre date, puis indiquez l'heure qui vous arrange.</p>
-        
-        {/* Phrase 3 : Ta confirmation finale */}
-        <p>Je validerai personnellement votre créneau dès réception de votre demande.</p>
-      </div>
-    </div>
-  </div>
-</div>
+                <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Info size={16} className="text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-xs sm:text-sm text-gray-200 font-medium">
+                        Planifiez notre rencontre selon vos disponibilités.
+                      </p>
+                      
+                      <div className="text-xs text-gray-400 mt-1 space-y-1">
+                        <p>Choisissez d'abord votre date, puis indiquez l'heure qui vous arrange.</p>
+                        <p>Je validerai personnellement votre créneau dès réception de votre demande.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 {/* Calendrier */}
                 <div>
@@ -398,10 +493,22 @@ Message: ${formData.message || 'Pas de message'}`;
                   <div className="grid grid-cols-7 gap-1 mb-4">
                     {calendarDays.map((date, index) => {
                       const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
-                      const isSelectable = isDateSelectable(date);
-                      const isToday = date.toDateString() === new Date().toDateString();
-                      const isSelected = selectedDate === date.toISOString().split('T')[0];
-                      const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                      
+                      // Créer une date à minuit en heure locale pour la comparaison
+                      const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      
+                      const isSelectable = localDate >= today;
+                      const isToday = localDate.toDateString() === today.toDateString();
+                      
+                      // Formater la date pour le stockage
+                      const year = date.getFullYear();
+                      const month = String(date.getMonth() + 1).padStart(2, '0');
+                      const day = String(date.getDate()).padStart(2, '0');
+                      const dateStr = `${year}-${month}-${day}`;
+                      const isSelected = selectedDate === dateStr;
+                      const isPast = localDate < today;
 
                       return (
                         <button
@@ -428,9 +535,9 @@ Message: ${formData.message || 'Pas de message'}`;
                   </div>
                 </div>
 
-                {/* Message de confirmation de date - RESTE TANT QU'ON N'INTERAGIT PAS AVEC L'HEURE */}
+                {/* Message de confirmation de date */}
                 <AnimatePresence>
-                  {dateSelectedMessage && (
+                  {dateSelectedMessage && !timeError && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -472,28 +579,51 @@ Message: ${formData.message || 'Pas de message'}`;
                           value={timeInput}
                           onChange={handleTimeInputChange}
                           onFocus={handleTimeInputFocus}
-                          onKeyPress={(e) => e.key === 'Enter' && handleTimeSubmit()}
+                          onKeyPress={(e) => e.key === 'Enter' && !timeError && handleTimeSubmit()}
                           placeholder="Ex: 14h30, 17h, 20 heures, 09:45..."
-                          className="w-full px-4 py-4 sm:py-3 bg-[#0A0F1C] border border-[#1F2937] rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500"
+                          className={`w-full px-4 py-4 sm:py-3 bg-[#0A0F1C] border rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 ${
+                            timeError ? 'border-red-500' : 'border-[#1F2937]'
+                          }`}
                           autoFocus
                         />
                         
+                        {/* Message d'erreur si l'heure est invalide ou passée */}
+                        {timeError && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="flex items-start gap-2 text-red-400 text-xs bg-red-500/10 p-3 rounded-lg border border-red-500/20"
+                          >
+                            <AlertCircle size={14} className="flex-shrink-0 mt-0.5" />
+                            <span>{timeError}</span>
+                          </motion.div>
+                        )}
+                        
                         {/* Exemples visuels */}
                         <div className="flex flex-wrap gap-2">
-                          {['14h', '15h30', '17h45', '20h', '21h15'].map((example) => (
-                            <button
-                              key={example}
-                              onClick={() => handleExampleTimeClick(example)}
-                              className="px-3 py-1.5 bg-[#1E2638] rounded-lg text-xs text-gray-300 hover:bg-[#2A3442] transition-colors"
-                            >
-                              {example}
-                            </button>
-                          ))}
+                          {['8h', '10h', '14h', '16h30', '18h', '20h', '21h15'].map((example) => {
+                            const isPastExample = selectedDate ? isTimePast(selectedDate, example) : false;
+                            return (
+                              <button
+                                key={example}
+                                onClick={() => handleExampleTimeClick(example)}
+                                disabled={isPastExample}
+                                className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                                  isPastExample 
+                                    ? 'bg-[#1E2638] text-gray-600 cursor-not-allowed line-through opacity-50' 
+                                    : 'bg-[#1E2638] text-gray-300 hover:bg-[#2A3442]'
+                                }`}
+                                title={isPastExample ? "Cette heure est déjà passée" : ""}
+                              >
+                                {example}
+                              </button>
+                            );
+                          })}
                         </div>
 
                         <button
                           onClick={handleTimeSubmit}
-                          disabled={!timeInput.trim()}
+                          disabled={!timeInput.trim() || !!timeError}
                           className="w-full bg-blue-500 text-white px-4 py-4 sm:py-3 rounded-xl text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           <CheckCircle size={18} />
@@ -516,7 +646,7 @@ Message: ${formData.message || 'Pas de message'}`;
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Récapitulatif du rendez-vous - Visible directement en haut */}
+                {/* Récapitulatif du rendez-vous */}
                 {selectedDate && selectedTime && (
                   <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                     <p className="text-xs text-gray-400 mb-2">Récapitulatif de votre rendez-vous :</p>
@@ -524,7 +654,7 @@ Message: ${formData.message || 'Pas de message'}`;
                       <div className="flex items-center gap-2 bg-[#141B2B] px-3 py-2 rounded-lg border border-[#1F2937]">
                         <Calendar size={16} className="text-blue-400 flex-shrink-0" />
                         <span className="text-sm text-gray-300">
-                          {formatShortDate(new Date(selectedDate))}
+                          {formatDisplayDate(selectedDate)}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 bg-[#141B2B] px-3 py-2 rounded-lg border border-[#1F2937]">
