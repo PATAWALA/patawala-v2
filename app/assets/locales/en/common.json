@@ -18,5 +18,11 @@
     "available": "Available",
     "busy": "Busy",
     "slots": "slots"
+  },
+  "blog": {
+    "readMore": "Read more",
+    "backToBlog": "Back to blog",
+    "relatedArticles": "Related articles",
+    "shareArticle": "Share this article"
   }
 }

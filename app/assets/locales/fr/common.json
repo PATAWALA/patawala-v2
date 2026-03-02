@@ -18,5 +18,11 @@
     "available": "Disponible",
     "busy": "Occupé",
     "slots": "créneaux"
+  },
+    "blog": {
+    "readMore": "Lire la suite",
+    "backToBlog": "Retour au blog",
+    "relatedArticles": "Articles similaires",
+    "shareArticle": "Partager cet article"
   }
 }

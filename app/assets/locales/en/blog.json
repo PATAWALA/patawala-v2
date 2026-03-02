@@ -1,0 +1,68 @@
+{
+  "badge": "My blog",
+  "title": "Articles and",
+  "titleHighlight": "resources",
+  "subtitle": "Tips, tutorials and feedback on web development, design and digital entrepreneurship.",
+
+  "search": {
+    "placeholder": "Search for an article, topic...",
+    "clear": "Clear"
+  },
+
+  "filters": {
+    "title": "Filter by category",
+    "all": "All",
+    "categories": {
+      "development": "Development",
+      "ecommerce": "E-commerce",
+      "mobile": "Mobile",
+      "design": "Design",
+      "seo": "SEO",
+      "security": "Security",
+      "startup": "Startup",
+      "productivity": "Productivity"
+    }
+  },
+
+  "featured": {
+    "title": "Featured articles",
+    "readMore": "Read",
+    "tags": {
+      "more": "+{{count}}"
+    }
+  },
+
+  "article": {
+    "publishedAt": "Published on",
+    "readTime": "{{time}} min read",
+    "by": "By",
+    "category": "Category",
+    "tags": "Tags",
+    "share": "Share",
+    "views": "views",
+    "likes": "likes",
+    "comments": "comments",
+    "shareOn": "Share on",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied!"
+  },
+
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+
+  "newsletter": {
+    "title": "Don't miss any article",
+    "subtitle": "Get new articles directly in your inbox",
+    "emailPlaceholder": "Your email",
+    "button": "Subscribe",
+    "footer": "📚 1 email per week. Easy unsubscribe.",
+    "success": "Thank you for subscribing!",
+    "error": "An error occurred. Please try again."
+  },
+
+  "noResults": "No articles found for your search",
+  "tryAdjusting": "Try adjusting your filters or search"
+}

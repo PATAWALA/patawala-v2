@@ -1,0 +1,63 @@
+{
+  "badge": "Mon blog",
+  "title": "Articles et",
+  "titleHighlight": "ressources",
+  "subtitle": "Conseils, tutos et retours d'expérience sur le développement web, le design et l'entrepreneuriat digital.",
+
+  "search": {
+    "placeholder": "Rechercher un article, un sujet...",
+    "clear": "Effacer"
+  },
+
+  "filters": {
+    "title": "Filtrer par catégorie",
+    "all": "Tous",
+    "categories": {
+      "development": "Développement",
+      "ecommerce": "E-commerce",
+      "mobile": "Mobile",
+      "design": "Design",
+      "seo": "SEO",
+      "security": "Sécurité",
+      "startup": "Startup",
+      "productivity": "Productivité"
+    }
+  },
+
+  "featured": {
+    "title": "Articles à la une",
+    "readMore": "Lire",
+    "tags": {
+      "more": "+{{count}}"
+    }
+  },
+
+  "article": {
+    "publishedAt": "Publié le",
+    "readTime": "{{time}} min de lecture",
+    "by": "Par",
+    "category": "Catégorie",
+    "tags": "Tags",
+    "share": "Partager",
+    "views": "vues",
+    "likes": "j'aime",
+    "comments": "commentaires"
+  },
+
+  "pagination": {
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "Page {{current}} sur {{total}}"
+  },
+
+  "newsletter": {
+    "title": "Ne manquez aucun article",
+    "subtitle": "Recevez les nouveaux articles directement dans votre boîte mail",
+    "emailPlaceholder": "Votre email",
+    "button": "S'abonner",
+    "footer": "📚 1 email par semaine. Désabonnement facile."
+  },
+
+  "noResults": "Aucun article trouvé pour votre recherche",
+  "tryAdjusting": "Essayez d'ajuster vos filtres ou votre recherche"
+}
