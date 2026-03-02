@@ -5,7 +5,7 @@ import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, Che
 import Image from 'next/image';
 import clientImage from '../../assets/images/profile2.jpeg';
 import chimeneImage from '../../assets/images/profile4.png';
-import cesarImage from '../../assets/images/profile5.jpg';
+import cesarImage from '../../assets/images/profile5.png';
 
 const SocialProof = memo(function SocialProof() {
   const scrollRef = useRef<HTMLDivElement>(null);
