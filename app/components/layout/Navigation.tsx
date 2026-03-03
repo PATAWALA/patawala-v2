@@ -1,15 +1,28 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Menu, X, ChevronDown, Gift, Globe, Smartphone, Palette, TrendingUp, Sparkles } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { Menu, X, ChevronDown, Globe, Smartphone, Palette, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Configuration des items de navigation avec clés de traduction
-const NAV_ITEMS = [
+// Type pour les items de navigation
+type NavItem = {
+  readonly key: string;
+  readonly href: string;
+  readonly section?: string;
+  readonly submenu?: readonly {
+    readonly key: string;
+    readonly href: string;
+    readonly icon: React.ForwardRefExoticComponent<React.Omit<React.SVGProps<SVGSVGElement>, 'ref'>>;
+    readonly category: string;
+  }[];
+};
+
+// Configuration memoized pour éviter les re-rendus
+const NAV_ITEMS: readonly NavItem[] = [
   { key: 'home', href: '/', section: 'hero' },
   { 
     key: 'services', 
@@ -25,131 +38,144 @@ const NAV_ITEMS = [
   { key: 'projects', href: '/#projets', section: 'projets' },
   { key: 'blog', href: '/blog' },
   { key: 'contact', href: '/#contact', section: 'contact' }
-];
+] as const;
 
 export default function Navigation() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const pathname = usePathname();
   const router = useRouter();
+  
+  // Refs pour la gestion du focus
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstMenuItemRef = useRef<HTMLAnchorElement>(null);
+  const lastMenuItemRef = useRef<HTMLAnchorElement>(null);
+  
   const menuTimeoutRef = useRef<NodeJS.Timeout>();
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<HTMLButtonElement>(null);
 
-  // Détection des sections pour la classe active
-  useEffect(() => {
-    if (pathname === '/') {
-      const allSections = [
-        'hero', 
-        'about',      
-        'socialproof', 
-        'valueproposition', 
-        'techexpertise', 
-        'projets', 
-        'contact'
-      ];
-      
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const sectionId = entry.target.id;
-              setActiveSection(sectionId);
-            }
-          });
-        },
-        { 
-          threshold: 0.3,
-          rootMargin: '-80px 0px -80px 0px'
+  // Gestionnaire de touche clavier pour le menu mobile
+  const handleMenuKeyDown = useCallback((e: KeyboardEvent) => {
+    if (!isOpen) return;
+
+    switch (e.key) {
+      case 'Escape':
+        setIsOpen(false);
+        menuButtonRef.current?.focus();
+        break;
+      case 'Tab':
+        if (e.shiftKey && document.activeElement === firstMenuItemRef.current) {
+          e.preventDefault();
+          lastMenuItemRef.current?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastMenuItemRef.current) {
+          e.preventDefault();
+          firstMenuItemRef.current?.focus();
         }
-      );
-
-      allSections.forEach((section) => {
-        const element = document.getElementById(section);
-        if (element) observerRef.current?.observe(element);
-      });
-
-      return () => {
-        observerRef.current?.disconnect();
-      };
-    } else {
-      setActiveSection('');
+        break;
     }
+  }, [isOpen]);
+
+  // Gestionnaire pour fermer le menu au clic outside
+  const handleClickOutside = useCallback((e: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      setIsOpen(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener('keydown', handleMenuKeyDown);
+      document.addEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = 'hidden';
+      
+      setTimeout(() => {
+        firstMenuItemRef.current?.focus();
+      }, 100);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleMenuKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, handleMenuKeyDown, handleClickOutside]);
+
+  // Détection des sections
+  useEffect(() => {
+    if (pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
+
+    const allSections = [
+      'hero', 'about', 'socialproof', 
+      'valueproposition', 'techexpertise', 'projets', 'contact'
+    ];
+    
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.3, rootMargin: '-80px 0px -80px 0px' }
+    );
+
+    allSections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) observerRef.current?.observe(element);
+    });
+
+    return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  // Handlers
+  const handleArrowMouseEnter = useCallback((itemLabel: string) => {
+    if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
+    setHoveredItem(itemLabel);
   }, []);
 
-  useEffect(() => {
-    return () => {
-      if (menuTimeoutRef.current) {
-        clearTimeout(menuTimeoutRef.current);
-      }
-    };
+  const handleServicesMouseLeave = useCallback(() => {
+    menuTimeoutRef.current = setTimeout(() => setHoveredItem(null), 150);
   }, []);
 
-  const handleArrowMouseEnter = () => {
-    if (menuTimeoutRef.current) {
-      clearTimeout(menuTimeoutRef.current);
-    }
-    setHoveredItem(t('navItems.services', 'navigation'));
-  };
+  const handleSubmenuMouseEnter = useCallback(() => {
+    if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
+  }, []);
 
-  const handleServicesMouseLeave = () => {
-    menuTimeoutRef.current = setTimeout(() => {
-      setHoveredItem(null);
-    }, 150);
-  };
+  const handleServiceClick = useCallback((e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    router.push(href);
+    setIsOpen(false);
+    setHoveredItem(null);
+  }, [router]);
 
-  const handleSubmenuMouseEnter = () => {
-    if (menuTimeoutRef.current) {
-      clearTimeout(menuTimeoutRef.current);
-    }
-  };
-
-  const isLinkActive = (item: typeof NAV_ITEMS[0]) => {
+  const isLinkActive = useCallback((item: NavItem) => {
     if (pathname === '/') {
-      if (item.section) {
-        if (item.key === 'about') {
-          return activeSection === 'about';
-        }
-        return activeSection === item.section;
-      }
+      if (item.section) return activeSection === item.section;
       if (item.key === 'home') {
         return ['hero', 'socialproof', 'valueproposition', 'techexpertise'].includes(activeSection);
       }
     }
-    
-    if (item.href === '/') return pathname === '/';
-    if (item.href === '/services') return pathname === '/services';
-    if (item.href === '/blog') return pathname === '/blog';
-    if (item.href?.startsWith('/#')) return false;
-    
     return pathname === item.href;
-  };
+  }, [pathname, activeSection]);
 
-  const handleNavClick = (e: React.MouseEvent, href: string) => {
+  const handleNavClick = useCallback((e: React.MouseEvent, href: string) => {
     e.preventDefault();
     
     if (href.startsWith('/#')) {
       const targetId = href.replace('/#', '');
-      
       if (pathname === '/') {
-        const element = document.getElementById(targetId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-          window.history.pushState(null, '', href);
-          setActiveSection(targetId);
-        }
+        document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', href);
+        setActiveSection(targetId);
       } else {
         router.push(href);
       }
@@ -159,272 +185,281 @@ export default function Navigation() {
     
     setIsOpen(false);
     setHoveredItem(null);
-  };
+  }, [pathname, router]);
 
-  const handleServiceClick = (e: React.MouseEvent, href: string) => {
-    e.preventDefault();
-    router.push(href);
-    setIsOpen(false);
-    setHoveredItem(null);
-  };
+  const navItems = useMemo(() => NAV_ITEMS, []);
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`fixed w-full z-50 transition-all duration-200 ${
-        scrolled 
-          ? 'bg-[#0A0F1C]/95 backdrop-blur-md shadow-lg py-2 border-b border-[#1F2937]' 
-          : 'bg-[#0A0F1C]/80 backdrop-blur-sm py-4 border-b border-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 text-xl sm:text-2xl font-bold group"
-          >
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-              <Sparkles size={18} className="text-white sm:w-5 sm:h-5" />
-            </div>
-            <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-              {t('logo', 'navigation')}
-            </span>
-          </Link>
+    <>
+      {/* Skip link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-500 text-white px-4 py-2 rounded-lg z-[100]"
+      >
+        Aller au contenu principal
+      </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {/* Liens de navigation */}
-            <div className="flex items-center space-x-1">
-              {NAV_ITEMS.map((item) => {
-                const itemLabel = t(`navItems.${item.key}`, 'navigation');
-                const isServicesHovered = hoveredItem === itemLabel;
-                
-                return (
-                  <div 
-                    key={item.key} 
-                    className="relative"
-                    onMouseLeave={item.submenu ? handleServicesMouseLeave : undefined}
-                  >
-                    {item.submenu ? (
-                      <>
-                        <div className="flex items-center" ref={servicesRef}>
-                          {/* Lien Services */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed w-full z-50 top-0 lg:top-4"
+        ref={menuRef}
+        aria-label="Navigation principale"
+      >
+        {/* Container différent pour mobile et desktop */}
+        <div className="lg:container lg:mx-auto lg:px-6">
+          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-2.5 px-4 lg:px-8 shadow-lg">
+            <div className="flex justify-between items-center">
+              {/* Logo - Sans icône, avec nom en italique */}
+              <Link 
+                href="/" 
+                className="flex items-center font-bold group"
+                aria-label={t('logo', 'navigation')}
+                aria-current={pathname === '/' ? 'page' : undefined}
+              >
+                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
+                  <span className="hidden sm:inline">Abdoulaye Patawla</span>
+                  <span className="sm:hidden">Patawala</span>
+                </span>
+              </Link>
+
+              {/* Desktop Navigation */}
+              <div className="hidden lg:block" role="navigation" aria-label="Menu principal">
+                <ul className="flex items-center gap-2">
+                  {navItems.map((item, index) => {
+                    const itemLabel = t(`navItems.${item.key}`, 'navigation');
+                    const isServicesHovered = hoveredItem === itemLabel;
+                    const isActive = isLinkActive(item);
+                    
+                    return (
+                      <li 
+                        key={item.key} 
+                        className="relative"
+                        onMouseLeave={item.submenu ? handleServicesMouseLeave : undefined}
+                      >
+                        {item.submenu ? (
+                          <>
+                            <div className="flex items-center">
+                              {/* Lien Services */}
+                              <a
+                                href={item.href}
+                                onClick={(e) => handleServiceClick(e, item.href)}
+                                className={`px-5 py-2 rounded-l-full font-medium text-base transition-all duration-150 ${
+                                  pathname === '/services'
+                                    ? 'text-blue-400 bg-blue-500/10'
+                                    : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                                }`}
+                                aria-current={pathname === '/services' ? 'page' : undefined}
+                              >
+                                {itemLabel}
+                              </a>
+                              
+                              {/* Flèche du menu */}
+                              <button
+                                onMouseEnter={() => handleArrowMouseEnter(itemLabel)}
+                                className={`px-2 py-2 rounded-r-full font-medium text-base transition-all duration-150 border-l border-[#1F2937] ${
+                                  isServicesHovered || pathname === '/services'
+                                    ? 'text-blue-400 bg-blue-500/10' 
+                                    : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                                }`}
+                                aria-label={`${t('servicesSubmenu.ariaLabel', 'navigation')} - ${itemLabel}`}
+                              >
+                                <ChevronDown 
+                                  size={16} 
+                                  className={`transition-transform duration-200 ${
+                                    isServicesHovered ? 'rotate-180' : ''
+                                  }`} 
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            </div>
+
+                            <AnimatePresence>
+                              {isServicesHovered && (
+                                <motion.div
+                                  initial={{ opacity: 0, y: -5 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -5 }}
+                                  transition={{ duration: 0.15 }}
+                                  className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50"
+                                  onMouseEnter={handleSubmenuMouseEnter}
+                                  onMouseLeave={handleServicesMouseLeave}
+                                  role="menu"
+                                  aria-label={`Sous-menu ${itemLabel}`}
+                                >
+                                  {item.submenu.map((subItem) => {
+                                    const Icon = subItem.icon;
+                                    const isActive = pathname === '/services' && window.location.hash === `#${subItem.category}`;
+                                    const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
+                                    
+                                    return (
+                                      <Link
+                                        key={subItem.key}
+                                        href={subItem.href}
+                                        onClick={() => {
+                                          setIsOpen(false);
+                                          setHoveredItem(null);
+                                        }}
+                                        className={`flex items-center gap-3 px-4 py-2.5 text-base transition-all duration-150 ${
+                                          isActive
+                                            ? 'bg-blue-500/20 text-blue-400'
+                                            : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                                        }`}
+                                        role="menuitem"
+                                        aria-current={isActive ? 'page' : undefined}
+                                      >
+                                        <Icon size={18} className={isActive ? 'text-blue-400' : 'text-gray-400'} aria-hidden="true" />
+                                        <span className="font-medium">{subItemLabel}</span>
+                                      </Link>
+                                    );
+                                  })}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </>
+                        ) : (
                           <a
                             href={item.href}
-                            onClick={(e) => handleServiceClick(e, item.href!)}
-                            className={`px-3 py-2 rounded-l-lg font-medium transition-all duration-150 ${
-                              pathname === '/services'
+                            onClick={(e) => handleNavClick(e, item.href)}
+                            className={`relative px-5 py-2 rounded-full font-medium text-base transition-all duration-150 ${
+                              isActive
                                 ? 'text-blue-400 bg-blue-500/10'
                                 : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
                             }`}
+                            aria-current={isActive ? 'page' : undefined}
                           >
                             {itemLabel}
+                            {isActive && (
+                              <motion.div 
+                                layoutId="activeIndicator"
+                                className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-400 rounded-full"
+                                aria-hidden="true"
+                              />
+                            )}
                           </a>
-                          
-                          {/* Flèche du menu */}
-                          <button
-                            ref={arrowRef}
-                            onMouseEnter={handleArrowMouseEnter}
-                            className={`px-2 py-2 rounded-r-lg font-medium transition-all duration-150 border-l border-[#1F2937] ${
-                              isServicesHovered || pathname === '/services'
-                                ? 'text-blue-400 bg-blue-500/10' 
-                                : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-                            }`}
-                            aria-label={t('servicesSubmenu.ariaLabel', 'navigation')}
-                          >
-                            <ChevronDown 
-                              size={16} 
-                              className={`transition-transform duration-200 ${
-                                isServicesHovered ? 'rotate-180' : ''
-                              }`} 
-                            />
-                          </button>
-                        </div>
-
-                        <AnimatePresence>
-                          {isServicesHovered && (
-                            <motion.div
-                              initial={{ opacity: 0, y: -5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -5 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute top-full left-0 mt-1 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-2 z-50"
-                              onMouseEnter={handleSubmenuMouseEnter}
-                              onMouseLeave={handleServicesMouseLeave}
-                            >
-                              {item.submenu.map((subItem) => {
-                                const Icon = subItem.icon;
-                                const isActive = pathname === '/services' && window.location.hash === `#${subItem.category}`;
-                                const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
-                                
-                                return (
-                                  <Link
-                                    key={subItem.key}
-                                    href={subItem.href}
-                                    onClick={() => {
-                                      setIsOpen(false);
-                                      setHoveredItem(null);
-                                    }}
-                                    className={`flex items-center gap-3 px-4 py-3 transition-all duration-150 ${
-                                      isActive
-                                        ? 'bg-blue-500/20 text-blue-400'
-                                        : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
-                                    }`}
-                                  >
-                                    <Icon size={18} className={isActive ? 'text-blue-400' : 'text-gray-400'} />
-                                    <span className="font-medium">{subItemLabel}</span>
-                                    {isActive && (
-                                      <motion.div 
-                                        layoutId="activeIndicator"
-                                        className="ml-auto w-1.5 h-1.5 bg-blue-400 rounded-full"
-                                      />
-                                    )}
-                                  </Link>
-                                );
-                              })}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </>
-                    ) : (
-                      <a
-                        href={item.href}
-                        onClick={(e) => handleNavClick(e, item.href!)}
-                        className={`relative px-3 py-2 rounded-lg font-medium transition-all duration-150 ${
-                          isLinkActive(item)
-                            ? 'text-blue-400 bg-blue-500/10'
-                            : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-                        }`}
-                      >
-                        {itemLabel}
-                        {isLinkActive(item) && (
-                          <motion.div 
-                            layoutId="activeIndicator"
-                            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-blue-400 rounded-full"
-                          />
                         )}
-                      </a>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2 lg:hidden">
-            {/* Language Switcher mobile */}
-            <LanguageSwitcher />
-            
-            <button
-              className="p-2 rounded-lg hover:bg-blue-500/10 transition-colors"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label={t('mobileMenu.ariaLabel', 'navigation')}
-            >
-              {isOpen ? 
-                <X size={24} className="text-blue-400" /> : 
-                <Menu size={24} className="text-gray-300" />
-              }
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="lg:hidden mt-4 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] overflow-hidden"
-            >
-              <div className="p-3 space-y-1">
-                {NAV_ITEMS.map((item) => {
-                  const itemLabel = t(`navItems.${item.key}`, 'navigation');
-                  
-                  return (
-                    <div key={item.key}>
-                      {item.submenu ? (
-                        <div className="space-y-1">
-                          {/* Lien Services */}
-                          <a
-                            href={item.href}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              router.push(item.href!);
-                              setIsOpen(false);
-                            }}
-                            className="flex items-center justify-between px-3 py-2.5 rounded-lg font-medium text-blue-400 bg-blue-500/10"
-                          >
-                            {itemLabel}
-                            <ChevronDown size={16} className="rotate-180" />
-                          </a>
-                          
-                          {/* Sous-menu */}
-                          <div className="pl-4 space-y-1 border-l-2 border-blue-500/30 ml-3">
-                            {item.submenu.map((subItem) => {
-                              const Icon = subItem.icon;
-                              const isActive = pathname === '/services' && window.location.hash === `#${subItem.category}`;
-                              const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
-                              
-                              return (
-                                <Link
-                                  key={subItem.key}
-                                  href={subItem.href}
-                                  onClick={() => setIsOpen(false)}
-                                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                                    isActive
-                                      ? 'bg-blue-500/20 text-blue-400'
-                                      : 'text-gray-400 hover:bg-blue-500/10 hover:text-blue-400'
-                                  }`}
-                                >
-                                  <Icon size={16} />
-                                  <span className="font-medium">{subItemLabel}</span>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      ) : (
-                        <a
-                          href={item.href}
-                          onClick={(e) => handleNavClick(e, item.href!)}
-                          className={`flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors ${
-                            isLinkActive(item)
-                              ? 'bg-blue-500/20 text-blue-400'
-                              : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
-                          }`}
-                        >
-                          {itemLabel}
-                          {isLinkActive(item) && (
-                            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                          )}
-                        </a>
-                      )}
-                    </div>
-                  );
-                })}
+              {/* Language Switcher et Menu Mobile */}
+              <div className="flex items-center gap-2">
+                <LanguageSwitcher />
                 
-                {/* Bouton Guide mobile (optionnel) */}
+                {/* Bouton menu mobile */}
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="w-full mt-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-3 rounded-xl font-semibold flex items-center justify-center gap-2 hover:shadow-lg transition-all duration-200"
+                  ref={menuButtonRef}
+                  className="lg:hidden p-1.5 rounded-lg hover:bg-blue-500/10 transition-colors"
+                  onClick={() => setIsOpen(!isOpen)}
+                  aria-label={isOpen ? t('mobileMenu.close', 'navigation') : t('mobileMenu.open', 'navigation')}
+                  aria-expanded={isOpen}
+                  aria-controls={isOpen ? "mobile-menu" : undefined}
                 >
-                  <Gift size={18} />
-                  {t('guideButton.text', 'navigation')}
+                  {isOpen ? 
+                    <X size={20} className="text-blue-400" aria-hidden="true" /> : 
+                    <Menu size={20} className="text-gray-300" aria-hidden="true" />
+                  }
                 </button>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+            </div>
+
+            {/* Mobile Menu - Pleine largeur */}
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="lg:hidden mt-3 -mx-4 bg-[#141B2B] shadow-xl border-t border-[#1F2937]"
+                  role="menu"
+                  id="mobile-menu"
+                  aria-label="Menu mobile"
+                >
+                  <div className="px-4 py-2 space-y-1">
+                    {navItems.map((item, index) => {
+                      const itemLabel = t(`navItems.${item.key}`, 'navigation');
+                      const isActive = isLinkActive(item);
+                      
+                      return (
+                        <div key={item.key}>
+                          {item.submenu ? (
+                            <div className="space-y-1">
+                              {/* Lien Services mobile */}
+                              <a
+                                ref={index === 0 ? firstMenuItemRef : undefined}
+                                href={item.href}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  router.push(item.href);
+                                  setIsOpen(false);
+                                }}
+                                className="flex items-center justify-between px-3 py-3 rounded-lg font-medium text-base text-blue-400 bg-blue-500/10"
+                                role="menuitem"
+                              >
+                                {itemLabel}
+                                <ChevronDown size={16} className="rotate-180" aria-hidden="true" />
+                              </a>
+                              
+                              {/* Sous-menu mobile */}
+                              <div className="pl-3 space-y-1 border-l-2 border-blue-500/30 ml-3" role="group">
+                                {item.submenu.map((subItem) => {
+                                  const Icon = subItem.icon;
+                                  const isActive = pathname === '/services' && window.location.hash === `#${subItem.category}`;
+                                  const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
+                                  
+                                  return (
+                                    <Link
+                                      key={subItem.key}
+                                      href={subItem.href}
+                                      onClick={() => setIsOpen(false)}
+                                      className={`flex items-center gap-2 px-3 py-3 rounded-lg text-base transition-colors ${
+                                        isActive
+                                          ? 'bg-blue-500/20 text-blue-400'
+                                          : 'text-gray-400 hover:bg-blue-500/10 hover:text-blue-400'
+                                      }`}
+                                      role="menuitem"
+                                      aria-current={isActive ? 'page' : undefined}
+                                    >
+                                      <Icon size={16} aria-hidden="true" />
+                                      <span className="font-medium">{subItemLabel}</span>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          ) : (
+                            <a
+                              ref={index === navItems.length - 1 ? lastMenuItemRef : undefined}
+                              href={item.href}
+                              onClick={(e) => handleNavClick(e, item.href)}
+                              className={`flex items-center justify-between px-3 py-3 rounded-lg font-medium text-base transition-colors ${
+                                isActive
+                                  ? 'bg-blue-500/20 text-blue-400'
+                                  : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                              }`}
+                              role="menuitem"
+                              aria-current={isActive ? 'page' : undefined}
+                            >
+                              {itemLabel}
+                            </a>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </motion.nav>
+      
+      {/* Main content anchor */}
+      <div id="main-content" tabIndex={-1} className="outline-none" />
+    </>
   );
 }

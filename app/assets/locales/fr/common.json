@@ -58,7 +58,7 @@
     "close": "Fermer",
     "features": "Fonctionnalités"
   },
-  "navigaprojettion-": {
+  "navigation-projet": {
     "back": "Retour",
     "home": "Accueil"
   },
@@ -78,5 +78,14 @@
     "english": "English",
     "change": "Changer de langue",
     "current": "Langue actuelle"
+  },
+    "brand": "Patawala",
+  "navbartop": {
+    "home": "Accueil",
+    "projects": "Réalisations",
+    "services": "Services",
+    "blog": "Blog",
+    "about": "À propos",
+    "contact": "Contact"
   }
 }

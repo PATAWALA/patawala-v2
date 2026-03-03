@@ -6,6 +6,7 @@ import techChoiceImage from '../../assets/images/tech-choice.jpg.png';
 import fitnessImage from '../../assets/images/fitness.png';
 import learnImage from '../../assets/images/learn.png';
 import santéeImage from "../../assets/images/sante.png";
+import imobilierImage from "../../assets/images/imobilier.png";
 
 export interface Project {
   id: number;
@@ -102,7 +103,7 @@ export const projets: Project[] = [
     id: 4,
     title: 'Site Vitrine Immobilier',
     description: 'Site pour agence immobilière avec visites virtuelles',
-    image: '/images/projects/immobilier.jpg',
+    image: imobilierImage,
     tags: ['WordPress', 'Elementor', 'Maps API'],
     icon: Globe,
     category: 'Web',

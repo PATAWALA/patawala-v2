@@ -78,6 +78,14 @@
     "english": "English",
     "change": "Change language",
     "current": "Current language"
+  },
+  "brand": "Patawala",
+  "navbartop": {
+    "home": "Home",
+    "projects": "Projects",
+    "services": "Services",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact"
   }
-  
 }

@@ -31,6 +31,7 @@ const translations = {
     'project-modal': () => import('@/app/assets/locales/fr/project-modal.json'),
     booking: () => import('@/app/assets/locales/fr/booking.json'),
     realisations: () => import('@/app/assets/locales/fr/realisations.json'),
+    footer: () => import('@/app/assets/locales/fr/footer.json')
   },
   en: {
     common: () => import('@/app/assets/locales/en/common.json'),
@@ -50,6 +51,7 @@ const translations = {
     'project-modal': () => import('@/app/assets/locales/en/project-modal.json'),
     booking: () => import('@/app/assets/locales/en/booking.json'),
     realisations: () => import('@/app/assets/locales/en/realisations.json'),
+     footer: () => import('@/app/assets/locales/en/footer.json'),
   }
 };
 

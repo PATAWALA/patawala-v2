@@ -5,8 +5,9 @@ import { X, Calendar, User, Code, CheckCircle, ArrowRight, Target, Lightbulb } f
 import Image from 'next/image';
 import Link from 'next/link';
 import { Project } from '@/app/projets/data/projets';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BookingModal from './BookingModal';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface ProjectModalProps {
   project: Project | null;
@@ -14,10 +15,88 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
+// Interface pour les données de projet traduites
+interface TranslatedProject {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  tags: string[];
+  client: string;
+  duration: string;
+  objective: string;
+  challenge: string;
+  solution: string;
+  features: string[];
+}
 
-  if (!project) return null;
+export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
+  const { t, language } = useTranslation();
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [translatedProject, setTranslatedProject] = useState<TranslatedProject | null>(null);
+
+  // Charger les données traduites du projet
+  useEffect(() => {
+    if (project) {
+      try {
+        // Récupérer tous les projets depuis les traductions
+        const projectsData = t('projects', 'projets-data');
+        
+        if (Array.isArray(projectsData)) {
+          // Trouver le projet correspondant par ID
+          const foundProject = projectsData.find((p: any) => p.id === project.id);
+          if (foundProject) {
+            setTranslatedProject(foundProject);
+          } else {
+            // Fallback vers les données originales si non trouvé
+            setTranslatedProject({
+              id: project.id,
+              title: project.title,
+              description: project.description,
+              category: project.category,
+              tags: project.tags,
+              client: project.client || '',
+              duration: project.duree || '',
+              objective: project.objectif || '',
+              challenge: project.challenge || '',
+              solution: project.solution || '',
+              features: project.fonctionnalites || []
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Erreur chargement projet traduit:', error);
+        // Fallback vers les données originales
+        setTranslatedProject({
+          id: project.id,
+          title: project.title,
+          description: project.description,
+          category: project.category,
+          tags: project.tags,
+          client: project.client || '',
+          duration: project.duree || '',
+          objective: project.objectif || '',
+          challenge: project.challenge || '',
+          solution: project.solution || '',
+          features: project.fonctionnalites || []
+        });
+      }
+    }
+  }, [project, t, language]);
+
+  // Bloquer le défilement du body quand le modal est ouvert
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  if (!project || !translatedProject) return null;
 
   // Fonction pour vérifier si l'image est valide
   const hasValidImage = (image: any): boolean => {
@@ -61,7 +140,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 {showImage ? (
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={translatedProject.title} // ← CORRIGÉ : plus de t() ici
                     fill
                     className="object-cover"
                   />
@@ -75,28 +154,29 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 <button
                   onClick={onClose}
                   className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors border border-white/20"
+                  aria-label={t('close', 'project-modal')}
                 >
                   <X size={20} />
                 </button>
                 
                 {/* Catégorie */}
                 <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-white border border-white/20">
-                  {project.category}
+                  {t('category', 'project-modal')} : {translatedProject.category}
                 </div>
               </div>
 
               {/* Contenu */}
               <div className="p-6 sm:p-8">
                 <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-                  {project.title}
+                  {translatedProject.title}
                 </h2>
                 <p className="text-gray-400 mb-6">
-                  {project.description}
+                  {translatedProject.description}
                 </p>
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tags.map((tag) => (
+                  {translatedProject.tags.map((tag) => (
                     <span
                       key={tag}
                       className="px-3 py-1.5 bg-blue-500/10 text-blue-400 text-sm font-medium rounded-full border border-blue-500/20"
@@ -107,50 +187,50 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                 </div>
 
                 {/* Objectif */}
-                {project.objectif && (
+                {translatedProject.objective && (
                   <div className="mb-8">
                     <div className="flex items-center gap-2 mb-3">
                       <Target size={20} className="text-blue-400" />
-                      <h3 className="text-lg font-semibold text-white">Objectif</h3>
+                      <h3 className="text-lg font-semibold text-white">{t('sections.objective', 'project-modal')}</h3>
                     </div>
                     <p className="text-gray-300 bg-[#1F2937] p-4 rounded-xl">
-                      {project.objectif}
+                      {translatedProject.objective}
                     </p>
                   </div>
                 )}
 
                 {/* Challenge */}
-                {project.challenge && (
+                {translatedProject.challenge && (
                   <div className="mb-8">
                     <div className="flex items-center gap-2 mb-3">
                       <Lightbulb size={20} className="text-amber-400" />
-                      <h3 className="text-lg font-semibold text-white">Défi relevé</h3>
+                      <h3 className="text-lg font-semibold text-white">{t('sections.challenge', 'project-modal')}</h3>
                     </div>
                     <p className="text-gray-300 bg-[#1F2937] p-4 rounded-xl border-l-4 border-amber-500">
-                      {project.challenge}
+                      {translatedProject.challenge}
                     </p>
                   </div>
                 )}
 
                 {/* Solution */}
-                {project.solution && (
+                {translatedProject.solution && (
                   <div className="mb-8">
                     <div className="flex items-center gap-2 mb-3">
                       <CheckCircle size={20} className="text-green-400" />
-                      <h3 className="text-lg font-semibold text-white">Solution apportée</h3>
+                      <h3 className="text-lg font-semibold text-white">{t('sections.solution', 'project-modal')}</h3>
                     </div>
                     <p className="text-gray-300 bg-[#1F2937] p-4 rounded-xl">
-                      {project.solution}
+                      {translatedProject.solution}
                     </p>
                   </div>
                 )}
 
                 {/* Fonctionnalités */}
-                {project.fonctionnalites && (
+                {translatedProject.features && translatedProject.features.length > 0 && (
                   <div className="mb-8">
-                    <h3 className="text-lg font-semibold text-white mb-3">Fonctionnalités clés</h3>
+                    <h3 className="text-lg font-semibold text-white mb-3">{t('sections.features', 'project-modal')}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {project.fonctionnalites.map((feature, index) => (
+                      {translatedProject.features.map((feature, index) => (
                         <div key={index} className="flex items-start gap-2 bg-[#1F2937] p-3 rounded-xl">
                           <CheckCircle size={18} className="text-blue-400 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-300 text-sm">{feature}</span>
@@ -160,15 +240,16 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </div>
                 )}
 
-                {/* Bouton de contact - MODIFIÉ POUR OUVRIR LE MODAL DE RÉSERVATION */}
+                {/* Bouton de contact */}
                 <div className="flex justify-center mt-8 pt-4 border-t border-[#1F2937]">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleOpenBooking}
                     className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors cursor-pointer"
+                    aria-label={t('buttons.discuss', 'project-modal')}
                   >
-                    <span>Discuter d'un projet similaire</span>
+                    <span>{t('buttons.discuss', 'project-modal')}</span>
                     <ArrowRight size={18} />
                   </motion.button>
                 </div>

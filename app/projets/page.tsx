@@ -1,21 +1,35 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, ArrowLeft, MessageSquare } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
-import { projets } from '@/app/projets/data/projets'; // Import des données communes
+import { useState, useEffect } from 'react';
+import { projets } from '@/app/projets/data/projets';
 import ProjectModal from '@/app/components/ui/ProjectModal';
 import type { Project } from '@/app/projets/data/projets';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 export default function ProjetsPage() {
+  const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  // Charger les projets traduits
+  useEffect(() => {
+    try {
+      const projectsData = t('projects', 'projets-data');
+      if (Array.isArray(projectsData)) {
+        setTranslatedProjects(projectsData);
+      } else {
+        setTranslatedProjects(projets);
+      }
+    } catch (error) {
+      console.error('Erreur chargement projets traduits:', error);
+      setTranslatedProjects(projets);
+    }
+  }, [t, language]);
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -35,6 +49,11 @@ export default function ProjetsPage() {
     if (typeof image === 'object') return true;
     if (typeof image === 'string') return !image.includes('/images/projects/');
     return false;
+  };
+
+  // Fonction pour trouver le projet traduit correspondant
+  const getTranslatedProject = (originalProject: Project) => {
+    return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   };
 
   return (
@@ -77,15 +96,6 @@ export default function ProjetsPage() {
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Bouton retour en haut (mobile) */}
-        <button
-          onClick={scrollToTop}
-          className="lg:hidden fixed bottom-6 left-6 z-50 bg-gradient-to-r from-blue-500 to-cyan-500 text-white p-3 rounded-full shadow-lg hover:from-blue-600 hover:to-cyan-600 transition-colors"
-          aria-label="Retour en haut"
-        >
-          <ArrowLeft size={20} className="rotate-90" />
-        </button>
-
         {/* En-tête */}
         <div className="text-center mb-16">
           <motion.div
@@ -94,7 +104,7 @@ export default function ProjetsPage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm"
           >
             <Sparkles size={16} className="text-blue-400" />
-            <span className="text-sm font-medium text-blue-400">Réalisations</span>
+            <span className="text-sm font-medium text-blue-400">{t('badge', 'projets-page')}</span>
           </motion.div>
           
           <motion.h1
@@ -103,7 +113,10 @@ export default function ProjetsPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
           >
-            Projets <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">accompagnés</span>
+            {t('title', 'projets-page')}{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              {t('titleHighlight', 'projets-page')}
+            </span>
           </motion.h1>
           
           <motion.p
@@ -112,16 +125,16 @@ export default function ProjetsPage() {
             transition={{ delay: 0.2 }}
             className="text-lg text-gray-300 max-w-2xl mx-auto"
           >
-            Une sélection de sites web et applications conçus pour répondre 
-            à des besoins variés, du MVP au projet d'envergure.
+            {t('subtitle', 'projets-page')}
           </motion.p>
         </div>
 
-        {/* Grille des projets - Utilisation de projets depuis le fichier de données */}
+        {/* Grille des projets */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
           {projets.map((projet, index) => {
             const Icon = projet.icon;
             const showImage = hasValidImage(projet.image);
+            const translatedProjet = getTranslatedProject(projet);
             
             return (
               <motion.div
@@ -138,7 +151,7 @@ export default function ProjetsPage() {
                   {showImage ? (
                     <Image
                       src={projet.image}
-                      alt={projet.title}
+                      alt={translatedProjet.title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -152,7 +165,7 @@ export default function ProjetsPage() {
                   
                   {/* Badge catégorie */}
                   <div className="absolute top-4 right-4 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20">
-                    {projet.category}
+                    {translatedProjet.category}
                   </div>
                 </div>
 
@@ -160,29 +173,26 @@ export default function ProjetsPage() {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
-                      {projet.title}
+                      {translatedProjet.title}
                     </h3>
                   </div>
                   
                   <p className="text-gray-400 text-sm mb-4 line-clamp-2">
-                    {projet.description}
+                    {translatedProjet.description}
                   </p>
 
-                  {/* Infos client/année */}
-                  <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
-                    {projet.client && (
+                  {/* Infos client */}
+                  {translatedProjet.client && (
+                    <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
                       <span className="px-2 py-1 bg-[#0A0F1C] rounded-full border border-[#1F2937]">
-                        {projet.client}
+                        {t('card.client', 'projets-page')}: {translatedProjet.client}
                       </span>
-                    )}
-                    {projet.date && (
-                      <span>{projet.date}</span>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-5">
-                    {projet.tags.slice(0, 3).map((tag) => (
+                    {translatedProjet.tags.slice(0, 3).map((tag: string) => (
                       <span
                         key={tag}
                         className="px-2.5 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full"
@@ -190,9 +200,9 @@ export default function ProjetsPage() {
                         {tag}
                       </span>
                     ))}
-                    {projet.tags.length > 3 && (
+                    {translatedProjet.tags.length > 3 && (
                       <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                        +{projet.tags.length - 3}
+                        {t('card.tags.more', 'projets-page', { count: translatedProjet.tags.length - 3 })}
                       </span>
                     )}
                   </div>
@@ -205,7 +215,7 @@ export default function ProjetsPage() {
                       openModal(projet);
                     }}
                   >
-                    <span>En savoir plus</span>
+                    <span>{t('card.learnMore', 'projets-page')}</span>
                     <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                   </button>
                 </div>
@@ -214,35 +224,22 @@ export default function ProjetsPage() {
           })}
         </div>
 
-        {/* BOUTONS JUMEAUX */}
+        {/* BOUTON UNIQUE - LANCER MON PROJET */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto"
+          className="flex justify-center items-center max-w-2xl mx-auto"
         >
-          {/* Bouton Retour à l'accueil */}
-          <Link href="/#projets" className="w-full sm:w-auto">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full sm:w-auto bg-transparent text-white px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold text-sm md:text-lg flex items-center justify-center gap-2 border-2 border-[#1F2937] hover:border-blue-400 hover:text-blue-400 transition-all duration-300 shadow-md hover:shadow-lg"
-            >
-              <ArrowLeft size={18} className="md:w-5 md:h-5" />
-              <span>Retour à l'accueil</span>
-            </motion.button>
-          </Link>
-
-          {/* Bouton Parler de mon projet */}
           <Link href="/#contact" className="w-full sm:w-auto">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold text-sm md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30"
+              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto"
             >
-              <MessageSquare size={18} className="md:w-5 md:h-5" />
-              <span>Parler de mon projet</span>
-              <ArrowRight size={18} className="md:w-5 md:h-5" />
+              <MessageSquare size={20} />
+              <span>{t('buttons.discuss', 'projets-page')}</span>
+              <ArrowRight size={20} />
             </motion.button>
           </Link>
         </motion.div>
@@ -254,7 +251,7 @@ export default function ProjetsPage() {
           transition={{ delay: 0.6 }}
           className="text-center text-xs text-gray-500 mt-8"
         >
-          * Chaque projet est unique et a fait l'objet d'une collaboration étroite avec le client
+          {t('footer.note', 'projets-page')}
         </motion.p>
       </div>
 
