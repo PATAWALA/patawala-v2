@@ -29,7 +29,7 @@
   },
 
   "timeSelection": {
-    "label": "What time would you like to speak?",
+    "label": "Indicate the appointment time:",
     "placeholder": "e.g., 2:30 PM, 5 PM, 9:45 AM...",
     "examples": ["2 PM", "3:30 PM", "5:45 PM", "8 PM", "9:15 AM"],
     "continue": "Continue",

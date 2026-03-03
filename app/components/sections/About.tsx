@@ -8,15 +8,46 @@ import profileImage from '../../assets/images/profile1.png';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
+// Interface pour typer les données
+interface VisionCard {
+  title: string;
+  description: string;
+}
+
+interface VisionData {
+  cards: VisionCard[];
+}
+
 const AboutSection = memo(function AboutSection() {
   const { t } = useTranslation();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [visionCards, setVisionCards] = useState<VisionCard[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Récupérer les cartes de vision au chargement et quand la langue change
+  useEffect(() => {
+    try {
+      // Récupérer les données de vision
+      const visionData = t('vision', 'about') as unknown as VisionData;
+      
+      // Vérifier si c'est un objet avec la propriété cards
+      if (visionData && typeof visionData === 'object' && 'cards' in visionData) {
+        setVisionCards(visionData.cards);
+        console.log('Vision cards chargées:', visionData.cards);
+      } else {
+        console.error('Format de vision data incorrect:', visionData);
+        setVisionCards([]);
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des cartes:', error);
+      setVisionCards([]);
+    }
+  }, [t]);
 
   // Points lumineux statiques
   const lightPoints = useRef(
@@ -25,12 +56,6 @@ const AboutSection = memo(function AboutSection() {
       top: `${Math.random() * 100}%`
     }))
   ).current;
-
-  // Récupérer les cartes de vision
-  const visionData = t('vision', 'about');
-  const visionCards = visionData && visionData.cards ? visionData.cards : [];
-
-  console.log('Vision cards:', visionCards); // Pour déboguer
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -117,7 +142,7 @@ const AboutSection = memo(function AboutSection() {
             {/* CARTES MA VISION */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
               {Array.isArray(visionCards) && visionCards.length > 0 ? (
-                visionCards.map((card: any, index: number) => {
+                visionCards.map((card: VisionCard, index: number) => {
                   const Icon = 
                     index === 0 ? Lightbulb :
                     index === 1 ? Handshake :

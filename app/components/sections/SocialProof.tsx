@@ -6,8 +6,32 @@ import Image from 'next/image';
 import clientImage from '../../assets/images/profile2.jpeg';
 import chimeneImage from '../../assets/images/profile4.png';
 import cesarImage from '../../assets/images/profile5.png';
+import { useTranslation } from '@/app/hooks/useTranslation';
+
+// Interface pour typer les témoignages
+interface Testimonial {
+  name: string;
+  content: string;
+  country: string;
+  rating?: number;
+  image?: any;
+  isRealImage?: boolean;
+  initials?: string;
+  gradient?: string;
+  flag?: string;
+}
+
+// Interface pour les types de projets
+interface ProjectType {
+  icon: any;
+  title: string;
+  description: string;
+  cta: string;
+  message: string;
+}
 
 const SocialProof = memo(function SocialProof() {
+  const { t, language } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -19,11 +43,52 @@ const SocialProof = memo(function SocialProof() {
   const [isMounted, setIsMounted] = useState(false);
   const timeRef = useRef(Date.now());
   const animationFrameRef = useRef<number>();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   // Détection hydratation
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Charger les témoignages depuis les traductions
+  useEffect(() => {
+    try {
+      const testimonialsData = t('testimonials', 'testimonials');
+      if (Array.isArray(testimonialsData)) {
+        // Associer les images et autres données statiques
+        const enrichedTestimonials = testimonialsData.map((testimonial: any, index: number) => {
+          // Associer les images et initiales selon l'index (ou selon le nom)
+          const baseTestimonial = {
+            ...testimonial,
+            rating: 5,
+          };
+
+          // Correspondance avec les données originales
+          if (testimonial.name.includes('Ninsemouh')) {
+            return { ...baseTestimonial, image: clientImage, isRealImage: true, flag: '🇨🇮' };
+          } else if (testimonial.name.includes('Marie')) {
+            return { ...baseTestimonial, initials: 'MA', gradient: 'from-blue-500 to-cyan-500', flag: '🇫🇷' };
+          } else if (testimonial.name.includes('César')) {
+            return { ...baseTestimonial, image: cesarImage, isRealImage: true, flag: '🇨🇬' };
+          } else if (testimonial.name.includes('Maurice')) {
+            return { ...baseTestimonial, initials: 'MA', gradient: 'from-emerald-500 to-teal-500', flag: '🇨🇲' };
+          } else if (testimonial.name.includes('Jean')) {
+            return { ...baseTestimonial, initials: 'JE', gradient: 'from-amber-500 to-orange-500', flag: '🇧🇯' };
+          } else if (testimonial.name.includes('Chimène')) {
+            return { ...baseTestimonial, image: chimeneImage, isRealImage: true, flag: '🇹🇬' };
+          } else if (testimonial.name.includes('Gérard')) {
+            return { ...baseTestimonial, initials: 'GA', gradient: 'from-green-500 to-emerald-500', flag: '🇸🇳' };
+          } else if (testimonial.name.includes('Camille')) {
+            return { ...baseTestimonial, initials: 'CB', gradient: 'from-indigo-500 to-purple-500', flag: '🇧🇪' };
+          }
+          return baseTestimonial;
+        });
+        setTestimonials(enrichedTestimonials);
+      }
+    } catch (error) {
+      console.error('Erreur chargement témoignages:', error);
+    }
+  }, [t, language]);
 
   // Détection desktop/mobile
   useEffect(() => {
@@ -35,97 +100,21 @@ const SocialProof = memo(function SocialProof() {
     return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
-  // Témoignages
-  const testimonials = [
-    {
-      name: 'Ninsemouh Gbeo',
-      content: 'Mon site commence à porter ses fruits. Merci pour cet accompagnement.',
-      rating: 5,
-      image: clientImage,
-      isRealImage: true,
-      country: 'Côte d\'Ivoire',
-      flag: '🇨🇮'
-    },
-    {
-      name: 'Marie Abani',
-      content: 'Enfin un site à mon image. Vivant, moderne, efficace.',
-      rating: 5,
-      initials: 'MA',
-      gradient: 'from-blue-500 to-cyan-500',
-      country: 'France',
-      flag: '🇫🇷'
-    },
-    {
-      name: 'César Dossou',
-      content: 'Service impeccable, résultat au rendez-vous. Je recommande.',
-      rating: 5,
-      image: cesarImage,
-      isRealImage: true,
-      country: 'Congo',
-      flag: '🇨🇬'
-    },
-    {
-      name: 'Maurice Acoumba',
-      content: 'Un vrai partenaire à l\'écoute. Je suis satisfait du travail accompli.',
-      rating: 5,
-      initials: 'MA',
-      gradient: 'from-emerald-500 to-teal-500',
-      country: 'Cameroun',
-      flag: '🇨🇲'
-    },
-    {
-      name: 'Jean Edikou',
-      content: 'Site soigné, équipe attentive. Une belle collaboration.',
-      rating: 5,
-      initials: 'JE',
-      gradient: 'from-amber-500 to-orange-500',
-      country: 'Bénin',
-      flag: '🇧🇯'
-    },
-    {
-      name: 'Chimène Koumai',
-      content: 'Rapide, professionnel, à l\'écoute. Merci pour tout.',
-      rating: 5,
-      image: chimeneImage,
-      isRealImage: true,
-      country: 'Togo',
-      flag: '🇹🇬'
-    },
-    {
-      name: 'Gérard Agatou\'n',
-      content: 'Les yeux fermés. Une expérience de travail agréable et efficace.',
-      rating: 5,
-      initials: 'GA',
-      gradient: 'from-green-500 to-emerald-500',
-      country: 'Sénégal',
-      flag: '🇸🇳'
-    },
-    {
-      name: 'Camille Benerd',
-      content: 'Un site qui me ressemble enfin. Merci pour votre patience et votre écoute.',
-      rating: 5,
-      initials: 'CB',
-      gradient: 'from-indigo-500 to-purple-500',
-      country: 'Belgique',
-      flag: '🇧🇪'
-    }
-  ];
-
-  // Types de projets
-  const projectTypes = [
+  // Types de projets (traduits)
+  const projectTypes: ProjectType[] = [
     {
       icon: Building2,
-      title: 'Startups & Scale-ups',
-      description: 'Développement de MVPs et solutions évolutives',
-      cta: 'Discuter de startup',
-      message: 'Discuter de mon projet startup'
+      title: t('projectTypes.startup.title', 'testimonials'),
+      description: t('projectTypes.startup.description', 'testimonials'),
+      cta: t('projectTypes.startup.cta', 'testimonials'),
+      message: t('projectTypes.startup.cta', 'testimonials')
     },
     {
       icon: Users,
-      title: 'PME & Grands Comptes',
-      description: 'Accompagnement sur mesure pour votre transformation digitale',
-      cta: 'Discuter de mon projet',
-      message: 'Discuter de mon projet d\'entreprise'
+      title: t('projectTypes.sme.title', 'testimonials'),
+      description: t('projectTypes.sme.description', 'testimonials'),
+      cta: t('projectTypes.sme.cta', 'testimonials'),
+      message: t('projectTypes.sme.cta', 'testimonials')
     }
   ];
 
@@ -170,7 +159,7 @@ const SocialProof = memo(function SocialProof() {
     };
   }, [isAutoScrolling, continuousScroll]);
 
-  // Animation des cartes (montée/descente) - OPTIMISÉE
+  // Animation des cartes (montée/descente)
   useEffect(() => {
     if (!isDesktop) return;
 
@@ -197,7 +186,6 @@ const SocialProof = memo(function SocialProof() {
             const finalY = verticalMovement + centerBoost;
             const scale = 1 + (proximity * 0.05);
             
-            // Appliquer la transformation directement (pas de React state)
             card.style.transform = `translateY(${finalY}px) scale(${scale})`;
           }
         }
@@ -269,7 +257,7 @@ const SocialProof = memo(function SocialProof() {
   return (
     <section 
       className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
-      aria-label="Témoignages clients"
+      aria-label={language === 'fr' ? "Témoignages clients" : "Client testimonials"}
     >
       {/* FOND OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
@@ -298,28 +286,28 @@ const SocialProof = memo(function SocialProof() {
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* En-tête de section Témoignages / Projets */}
-<div className="text-center mb-12 md:mb-16">
-  {isMounted && (
-    <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-      <Award size={14} className="text-blue-400" aria-hidden="true" />
-      <span className="text-xs sm:text-sm font-medium text-blue-400">
-        Projets réussis
-      </span>
-    </div>
-  )}
-  
-  <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
-    Ils me font confiance
-    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
-      pour bâtir leurs solutions
-    </span>
-  </h2>
-  
-  <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
-    Découvrez les retours d'expérience de mes partenaires sur la qualité de mon accompagnement technique.
-  </p>
-</div>
+        {/* En-tête de section */}
+        <div className="text-center mb-12 md:mb-16">
+          {isMounted && (
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
+              <Award size={14} className="text-blue-400" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-medium text-blue-400">
+                {t('badge', 'testimonials')}
+              </span>
+            </div>
+          )}
+          
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
+            {t('title', 'testimonials')}
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
+              {t('titleHighlight', 'testimonials')}
+            </span>
+          </h2>
+          
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
+            {t('subtitle', 'testimonials')}
+          </p>
+        </div>
 
         {/* Carrousel */}
         <div 
@@ -337,7 +325,7 @@ const SocialProof = memo(function SocialProof() {
                 onClick={() => scroll('left')}
                 className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
                 style={{ opacity: showLeftArrow ? 1 : 0 }}
-                aria-label="Témoignages précédents"
+                aria-label={language === 'fr' ? "Témoignages précédents" : "Previous testimonials"}
                 disabled={!showLeftArrow}
               >
                 <ChevronLeft size={20} aria-hidden="true" />
@@ -347,7 +335,7 @@ const SocialProof = memo(function SocialProof() {
                 onClick={() => scroll('right')}
                 className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
                 style={{ opacity: showRightArrow ? 1 : 0 }}
-                aria-label="Témoignages suivants"
+                aria-label={language === 'fr' ? "Témoignages suivants" : "Next testimonials"}
                 disabled={!showRightArrow}
               >
                 <ChevronRight size={20} aria-hidden="true" />
@@ -359,7 +347,7 @@ const SocialProof = memo(function SocialProof() {
           {isDesktop && (
             <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937]">
               <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
-                {isAutoScrolling ? "Défilement automatique" : "Défilement arrêté"}
+                {isAutoScrolling ? t('autoScroll.playing', 'testimonials') : t('autoScroll.paused', 'testimonials')}
               </span>
               <div className={`w-2 h-2 rounded-full ${isAutoScrolling ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`} />
             </div>
@@ -391,8 +379,8 @@ const SocialProof = memo(function SocialProof() {
                   <div className="relative z-10">
                     <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" aria-hidden="true" />
                     
-                    <div className="flex mb-2 md:mb-3" aria-label={`Note: ${testimonial.rating} étoiles`}>
-                      {[...Array(testimonial.rating)].map((_, i) => (
+                    <div className="flex mb-2 md:mb-3" aria-label={`${t('rating', 'testimonials')}: ${testimonial.rating || 5}`}>
+                      {[...Array(testimonial.rating || 5)].map((_, i) => (
                         <Star key={i} className="fill-blue-400 text-blue-400" size={14} aria-hidden="true" />
                       ))}
                     </div>
@@ -402,11 +390,11 @@ const SocialProof = memo(function SocialProof() {
                     </p>
                     
                     <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
-                      {testimonial.isRealImage ? (
+                      {testimonial.isRealImage && testimonial.image ? (
                         <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
                           <Image
                             src={testimonial.image}
-                            alt={`Photo de ${testimonial.name}`}
+                            alt={`${language === 'fr' ? 'Photo de' : 'Photo of'} ${testimonial.name}`}
                             fill
                             className="object-cover"
                             sizes="48px"
@@ -414,8 +402,8 @@ const SocialProof = memo(function SocialProof() {
                           />
                         </div>
                       ) : (
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
-                          {testimonial.initials}
+                        <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0`}>
+                          {testimonial.initials || testimonial.name.substring(0, 2).toUpperCase()}
                         </div>
                       )}
                       
@@ -425,7 +413,7 @@ const SocialProof = memo(function SocialProof() {
                         </div>
                         <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
                           <MapPin size={10} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
-                          <span className="truncate">{testimonial.flag} {testimonial.country}</span>
+                          <span className="truncate">{testimonial.flag || '🌍'} {testimonial.country}</span>
                         </div>
                       </div>
                     </div>
@@ -439,7 +427,7 @@ const SocialProof = memo(function SocialProof() {
         {/* Types de projets */}
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 text-white">
-            Un accompagnement sur mesure
+            {t('projectTypes.title', 'testimonials')}
           </h3>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8">

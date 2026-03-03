@@ -1,54 +1,54 @@
 {
-  "badge": "Technologies que je maîtrise",
-  "title": "Une expertise au service",
-  "titleHighlight": "de vos ambitions",
-  "subtitle": "Je sélectionne les technologies les plus adaptées à chaque projet. L'essentiel n'est pas l'outil, mais ce qu'il permet de construire avec vous.",
+  "badge": "Technologies I master",
+  "title": "Expertise at the service",
+  "titleHighlight": "of your ambitions",
+  "subtitle": "I select the most suitable technologies for each project. The tool isn't what matters most, but what it helps us build together.",
   
   "techStack": [
     {
       "name": "Next.js / React",
       "level": "Expert",
-      "desc": "Sites modernes ultra-rapides et applications web complexes",
+      "desc": "Ultra-fast modern sites and complex web applications",
       "expertise": [
-        "Sites vitrines performants",
-        "Applications SaaS",
-        "E-commerce sur-mesure"
+        "High-performance showcase sites",
+        "SaaS applications",
+        "Custom e-commerce"
       ]
     },
     {
       "name": "WordPress",
       "level": "Expert",
-      "desc": "Sites faciles à gérer, blogs, boutiques et vitrines",
+      "desc": "Easy-to-manage sites, blogs, stores and showcases",
       "expertise": [
-        "Thèmes sur-mesure",
+        "Custom themes",
         "WooCommerce",
-        "Optimisation performance"
+        "Performance optimization"
       ]
     },
     {
       "name": "Odoo / ERP",
-      "level": "Avancé",
-      "desc": "Gestion d'entreprise, CRM, facturation, inventaire",
+      "level": "Advanced",
+      "desc": "Business management, CRM, invoicing, inventory",
       "expertise": [
-        "Modules sur-mesure",
-        "Automatisation",
-        "Intégration"
+        "Custom modules",
+        "Automation",
+        "Integration"
       ]
     },
     {
       "name": "Systeme.io",
-      "level": "Intermédiaire",
-      "desc": "Marketing automation, entonnoirs de vente, plateforme tout-en-un",
+      "level": "Intermediate",
+      "desc": "Marketing automation, sales funnels, all-in-one platform",
       "expertise": [
-        "Entonnoirs de vente",
+        "Sales funnels",
         "Email marketing",
         "Membership sites"
       ]
     },
     {
       "name": "Infrastructure & DevOps",
-      "level": "Avancé",
-      "desc": "Déploiement, hébergement, mise à l'échelle sans souci",
+      "level": "Advanced",
+      "desc": "Deployment, hosting, worry-free scaling",
       "expertise": [
         "Vercel / Netlify",
         "AWS",
@@ -56,26 +56,26 @@
       ]
     },
     {
-      "name": "Sécurité & Performance",
-      "level": "Avancé",
-      "desc": "Sites sécurisés et rapides, vos visiteurs adorent",
+      "name": "Security & Performance",
+      "level": "Advanced",
+      "desc": "Secure and fast sites, your visitors will love them",
       "expertise": [
-        "Sécurité renforcée",
-        "Optimisation",
+        "Enhanced security",
+        "Optimization",
         "Monitoring"
       ]
     }
   ],
   
-  "note": "Je ne choisis pas un outil parce qu'il est à la mode, mais parce qu'il est le bon pour ce que nous voulons construire ensemble.",
+  "note": "I don't choose a tool because it's trendy, but because it's the right one for what we want to build together.",
   
-  "cta": "Discuter de mon projet",
+  "cta": "Discuss my project",
   
   "levelLabels": {
     "expert": "Expert",
-    "advanced": "Avancé",
-    "intermediate": "Intermédiaire"
+    "advanced": "Advanced",
+    "intermediate": "Intermediate"
   },
   
-  "mastery": "Maîtrise"
+  "mastery": "Mastery"
 }

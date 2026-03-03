@@ -4,13 +4,20 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { projets, Project } from '../../projets/data/projets';
 import ProjectModal from '../../components/ui/ProjectModal';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 export default function RealisationsSection() {
+  const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -27,9 +34,7 @@ export default function RealisationsSection() {
   // Fonction pour vérifier si l'image est valide
   const hasValidImage = (image: any): boolean => {
     if (!image) return false;
-    // Si c'est un objet (import statique), c'est valide
     if (typeof image === 'object') return true;
-    // Si c'est une string, vérifie que ce n'est pas un chemin par défaut
     if (typeof image === 'string') return !image.includes('/images/projects/');
     return false;
   };
@@ -85,7 +90,7 @@ export default function RealisationsSection() {
             >
               <Sparkles size={16} className="text-blue-400" />
               <span className="text-sm font-medium text-blue-400">
-                Portfolio
+                {t('badge', 'realisations')}
               </span>
             </motion.div>
           </div>
@@ -98,9 +103,9 @@ export default function RealisationsSection() {
               viewport={{ once: true }}
               className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white"
             >
-              Quelques projets
+              {t('title', 'realisations')}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2">
-                que j'ai accompagnés
+                {t('titleHighlight', 'realisations')}
               </span>
             </motion.h2>
             <motion.p
@@ -110,7 +115,7 @@ export default function RealisationsSection() {
               transition={{ delay: 0.1 }}
               className="text-lg text-gray-300 max-w-2xl mx-auto"
             >
-              Une sélection de sites et applications conçus pour répondre à des besoins spécifiques.
+              {t('subtitle', 'realisations')}
             </motion.p>
           </div>
 
@@ -151,9 +156,9 @@ export default function RealisationsSection() {
                       </>
                     )}
                     
-                    {/* Badge catégorie (toujours affiché) */}
+                    {/* Badge catégorie */}
                     <div className="absolute top-3 left-3 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20 z-10">
-                      {projet.category}
+                      {t(`categories.${projet.category.toLowerCase()}`, 'realisations') || projet.category}
                     </div>
                   </div>
 
@@ -182,8 +187,9 @@ export default function RealisationsSection() {
                     <button
                       onClick={() => openModal(projet)}
                       className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group/btn hover:text-blue-300 transition-colors"
+                      aria-label={t('card.learnMore', 'realisations')}
                     >
-                      <span>En savoir plus</span>
+                      <span>{t('card.learnMore', 'realisations')}</span>
                       <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
                     </button>
                   </div>
@@ -205,8 +211,9 @@ export default function RealisationsSection() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto"
+                aria-label={t('buttons.viewAll', 'realisations')}
               >
-                <span>Voir tous les projets</span>
+                <span>{t('buttons.viewAll', 'realisations')}</span>
                 <ArrowRight size={20} />
               </motion.button>
             </Link>
@@ -223,12 +230,12 @@ export default function RealisationsSection() {
             <div className="flex flex-wrap justify-center gap-6 px-0 py-0 sm:px-8 sm:py-5 sm:bg-[#141B2B] sm:rounded-2xl sm:border sm:border-[#1F2937] sm:shadow-md">
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-bold text-blue-400">11+</span>
-                <span className="text-xs text-gray-400 sm:text-gray-300">Projets livrés</span>
+                <span className="text-xs text-gray-400 sm:text-gray-300">{t('stats.projects', 'realisations')}</span>
               </div>
               <div className="w-px h-8 bg-gray-700 hidden sm:block"></div>
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-bold text-blue-400">4.9</span>
-                <span className="text-xs text-gray-400 sm:text-gray-300">Note moyenne</span>
+                <span className="text-xs text-gray-400 sm:text-gray-300">{t('stats.rating', 'realisations')}</span>
               </div>
             </div>
           </motion.div>
