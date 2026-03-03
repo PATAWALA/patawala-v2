@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Type pour les items de navigation
+// Type pour les items de navigation - CORRECTION: Utiliser Omit de TypeScript directement
 type NavItem = {
   readonly key: string;
   readonly href: string;
@@ -16,7 +16,7 @@ type NavItem = {
   readonly submenu?: readonly {
     readonly key: string;
     readonly href: string;
-    readonly icon: React.ForwardRefExoticComponent<React.Omit<React.SVGProps<SVGSVGElement>, 'ref'>>;
+    readonly icon: React.ForwardRefExoticComponent<Omit<React.SVGProps<SVGSVGElement>, 'ref'>>;
     readonly category: string;
   }[];
 };

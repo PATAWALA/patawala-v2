@@ -10,6 +10,23 @@ import Link from 'next/link';
 import { useServiceContext } from './context/ServiceContext';
 import { useLanguage } from '../context/LanguageContext';
 
+// Types pour les traductions
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface FaqTranslations {
+  title: string;
+  subtitle: string;
+  items: FaqItem[];
+}
+
+interface CtaTranslations {
+  title: string;
+  button: string;
+}
+
 export default function ServicesPage() {
   const { 
     activeCategory, 
@@ -23,18 +40,83 @@ export default function ServicesPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Récupérer les traductions
+  // Récupérer les traductions avec typage sécurisé
   const translations = {
-    badge: t('badge', 'services-data'),
-    title: t('title', 'services-data'),
-    titleHighlight: t('titleHighlight', 'services-data'),
-    subtitle: t('subtitle', 'services-data'),
-    filters: t('filters', 'services-data'),
-    faq: t('faq', 'services-data'),
-    cta: t('cta', 'services-data'),
-    disclaimer: t('disclaimer', 'services-data')
+    badge: t('badge', 'services-data') as string,
+    title: t('title', 'services-data') as string,
+    titleHighlight: t('titleHighlight', 'services-data') as string,
+    subtitle: t('subtitle', 'services-data') as string,
+    filters: t('filters', 'services-data') as any,
+    faq: t('faq', 'services-data') as FaqTranslations,
+    cta: t('cta', 'services-data') as CtaTranslations,
+    disclaimer: t('disclaimer', 'services-data') as string
   };
+
+  // Valeurs par défaut pour la FAQ si les traductions manquent
+  const defaultFaq = {
+    fr: {
+      title: 'Questions fréquentes',
+      subtitle: 'Pour vous éclairer sur ma façon de travailler',
+      items: [
+        {
+          question: 'Quelle est la durée moyenne d\'un projet ?',
+          answer: 'Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure.'
+        },
+        {
+          question: 'Proposez-vous un suivi après la livraison ?',
+          answer: 'Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles.'
+        },
+        {
+          question: 'Puis-je modifier le projet en cours de route ?',
+          answer: 'Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins.'
+        },
+        {
+          question: 'Les prix affichés sont-ils définitifs ?',
+          answer: 'Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins.'
+        }
+      ]
+    },
+    en: {
+      title: 'Frequently asked questions',
+      subtitle: 'To clarify how I work',
+      items: [
+        {
+          question: 'What is the average duration of a project?',
+          answer: 'It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application.'
+        },
+        {
+          question: 'Do you offer post-delivery support?',
+          answer: 'Yes, one month of support is included after launch. Maintenance packages are also available.'
+        },
+        {
+          question: 'Can I modify the project along the way?',
+          answer: 'Absolutely! We work in stages with regular validations to adjust as closely as possible to your needs.'
+        },
+        {
+          question: 'Are the displayed prices final?',
+          answer: 'They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs.'
+        }
+      ]
+    }
+  };
+
+  // Valeurs par défaut pour le CTA
+  const defaultCta = {
+    fr: {
+      title: 'Vous ne trouvez pas ce que vous cherchez ?',
+      button: 'Discuter de mon projet'
+    },
+    en: {
+      title: 'Can\'t find what you\'re looking for?',
+      button: 'Discuss my project'
+    }
+  };
+
+  // Utiliser les traductions ou les valeurs par défaut
+  const faq = translations.faq?.title ? translations.faq : defaultFaq[language as keyof typeof defaultFaq];
+  const cta = translations.cta?.title ? translations.cta : defaultCta[language as keyof typeof defaultCta];
 
   // Écouter les changements d'URL hash
   useEffect(() => {
@@ -80,8 +162,8 @@ export default function ServicesPage() {
   const checkScroll = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 10);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+      setShowLeftArrow(scrollLeft > 20);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
     }
   };
 
@@ -106,10 +188,14 @@ export default function ServicesPage() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 300;
-      const newScrollLeft = scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      const container = scrollContainerRef.current;
+      const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
+      const gap = 24; // gap-6 = 24px
+      const scrollAmount = cardWidth + gap;
       
-      scrollContainerRef.current.scrollTo({
+      const newScrollLeft = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      
+      container.scrollTo({
         left: newScrollLeft,
         behavior: 'smooth'
       });
@@ -211,43 +297,76 @@ export default function ServicesPage() {
           onCategoryChange={handleCategoryChange}
         />
 
-        {/* Grille des services avec flèches de défilement sur mobile */}
-        <div className="relative">
-          {/* Flèche gauche - visible uniquement sur mobile */}
+        {/* Grille des services avec flèches de défilement améliorées */}
+        <div 
+          className="relative"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {/* Flèche gauche - visible sur mobile et au survol sur desktop */}
           <AnimatePresence>
-            {showLeftArrow && (
+            {(showLeftArrow) && (
               <motion.button
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
                 onClick={() => scroll('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 md:hidden bg-gradient-to-r from-[#0A0F1C] to-transparent pr-8 pl-2 py-4"
+                className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
+                  ${isHovering ? 'md:opacity-100' : 'md:opacity-0'} 
+                  bg-gradient-to-r from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pl-2 pr-6 py-4`}
                 aria-label="Défiler vers la gauche"
               >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
                   <ChevronLeft size={24} className="text-white" />
                 </div>
               </motion.button>
             )}
           </AnimatePresence>
 
-          {/* Flèche droite - visible uniquement sur mobile */}
+          {/* Flèche droite - visible sur mobile et au survol sur desktop */}
           <AnimatePresence>
-            {showRightArrow && (
+            {(showRightArrow) && (
               <motion.button
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
                 onClick={() => scroll('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 md:hidden bg-gradient-to-l from-[#0A0F1C] to-transparent pl-8 pr-2 py-4"
+                className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
+                  ${isHovering ? 'md:opacity-100' : 'md:opacity-0'} 
+                  bg-gradient-to-l from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pr-2 pl-6 py-4`}
                 aria-label="Défiler vers la droite"
               >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
                   <ChevronRight size={24} className="text-white" />
                 </div>
               </motion.button>
             )}
           </AnimatePresence>
+
+          {/* Indicateurs de défilement (petits points) */}
+          <div className="flex justify-center gap-1.5 mt-2 md:hidden">
+            {activeServices.map((_, index) => {
+              const isVisible = () => {
+                if (!scrollContainerRef.current) return false;
+                const container = scrollContainerRef.current;
+                const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
+                const scrollPosition = container.scrollLeft;
+                const viewportWidth = container.clientWidth;
+                const startIdx = Math.floor(scrollPosition / (cardWidth + 24));
+                const endIdx = Math.ceil((scrollPosition + viewportWidth) / (cardWidth + 24));
+                return index >= startIdx && index <= endIdx;
+              };
+              
+              return (
+                <div
+                  key={index}
+                  className={`h-1 rounded-full transition-all duration-300 ${
+                    isVisible() ? 'w-4 bg-blue-400' : 'w-1 bg-gray-600'
+                  }`}
+                />
+              );
+            })}
+          </div>
 
           {/* Conteneur de cartes */}
           <AnimatePresence mode="wait">
@@ -260,7 +379,7 @@ export default function ServicesPage() {
             >
               <div 
                 ref={scrollContainerRef}
-                className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory scrollbar-hide"
+                className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide scroll-smooth"
                 style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
@@ -292,15 +411,15 @@ export default function ServicesPage() {
         >
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              {translations.faq?.title}
+              {faq.title}
             </h2>
             <p className="text-gray-400">
-              {translations.faq?.subtitle}
+              {faq.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {translations.faq?.items?.map((item: { question: string; answer: string }, index: number) => (
+            {faq.items.map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -328,7 +447,7 @@ export default function ServicesPage() {
           className="text-center mt-16"
         >
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
-            {translations.cta?.title}
+            {cta.title}
           </h3>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -338,7 +457,7 @@ export default function ServicesPage() {
                 whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0"
               >
-                <span>{translations.cta?.button}</span>
+                <span>{cta.button}</span>
                 <ArrowRight size={20} />
               </motion.button>
             </Link>
