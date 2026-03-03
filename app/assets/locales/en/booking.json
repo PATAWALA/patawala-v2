@@ -1,0 +1,121 @@
+{
+  "badge": "Free 30-minute consultation",
+  "title": {
+    "step1": "Book your discovery call",
+    "step2": "Finalize your booking"
+  },
+  "subtitle": {
+    "step1": "Choose a date that works for you",
+    "step2": "Enter your contact details"
+  },
+
+  "progress": {
+    "step1": "Date",
+    "step2": "Details"
+  },
+
+  "infoMessage": {
+    "title": "Schedule our meeting based on your availability.",
+    "instruction": "First choose your date, then indicate the time that suits you best.",
+    "confirmation": "I will personally validate your slot as soon as I receive your request."
+  },
+
+  "calendar": {
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "weekDays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "selectDate": "Select {{date}}",
+    "today": "Today"
+  },
+
+  "timeSelection": {
+    "label": "What time would you like to speak?",
+    "placeholder": "e.g., 2:30 PM, 5 PM, 9:45 AM...",
+    "examples": ["2 PM", "3:30 PM", "5:45 PM", "8 PM", "9:15 AM"],
+    "continue": "Continue",
+    "confirmDate": "Date selected!",
+    "confirmDateMessage": "Now, please indicate a time that works for you",
+    "noDateMessage": "Please pick a date from the calendar"
+  },
+
+  "summary": {
+    "title": "Your appointment summary:",
+    "date": "Date",
+    "time": "Time"
+  },
+
+  "contactMethod": {
+    "label": "How would you like to be contacted?",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "whatsappDescription": "Free - Your request will be sent directly via WhatsApp",
+    "emailDescription": "Free - I will get back to you by email"
+  },
+
+  "form": {
+    "name": {
+      "label": "Your full name",
+      "placeholder": "e.g., John Doe",
+      "error": "Please enter your name"
+    },
+    "email": {
+      "label": "Your email",
+      "placeholder": "example@email.com",
+      "error": "Valid email required"
+    },
+    "phone": {
+      "label": "WhatsApp number",
+      "placeholder": "Enter number",
+      "error": "Please enter your number"
+    },
+    "message": {
+      "label": "Tell me about your project (optional)",
+      "placeholder": "Website, mobile app, custom tool... Tell me everything!"
+    }
+  },
+
+  "countrySelect": {
+    "placeholder": "Country",
+    "search": "Search for a country..."
+  },
+
+  "confirmationMessage": {
+    "whatsapp": "By clicking \"Confirm\", you will be redirected to WhatsApp. Free and non-binding.",
+    "email": "By clicking \"Confirm\", I will get back to you by email. Free and non-binding."
+  },
+
+  "buttons": {
+    "back": "Back",
+    "confirm": "Confirm",
+    "confirmed": "Booking confirmed!",
+    "close": "Close"
+  },
+
+  "countries": {
+    "FR": "France",
+    "BE": "Belgium",
+    "CH": "Switzerland",
+    "LU": "Luxembourg",
+    "MC": "Monaco",
+    "CA": "Canada",
+    "CI": "Ivory Coast",
+    "SN": "Senegal",
+    "CM": "Cameroon",
+    "BF": "Burkina Faso",
+    "BJ": "Benin",
+    "TG": "Togo",
+    "ML": "Mali",
+    "NE": "Niger",
+    "GN": "Guinea",
+    "US": "United States",
+    "GB": "United Kingdom",
+    "DE": "Germany",
+    "IT": "Italy",
+    "ES": "Spain",
+    "PT": "Portugal",
+    "NL": "Netherlands",
+    "MA": "Morocco",
+    "DZ": "Algeria",
+    "TN": "Tunisia"
+  }
+}

@@ -13,8 +13,10 @@ import profile4Image from '../../assets/images/profile4.png';
 import profile7Image from '../../assets/images/profile7.jpg';
 import profile8Image from '../../assets/images/profile8.jpg';
 import BookingModal from '../ui/BookingModal';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 const HeroSection = memo(function HeroSection() {
+  const { t, language } = useTranslation();
   const typedRef = useRef<HTMLSpanElement>(null);
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
@@ -24,27 +26,32 @@ const HeroSection = memo(function HeroSection() {
     setIsMounted(true);
   }, []);
 
+  // Mise à jour du Typed quand la langue change
   useEffect(() => {
     if (!typedRef.current || !isMounted) return;
 
-    const typed = new Typed(typedRef.current, {
-      strings: [
-        'votre visibilité en ligne',
-        'votre prochaine application mobile',
-        'un e-commerce qui convertit',
-        'vos outils métier sur-mesure',
-        'votre croissance digitale',
-        'notre collaboration gagnante'
-      ],
-      typeSpeed: 50,
-      backSpeed: 30,
-      backDelay: 1000,
-      loop: true,
-      loopCount: Infinity
-    });
+    // Récupérer les chaînes depuis les traductions
+    const strings = t('typed.strings', 'hero');
+    
+    // Vérifier que strings est bien un tableau
+    const stringsArray = Array.isArray(strings) ? strings : [];
+    
+    if (stringsArray.length === 0) return;
 
-    return () => typed.destroy();
-  }, [isMounted]);
+    // Détruire l'instance précédente si elle existe
+    if (typedRef.current) {
+      const typed = new Typed(typedRef.current, {
+        strings: stringsArray,
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 1000,
+        loop: true,
+        loopCount: Infinity
+      });
+
+      return () => typed.destroy();
+    }
+  }, [isMounted, language, t]);
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -76,12 +83,12 @@ const HeroSection = memo(function HeroSection() {
 
   // Images pour le cercle d'avatars
   const avatarImages = [
-    { src: profile2Image, alt: "Client satisfait 1" },
-    { src: profile5Image, alt: "Client satisfait 2" },
-    { src: profile4Image, alt: "Client satisfait 3" },
-    { src: profile6Image, alt: "Client satisfait 4" },
-    { src: profile7Image, alt: "Client satisfait 5" },
-    { src: profile8Image, alt: "Client satisfait 6" },
+    { src: profile2Image, alt: t('altImages.avatar', 'hero') },
+    { src: profile5Image, alt: t('altImages.avatar', 'hero') },
+    { src: profile4Image, alt: t('altImages.avatar', 'hero') },
+    { src: profile6Image, alt: t('altImages.avatar', 'hero') },
+    { src: profile7Image, alt: t('altImages.avatar', 'hero') },
+    { src: profile8Image, alt: t('altImages.avatar', 'hero') },
   ];
 
   return (
@@ -89,7 +96,7 @@ const HeroSection = memo(function HeroSection() {
       <section 
         id="hero" 
         className="min-h-screen relative overflow-hidden flex items-center pt-24 sm:pt-28 md:pt-28 lg:pt-10 xl:pt-12"
-        aria-label="Section d'accueil"
+        aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
       >
         {/* BEAU FOND - avec dégradé et formes floues */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
@@ -119,7 +126,7 @@ const HeroSection = memo(function HeroSection() {
           <div className="w-full hidden lg:flex justify-center mb-8 lg:mb-10 xl:mb-12">
             <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
               <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
-              <span className="text-sm font-semibold whitespace-nowrap">Spécialisé en solutions digitales sur mesure</span>
+              <span className="text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
             </div>
           </div>
 
@@ -129,19 +136,19 @@ const HeroSection = memo(function HeroSection() {
             {/* Texte - partie gauche */}
             <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 leading-tight px-1 sm:px-2 text-white">
-                Construisons ensemble :
+                {t('title', 'hero')}
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-0.5 sm:mt-1 md:mt-2 font-black">
                   <span 
                     ref={typedRef} 
                     className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl"
-                    aria-label="Texte animé"
+                    aria-label={language === 'fr' ? "Texte animé" : "Animated text"}
                   />
                 </span>
               </h1>
 
               <div className="space-y-1.5 sm:space-y-2 md:space-y-3 lg:space-y-4 mb-4 sm:mb-5 px-2 sm:px-3 md:px-4 lg:px-0">
                 <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white font-bold">
-                  Créez un impact réel avec votre business grâce à des sites et applications pensés pour maximiser vos ventes.
+                  {t('subtitle', 'hero')}
                 </p>
               </div>
 
@@ -183,7 +190,9 @@ const HeroSection = memo(function HeroSection() {
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="text-xs sm:text-sm font-bold text-white">30+</span>
-                    <span className="text-[9px] sm:text-xs text-gray-400 whitespace-nowrap">entrepreneurs accompagnés</span>
+                    <span className="text-[9px] sm:text-xs text-gray-400 whitespace-nowrap">
+                      {t('socialProof.entrepreneurs', 'hero')}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -193,18 +202,18 @@ const HeroSection = memo(function HeroSection() {
                 <button
                   onClick={handleLancerProjet}
                   className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-5 md:px-6 py-3 sm:py-2.5 md:py-3 rounded-xl font-bold text-sm sm:text-sm md:text-base lg:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px] cursor-pointer"
-                  aria-label="Lancer un projet"
+                  aria-label={t('buttons.project', 'hero')}
                 >
-                  Lancer mon projet
+                  {t('buttons.project', 'hero')}
                   <ArrowRight size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </button>
                 
                 <button
                   onClick={handleVoirRealisations}
                   className="bg-transparent text-white px-6 sm:px-5 md:px-6 py-3 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-sm md:text-base lg:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px] cursor-pointer"
-                  aria-label="Voir les réalisations"
+                  aria-label={t('buttons.portfolio', 'hero')}
                 >
-                  Voir mes réalisations
+                  {t('buttons.portfolio', 'hero')}
                 </button>
               </div>
             </div>
@@ -239,7 +248,7 @@ const HeroSection = memo(function HeroSection() {
                   <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                     <Globe size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
                     <Smartphone size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
-                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold">Multi-support</span>
+                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold">{t('badges.multisupport', 'hero')}</span>
                   </div>
                 </div>
 
@@ -247,7 +256,7 @@ const HeroSection = memo(function HeroSection() {
                 <div className="absolute bottom-0 left-0 z-30" style={{ transform: 'translate(-5%, 5%)' }}>
                   <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                     <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
-                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold">Disponible</span>
+                    <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold">{t('badges.available', 'hero')}</span>
                   </div>
                 </div>
 
@@ -256,7 +265,7 @@ const HeroSection = memo(function HeroSection() {
                   <div className="aspect-square relative">
                     <Image
                       src={profileImage}
-                      alt="Abdoulaye Patawala - Développeur web & mobile"
+                      alt={t('altImages.profile', 'hero')}
                       fill
                       className="object-cover"
                       sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
@@ -277,13 +286,13 @@ const HeroSection = memo(function HeroSection() {
           <div className="flex justify-center mt-8 sm:mt-10 md:mt-12 lg:mt-14 px-2 sm:px-3 lg:px-0">
             <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-wrap justify-center px-0 py-0 sm:px-4 sm:py-2 md:px-5 md:py-2.5 lg:px-6 lg:py-3 sm:rounded-full sm:border sm:border-[#1F2937] sm:bg-[#141B2B]/80 sm:backdrop-blur-sm">
               <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400" />
-              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Réponse sous 24h</span>
+              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">{t('microCTA.response', 'hero')}</span>
               <span className="text-gray-600 hidden xs:inline">•</span>
               <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400 xs:ml-0 ml-1" />
-              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Devis gratuit</span>
+              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">{t('microCTA.quote', 'hero')}</span>
               <span className="text-gray-600 hidden xs:inline">•</span>
               <CheckCircle size={10} className="xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-blue-400 xs:ml-0 ml-1" />
-              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">Accompagnement A à Z</span>
+              <span className="text-[10px] xs:text-[10px] sm:text-sm text-gray-300 font-medium">{t('microCTA.support', 'hero')}</span>
             </div>
           </div>
         </div>

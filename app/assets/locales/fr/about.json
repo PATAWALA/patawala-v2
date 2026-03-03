@@ -1,9 +1,9 @@
 {
   "badge": "À votre écoute",
-  "title": "Transformez vos ambitions",
-  "subtitle": "en actifs numériques performants",
-  "description": "Chaque projet est conçu pour s'aligner sur vos objectifs commerciaux et offrir une expérience utilisateur sans compromis.",
-  "whoami": "Expertise & Engagement",
+  "title": "Transformez vos ambitions en",
+  "subtitle": "actifs numériques performants.",
+  "description": "Chaque projet est pour moi l'opportunité de bâtir une solution unique, alignée sur vos objectifs et les besoins de vos utilisateurs.",
+  "whoami": "Qui suis-je ?", 
   "vision": {
     "cards": [
       {
@@ -12,7 +12,7 @@
       },
       {
         "title": "Partenariat Stratégique & Vision Long Terme",
-        "description": "Plus qu'un développeur, je deviens votre conseiller de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
+        "description": "Plus qu'un développeur, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
       },
       {
         "title": "Innovation & Performance Commerciale",
@@ -29,11 +29,11 @@
     "name": "Abdoulaye Patawala",
     "role": "Spécialisé en Développement Web & Mobile",
     "mission": "Ma mission :",
-    "missionText": "Devenir le socle technique de votre entreprise pour vous permettre de vous concentrer sur votre cœur de métier.",
-    "description": "Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.",
+    "missionText": "Ma mission est de devenir le socle technique de votre entreprise. Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.",
+    "description": "",
     "message": {
       "question": "Besoin d'un diagnostic pour votre projet ?",
-      "text": "Je vous apporte une expertise conseil pour définir la solution technologique la plus rentable et adaptée à vos besoins."
+      "text": "Je vous conseille pour définir la solution technologique la plus adaptée et rentable pour vos objectifs."
     },
     "badges": {
       "webMobile": "Web & Mobile",

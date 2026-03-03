@@ -1,13 +1,15 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Lightbulb, MessagesSquare, HeartHandshake, Rocket, Target, MessageSquare, CheckCircle, Sparkles, Globe, Smartphone, Award, Cpu, Zap, TrendingUp, User, Handshake, Briefcase, Users } from 'lucide-react';
+import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, CheckCircle, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile1.png';
 import BookingModal from '../ui/BookingModal';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 const AboutSection = memo(function AboutSection() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -16,7 +18,7 @@ const AboutSection = memo(function AboutSection() {
     setIsMounted(true);
   }, []);
 
-  // Points lumineux statiques (optimisation)
+  // Points lumineux statiques
   const lightPoints = useRef(
     [...Array(10)].map(() => ({
       left: `${Math.random() * 100}%`,
@@ -24,32 +26,11 @@ const AboutSection = memo(function AboutSection() {
     }))
   ).current;
 
-  const visionCards = [
-    {
-      number: "01",
-      icon: Lightbulb,
-      title: "Conseil & Stratégie Technologique",
-      description: "Je sélectionne les technologies les plus rentables pour votre business, en éliminant les surcoûts et les risques techniques dès la conception."
-    },
-    {
-      number: "02",
-      icon: Handshake,
-      title: "Partenariat Stratégique & Vision Long Terme",
-      description: "Plus qu'un développeur, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
-    },
-    {
-      number: "03",
-      icon: Sparkles,
-      title: "Innovation & Performance Commerciale",
-      description: "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
-    },
-    {
-      number: "04",
-      icon: MessagesSquare,
-      title: "Engagement & Co-conception",
-      description: "Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
-    }
-  ];
+  // Récupérer les cartes de vision depuis les traductions
+  const visionData = t('vision', 'about');
+  
+  // S'assurer que visionCards est un tableau
+  const visionCards = visionData  ;
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -76,11 +57,11 @@ const AboutSection = memo(function AboutSection() {
       <section 
         id="about" 
         className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
-        aria-label="À propos"
+        aria-label={t('badge', 'about')}
       >
-        {/* FOND - avec dégradé et formes floues - INTENSITÉ RÉDUITE */}
+        {/* FOND - avec dégradé et formes floues */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles - opacité réduite */}
+          {/* Lignes subtiles */}
           <div className="absolute inset-0" style={{
             backgroundImage: `repeating-linear-gradient(90deg, 
               rgba(59,130,246,0.02) 0px, 
@@ -96,7 +77,7 @@ const AboutSection = memo(function AboutSection() {
               transparent 60px)`
           }}></div>
           
-          {/* Éléments décoratifs - INTENSITÉ FORTEMENT RÉDUITE */}
+          {/* Éléments décoratifs */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
@@ -111,11 +92,11 @@ const AboutSection = memo(function AboutSection() {
               {isMounted ? (
                 <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-sm border border-blue-500/20 backdrop-blur-sm">
                   <Sparkles size={12} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">À votre écoute</span>
+                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">{t('badge', 'about')}</span>
                 </div>
               ) : (
                 <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full border border-blue-500/20">
-                  <span className="text-sm font-medium">À votre écoute</span>
+                  <span className="text-sm font-medium">{t('badge', 'about')}</span>
                 </div>
               )}
             </div>
@@ -123,14 +104,14 @@ const AboutSection = memo(function AboutSection() {
             {/* Titre et sous-titre */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
-                Transformez vos ambitions en
+                {t('title', 'about')}
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 sm:mt-2">
-                  actifs numériques performants.
+                  {t('subtitle', 'about')}
                 </span>
               </h2>
 
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4">
-                Chaque projet est conçu pour s'aligner sur vos objectifs commerciaux et offrir une expérience utilisateur sans compromis.
+                {t('description', 'about')}
               </p>
 
               {/* Séparateur */}
@@ -139,38 +120,54 @@ const AboutSection = memo(function AboutSection() {
             
             {/* CARTES MA VISION */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
-              {visionCards.map((card, index) => (
-                <div
-                  key={index}
-                  className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 lg:p-8 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative"
-                >
-                  <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {Array.isArray(visionCards) && visionCards.length > 0 ? (
+                visionCards.map((card: any, index: number) => {
+                  // Associer l'icône en fonction du numéro
+                  const Icon = 
+                    index === 0 ? Lightbulb :
+                    index === 1 ? Handshake :
+                    index === 2 ? Sparkles :
+                    MessagesSquare;
                   
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl sm:text-4xl font-bold text-blue-400/80 group-hover:text-blue-400 transition-colors">
-                        {card.number}
-                      </span>
-                      <card.icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" />
+                  return (
+                    <div
+                      key={index}
+                      className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 lg:p-8 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative"
+                    >
+                      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-3xl sm:text-4xl font-bold text-blue-400/80 group-hover:text-blue-400 transition-colors">
+                            {`0${index + 1}`}
+                          </span>
+                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" />
+                        </div>
+                        
+                        <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+                          {card.title}
+                        </h3>
+                        
+                        <p className="text-xs sm:text-sm md:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                          {card.description}
+                        </p>
+                      </div>
                     </div>
-                    
-                    <h3 className="text-base sm:text-lg md:text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
-                      {card.title}
-                    </h3>
-                    
-                    <p className="text-xs sm:text-sm md:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
-                      {card.description}
-                    </p>
-                  </div>
+                  );
+                })
+              ) : (
+                // Fallback en cas d'absence de données
+                <div className="col-span-2 text-center text-gray-400 py-10">
+                  Chargement des données...
                 </div>
-              ))}
+              )}
             </div>
 
             {/* BADGE "Qui suis-je ?" */}
             <div className="flex justify-center mb-6 md:mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
                 <User size={16} className="text-blue-400" />
-                <span className="text-sm sm:text-base font-semibold tracking-wide">Qui suis-je ?</span>
+                <span className="text-sm sm:text-base font-semibold tracking-wide">{t('whoami', 'about')}</span>
               </div>
             </div>
 
@@ -181,13 +178,13 @@ const AboutSection = memo(function AboutSection() {
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
                   
-                  {/* Cercles - INTENSITÉ RÉDUITE */}
+                  {/* Cercles */}
                   <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
                   <div className="absolute -inset-6 border-2 border-cyan-400/10 rounded-full -z-10 will-change-transform" aria-hidden="true" />
                   <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-xl -z-10 will-change-transform" aria-hidden="true" />
                   <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
                   
-                  {/* Points lumineux - INTENSITÉ RÉDUITE */}
+                  {/* Points lumineux */}
                   {lightPoints.map((point, i) => (
                     <div
                       key={i}
@@ -210,7 +207,7 @@ const AboutSection = memo(function AboutSection() {
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <Globe size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
                       <Smartphone size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">Web & Mobile</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">{t('profile.badges.webMobile', 'about')}</span>
                     </div>
                   </div>
 
@@ -221,7 +218,7 @@ const AboutSection = memo(function AboutSection() {
                   >
                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 bg-white rounded-full" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">Disponible</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">{t('profile.badges.available', 'about')}</span>
                     </div>
                   </div>
 
@@ -247,37 +244,42 @@ const AboutSection = memo(function AboutSection() {
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
                 
                 <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 text-white">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Abdoulaye Patawala</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                    {t('profile.name', 'about')}
+                  </span>
                 </h3>
                 
                 <p className="text-sm sm:text-base md:text-lg text-blue-400/90 font-medium mb-4">
-                  Spécialisé en Développement Web & Mobile
+                  {t('profile.role', 'about')}
                 </p>
 
                 {/* Mission */}
                 <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                    Ma mission est de devenir le socle technique de votre entreprise. Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.
+                    {t('profile.missionText', 'about')}
+                  </p>
+                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
+                    {t('profile.description', 'about')}
                   </p>
                 </div>
 
-                {/* BOUTONS - COULEUR BLEUE CONSERVÉE */}
+                {/* BOUTONS */}
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
                     className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base lg:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px]"
-                    aria-label="Parler de mon projet"
+                    aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={14} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
-                    Me contacter
+                    {t('buttons.talk', 'about')}
                   </button>
                   
                   <button
                     onClick={handleVoirOffres}
                     className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base lg:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px]"
-                    aria-label="Voir mes offres"
+                    aria-label={t('buttons.services', 'about')}
                   >
-                    Voir mes offres
+                    {t('buttons.services', 'about')}
                   </button>
                 </div>
               </div>

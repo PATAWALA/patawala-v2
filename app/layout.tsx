@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import { ServiceProvider } from './services/context/ServiceContext';
-// import { LanguageProvider } from './context/LanguageContext'; // À décommenter quand le contexte sera prêt
+import { LanguageProvider } from './context/LanguageContext'; 
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
 import { PopupProvider } from './components/layout/PopupContext';
@@ -55,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-[#0A0F1C] text-gray-200`}>
-        {/* <LanguageProvider> */} {/* À décommenter quand le contexte sera prêt */}
+        <LanguageProvider> {/* DÉCOMMENTÉ */}
           <ServiceProvider>
             <PopupProvider> 
               <Toaster 
@@ -79,7 +79,7 @@ export default function RootLayout({
               <Analytics />
             </PopupProvider>
           </ServiceProvider>
-        {/* </LanguageProvider> */} {/* À décommenter quand le contexte sera prêt */}
+        </LanguageProvider> {/* DÉCOMMENTÉ */}
       </body>
     </html>
   );
