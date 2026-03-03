@@ -42,20 +42,44 @@ export default function ServicesPage() {
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Récupérer les traductions avec typage sécurisé
+  // Fonction pour parser les traductions en toute sécurité
+  const safeParse = <T,>(data: any, defaultValue: T): T => {
+    if (!data) return defaultValue;
+    
+    // Si c'est déjà un objet, le retourner
+    if (typeof data === 'object' && data !== null) {
+      return data as T;
+    }
+    
+    // Si c'est une chaîne, essayer de la parser
+    if (typeof data === 'string') {
+      try {
+        return JSON.parse(data) as T;
+      } catch (e) {
+        console.error('Erreur de parsing JSON:', e);
+        return defaultValue;
+      }
+    }
+    
+    return defaultValue;
+  };
+
+  // Récupérer les traductions avec parsing sécurisé
   const translations = {
     badge: t('badge', 'services-data') as string,
     title: t('title', 'services-data') as string,
     titleHighlight: t('titleHighlight', 'services-data') as string,
     subtitle: t('subtitle', 'services-data') as string,
-    filters: t('filters', 'services-data') as any,
-    faq: t('faq', 'services-data') as FaqTranslations,
-    cta: t('cta', 'services-data') as CtaTranslations,
+    filters: safeParse(t('filters', 'services-data'), {}),
     disclaimer: t('disclaimer', 'services-data') as string
   };
 
-  // Valeurs par défaut pour la FAQ si les traductions manquent
-  const defaultFaq = {
+  // Parser la FAQ et le CTA séparément
+  const rawFaq = t('faq', 'services-data');
+  const rawCta = t('cta', 'services-data');
+
+  // Valeurs par défaut pour la FAQ
+  const defaultFaq: Record<string, FaqTranslations> = {
     fr: {
       title: 'Questions fréquentes',
       subtitle: 'Pour vous éclairer sur ma façon de travailler',
@@ -103,7 +127,7 @@ export default function ServicesPage() {
   };
 
   // Valeurs par défaut pour le CTA
-  const defaultCta = {
+  const defaultCta: Record<string, CtaTranslations> = {
     fr: {
       title: 'Vous ne trouvez pas ce que vous cherchez ?',
       button: 'Discuter de mon projet'
@@ -114,9 +138,13 @@ export default function ServicesPage() {
     }
   };
 
-  // Utiliser les traductions ou les valeurs par défaut
-  const faq = translations.faq?.title ? translations.faq : defaultFaq[language as keyof typeof defaultFaq];
-  const cta = translations.cta?.title ? translations.cta : defaultCta[language as keyof typeof defaultCta];
+  // Parser la FAQ et utiliser les valeurs par défaut si nécessaire
+  const parsedFaq = safeParse<FaqTranslations>(rawFaq, defaultFaq[language]);
+  const faq = parsedFaq.title ? parsedFaq : defaultFaq[language];
+
+  // Parser le CTA et utiliser les valeurs par défaut si nécessaire
+  const parsedCta = safeParse<CtaTranslations>(rawCta, defaultCta[language]);
+  const cta = parsedCta.title ? parsedCta : defaultCta[language];
 
   // Écouter les changements d'URL hash
   useEffect(() => {
@@ -303,7 +331,7 @@ export default function ServicesPage() {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          {/* Flèche gauche - visible sur mobile et au survol sur desktop */}
+          {/* Flèche gauche */}
           <AnimatePresence>
             {(showLeftArrow) && (
               <motion.button
@@ -323,7 +351,7 @@ export default function ServicesPage() {
             )}
           </AnimatePresence>
 
-          {/* Flèche droite - visible sur mobile et au survol sur desktop */}
+          {/* Flèche droite */}
           <AnimatePresence>
             {(showRightArrow) && (
               <motion.button
@@ -343,7 +371,7 @@ export default function ServicesPage() {
             )}
           </AnimatePresence>
 
-          {/* Indicateurs de défilement (petits points) */}
+          {/* Indicateurs de défilement */}
           <div className="flex justify-center gap-1.5 mt-2 md:hidden">
             {activeServices.map((_, index) => {
               const isVisible = () => {
