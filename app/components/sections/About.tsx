@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, CheckCircle, Globe, Smartphone, User } from 'lucide-react';
+import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile1.png';
@@ -26,11 +26,11 @@ const AboutSection = memo(function AboutSection() {
     }))
   ).current;
 
-  // Récupérer les cartes de vision depuis les traductions
+  // Récupérer les cartes de vision
   const visionData = t('vision', 'about');
-  
-  // S'assurer que visionCards est un tableau
-  const visionCards = visionData  ;
+  const visionCards = visionData && visionData.cards ? visionData.cards : [];
+
+  console.log('Vision cards:', visionCards); // Pour déboguer
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -61,7 +61,6 @@ const AboutSection = memo(function AboutSection() {
       >
         {/* FOND - avec dégradé et formes floues */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles */}
           <div className="absolute inset-0" style={{
             backgroundImage: `repeating-linear-gradient(90deg, 
               rgba(59,130,246,0.02) 0px, 
@@ -77,13 +76,11 @@ const AboutSection = memo(function AboutSection() {
               transparent 60px)`
           }}></div>
           
-          {/* Éléments décoratifs */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
           <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
         </div>
         
-        {/* Container principal */}
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-5xl mx-auto">
             
@@ -114,7 +111,6 @@ const AboutSection = memo(function AboutSection() {
                 {t('description', 'about')}
               </p>
 
-              {/* Séparateur */}
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
             
@@ -122,7 +118,6 @@ const AboutSection = memo(function AboutSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8 mb-12 sm:mb-16 md:mb-20">
               {Array.isArray(visionCards) && visionCards.length > 0 ? (
                 visionCards.map((card: any, index: number) => {
-                  // Associer l'icône en fonction du numéro
                   const Icon = 
                     index === 0 ? Lightbulb :
                     index === 1 ? Handshake :
@@ -156,7 +151,6 @@ const AboutSection = memo(function AboutSection() {
                   );
                 })
               ) : (
-                // Fallback en cas d'absence de données
                 <div className="col-span-2 text-center text-gray-400 py-10">
                   Chargement des données...
                 </div>
@@ -200,10 +194,7 @@ const AboutSection = memo(function AboutSection() {
                   ))}
 
                   {/* Badge en haut à gauche */}
-                  <div 
-                    className="absolute top-0 left-0 z-30"
-                    style={{ transform: 'translate(-5%, -5%)' }}
-                  >
+                  <div className="absolute top-0 left-0 z-30" style={{ transform: 'translate(-5%, -5%)' }}>
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <Globe size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
                       <Smartphone size={8} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" aria-hidden="true" />
@@ -212,10 +203,7 @@ const AboutSection = memo(function AboutSection() {
                   </div>
 
                   {/* Badge en bas à droite */}
-                  <div 
-                    className="absolute bottom-0 right-0 z-30"
-                    style={{ transform: 'translate(5%, 5%)' }}
-                  >
+                  <div className="absolute bottom-0 right-0 z-30" style={{ transform: 'translate(5%, 5%)' }}>
                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-1.5 md:px-2 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 bg-white rounded-full" />
                       <span className="text-[8px] xs:text-[8px] sm:text-[8px] md:text-[10px] lg:text-xs font-semibold whitespace-nowrap">{t('profile.badges.available', 'about')}</span>
@@ -232,8 +220,6 @@ const AboutSection = memo(function AboutSection() {
                       sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
                       priority
                       quality={85}
-                      placeholder="blur"
-                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent pointer-events-none" aria-hidden="true" />
                   </div>
@@ -257,9 +243,6 @@ const AboutSection = memo(function AboutSection() {
                 <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
                   <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
                     {t('profile.missionText', 'about')}
-                  </p>
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 leading-relaxed">
-                    {t('profile.description', 'about')}
                   </p>
                 </div>
 

@@ -2,8 +2,8 @@
   "badge": "À votre écoute",
   "title": "Transformez vos ambitions en",
   "subtitle": "actifs numériques performants.",
-  "description": "Chaque projet est pour moi l'opportunité de bâtir une solution unique, alignée sur vos objectifs et les besoins de vos utilisateurs.",
-  "whoami": "Qui suis-je ?", 
+  "description": "Chaque projet est conçu pour s'aligner sur vos objectifs commerciaux et offrir une expérience utilisateur sans compromis.",
+  "whoami": "Qui suis-je ?",
   "vision": {
     "cards": [
       {
@@ -25,16 +25,9 @@
     ]
   },
   "profile": {
-    "greeting": "Hello, je suis",
     "name": "Abdoulaye Patawala",
     "role": "Spécialisé en Développement Web & Mobile",
-    "mission": "Ma mission :",
     "missionText": "Ma mission est de devenir le socle technique de votre entreprise. Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.",
-    "description": "",
-    "message": {
-      "question": "Besoin d'un diagnostic pour votre projet ?",
-      "text": "Je vous conseille pour définir la solution technologique la plus adaptée et rentable pour vos objectifs."
-    },
     "badges": {
       "webMobile": "Web & Mobile",
       "available": "Disponible"

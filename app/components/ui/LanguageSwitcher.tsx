@@ -5,16 +5,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '@/app/context/LanguageContext';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import Image from 'next/image';
+
+// Importer les images des drapeaux
+import frFlag from '../../assets/flags/fr.svg';
+import gbFlag from '../../assets/flags/gb.svg';
 
 interface Language {
   code: 'fr' | 'en';
   label: string;
-  flag: string;
+  flag: any; // Pour l'image importée
 }
 
 const languages: Language[] = [
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'en', label: 'English', flag: '🇬🇧' }
+  { code: 'fr', label: 'Français', flag: frFlag },
+  { code: 'en', label: 'English', flag: gbFlag }
 ];
 
 export default function LanguageSwitcher() {
@@ -51,8 +56,16 @@ export default function LanguageSwitcher() {
         aria-label={t('languageSwitcher.ariaLabel', 'navigation')}
         aria-expanded={isOpen}
       >
-        {/* Afficher le drapeau au lieu du code */}
-        <span className="text-lg">{currentLanguage.flag}</span>
+        {/* Image du drapeau */}
+        <div className="relative w-5 h-5 rounded-sm overflow-hidden">
+          <Image
+            src={currentLanguage.flag}
+            alt={currentLanguage.label}
+            fill
+            className="object-cover"
+            sizes="20px"
+          />
+        </div>
         <span className="hidden lg:inline">{currentLanguage.label}</span>
         <ChevronDown 
           size={14} 
@@ -79,8 +92,16 @@ export default function LanguageSwitcher() {
                     : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                 }`}
               >
-                {/* Drapeau dans le dropdown */}
-                <span className="text-lg">{lang.flag}</span>
+                {/* Image du drapeau dans le dropdown */}
+                <div className="relative w-5 h-5 rounded-sm overflow-hidden">
+                  <Image
+                    src={lang.flag}
+                    alt={lang.label}
+                    fill
+                    className="object-cover"
+                    sizes="20px"
+                  />
+                </div>
                 <span className="text-sm font-medium">{lang.label}</span>
                 {language === lang.code && (
                   <motion.div 

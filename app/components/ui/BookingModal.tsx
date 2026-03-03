@@ -8,6 +8,34 @@ import {
   ChevronRight, Sparkles, MessageCircle,
   ChevronDown, Info, ThumbsUp, AlertCircle
 } from 'lucide-react';
+import Image from 'next/image';
+
+// Importer les images des drapeaux
+import frFlag from '../../assets/flags/fr.svg';
+import beFlag from '../../assets/flags/be.svg';
+import chFlag from '../../assets/flags/ch.svg';
+import luFlag from '../../assets/flags/lu.svg';
+import mcFlag from '../../assets/flags/mc.svg';
+import caFlag from '../../assets/flags/ca.svg';
+import ciFlag from '../../assets/flags/ci.svg';
+import snFlag from '../../assets/flags/sn.svg';
+import cmFlag from '../../assets/flags/cm.svg';
+import bfFlag from '../../assets/flags/bf.svg';
+import bjFlag from '../../assets/flags/bj.svg';
+import tgFlag from '../../assets/flags/tg.svg';
+import mlFlag from '../../assets/flags/ml.svg';
+import neFlag from '../../assets/flags/ne.svg';
+import gnFlag from '../../assets/flags/gn.svg';
+import usFlag from '../../assets/flags/us.svg';
+import gbFlag from '../../assets/flags/gb.svg';
+import deFlag from '../../assets/flags/de.svg';
+import itFlag from '../../assets/flags/it.svg';
+import esFlag from '../../assets/flags/es.svg';
+import ptFlag from '../../assets/flags/pt.svg';
+import nlFlag from '../../assets/flags/nl.svg';
+import maFlag from '../../assets/flags/ma.svg';
+import dzFlag from '../../assets/flags/dz.svg';
+import tnFlag from '../../assets/flags/tn.svg';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -25,33 +53,33 @@ const weekDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 type ContactMethod = 'whatsapp' | 'email';
 
-// Liste des pays avec indicatifs et drapeaux
+// Liste des pays avec indicatifs et images de drapeaux
 const countries = [
-  { code: 'FR', name: 'France', dialCode: '+33', flag: '🇫🇷' },
-  { code: 'BE', name: 'Belgique', dialCode: '+32', flag: '🇧🇪' },
-  { code: 'CH', name: 'Suisse', dialCode: '+41', flag: '🇨🇭' },
-  { code: 'LU', name: 'Luxembourg', dialCode: '+352', flag: '🇱🇺' },
-  { code: 'MC', name: 'Monaco', dialCode: '+377', flag: '🇲🇨' },
-  { code: 'CA', name: 'Canada', dialCode: '+1', flag: '🇨🇦' },
-  { code: 'CI', name: 'Côte d\'Ivoire', dialCode: '+225', flag: '🇨🇮' },
-  { code: 'SN', name: 'Sénégal', dialCode: '+221', flag: '🇸🇳' },
-  { code: 'CM', name: 'Cameroun', dialCode: '+237', flag: '🇨🇲' },
-  { code: 'BF', name: 'Burkina Faso', dialCode: '+226', flag: '🇧🇫' },
-  { code: 'BJ', name: 'Bénin', dialCode: '+229', flag: '🇧🇯' },
-  { code: 'TG', name: 'Togo', dialCode: '+228', flag: '🇹🇬' },
-  { code: 'ML', name: 'Mali', dialCode: '+223', flag: '🇲🇱' },
-  { code: 'NE', name: 'Niger', dialCode: '+227', flag: '🇳🇪' },
-  { code: 'GN', name: 'Guinée', dialCode: '+224', flag: '🇬🇳' },
-  { code: 'US', name: 'États-Unis', dialCode: '+1', flag: '🇺🇸' },
-  { code: 'GB', name: 'Royaume-Uni', dialCode: '+44', flag: '🇬🇧' },
-  { code: 'DE', name: 'Allemagne', dialCode: '+49', flag: '🇩🇪' },
-  { code: 'IT', name: 'Italie', dialCode: '+39', flag: '🇮🇹' },
-  { code: 'ES', name: 'Espagne', dialCode: '+34', flag: '🇪🇸' },
-  { code: 'PT', name: 'Portugal', dialCode: '+351', flag: '🇵🇹' },
-  { code: 'NL', name: 'Pays-Bas', dialCode: '+31', flag: '🇳🇱' },
-  { code: 'MA', name: 'Maroc', dialCode: '+212', flag: '🇲🇦' },
-  { code: 'DZ', name: 'Algérie', dialCode: '+213', flag: '🇩🇿' },
-  { code: 'TN', name: 'Tunisie', dialCode: '+216', flag: '🇹🇳' },
+  { code: 'FR', name: 'France', dialCode: '+33', flag: frFlag },
+  { code: 'BE', name: 'Belgique', dialCode: '+32', flag: beFlag },
+  { code: 'CH', name: 'Suisse', dialCode: '+41', flag: chFlag },
+  { code: 'LU', name: 'Luxembourg', dialCode: '+352', flag: luFlag },
+  { code: 'MC', name: 'Monaco', dialCode: '+377', flag: mcFlag },
+  { code: 'CA', name: 'Canada', dialCode: '+1', flag: caFlag },
+  { code: 'CI', name: 'Côte d\'Ivoire', dialCode: '+225', flag: ciFlag },
+  { code: 'SN', name: 'Sénégal', dialCode: '+221', flag: snFlag },
+  { code: 'CM', name: 'Cameroun', dialCode: '+237', flag: cmFlag },
+  { code: 'BF', name: 'Burkina Faso', dialCode: '+226', flag: bfFlag },
+  { code: 'BJ', name: 'Bénin', dialCode: '+229', flag: bjFlag },
+  { code: 'TG', name: 'Togo', dialCode: '+228', flag: tgFlag },
+  { code: 'ML', name: 'Mali', dialCode: '+223', flag: mlFlag },
+  { code: 'NE', name: 'Niger', dialCode: '+227', flag: neFlag },
+  { code: 'GN', name: 'Guinée', dialCode: '+224', flag: gnFlag },
+  { code: 'US', name: 'États-Unis', dialCode: '+1', flag: usFlag },
+  { code: 'GB', name: 'Royaume-Uni', dialCode: '+44', flag: gbFlag },
+  { code: 'DE', name: 'Allemagne', dialCode: '+49', flag: deFlag },
+  { code: 'IT', name: 'Italie', dialCode: '+39', flag: itFlag },
+  { code: 'ES', name: 'Espagne', dialCode: '+34', flag: esFlag },
+  { code: 'PT', name: 'Portugal', dialCode: '+351', flag: ptFlag },
+  { code: 'NL', name: 'Pays-Bas', dialCode: '+31', flag: nlFlag },
+  { code: 'MA', name: 'Maroc', dialCode: '+212', flag: maFlag },
+  { code: 'DZ', name: 'Algérie', dialCode: '+213', flag: dzFlag },
+  { code: 'TN', name: 'Tunisie', dialCode: '+216', flag: tnFlag },
 ];
 
 // Numéro WhatsApp cible
@@ -86,10 +114,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
 
-  // Scroll en haut du modal quand on passe à l'étape 2 (surtout pour mobile)
+  // Scroll en haut du modal quand on passe à l'étape 2
   useEffect(() => {
     if (step === 2 && modalContentRef.current) {
-      // Petit délai pour laisser le temps à l'animation de se faire
       setTimeout(() => {
         modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
@@ -112,16 +139,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
     
-    // Premier jour du mois
     const firstDay = new Date(year, month, 1);
     
-    // Ajuster pour commencer par lundi
     let startDate = new Date(firstDay);
-    const dayOfWeek = startDate.getDay(); // 0 = dimanche, 1 = lundi...
+    const dayOfWeek = startDate.getDay();
     const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
     startDate.setDate(firstDay.getDate() - daysToSubtract);
     
-    // Générer 42 jours (6 semaines)
     const days: Date[] = [];
     for (let i = 0; i < 42; i++) {
       const date = new Date(startDate);
@@ -151,11 +175,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   };
 
   const handleDateSelect = (date: Date) => {
-    // Formater la date en gardant le fuseau horaire local
-    // On crée une nouvelle date à minuit en heure locale
     const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
-    // Format YYYY-MM-DD pour le stockage
     const year = localDate.getFullYear();
     const month = String(localDate.getMonth() + 1).padStart(2, '0');
     const day = String(localDate.getDate()).padStart(2, '0');
@@ -168,15 +189,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setTimeError(null);
   };
 
-  // Fonction pour cacher le message quand on interagit avec le champ heure
   const handleTimeInputFocus = () => {
     setDateSelectedMessage(false);
     setTimeError(null);
   };
 
-  // Fonction pour parser l'heure saisie
   const parseTime = (input: string): { hours: number; minutes: number } | null => {
-    // Patterns courants
     const patterns = [
       /(\d{1,2})\s*h(?:\s*(\d{1,2})\s*(?:min|mn|minutes?)?)?/i,
       /(\d{1,2}):(\d{2})/,
@@ -197,18 +215,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     return null;
   };
 
-  // Fonction pour vérifier si l'heure est déjà passée (CORRIGÉE)
   const isTimePast = (dateStr: string, timeStr: string): boolean => {
     const parsedTime = parseTime(timeStr);
     if (!parsedTime) return false;
 
-    // Extraire l'année, mois et jour de la date string
     const [year, month, day] = dateStr.split('-').map(Number);
-    
-    // Créer la date avec l'heure en heure locale
-    // Note: mois - 1 car les mois vont de 0 à 11 en JS
     const selectedDateTime = new Date(year, month - 1, day, parsedTime.hours, parsedTime.minutes, 0);
-    
     const now = new Date();
     
     return selectedDateTime < now;
@@ -219,7 +231,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setTimeInput(input);
     setDateSelectedMessage(false);
     
-    // Vérifier si l'heure est valide et pas dans le passé
     if (input.trim() && selectedDate) {
       const parsedTime = parseTime(input);
       if (parsedTime) {
@@ -240,7 +251,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setTimeInput(example);
     setDateSelectedMessage(false);
     
-    // Vérifier si l'heure exemple est dans le passé
     if (selectedDate) {
       if (isTimePast(selectedDate, example)) {
         setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
@@ -252,7 +262,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const handleTimeSubmit = () => {
     if (timeInput.trim()) {
-      // Vérifier une dernière fois si l'heure est dans le passé
       if (selectedDate && isTimePast(selectedDate, timeInput)) {
         setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
         return;
@@ -265,7 +274,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const handleBack = () => {
     setStep(1);
-    setTimeInput(selectedTime); // Garder l'heure saisie
+    setTimeInput(selectedTime);
   };
 
   const validateForm = () => {
@@ -291,9 +300,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       return;
     }
     
-    // Formater la date pour l'affichage - UTILISER L'HEURE LOCALE
     const [year, month, day] = selectedDate.split('-').map(Number);
-    // Créer une date en heure locale (mois-1 car les mois vont de 0 à 11)
     const selectedDay = new Date(year, month - 1, day);
     
     const formattedDate = selectedDay.toLocaleDateString('fr-FR', { 
@@ -306,7 +313,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     let targetUrl = '';
     
     if (contactMethod === 'whatsapp') {
-      // Formatage du message pour WhatsApp
       message = `🔔 *NOUVELLE DEMANDE DE RENDEZ-VOUS* 🔔
       
 👤 *Nom:* ${formData.name}
@@ -315,7 +321,6 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 ⏰ *Heure:* ${selectedTime}
 💬 *Message:* ${formData.message || 'Pas de message'}`;
       
-      // Redirection vers le numéro cible
       targetUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     } else {
       message = `🔔 NOUVELLE DEMANDE DE RENDEZ-VOUS 🔔
@@ -329,16 +334,12 @@ Message: ${formData.message || 'Pas de message'}`;
       targetUrl = `mailto:contact@patawala.com?subject=Rendez-vous le ${formattedDate}&body=${encodeURIComponent(message)}`;
     }
     
-    // Ouvrir WhatsApp ou email
     window.open(targetUrl, '_blank');
     
-    // Afficher le message de confirmation
     setIsSubmitted(true);
     
-    // Fermer le modal après 2 secondes
     setTimeout(() => {
       onClose();
-      // Réinitialiser tout
       setStep(1);
       setSelectedDate('');
       setSelectedTime('');
@@ -357,17 +358,14 @@ Message: ${formData.message || 'Pas de message'}`;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    // Créer une copie de la date à comparer avec les heures mises à 0
     const compareDate = new Date(date);
     compareDate.setHours(0, 0, 0, 0);
     
     return compareDate >= today;
   };
 
-  // Fonction pour formater la date pour l'affichage dans le récapitulatif
   const formatDisplayDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split('-').map(Number);
-    // Créer la date en heure locale (mois-1 car les mois vont de 0 à 11)
     const date = new Date(year, month - 1, day);
     return date.toLocaleDateString('fr-FR', { 
       weekday: 'short', 
@@ -407,7 +405,7 @@ Message: ${formData.message || 'Pas de message'}`;
             <X size={20} className="text-gray-400" />
           </button>
 
-          {/* En-tête - Fixe en haut */}
+          {/* En-tête */}
           <div className="sticky top-0 z-10 p-5 sm:p-8 border-b border-[#1F2937] bg-gradient-to-r from-blue-500/10 to-transparent bg-[#0A0F1C]">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles size={18} className="text-blue-400" />
@@ -430,7 +428,7 @@ Message: ${formData.message || 'Pas de message'}`;
             </div>
           </div>
 
-          {/* Corps du modal - Scrollable */}
+          {/* Corps du modal */}
           <div 
             ref={modalContentRef}
             className="p-5 sm:p-8 overflow-y-auto"
@@ -494,7 +492,6 @@ Message: ${formData.message || 'Pas de message'}`;
                     {calendarDays.map((date, index) => {
                       const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
                       
-                      // Créer une date à minuit en heure locale pour la comparaison
                       const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
@@ -502,7 +499,6 @@ Message: ${formData.message || 'Pas de message'}`;
                       const isSelectable = localDate >= today;
                       const isToday = localDate.toDateString() === today.toDateString();
                       
-                      // Formater la date pour le stockage
                       const year = date.getFullYear();
                       const month = String(date.getMonth() + 1).padStart(2, '0');
                       const day = String(date.getDate()).padStart(2, '0');
@@ -559,7 +555,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   )}
                 </AnimatePresence>
 
-                {/* Champ d'heure qui apparaît après sélection de date */}
+                {/* Champ d'heure */}
                 <AnimatePresence>
                   {showTimeField && (
                     <motion.div
@@ -570,7 +566,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     >
                       <label className="block text-sm font-medium text-gray-300">
                         <Clock size={16} className="inline mr-2 text-blue-400" />
-                        À quelle heure voulez-vous qu'on s'appelle ?
+                        Indiquez l'heure du rendez-vous :
                       </label>
                       
                       <div className="space-y-3">
@@ -587,7 +583,6 @@ Message: ${formData.message || 'Pas de message'}`;
                           autoFocus
                         />
                         
-                        {/* Message d'erreur si l'heure est invalide ou passée */}
                         {timeError && (
                           <motion.div
                             initial={{ opacity: 0, y: -10 }}
@@ -634,7 +629,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   )}
                 </AnimatePresence>
 
-                {/* Message si pas de date sélectionnée */}
+                {/* Message si pas de date */}
                 {!showTimeField && !dateSelectedMessage && (
                   <div className="bg-[#141B2B] rounded-xl p-6 text-center border border-[#1F2937] border-dashed">
                     <Calendar size={32} className="mx-auto text-gray-600 mb-2" />
@@ -646,7 +641,7 @@ Message: ${formData.message || 'Pas de message'}`;
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Récapitulatif du rendez-vous */}
+                {/* Récapitulatif */}
                 {selectedDate && selectedTime && (
                   <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                     <p className="text-xs text-gray-400 mb-2">Récapitulatif de votre rendez-vous :</p>
@@ -719,7 +714,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   )}
                 </div>
 
-                {/* Email ou Téléphone selon le choix */}
+                {/* Email ou Téléphone */}
                 {contactMethod === 'whatsapp' ? (
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1.5">
@@ -727,7 +722,7 @@ Message: ${formData.message || 'Pas de message'}`;
                       Numéro WhatsApp
                     </label>
                     <div className="flex flex-col sm:flex-row gap-2">
-                      {/* Sélecteur de pays */}
+                      {/* Sélecteur de pays avec IMAGES */}
                       <div className="relative w-full sm:w-32" ref={countryDropdownRef}>
                         <button
                           type="button"
@@ -735,14 +730,23 @@ Message: ${formData.message || 'Pas de message'}`;
                           className="w-full flex items-center justify-between gap-2 px-3 py-4 sm:py-3 bg-[#141B2B] border border-[#1F2937] rounded-xl text-sm text-white hover:bg-[#1E2638] transition-colors"
                         >
                           <span className="flex items-center gap-2">
-                            <span className="text-lg">{selectedCountry.flag}</span>
+                            {/* Image du drapeau sélectionné */}
+                            <div className="relative w-5 h-5 rounded-sm overflow-hidden">
+                              <Image
+                                src={selectedCountry.flag}
+                                alt={selectedCountry.name}
+                                fill
+                                className="object-cover"
+                                sizes="20px"
+                              />
+                            </div>
                             <span className="sm:hidden">{selectedCountry.name}</span>
                             <span>{selectedCountry.dialCode}</span>
                           </span>
                           <ChevronDown size={16} className={`text-gray-400 transition-transform ${showCountryDropdown ? 'rotate-180' : ''}`} />
                         </button>
                         
-                        {/* Dropdown des pays */}
+                        {/* Dropdown des pays avec IMAGES */}
                         <AnimatePresence>
                           {showCountryDropdown && (
                             <motion.div
@@ -761,7 +765,16 @@ Message: ${formData.message || 'Pas de message'}`;
                                   }}
                                   className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#1E2638] transition-colors text-left"
                                 >
-                                  <span className="text-lg">{country.flag}</span>
+                                  {/* Image du drapeau */}
+                                  <div className="relative w-5 h-5 rounded-sm overflow-hidden flex-shrink-0">
+                                    <Image
+                                      src={country.flag}
+                                      alt={country.name}
+                                      fill
+                                      className="object-cover"
+                                      sizes="20px"
+                                    />
+                                  </div>
                                   <span className="text-sm text-gray-300 flex-1">{country.name}</span>
                                   <span className="text-xs text-gray-500">{country.dialCode}</span>
                                 </button>

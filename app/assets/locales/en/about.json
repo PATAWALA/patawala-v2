@@ -1,8 +1,8 @@
 {
   "badge": "At your service",
-  "title": "Transform your ambitions",
-  "subtitle": "into high-performance digital assets",
-  "description": "For me, every project is an opportunity to build a unique solution, aligned with your goals and your users' needs.",
+  "title": "Transform your ambitions into",
+  "subtitle": "high-performance digital assets",
+  "description": "Each project is designed to align with your business goals and deliver an uncompromising user experience.",
   "whoami": "Who am I?",
   "vision": {
     "cards": [
@@ -12,7 +12,7 @@
       },
       {
         "title": "Strategic Partnership & Long-Term Vision",
-        "description": "More than just a developer, I become your trusted advisor to build a solid partnership, secure your choices, and evolve your tools alongside your growth."
+        "description": "More than a developer, I become your trusted technology advisor to build a solid partnership, secure your choices, and evolve your tools alongside your sustainable growth."
       },
       {
         "title": "Innovation & Sales Performance",
@@ -25,16 +25,9 @@
     ]
   },
   "profile": {
-    "greeting": "Hello, I'm",
     "name": "Abdoulaye Patawala",
-    "role": "Specializing in Web & Mobile Development",
-    "mission": "My mission:",
-    "missionText": "To become the technical foundation of your business, allowing you to focus entirely on your core growth.",
-    "description": "From strategic landing pages to complex application ecosystems, I transform your ideas into robust production tools built to last.",
-    "message": {
-      "question": "Need a diagnostic for your project?",
-      "text": "I provide expert consulting to help you define the most cost-effective and suitable technological solution for your goals."
-    },
+    "role": "Specialized in Web & Mobile Development",
+    "missionText": "My mission is to become the technical foundation of your business. From strategic showcase sites to complex application ecosystems, I transform your ideas into robust production tools built to last.",
     "badges": {
       "webMobile": "Web & Mobile",
       "available": "Available"
