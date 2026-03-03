@@ -1,110 +1,102 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle } from 'lucide-react';
-import { Service } from './data/servicesData';
-import { useState } from 'react';
-import BookingModal from '../components/ui/BookingModal';
+import { filterCategories, CategoryType } from './data/servicesData';
+import { useLanguage } from '../context/LanguageContext';
 
-interface ServiceCardProps {
-  service: Service;
-  delay: number;
+interface ServiceFilterProps {
+  activeCategory: CategoryType;
+  onCategoryChange: (category: CategoryType) => void;
 }
 
-export default function ServiceCard({ service, delay }: ServiceCardProps) {
-  // Vérification que service existe
-  if (!service) {
-    console.error('Service est undefined dans ServiceCard');
-    return null;
-  }
-
-  const Icon = service.icon;
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
-  const handleOpenBooking = () => {
-    setIsBookingModalOpen(true);
-  };
-
-  const handleCloseBooking = () => {
-    setIsBookingModalOpen(false);
-  };
+export default function ServiceFilter({ activeCategory, onCategoryChange }: ServiceFilterProps) {
+  const { t } = useLanguage();
+  const filters = t('filters', 'services-data') || {};
 
   return (
-    <>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay, duration: 0.4 }}
-        whileHover={{ y: -4 }}
-        className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col"
-      >
-        {/* En-tête avec icône */}
-        <div className="p-6 pb-4">
-          <div className="flex items-start justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300">
-              {Icon && <Icon size={24} className="text-blue-400 group-hover:text-cyan-400 transition-colors duration-300" />}
-            </div>
+    <div className="mb-12">
+      {/* Version mobile - scroll horizontal */}
+      <div className="lg:hidden overflow-x-auto pb-4 scrollbar-hide">
+        <div className="flex gap-2 min-w-max px-1">
+          {filterCategories.map((category) => {
+            const Icon = category.icon;
+            const isActive = activeCategory === category.id;
             
-            {service.popular && (
-              <span className="bg-[#FF9800] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-[0_4px_10px_rgba(255,152,0,0.4)]">
-                Populaire
-              </span>
-            )}
-          </div>
-
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">
-            {service.title}
-          </h3>
-          
-          <p className="text-gray-400 text-sm mb-4">
-            {service.shortDesc}
-          </p>
-
-          {/* Prix */}
-          <div className="mb-4">
-            <span className="text-2xl font-bold text-white">
-              À partir de {service.pricing?.startingAt || 'Sur devis'} {service.pricing?.currency || ''}
-            </span>
-            {service.pricing?.type === 'horaire' && (
-              <span className="text-gray-500 text-sm ml-1">/h</span>
-            )}
-          </div>
-
-          {/* Description courte */}
-          <p className="text-sm text-gray-500 border-t border-[#1F2937] pt-4">
-            {service.description}
-          </p>
+            // Déterminer la couleur du dégradé en fonction de la catégorie active
+            const getGradientColor = () => {
+              if (category.id === 'web') {
+                return 'from-violet-500 to-purple-500';
+              }
+              return category.color;
+            };
+            
+            return (
+              <button
+                key={category.id}
+                onClick={() => onCategoryChange(category.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
+                  ${isActive 
+                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                    : 'bg-[#141B2B] text-gray-400 border border-[#1F2937] hover:border-gray-600 hover:text-white'
+                  }`}
+              >
+                <Icon size={16} />
+                {filters[category.id] || category.label}
+              </button>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Features */}
-        <div className="px-6 pb-6 flex-1">
-          <div className="space-y-2 mb-6">
-            {service.features?.slice(0, 3).map((feature, idx) => (
-              <div key={idx} className="flex items-start gap-2">
-                <CheckCircle size={14} className="text-cyan-400 flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-gray-300">{feature}</span>
-              </div>
-            ))}
-            {service.features?.length > 3 && (
-              <div className="text-xs text-gray-500 ml-6">
-                +{service.features.length - 3} autres fonctionnalités
-              </div>
-            )}
-          </div>
-
-          {/* CTA */}
-          <button 
-            onClick={handleOpenBooking}
-            className="w-full border border-blue-500/30 bg-blue-500/5 text-blue-400 font-medium py-2.5 px-4 rounded-xl flex items-center justify-between group/btn hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all duration-300 backdrop-blur-sm cursor-pointer"
-          >
-            <span>{service.ctaText}</span>
-            <ArrowRight size={16} className="group-hover/btn:translate-x-2 transition-transform duration-300" />
-          </button>
+      {/* Version desktop - tabs */}
+      <div className="hidden lg:flex justify-center">
+        <div className="inline-flex bg-[#141B2B] rounded-2xl p-1.5 shadow-md border border-[#1F2937]">
+          {filterCategories.map((category) => {
+            const Icon = category.icon;
+            const isActive = activeCategory === category.id;
+            
+            // Déterminer la couleur du dégradé en fonction de la catégorie active
+            const getGradientColor = () => {
+              if (category.id === 'web') {
+                return 'from-violet-500 to-purple-500';
+              }
+              return category.color;
+            };
+            
+            return (
+              <button
+                key={category.id}
+                onClick={() => onCategoryChange(category.id)}
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all
+                  ${isActive 
+                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                    : 'text-gray-400 hover:text-white hover:bg-[#1E2638]'
+                  }`}
+              >
+                <Icon size={18} />
+                {filters[category.id] || category.label}
+              </button>
+            );
+          })}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Modal de réservation */}
-      <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseBooking} />
-    </>
+      {/* Description de la catégorie active */}
+      <motion.p
+        key={activeCategory}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center text-gray-400 mt-6 max-w-2xl mx-auto"
+      >
+        {filters.description?.[activeCategory] || 
+         filterCategories.find(c => c.id === activeCategory)?.description}
+      </motion.p>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+    </div>
   );
 }

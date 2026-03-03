@@ -1,168 +1,311 @@
 {
+  "badge": "Solutions sur mesure",
+  "title": "Des solutions digitales",
+  "titleHighlight": "adaptées à vos besoins",
+  "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de la réflexion à la réalisation.",
+
+  "filters": {
+    "all": "Tous les services",
+    "web": "Développement Web",
+    "mobile": "Applications Mobile",
+    "design": "Design & Identité",
+    "consulting": "Conseil & Audit",
+    "description": {
+      "all": "L'ensemble de mes services pour votre présence digitale",
+      "web": "Sites internet, boutiques en ligne et applications web performants et évolutifs",
+      "mobile": "Applications natives et hybrides pour iOS, Android et tablettes",
+      "design": "Identité visuelle, maquettes et refonte design pour une image professionnelle",
+      "consulting": "Stratégie digitale, audit technique et accompagnement personnalisé"
+    }
+  },
+
+  "card": {
+    "popular": "Populaire",
+    "from": "À partir de",
+    "hourly": "/h",
+    "monthly": "/mois",
+    "features": {
+      "more": "+{{count}} autres fonctionnalités"
+    }
+  },
+
   "services": {
-    "web-vitrine": {
+    "site-vitrine": {
       "title": "Site Vitrine",
-      "shortDesc": "Un site professionnel pour présenter votre activité",
-      "description": "Site vitrine moderne et responsive pour présenter votre entreprise, vos services et vos réalisations.",
+      "shortDesc": "Présentez votre activité avec un site professionnel",
+      "description": "Un site élégant et fonctionnel pour présenter votre entreprise, vos services et vos réalisations.",
       "ctaText": "Créer mon site",
       "pricing": {
-        "startingAt": "150 000",
-        "currency": "FCFA"
+        "startingAt": "200",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
-        "Design sur mesure",
-        "Optimisé mobile",
+        "Design personnalisé",
+        "Adapté aux mobiles",
         "Pages illimitées",
         "Formulaire de contact",
         "Galerie photos",
-        "Blog optionnel"
+        "Mise à jour facile"
       ]
     },
-    "web-ecommerce": {
-      "title": "E-commerce",
-      "shortDesc": "Boutique en ligne clé en main",
-      "description": "Solution e-commerce complète pour vendre vos produits en ligne avec gestion des stocks et paiements sécurisés.",
+    "site-ecommerce": {
+      "title": "Site E-commerce",
+      "shortDesc": "Vendez vos produits en ligne facilement",
+      "description": "Une boutique en ligne complète pour vendre vos produits et gérer vos commandes simplement.",
       "ctaText": "Lancer ma boutique",
       "pricing": {
-        "startingAt": "350 000",
-        "currency": "FCFA"
+        "startingAt": "500",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
         "Catalogue produits",
         "Panier d'achat",
         "Paiements sécurisés",
         "Gestion des stocks",
-        "Commandes et factures",
-        "Dashboard admin"
+        "Commandes clients",
+        "Tableau de bord"
       ]
     },
-    "web-app": {
+    "application-web": {
       "title": "Application Web",
-      "shortDesc": "SaaS et applications métier",
-      "description": "Applications web complexes sur mesure : CRM, ERP, plateformes SaaS, places de marché.",
+      "shortDesc": "Des outils en ligne adaptés à vos besoins",
+      "description": "Une application web sur mesure pour automatiser vos processus et gérer votre activité.",
       "ctaText": "Développer mon app",
       "pricing": {
-        "startingAt": "500 000",
-        "currency": "FCFA"
+        "startingAt": "400",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
-        "Architecture scalable",
-        "Base de données",
-        "API RESTful",
-        "Authentification",
-        "Tableau de bord",
-        "Export de données"
+        "Espace membres",
+        "Gestion de données",
+        "Interface admin",
+        "Notifications",
+        "Tableaux de bord",
+        "Exports de données"
       ]
     },
-    "mobile-app": {
-      "title": "Application Mobile",
-      "shortDesc": "iOS, Android et cross-platform",
-      "description": "Applications mobiles natives ou hybrides (React Native, Flutter) pour tous vos besoins.",
-      "ctaText": "Créer mon app mobile",
+    "plateforme-sur-mesure": {
+      "title": "Plateforme Sur Mesure",
+      "shortDesc": "Une solution unique pour votre activité spécifique",
+      "description": "Une plateforme entièrement personnalisée pour répondre à des besoins complexes et spécifiques.",
+      "ctaText": "Discuter de mon projet",
       "pricing": {
-        "startingAt": "600 000",
-        "currency": "FCFA"
+        "startingAt": "800",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
-        "iOS et Android",
-        "Interface native",
-        "Push notifications",
-        "Hors ligne possible",
-        "App store ready",
-        "Analytics intégrés"
+        "Fonctionnalités sur mesure",
+        "Architecture évolutive",
+        "Sécurité avancée",
+        "Maintenance incluse",
+        "Formation équipe",
+        "Support prioritaire"
       ]
     },
-    "design-ux": {
-      "title": "Design UX/UI",
-      "shortDesc": "Interfaces intuitives et modernes",
-      "description": "Création de wireframes, maquettes interactives et prototypes pour valider votre concept.",
-      "ctaText": "Designer mon projet",
+    "app-ios-android": {
+      "title": "Application iOS & Android",
+      "shortDesc": "Une application pour tous vos utilisateurs",
+      "description": "Une application mobile native ou hybride disponible sur iPhone et Android.",
+      "ctaText": "Créer mon app",
       "pricing": {
-        "startingAt": "75 000",
-        "currency": "FCFA"
+        "startingAt": "600",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
-        "Wireframes",
-        "Maquettes haute-fidélité",
-        "Prototype interactif",
-        "Design system",
-        "Tests utilisateurs",
-        "Spécifications dev"
+        "Compatible iOS/Android",
+        "Design mobile",
+        "Notifications push",
+        "Hors-ligne possible",
+        "Mise à jour automatique",
+        "Statistiques d'usage"
       ]
     },
-    "design-graphique": {
+    "app-reservation": {
+      "title": "App de Réservation",
+      "shortDesc": "Prenez des rendez-vous facilement",
+      "description": "Une application pour gérer vos réservations, prises de rendez-vous et planning.",
+      "ctaText": "Gérer mes réservations",
+      "pricing": {
+        "startingAt": "500",
+        "currency": "€",
+        "type": "forfait"
+      },
+      "features": [
+        "Prise de rendez-vous",
+        "Calendrier synchronisé",
+        "Rappels automatiques",
+        "Paiement en ligne",
+        "Gestion des annulations",
+        "Dashboard pro"
+      ]
+    },
+    "app-entreprise": {
+      "title": "App d'Entreprise",
+      "shortDesc": "Tous vos outils métier dans la poche",
+      "description": "Une application privée pour vos équipes : communication, tâches, documents.",
+      "ctaText": "Équiper mon équipe",
+      "pricing": {
+        "startingAt": "400",
+        "currency": "€",
+        "type": "forfait"
+      },
+      "features": [
+        "Espace privé sécurisé",
+        "Messagerie d'équipe",
+        "Partage de documents",
+        "Gestion de tâches",
+        "Notifications",
+        "Mode hors-ligne"
+      ]
+    },
+    "identite-visuelle": {
       "title": "Identité Visuelle",
-      "shortDesc": "Logo, charte graphique, supports",
-      "description": "Création de votre identité visuelle complète : logo, couleurs, typographies, carte de visite.",
+      "shortDesc": "Une image forte et cohérente",
+      "description": "Créez une identité visuelle qui vous ressemble : logo, couleurs, typographies.",
       "ctaText": "Créer mon identité",
       "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA"
+        "startingAt": "200",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
-        "Logo et déclinaisons",
+        "Création de logo",
         "Charte graphique",
+        "Palette de couleurs",
+        "Choix typographies",
         "Cartes de visite",
-        "Papeterie",
-        "Moodboard",
-        "Fichiers sources"
+        "Kit réseaux sociaux"
       ]
     },
-    "consulting-audit": {
-      "title": "Audit Technique",
-      "shortDesc": "Analyse complète de votre projet",
-      "description": "Audit de votre projet existant : performance, sécurité, SEO, architecture technique.",
-      "ctaText": "Auditer mon projet",
+    "maquettes-site": {
+      "title": "Maquettes de Site",
+      "shortDesc": "Visualisez votre site avant développement",
+      "description": "Des maquettes claires pour voir le rendu final et valider l'ergonomie.",
+      "ctaText": "Visualiser mon site",
       "pricing": {
-        "startingAt": "100 000",
-        "currency": "FCFA"
+        "startingAt": "250",
+        "currency": "€",
+        "type": "forfait"
+      },
+      "features": [
+        "Wireframes fonctionnels",
+        "Design page par page",
+        "Version mobile incluse",
+        "Prototypes cliquables",
+        "Corps illimitées",
+        "Fichiers prêts pour dev"
+      ]
+    },
+    "redesign": {
+      "title": "Refonte Design",
+      "shortDesc": "Donnez un coup de jeune à votre site",
+      "description": "Modernisez l'apparence de votre site existant pour plus de professionnalisme.",
+      "ctaText": "Moderniser mon site",
+      "pricing": {
+        "startingAt": "300",
+        "currency": "€",
+        "type": "forfait"
+      },
+      "features": [
+        "Analyse design existant",
+        "Proposition modernisation",
+        "Amélioration ergonomie",
+        "Harmonisation visuelle",
+        "Adaptation mobile",
+        "Optimisation conversion"
+      ]
+    },
+    "audit-site": {
+      "title": "Audit de Site",
+      "shortDesc": "Identifiez les points d'amélioration",
+      "description": "Une analyse complète de votre site pour améliorer performances et visibilité.",
+      "ctaText": "Auditer mon site",
+      "pricing": {
+        "startingAt": "150",
+        "currency": "€",
+        "type": "forfait"
       },
       "features": [
         "Analyse performance",
-        "Audit sécurité",
-        "Recommandations SEO",
-        "Revue de code",
+        "Audit SEO complet",
+        "Vérification sécurité",
+        "Compatibilité mobile",
         "Rapport détaillé",
-        "Plan d'action"
-      ]
-    },
-    "consulting-strategie": {
-      "title": "Conseil Stratégique",
-      "shortDesc": "Définir la bonne approche",
-      "description": "Accompagnement pour définir votre stratégie digitale et choisir les bonnes technologies.",
-      "ctaText": "Être conseillé",
-      "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA",
-        "type": "horaire"
-      },
-      "features": [
-        "Analyse des besoins",
-        "Choix technologiques",
-        "Feuille de route",
-        "Estimation budget",
-        "Accompagnement projet",
         "Recommandations"
       ]
     },
-    "maintenance-support": {
-      "title": "Maintenance",
-      "shortDesc": "Suivi et évolutions",
-      "description": "Forfaits de maintenance pour garder votre site à jour, sécurisé et performant.",
-      "ctaText": "Maintenir mon site",
+    "accompagnement": {
+      "title": "Accompagnement Stratégique",
+      "shortDesc": "Un expert à vos côtés",
+      "description": "Conseil et accompagnement pour définir votre stratégie digitale et vos priorités.",
+      "ctaText": "Être accompagné",
       "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA",
-        "type": "mensuel"
+        "startingAt": "50",
+        "currency": "€/h",
+        "type": "horaire"
       },
       "features": [
-        "Mises à jour sécurité",
-        "Sauvegardes",
-        "Monitoring 24/7",
-        "Support prioritaire",
-        "Petites évolutions",
-        "Rapports mensuels"
+        "Analyse de vos besoins",
+        "Définition priorités",
+        "Choix technologies",
+        "Plan d'action",
+        "Suivi mensuel",
+        "Ajustements"
+      ]
+    },
+    "formation": {
+      "title": "Formation",
+      "shortDesc": "Montez en compétences",
+      "description": "Formation personnalisée pour maîtriser les outils et technologies adaptés à vos besoins.",
+      "ctaText": "Me former",
+      "pricing": {
+        "startingAt": "300",
+        "currency": "€/jour",
+        "type": "forfait"
+      },
+      "features": [
+        "Programme personnalisé",
+        "Exercices pratiques",
+        "Support de cours",
+        "Suivi post-formation",
+        "Groupes réduits",
+        "Certificat"
       ]
     }
-  }
+  },
+
+  "faq": {
+    "title": "Questions fréquentes",
+    "subtitle": "Pour vous éclairer sur ma façon de travailler",
+    "items": [
+      {
+        "question": "Quelle est la durée moyenne d'un projet ?",
+        "answer": "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
+      },
+      {
+        "question": "Proposez-vous un suivi après la livraison ?",
+        "answer": "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
+      },
+      {
+        "question": "Puis-je modifier le projet en cours de route ?",
+        "answer": "Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins."
+      },
+      {
+        "question": "Les prix affichés sont-ils définitifs ?",
+        "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
+      }
+    ]
+  },
+
+  "cta": {
+    "title": "Vous ne trouvez pas ce que vous cherchez ?",
+    "button": "Discuter de mon projet"
+  },
+
+  "disclaimer": "* Les prix sont donnés à titre indicatif. Chaque projet fait l'objet d'un devis personnalisé."
 }

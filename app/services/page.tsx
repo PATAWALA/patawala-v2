@@ -2,12 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Sparkles, HelpCircle } from 'lucide-react';
+import { ArrowRight, Sparkles, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import ServiceFilter from './ServiceFilter';
 import ServiceCard from './ServiceCard';
 import { servicesByCategory, allServices, filterCategories, CategoryType } from './data/servicesData';
 import Link from 'next/link';
 import { useServiceContext } from './context/ServiceContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ServicesPage() {
   const { 
@@ -17,7 +18,23 @@ export default function ServicesPage() {
     setIsNavigatingFromNav
   } = useServiceContext();
   
+  const { t, language } = useLanguage();
   const isInitialLoad = useRef(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  // Récupérer les traductions
+  const translations = {
+    badge: t('badge', 'services-data'),
+    title: t('title', 'services-data'),
+    titleHighlight: t('titleHighlight', 'services-data'),
+    subtitle: t('subtitle', 'services-data'),
+    filters: t('filters', 'services-data'),
+    faq: t('faq', 'services-data'),
+    cta: t('cta', 'services-data'),
+    disclaimer: t('disclaimer', 'services-data')
+  };
 
   // Écouter les changements d'URL hash
   useEffect(() => {
@@ -59,10 +76,57 @@ export default function ServicesPage() {
     }
   }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav]);
 
+  // Gestion du défilement horizontal
+  const checkScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScroll);
+      setTimeout(checkScroll, 100);
+      
+      const observer = new ResizeObserver(() => {
+        checkScroll();
+      });
+      
+      observer.observe(container);
+      
+      return () => {
+        container.removeEventListener('scroll', checkScroll);
+        observer.disconnect();
+      };
+    }
+  }, [activeCategory]);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 300;
+      const newScrollLeft = scrollContainerRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      
+      scrollContainerRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const handleCategoryChange = (categoryId: CategoryType) => {
     if (!isNavigatingFromNav) {
       setActiveCategory(categoryId);
       window.history.replaceState(null, '', `/services#${categoryId}`);
+      
+      setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollLeft = 0;
+          checkScroll();
+        }
+      }, 100);
     }
   };
 
@@ -71,30 +135,10 @@ export default function ServicesPage() {
     if (activeCategory === 'all') {
       return allServices;
     }
-    return servicesByCategory[activeCategory];
+    return servicesByCategory[activeCategory as Exclude<CategoryType, 'all'>] || [];
   };
 
   const activeServices = getActiveServices();
-
-  // FAQ statique
-  const faqItems = [
-    {
-      question: 'Quelle est la durée moyenne d\'un projet ?',
-      answer: 'Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure.'
-    },
-    {
-      question: 'Proposez-vous un suivi après la livraison ?',
-      answer: 'Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles.'
-    },
-    {
-      question: 'Puis-je modifier le projet en cours de route ?',
-      answer: 'Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins.'
-    },
-    {
-      question: 'Les prix affichés sont-ils définitifs ?',
-      answer: 'Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins.'
-    }
-  ];
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden">
@@ -145,20 +189,19 @@ export default function ServicesPage() {
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={16} className="text-blue-400" />
             <span className="text-sm font-medium text-blue-400">
-              Solutions sur mesure
+              {translations.badge}
             </span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            Des solutions digitales
+            {translations.title}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2">
-              adaptées à vos besoins
+              {translations.titleHighlight}
             </span>
           </h1>
           
           <p className="text-lg text-gray-300">
-            Sites web, applications, design ou conseil — je vous accompagne 
-            de la réflexion à la réalisation.
+            {translations.subtitle}
           </p>
         </motion.div>
 
@@ -168,26 +211,77 @@ export default function ServicesPage() {
           onCategoryChange={handleCategoryChange}
         />
 
-        {/* Grille des services */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {activeServices.map((service, index) => (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                  delay={index * 0.1}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        {/* Grille des services avec flèches de défilement sur mobile */}
+        <div className="relative">
+          {/* Flèche gauche - visible uniquement sur mobile */}
+          <AnimatePresence>
+            {showLeftArrow && (
+              <motion.button
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                onClick={() => scroll('left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 md:hidden bg-gradient-to-r from-[#0A0F1C] to-transparent pr-8 pl-2 py-4"
+                aria-label="Défiler vers la gauche"
+              >
+                <div className="bg-blue-500/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                  <ChevronLeft size={24} className="text-white" />
+                </div>
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          {/* Flèche droite - visible uniquement sur mobile */}
+          <AnimatePresence>
+            {showRightArrow && (
+              <motion.button
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 10 }}
+                onClick={() => scroll('right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 md:hidden bg-gradient-to-l from-[#0A0F1C] to-transparent pl-8 pr-2 py-4"
+                aria-label="Défiler vers la droite"
+              >
+                <div className="bg-blue-500/90 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                  <ChevronRight size={24} className="text-white" />
+                </div>
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          {/* Conteneur de cartes */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div 
+                ref={scrollContainerRef}
+                className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory scrollbar-hide"
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
+                {activeServices.map((service, index) => (
+                  <div 
+                    key={service.id} 
+                    className="min-w-[280px] sm:min-w-[320px] md:min-w-0 flex-1 snap-start"
+                  >
+                    <ServiceCard
+                      service={service}
+                      delay={index * 0.1}
+                    />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* FAQ */}
         <motion.div
@@ -198,15 +292,15 @@ export default function ServicesPage() {
         >
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Questions fréquentes
+              {translations.faq?.title}
             </h2>
             <p className="text-gray-400">
-              Pour vous éclairer sur ma façon de travailler
+              {translations.faq?.subtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {faqItems.map((item, index) => (
+            {translations.faq?.items?.map((item: { question: string; answer: string }, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -234,7 +328,7 @@ export default function ServicesPage() {
           className="text-center mt-16"
         >
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
-            Vous ne trouvez pas ce que vous cherchez ?
+            {translations.cta?.title}
           </h3>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -244,7 +338,7 @@ export default function ServicesPage() {
                 whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0"
               >
-                <span>Discuter de mon projet</span>
+                <span>{translations.cta?.button}</span>
                 <ArrowRight size={20} />
               </motion.button>
             </Link>
@@ -258,9 +352,16 @@ export default function ServicesPage() {
           transition={{ delay: 0.8 }}
           className="text-center text-xs text-gray-500 mt-8"
         >
-          * Les prix sont donnés à titre indicatif. Chaque projet fait l'objet d'un devis personnalisé.
+          {translations.disclaimer}
         </motion.p>
       </div>
+
+      {/* Style pour cacher la scrollbar sur mobile */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </main>
   );
 }

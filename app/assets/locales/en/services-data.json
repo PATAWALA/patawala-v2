@@ -1,168 +1,311 @@
 {
+  "badge": "Tailored solutions",
+  "title": "Digital solutions",
+  "titleHighlight": "adapted to your needs",
+  "subtitle": "Websites, applications, design or consulting — I accompany you from idea to realization.",
+
+  "filters": {
+    "all": "All services",
+    "web": "Web Development",
+    "mobile": "Mobile Apps",
+    "design": "Design & Identity",
+    "consulting": "Consulting & Audit",
+    "description": {
+      "all": "All my services for your digital presence",
+      "web": "Websites, online stores and web applications, performant and scalable",
+      "mobile": "Native and hybrid apps for iOS, Android and tablets",
+      "design": "Visual identity, mockups and redesign for a professional image",
+      "consulting": "Digital strategy, technical audit and personalized support"
+    }
+  },
+
+  "card": {
+    "popular": "Popular",
+    "from": "From",
+    "hourly": "/h",
+    "monthly": "/month",
+    "features": {
+      "more": "+{{count}} more features"
+    }
+  },
+
   "services": {
-    "web-vitrine": {
+    "site-vitrine": {
       "title": "Showcase Website",
-      "shortDesc": "A professional site to present your business",
-      "description": "Modern and responsive showcase website to present your company, services and achievements.",
+      "shortDesc": "Present your business with a professional website",
+      "description": "An elegant and functional website to present your company, services and achievements.",
       "ctaText": "Create my site",
       "pricing": {
-        "startingAt": "150 000",
-        "currency": "FCFA"
+        "startingAt": "200",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
         "Custom design",
-        "Mobile optimized",
+        "Mobile friendly",
         "Unlimited pages",
         "Contact form",
         "Photo gallery",
-        "Optional blog"
+        "Easy updates"
       ]
     },
-    "web-ecommerce": {
-      "title": "E-commerce",
-      "shortDesc": "Turnkey online store",
-      "description": "Complete e-commerce solution to sell your products online with inventory management and secure payments.",
+    "site-ecommerce": {
+      "title": "E-commerce Website",
+      "shortDesc": "Sell your products online easily",
+      "description": "A complete online store to sell your products and manage your orders simply.",
       "ctaText": "Launch my store",
       "pricing": {
-        "startingAt": "350 000",
-        "currency": "FCFA"
+        "startingAt": "500",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
         "Product catalog",
         "Shopping cart",
         "Secure payments",
         "Inventory management",
-        "Orders and invoices",
-        "Admin dashboard"
+        "Customer orders",
+        "Dashboard"
       ]
     },
-    "web-app": {
+    "application-web": {
       "title": "Web Application",
-      "shortDesc": "SaaS and business applications",
-      "description": "Complex custom web applications: CRM, ERP, SaaS platforms, marketplaces.",
+      "shortDesc": "Online tools adapted to your needs",
+      "description": "A custom web application to automate your processes and manage your activity.",
       "ctaText": "Develop my app",
       "pricing": {
-        "startingAt": "500 000",
-        "currency": "FCFA"
+        "startingAt": "400",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
-        "Scalable architecture",
-        "Database",
-        "RESTful API",
-        "Authentication",
-        "Dashboard",
-        "Data export"
+        "Member area",
+        "Data management",
+        "Admin interface",
+        "Notifications",
+        "Dashboards",
+        "Data exports"
       ]
     },
-    "mobile-app": {
-      "title": "Mobile App",
-      "shortDesc": "iOS, Android and cross-platform",
-      "description": "Native or hybrid mobile apps (React Native, Flutter) for all your needs.",
-      "ctaText": "Create my mobile app",
+    "plateforme-sur-mesure": {
+      "title": "Custom Platform",
+      "shortDesc": "A unique solution for your specific activity",
+      "description": "A fully customized platform to meet complex and specific needs.",
+      "ctaText": "Discuss my project",
       "pricing": {
-        "startingAt": "600 000",
-        "currency": "FCFA"
+        "startingAt": "800",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
-        "iOS and Android",
-        "Native interface",
+        "Custom features",
+        "Scalable architecture",
+        "Advanced security",
+        "Maintenance included",
+        "Team training",
+        "Priority support"
+      ]
+    },
+    "app-ios-android": {
+      "title": "iOS & Android App",
+      "shortDesc": "An app for all your users",
+      "description": "A native or hybrid mobile app available on iPhone and Android.",
+      "ctaText": "Create my app",
+      "pricing": {
+        "startingAt": "600",
+        "currency": "€",
+        "type": "fixed"
+      },
+      "features": [
+        "iOS/Android compatible",
+        "Mobile design",
         "Push notifications",
         "Offline capable",
-        "App store ready",
-        "Integrated analytics"
+        "Auto updates",
+        "Usage statistics"
       ]
     },
-    "design-ux": {
-      "title": "UX/UI Design",
-      "shortDesc": "Intuitive and modern interfaces",
-      "description": "Creation of wireframes, interactive mockups and prototypes to validate your concept.",
-      "ctaText": "Design my project",
+    "app-reservation": {
+      "title": "Booking App",
+      "shortDesc": "Take appointments easily",
+      "description": "An app to manage your bookings, appointments and schedule.",
+      "ctaText": "Manage my bookings",
       "pricing": {
-        "startingAt": "75 000",
-        "currency": "FCFA"
+        "startingAt": "500",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
-        "Wireframes",
-        "High-fidelity mockups",
-        "Interactive prototype",
-        "Design system",
-        "User testing",
-        "Dev specifications"
+        "Appointment booking",
+        "Synced calendar",
+        "Automatic reminders",
+        "Online payment",
+        "Cancellation management",
+        "Pro dashboard"
       ]
     },
-    "design-graphique": {
+    "app-entreprise": {
+      "title": "Business App",
+      "shortDesc": "All your business tools in your pocket",
+      "description": "A private app for your teams: communication, tasks, documents.",
+      "ctaText": "Equip my team",
+      "pricing": {
+        "startingAt": "400",
+        "currency": "€",
+        "type": "fixed"
+      },
+      "features": [
+        "Secure private space",
+        "Team messaging",
+        "Document sharing",
+        "Task management",
+        "Notifications",
+        "Offline mode"
+      ]
+    },
+    "identite-visuelle": {
       "title": "Visual Identity",
-      "shortDesc": "Logo, brand guidelines, materials",
-      "description": "Creation of your complete visual identity: logo, colors, typography, business cards.",
+      "shortDesc": "A strong and consistent image",
+      "description": "Create a visual identity that reflects you: logo, colors, typography.",
       "ctaText": "Create my identity",
       "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA"
+        "startingAt": "200",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
-        "Logo and variations",
+        "Logo creation",
         "Brand guidelines",
+        "Color palette",
+        "Typography choices",
         "Business cards",
-        "Stationery",
-        "Moodboard",
-        "Source files"
+        "Social media kit"
       ]
     },
-    "consulting-audit": {
-      "title": "Technical Audit",
-      "shortDesc": "Complete analysis of your project",
-      "description": "Audit of your existing project: performance, security, SEO, technical architecture.",
-      "ctaText": "Audit my project",
+    "maquettes-site": {
+      "title": "Website Mockups",
+      "shortDesc": "Visualize your site before development",
+      "description": "Clear mockups to see the final render and validate the ergonomics.",
+      "ctaText": "Visualize my site",
       "pricing": {
-        "startingAt": "100 000",
-        "currency": "FCFA"
+        "startingAt": "250",
+        "currency": "€",
+        "type": "fixed"
+      },
+      "features": [
+        "Functional wireframes",
+        "Page by page design",
+        "Mobile version included",
+        "Clickable prototypes",
+        "Unlimited revisions",
+        "Dev-ready files"
+      ]
+    },
+    "redesign": {
+      "title": "Design Redesign",
+      "shortDesc": "Give your site a fresh look",
+      "description": "Modernize the appearance of your existing site for more professionalism.",
+      "ctaText": "Modernize my site",
+      "pricing": {
+        "startingAt": "300",
+        "currency": "€",
+        "type": "fixed"
+      },
+      "features": [
+        "Existing design analysis",
+        "Modernization proposal",
+        "Ergonomy improvement",
+        "Visual harmonization",
+        "Mobile adaptation",
+        "Conversion optimization"
+      ]
+    },
+    "audit-site": {
+      "title": "Website Audit",
+      "shortDesc": "Identify improvement points",
+      "description": "A complete analysis of your site to improve performance and visibility.",
+      "ctaText": "Audit my site",
+      "pricing": {
+        "startingAt": "150",
+        "currency": "€",
+        "type": "fixed"
       },
       "features": [
         "Performance analysis",
-        "Security audit",
-        "SEO recommendations",
-        "Code review",
+        "Complete SEO audit",
+        "Security check",
+        "Mobile compatibility",
         "Detailed report",
-        "Action plan"
+        "Recommendations"
       ]
     },
-    "consulting-strategie": {
-      "title": "Strategic Consulting",
-      "shortDesc": "Define the right approach",
-      "description": "Support to define your digital strategy and choose the right technologies.",
-      "ctaText": "Get advice",
+    "accompagnement": {
+      "title": "Strategic Support",
+      "shortDesc": "An expert by your side",
+      "description": "Advice and support to define your digital strategy and priorities.",
+      "ctaText": "Get support",
       "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA",
+        "startingAt": "50",
+        "currency": "€/h",
         "type": "hourly"
       },
       "features": [
         "Needs analysis",
+        "Priority definition",
         "Technology choices",
-        "Roadmap",
-        "Budget estimate",
-        "Project support",
-        "Recommendations"
+        "Action plan",
+        "Monthly follow-up",
+        "Adjustments"
       ]
     },
-    "maintenance-support": {
-      "title": "Maintenance",
-      "shortDesc": "Monitoring and updates",
-      "description": "Maintenance packages to keep your site updated, secure and performant.",
-      "ctaText": "Maintain my site",
+    "formation": {
+      "title": "Training",
+      "shortDesc": "Level up your skills",
+      "description": "Personalized training to master the tools and technologies adapted to your needs.",
+      "ctaText": "Get trained",
       "pricing": {
-        "startingAt": "50 000",
-        "currency": "FCFA",
-        "type": "monthly"
+        "startingAt": "300",
+        "currency": "€/day",
+        "type": "fixed"
       },
       "features": [
-        "Security updates",
-        "Backups",
-        "24/7 monitoring",
-        "Priority support",
-        "Minor updates",
-        "Monthly reports"
+        "Personalized program",
+        "Practical exercises",
+        "Course materials",
+        "Post-training follow-up",
+        "Small groups",
+        "Certificate"
       ]
     }
-  }
+  },
+
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "To clarify how I work",
+    "items": [
+      {
+        "question": "What is the average duration of a project?",
+        "answer": "It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application."
+      },
+      {
+        "question": "Do you offer post-delivery support?",
+        "answer": "Yes, one month of support is included after launch. Maintenance packages are also available."
+      },
+      {
+        "question": "Can I modify the project along the way?",
+        "answer": "Absolutely! We work in stages with regular validations to adjust as closely as possible to your needs."
+      },
+      {
+        "question": "Are the displayed prices final?",
+        "answer": "They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs."
+      }
+    ]
+  },
+
+  "cta": {
+    "title": "Can't find what you're looking for?",
+    "button": "Discuss my project"
+  },
+
+  "disclaimer": "* Prices are indicative. Each project receives a personalized quote."
 }
