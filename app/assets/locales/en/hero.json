@@ -1,40 +1,24 @@
 {
-  "badge": "Specializing in custom digital solutions",
+  "badge": "Specializing in web & mobile development",
   "typed": {
     "strings": [
-      "your next mobile application",
+      "your future mobile application",
       "high-performance e-commerce",
-      "custom business tools",
+      "your custom business tools",
       "a unique user experience",
-      "your technological growth"
+      "your technological success"
     ]
   },
-  "title": "Let's bring your vision to life:",
-  "subtitle": "I design technological solutions that propel your business and structure your online presence.",
+  "title": "Building :",
+  "subtitle": "As a Full Stack Developer, I design custom solutions that propel your business and structure your online presence.",
   
   "socialProof": {
-    "stars": "{{count}} entrepreneurs supported",
-    "entrepreneurs": "entrepreneurs supported"
+    "stars": "30+ satisfied entrepreneurs",
+    "entrepreneurs": "successfully completed projects"
   },
   
   "buttons": {
     "project": "Start my project",
-    "portfolio": "View my work"
-  },
-  
-  "badges": {
-    "multisupport": "Multi-platform",
-    "available": "Available"
-  },
-  
-  "microCTA": {
-    "response": "24h response",
-    "quote": "Free quote",
-    "support": "End-to-end support"
-  },
-  
-  "altImages": {
-    "avatar": "Happy client",
-    "profile": "Abdoulaye Patawala - Web & Mobile Developer"
+    "portfolio": "Discover my work"
   }
 }

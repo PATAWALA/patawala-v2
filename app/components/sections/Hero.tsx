@@ -132,7 +132,7 @@ const HeroSection = memo(function HeroSection() {
         </div>
         
         {/* Container principal */}
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10 py-4 sm:py-6 md:py-8 lg:py-12">
+        <div className="container mx-auto px-4 sm:px-4 md:px-6 relative z-10 py-4 sm:py-6 md:py-8 lg:py-12">
           
           {/* Badge principal - CACHÉ SUR MOBILE, VISIBLE SUR DESKTOP */}
           <div className="w-full hidden sm:flex justify-center mb-4 sm:mb-2 lg:mb-8 xl:mb-10">
@@ -143,7 +143,7 @@ const HeroSection = memo(function HeroSection() {
           </div>
 
           {/* Contenu principal */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-5 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
             
             {/* Texte - partie gauche */}
             <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
@@ -158,7 +158,7 @@ const HeroSection = memo(function HeroSection() {
                 </span>
               </h1>
 
-              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
+              <div className="space-y-2 sm:space-y-3 mb-5 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
                 <p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl text-white font-bold leading-relaxed">
                   {t('subtitle', 'hero')}
                 </p>
@@ -210,20 +210,20 @@ const HeroSection = memo(function HeroSection() {
                 </div>
               </div>
 
-              {/* BOUTONS */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-3 lg:px-0">
+              {/* BOUTONS - AGRANDIS SUR MOBILE AVEC MEILLEUR ESPACEMENT */}
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-3 lg:px-0">
                 <button
                   onClick={handleLancerProjet}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 sm:px-6 md:px-7 lg:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-4 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-base sm:text-base md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[52px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   aria-label={t('buttons.project', 'hero')}
                 >
                   {t('buttons.project', 'hero')}
-                  <ArrowRight size={16} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
+                  <ArrowRight size={18} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </button>
                 
                 <button
                   onClick={handleVoirRealisations}
-                  className="bg-transparent text-white px-5 sm:px-6 md:px-7 lg:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-full sm:w-auto min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+                  className="bg-transparent text-white px-6 py-4 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-semibold text-base sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-full sm:w-auto min-h-[52px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   aria-label={t('buttons.portfolio', 'hero')}
                 >
                   {t('buttons.portfolio', 'hero')}
