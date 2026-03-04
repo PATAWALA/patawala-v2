@@ -38,19 +38,12 @@ export default function ServicesPage() {
   const { t, language } = useLanguage();
   const isInitialLoad = useRef(true);
   
-  // Refs pour le défilement
+  // Refs pour le défilement des filtres uniquement
   const filterScrollRef = useRef<HTMLDivElement>(null);
-  const cardsScrollRef = useRef<HTMLDivElement>(null);
   
   // États pour les flèches des filtres
   const [showFilterLeftArrow, setShowFilterLeftArrow] = useState(false);
   const [showFilterRightArrow, setShowFilterRightArrow] = useState(true);
-  const [isFilterHovering, setIsFilterHovering] = useState(false);
-  
-  // États pour les flèches des cartes
-  const [showCardsLeftArrow, setShowCardsLeftArrow] = useState(false);
-  const [showCardsRightArrow, setShowCardsRightArrow] = useState(true);
-  const [isCardsHovering, setIsCardsHovering] = useState(false);
 
   // Fonction pour parser les traductions en toute sécurité
   const safeParse = <T,>(data: any, defaultValue: T): T => {
@@ -176,15 +169,6 @@ export default function ServicesPage() {
     }
   };
 
-  // Gestion du défilement des cartes
-  const checkCardsScroll = () => {
-    if (cardsScrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = cardsScrollRef.current;
-      setShowCardsLeftArrow(scrollLeft > 20);
-      setShowCardsRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
-    }
-  };
-
   // Écouter les changements d'URL hash
   useEffect(() => {
     const handleHashChange = () => {
@@ -225,10 +209,9 @@ export default function ServicesPage() {
     }
   }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav]);
 
-  // Setup des écouteurs de scroll
+  // Setup des écouteurs de scroll pour les filtres
   useEffect(() => {
     const filterContainer = filterScrollRef.current;
-    const cardsContainer = cardsScrollRef.current;
     
     if (filterContainer) {
       filterContainer.addEventListener('scroll', checkFilterScroll);
@@ -247,27 +230,7 @@ export default function ServicesPage() {
     }
   }, []);
 
-  useEffect(() => {
-    const cardsContainer = cardsScrollRef.current;
-    
-    if (cardsContainer) {
-      cardsContainer.addEventListener('scroll', checkCardsScroll);
-      setTimeout(checkCardsScroll, 100);
-      
-      const observer = new ResizeObserver(() => {
-        checkCardsScroll();
-      });
-      
-      observer.observe(cardsContainer);
-      
-      return () => {
-        cardsContainer.removeEventListener('scroll', checkCardsScroll);
-        observer.disconnect();
-      };
-    }
-  }, [activeCategory]);
-
-  // Fonctions de scroll
+  // Fonction de scroll pour les filtres
   const scrollFilters = (direction: 'left' | 'right') => {
     if (filterScrollRef.current) {
       const scrollAmount = 200;
@@ -280,33 +243,10 @@ export default function ServicesPage() {
     }
   };
 
-  const scrollCards = (direction: 'left' | 'right') => {
-    if (cardsScrollRef.current) {
-      const container = cardsScrollRef.current;
-      const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
-      const gap = 24;
-      const scrollAmount = cardWidth + gap;
-      
-      const newScrollLeft = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-      
-      container.scrollTo({
-        left: newScrollLeft,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   const handleCategoryChange = (categoryId: CategoryType) => {
     if (!isNavigatingFromNav) {
       setActiveCategory(categoryId);
       window.history.replaceState(null, '', `/services#${categoryId}`);
-      
-      setTimeout(() => {
-        if (cardsScrollRef.current) {
-          cardsScrollRef.current.scrollLeft = 0;
-          checkCardsScroll();
-        }
-      }, 100);
     }
   };
 
@@ -379,11 +319,7 @@ export default function ServicesPage() {
 
         {/* Section Filtres avec flèches */}
         <div className="mb-8 lg:mb-12">
-          <div 
-            className="relative lg:hidden"
-            onMouseEnter={() => setIsFilterHovering(true)}
-            onMouseLeave={() => setIsFilterHovering(false)}
-          >
+          <div className="relative lg:hidden">
             {/* Flèche gauche filtres */}
             <AnimatePresence>
               {showFilterLeftArrow && (
@@ -499,108 +435,26 @@ export default function ServicesPage() {
           </motion.p>
         </div>
 
-        {/* Section Cartes avec flèches */}
-        <div 
-          className="relative"
-          onMouseEnter={() => setIsCardsHovering(true)}
-          onMouseLeave={() => setIsCardsHovering(false)}
-        >
-          {/* Flèche gauche cartes */}
-          <AnimatePresence>
-            {(showCardsLeftArrow) && (
-              <motion.button
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                onClick={() => scrollCards('left')}
-                className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
-                  ${isCardsHovering ? 'md:opacity-100' : 'md:opacity-0'} 
-                  bg-gradient-to-r from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pl-2 pr-6 py-4`}
-              >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
-                  <ChevronLeft size={24} className="text-white" />
-                </div>
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Flèche droite cartes */}
-          <AnimatePresence>
-            {(showCardsRightArrow) && (
-              <motion.button
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                onClick={() => scrollCards('right')}
-                className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
-                  ${isCardsHovering ? 'md:opacity-100' : 'md:opacity-0'} 
-                  bg-gradient-to-l from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pr-2 pl-6 py-4`}
-              >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
-                  <ChevronRight size={24} className="text-white" />
-                </div>
-              </motion.button>
-            )}
-          </AnimatePresence>
-
-          {/* Indicateurs de défilement cartes */}
-          <div className="flex justify-center gap-1.5 mt-2 md:hidden">
-            {activeServices.map((_, index) => {
-              const isVisible = () => {
-                if (!cardsScrollRef.current) return false;
-                const container = cardsScrollRef.current;
-                const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
-                const scrollPosition = container.scrollLeft;
-                const viewportWidth = container.clientWidth;
-                const startIdx = Math.floor(scrollPosition / (cardWidth + 24));
-                const endIdx = Math.ceil((scrollPosition + viewportWidth) / (cardWidth + 24));
-                return index >= startIdx && index <= endIdx;
-              };
-              
-              return (
-                <div
-                  key={index}
-                  className={`h-1 rounded-full transition-all duration-300 ${
-                    isVisible() ? 'w-4 bg-blue-400' : 'w-1 bg-gray-600'
-                  }`}
+        {/* Grille des cartes - SANS flèches */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {activeServices.map((service, index) => (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                  delay={index * 0.1}
                 />
-              );
-            })}
-          </div>
-
-          {/* Conteneur des cartes */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div 
-                ref={cardsScrollRef}
-                className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide scroll-smooth"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  WebkitOverflowScrolling: 'touch'
-                }}
-              >
-                {activeServices.map((service, index) => (
-                  <div 
-                    key={service.id} 
-                    className="min-w-[280px] sm:min-w-[320px] md:min-w-0 flex-1 snap-start"
-                  >
-                    <ServiceCard
-                      service={service}
-                      delay={index * 0.1}
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
         {/* FAQ */}
         <motion.div

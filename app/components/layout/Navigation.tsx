@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { Menu, X, ChevronDown, Globe, Smartphone, Palette, TrendingUp } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe, Smartphone, Palette, TrendingUp, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -225,7 +225,7 @@ export default function Navigation() {
               </Link>
 
               {/* Desktop Navigation */}
-              <div className="hidden lg:block" role="navigation" aria-label="Menu principal">
+              <div className="hidden lg:flex items-center justify-center flex-1">
                 <ul className="flex items-center gap-2">
                   {navItems.map((item, index) => {
                     const itemLabel = t(`navItems.${item.key}`, 'navigation');
@@ -352,40 +352,50 @@ export default function Navigation() {
                 {/* Bouton menu mobile */}
                 <button
                   ref={menuButtonRef}
-                  className="lg:hidden p-1.5 rounded-lg hover:bg-blue-500/10 transition-colors"
+                  className="lg:hidden relative w-9 h-9 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-all duration-300"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label={isOpen ? t('mobileMenu.close', 'navigation') : t('mobileMenu.open', 'navigation')}
                   aria-expanded={isOpen}
                   aria-controls={isOpen ? "mobile-menu" : undefined}
                 >
-                  {isOpen ? 
-                    <X className="w-5 h-5 text-blue-400" aria-hidden="true" /> : 
-                    <Menu className="w-5 h-5 text-gray-300" aria-hidden="true" />
-                  }
+                  <motion.div
+                    animate={{ rotate: isOpen ? 90 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {isOpen ? 
+                      <X className="w-5 h-5 text-blue-400" aria-hidden="true" /> : 
+                      <Menu className="w-5 h-5 text-gray-300" aria-hidden="true" />
+                    }
+                  </motion.div>
                 </button>
               </div>
             </div>
 
-            {/* Mobile Menu - Pleine largeur */}
+            {/* Mobile Menu - Élégant avec animations */}
             <AnimatePresence>
               {isOpen && (
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="lg:hidden mt-3 -mx-4 bg-[#141B2B] shadow-xl border-t border-[#1F2937]"
+                  initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="lg:hidden mt-4 -mx-4 mx-4 rounded-2xl bg-gradient-to-b from-[#141B2B] to-[#0F1420] shadow-2xl border border-[#1F2937] overflow-hidden backdrop-blur-lg"
                   role="menu"
                   id="mobile-menu"
                   aria-label="Menu mobile"
                 >
-                  <div className="px-4 py-2 space-y-1">
+                  <div className="p-3 space-y-1">
                     {navItems.map((item, index) => {
                       const itemLabel = t(`navItems.${item.key}`, 'navigation');
                       const isActive = isLinkActive(item);
                       
                       return (
-                        <div key={item.key}>
+                        <motion.div
+                          key={item.key}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                        >
                           {item.submenu ? (
                             <div className="space-y-1">
                               {/* Lien Services mobile */}
@@ -397,15 +407,15 @@ export default function Navigation() {
                                   router.push(item.href);
                                   setIsOpen(false);
                                 }}
-                                className="flex items-center justify-between px-3 py-3 rounded-lg font-medium text-base text-blue-400 bg-blue-500/10"
+                                className="flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base text-blue-400 bg-blue-500/10 border border-blue-500/20"
                                 role="menuitem"
                               >
-                                {itemLabel}
-                                <ChevronDown className="w-4 h-4 rotate-180" aria-hidden="true" />
+                                <span>{itemLabel}</span>
+                                <ChevronDown className="w-4 h-4 rotate-180 text-blue-400" aria-hidden="true" />
                               </a>
                               
                               {/* Sous-menu mobile */}
-                              <div className="pl-3 space-y-1 border-l-2 border-blue-500/30 ml-3" role="group">
+                              <div className="pl-4 space-y-1 border-l-2 border-blue-500/30 ml-4" role="group">
                                 {item.submenu.map((subItem) => {
                                   const Icon = subItem.icon;
                                   const isActive = pathname === '/services' && window.location.hash === `#${subItem.category}`;
@@ -416,7 +426,7 @@ export default function Navigation() {
                                       key={subItem.key}
                                       href={subItem.href}
                                       onClick={() => setIsOpen(false)}
-                                      className={`flex items-center gap-2 px-3 py-3 rounded-lg text-base transition-colors ${
+                                      className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base transition-all duration-200 ${
                                         isActive
                                           ? 'bg-blue-500/20 text-blue-400'
                                           : 'text-gray-400 hover:bg-blue-500/10 hover:text-blue-400'
@@ -436,18 +446,25 @@ export default function Navigation() {
                               ref={index === navItems.length - 1 ? lastMenuItemRef : undefined}
                               href={item.href}
                               onClick={(e) => handleNavClick(e, item.href)}
-                              className={`flex items-center justify-between px-3 py-3 rounded-lg font-medium text-base transition-colors ${
+                              className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base transition-all duration-200 ${
                                 isActive
-                                  ? 'bg-blue-500/20 text-blue-400'
-                                  : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                  : item.key === 'contact'
+                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-xl border border-blue-400/30' // MÊME FOND QUE LANGUAGESWITCHER
+                                    : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                               }`}
                               role="menuitem"
                               aria-current={isActive ? 'page' : undefined}
                             >
-                              {itemLabel}
+                              <span className={item.key === 'contact' ? 'mx-auto font-semibold' : ''}>
+                                {itemLabel}
+                              </span>
+                              {item.key === 'contact' && (
+                                <Sparkles size={16} className="text-white opacity-80 absolute right-4" />
+                              )}
                             </a>
                           )}
-                        </div>
+                        </motion.div>
                       );
                     })}
                   </div>
