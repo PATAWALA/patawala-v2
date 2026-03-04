@@ -14,10 +14,26 @@ export default function RealisationsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Charger les projets traduits
+  useEffect(() => {
+    try {
+      const projectsData = t('projects', 'realisations-data');
+      if (Array.isArray(projectsData)) {
+        setTranslatedProjects(projectsData);
+      } else {
+        setTranslatedProjects(projets);
+      }
+    } catch (error) {
+      console.error('Erreur chargement projets traduits:', error);
+      setTranslatedProjects(projets);
+    }
+  }, [t, language]);
 
   const openModal = (project: Project) => {
     setSelectedProject(project);
@@ -37,6 +53,11 @@ export default function RealisationsSection() {
     if (typeof image === 'object') return true;
     if (typeof image === 'string') return !image.includes('/images/projects/');
     return false;
+  };
+
+  // Fonction pour trouver le projet traduit correspondant
+  const getTranslatedProject = (originalProject: Project) => {
+    return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   };
 
   return (
@@ -124,6 +145,7 @@ export default function RealisationsSection() {
             {projets.slice(0, 6).map((projet, index) => {
               const Icon = projet.icon;
               const showImage = hasValidImage(projet.image);
+              const translatedProjet = getTranslatedProject(projet);
               
               return (
                 <motion.div
@@ -133,14 +155,15 @@ export default function RealisationsSection() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -8 }}
-                  className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937]"
+                  className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer"
+                  onClick={() => openModal(projet)}
                 >
                   {/* Image ou placeholder */}
                   <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden">
                     {showImage ? (
                       <Image 
                         src={projet.image} 
-                        alt={projet.title}
+                        alt={translatedProjet.title}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
@@ -158,22 +181,22 @@ export default function RealisationsSection() {
                     
                     {/* Badge catégorie */}
                     <div className="absolute top-3 left-3 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20 z-10">
-                      {t(`categories.${projet.category.toLowerCase()}`, 'realisations') || projet.category}
+                      {translatedProjet.category}
                     </div>
                   </div>
 
                   {/* Contenu */}
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                      {projet.title}
+                      {translatedProjet.title}
                     </h3>
                     <p className="text-gray-400 text-sm mb-4">
-                      {projet.description}
+                      {translatedProjet.description}
                     </p>
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-5">
-                      {projet.tags.map((tag) => (
+                      {translatedProjet.tags && translatedProjet.tags.slice(0, 3).map((tag: string) => (
                         <span
                           key={tag}
                           className="px-2.5 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full"
@@ -181,11 +204,19 @@ export default function RealisationsSection() {
                           {tag}
                         </span>
                       ))}
+                      {translatedProjet.tags && translatedProjet.tags.length > 3 && (
+                        <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
+                          +{translatedProjet.tags.length - 3}
+                        </span>
+                      )}
                     </div>
 
                     {/* Bouton En savoir plus */}
                     <button
-                      onClick={() => openModal(projet)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openModal(projet);
+                      }}
                       className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group/btn hover:text-blue-300 transition-colors"
                       aria-label={t('card.learnMore', 'realisations')}
                     >

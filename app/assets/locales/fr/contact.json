@@ -1,46 +1,46 @@
 {
-  "badge": "Tous mes contacts",
-  "title": "Restons en contact",
+  "badge": "Disponibilité & Contact",
+  "title": "Discutons de votre projet",
   "titleHighlight": "Je suis à votre écoute",
-  "subtitle": "Choisissez le moyen qui vous convient le mieux pour échanger. WhatsApp, appel, email ou réseaux sociaux, je suis disponible.",
+  "subtitle": "Un projet complexe ou une simple question ? Choisissez le canal qui vous convient le mieux pour amorcer notre collaboration.",
 
   "contactCards": {
     "direct": {
-      "title": "Contact direct",
-      "whatsapp": "WhatsApp",
-      "calls": "Appels / SMS",
-      "emergency": "Urgence / Projet urgent"
+      "title": "Lignes directes",
+      "whatsapp": "WhatsApp Business",
+      "calls": "Appels & SMS",
+      "emergency": "Ligne Prioritaire"
     },
     "info": {
-      "title": "Infos & Email",
-      "email": "Email",
-      "website": "Site web",
+      "title": "Informations & Email",
+      "email": "Email Professionnel",
+      "website": "Portfolio",
       "location": "Localisation"
     }
   },
 
   "social": {
-    "title": "Suivez-moi sur les réseaux"
+    "title": "Suivre mes actualités tech"
   },
 
   "guarantees": {
-    "firstExchange": "Premier échange gratuit",
-    "free30min": "30 minutes offertes",
+    "firstExchange": "Premier échange offert",
+    "free30min": "30 min de conseil",
     "noCommitment": "Sans engagement"
   },
 
   "buttons": {
-    "whatsapp": "WhatsApp direct",
-    "schedule": "Planifier un appel",
+    "whatsapp": "Lancer la discussion",
+    "schedule": "Réserver un créneau",
     "copy": "Copier",
     "copied": "Copié !",
     "send": "Envoyer",
-    "visit": "Visiter"
+    "visit": "Consulter"
   },
 
   "availability": {
-    "thisWeek": "Cette semaine :",
-    "slots": "créneaux disponibles"
+    "thisWeek": "Disponibilité cette semaine :",
+    "slots": "créneaux restants"
   },
 
   "contactInfo": {

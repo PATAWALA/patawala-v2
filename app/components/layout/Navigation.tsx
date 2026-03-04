@@ -211,20 +211,35 @@ export default function Navigation() {
         <div className="lg:container lg:mx-auto lg:px-6">
           <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-2.5 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
-              {/* Logo - Sans icône, avec nom en italique */}
+              {/* Logo - À gauche sur tous les écrans avec effet brillant intense */}
               <Link 
                 href="/" 
                 className="flex items-center font-bold group"
                 aria-label={t('logo', 'navigation')}
                 aria-current={pathname === '/' ? 'page' : undefined}
               >
-                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
+                <motion.span 
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic relative"
+                  animate={{ 
+                    textShadow: [
+                      "0 0 10px rgba(59,130,246,0.5), 0 0 20px rgba(6,182,212,0.3)",
+                      "0 0 25px rgba(59,130,246,0.9), 0 0 40px rgba(6,182,212,0.7)",
+                      "0 0 10px rgba(59,130,246,0.5), 0 0 20px rgba(6,182,212,0.3)"
+                    ],
+                    filter: [
+                      "brightness(1)",
+                      "brightness(1.3)",
+                      "brightness(1)"
+                    ]
+                  }}
+                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                >
                   <span className="hidden sm:inline">Abdoulaye Patawla</span>
                   <span className="sm:hidden">Patawala</span>
-                </span>
+                </motion.span>
               </Link>
 
-              {/* Desktop Navigation */}
+              {/* Desktop Navigation - Centré */}
               <div className="hidden lg:flex items-center justify-center flex-1">
                 <ul className="flex items-center gap-2">
                   {navItems.map((item, index) => {
@@ -450,7 +465,7 @@ export default function Navigation() {
                                 isActive
                                   ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                   : item.key === 'contact'
-                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-xl border border-blue-400/30' // MÊME FOND QUE LANGUAGESWITCHER
+                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg hover:shadow-xl border border-blue-400/30'
                                     : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                               }`}
                               role="menuitem"
