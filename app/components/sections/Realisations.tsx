@@ -20,10 +20,10 @@ export default function RealisationsSection() {
     setIsMounted(true);
   }, []);
 
-  // Charger les projets traduits
+  // Charger les projets traduits - CORRECTION: utiliser 'projets-data' comme dans ProjetsPage
   useEffect(() => {
     try {
-      const projectsData = t('projects', 'realisations-data');
+      const projectsData = t('projects', 'projets-data'); // Changé de 'realisations-data' à 'projets-data'
       if (Array.isArray(projectsData)) {
         setTranslatedProjects(projectsData);
       } else {
@@ -58,6 +58,12 @@ export default function RealisationsSection() {
   // Fonction pour trouver le projet traduit correspondant
   const getTranslatedProject = (originalProject: Project) => {
     return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
+  };
+
+  // Navigation directe vers /projets
+  const handleViewAllClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.location.href = '/projets';
   };
 
   return (
@@ -206,7 +212,7 @@ export default function RealisationsSection() {
                       ))}
                       {translatedProjet.tags && translatedProjet.tags.length > 3 && (
                         <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                          +{translatedProjet.tags.length - 3}
+                          {t('card.tags.more', 'projets-page')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
                         </span>
                       )}
                     </div>
@@ -229,7 +235,7 @@ export default function RealisationsSection() {
             })}
           </div>
 
-          {/* Bouton Voir tous les projets */}
+          {/* Bouton Voir tous les projets - avec navigation directe */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -237,7 +243,11 @@ export default function RealisationsSection() {
             transition={{ delay: 0.3 }}
             className="text-center"
           >
-            <Link href="/projets">
+            <a 
+              href="/projets"
+              onClick={handleViewAllClick}
+              className="inline-block"
+            >
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -247,7 +257,7 @@ export default function RealisationsSection() {
                 <span>{t('buttons.viewAll', 'realisations')}</span>
                 <ArrowRight size={20} />
               </motion.button>
-            </Link>
+            </a>
           </motion.div>
 
           {/* Stats */}

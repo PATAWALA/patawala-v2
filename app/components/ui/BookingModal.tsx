@@ -9,6 +9,7 @@ import {
   ChevronDown, Info, ThumbsUp, AlertCircle
 } from 'lucide-react';
 import Image from 'next/image';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Importer les images des drapeaux
 import frFlag from '../../assets/flags/fr.svg';
@@ -41,15 +42,6 @@ interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-// Mois en français
-const monthNames = [
-  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-];
-
-// Jours de la semaine
-const weekDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 
 type ContactMethod = 'whatsapp' | 'email';
 
@@ -86,6 +78,7 @@ const countries = [
 const WHATSAPP_NUMBER = '22962278090';
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
+  const { t, language } = useLanguage();
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -113,6 +106,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
+
+  // Mois en français/anglais selon la langue
+  const monthNames = language === 'fr' 
+    ? ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+    : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  // Jours de la semaine traduits
+  const weekDays = t('calendar.weekDays', 'booking') as unknown as string[];
 
   // Scroll en haut du modal quand on passe à l'étape 2
   useEffect(() => {
@@ -235,12 +236,16 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       const parsedTime = parseTime(input);
       if (parsedTime) {
         if (isTimePast(selectedDate, input)) {
-          setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+          setTimeError(language === 'fr' 
+            ? "Cette heure est déjà passée. Veuillez choisir une heure future."
+            : "This time has already passed. Please choose a future time.");
         } else {
           setTimeError(null);
         }
       } else {
-        setTimeError("Format d'heure non reconnu. Utilisez par exemple: 14h30, 17h, 09:45");
+        setTimeError(language === 'fr'
+          ? "Format d'heure non reconnu. Utilisez par exemple: 14h30, 17h, 09:45"
+          : "Time format not recognized. Use e.g., 2:30 PM, 5 PM, 9:45 AM");
       }
     } else {
       setTimeError(null);
@@ -253,7 +258,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     
     if (selectedDate) {
       if (isTimePast(selectedDate, example)) {
-        setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+        setTimeError(language === 'fr'
+          ? "Cette heure est déjà passée. Veuillez choisir une heure future."
+          : "This time has already passed. Please choose a future time.");
       } else {
         setTimeError(null);
       }
@@ -263,7 +270,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const handleTimeSubmit = () => {
     if (timeInput.trim()) {
       if (selectedDate && isTimePast(selectedDate, timeInput)) {
-        setTimeError("Cette heure est déjà passée. Veuillez choisir une heure future.");
+        setTimeError(language === 'fr'
+          ? "Cette heure est déjà passée. Veuillez choisir une heure future."
+          : "This time has already passed. Please choose a future time.");
         return;
       }
       
@@ -303,7 +312,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const [year, month, day] = selectedDate.split('-').map(Number);
     const selectedDay = new Date(year, month - 1, day);
     
-    const formattedDate = selectedDay.toLocaleDateString('fr-FR', { 
+    const formattedDate = selectedDay.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { 
       weekday: 'long', 
       day: 'numeric', 
       month: 'long' 
@@ -313,25 +322,41 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     let targetUrl = '';
     
     if (contactMethod === 'whatsapp') {
-      message = `🔔 *NOUVELLE DEMANDE DE RENDEZ-VOUS* 🔔
-      
+      message = language === 'fr'
+        ? `🔔 *NOUVELLE DEMANDE DE RENDEZ-VOUS* 🔔
+        
 👤 *Nom:* ${formData.name}
 📞 *Téléphone:* ${selectedCountry.dialCode} ${formData.phone}
 📅 *Date:* ${formattedDate}
 ⏰ *Heure:* ${selectedTime}
-💬 *Message:* ${formData.message || 'Pas de message'}`;
+💬 *Message:* ${formData.message || 'Pas de message'}`
+        : `🔔 *NEW BOOKING REQUEST* 🔔
+        
+👤 *Name:* ${formData.name}
+📞 *Phone:* ${selectedCountry.dialCode} ${formData.phone}
+📅 *Date:* ${formattedDate}
+⏰ *Time:* ${selectedTime}
+💬 *Message:* ${formData.message || 'No message'}`;
       
       targetUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     } else {
-      message = `🔔 NOUVELLE DEMANDE DE RENDEZ-VOUS 🔔
-      
+      message = language === 'fr'
+        ? `🔔 NOUVELLE DEMANDE DE RENDEZ-VOUS 🔔
+        
 Nom: ${formData.name}
 Email: ${formData.email}
 Date: ${formattedDate}
 Heure: ${selectedTime}
-Message: ${formData.message || 'Pas de message'}`;
+Message: ${formData.message || 'Pas de message'}`
+        : `🔔 NEW BOOKING REQUEST 🔔
+        
+Name: ${formData.name}
+Email: ${formData.email}
+Date: ${formattedDate}
+Time: ${selectedTime}
+Message: ${formData.message || 'No message'}`;
       
-      targetUrl = `mailto:contact@patawala.com?subject=Rendez-vous le ${formattedDate}&body=${encodeURIComponent(message)}`;
+      targetUrl = `mailto:contact@patawala.com?subject=${language === 'fr' ? 'Rendez-vous le' : 'Appointment on'} ${formattedDate}&body=${encodeURIComponent(message)}`;
     }
     
     window.open(targetUrl, '_blank');
@@ -367,7 +392,7 @@ Message: ${formData.message || 'Pas de message'}`;
   const formatDisplayDate = (dateStr: string) => {
     const [year, month, day] = dateStr.split('-').map(Number);
     const date = new Date(year, month - 1, day);
-    return date.toLocaleDateString('fr-FR', { 
+    return date.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { 
       weekday: 'short', 
       day: 'numeric', 
       month: 'short' 
@@ -400,7 +425,7 @@ Message: ${formData.message || 'Pas de message'}`;
           <button
             onClick={onClose}
             className="absolute top-4 right-4 z-20 p-3 sm:p-2 hover:bg-[#1E2638] rounded-full transition-colors bg-[#1E2638] sm:bg-transparent"
-            aria-label="Fermer"
+            aria-label={t('buttons.close', 'booking')}
           >
             <X size={20} className="text-gray-400" />
           </button>
@@ -409,16 +434,13 @@ Message: ${formData.message || 'Pas de message'}`;
           <div className="sticky top-0 z-10 p-5 sm:p-8 border-b border-[#1F2937] bg-gradient-to-r from-blue-500/10 to-transparent bg-[#0A0F1C]">
             <div className="flex items-center gap-2 mb-2">
               <Sparkles size={18} className="text-blue-400" />
-              <span className="text-xs sm:text-sm font-medium text-blue-400">30 minutes offertes</span>
+              <span className="text-xs sm:text-sm font-medium text-blue-400">{t('badge', 'booking')}</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">
-              {step === 1 ? 'Réservez votre appel découverte' : 'Finalisez votre réservation'}
+              {step === 1 ? t('title.step1', 'booking') : t('title.step2', 'booking')}
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              {step === 1 
-                ? 'Choisissez la date qui vous arrange'
-                : 'Laissez-moi vos coordonnées'
-              }
+              {step === 1 ? t('subtitle.step1', 'booking') : t('subtitle.step2', 'booking')}
             </p>
 
             {/* Barre de progression */}
@@ -444,12 +466,12 @@ Message: ${formData.message || 'Pas de message'}`;
                     </div>
                     <div>
                       <p className="text-xs sm:text-sm text-gray-200 font-medium">
-                        Planifiez notre rencontre selon vos disponibilités.
+                        {t('infoMessage.title', 'booking')}
                       </p>
                       
                       <div className="text-xs text-gray-400 mt-1 space-y-1">
-                        <p>Choisissez d'abord votre date, puis indiquez l'heure qui vous arrange.</p>
-                        <p>Je validerai personnellement votre créneau dès réception de votre demande.</p>
+                        <p>{t('infoMessage.instruction', 'booking')}</p>
+                        <p>{t('infoMessage.confirmation', 'booking')}</p>
                       </div>
                     </div>
                   </div>
@@ -462,7 +484,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     <button
                       onClick={handlePrevMonth}
                       className="p-2 hover:bg-[#1E2638] rounded-full transition-colors"
-                      aria-label="Mois précédent"
+                      aria-label={t('calendar.previousMonth', 'booking')}
                     >
                       <ChevronLeft size={20} className="text-gray-400" />
                     </button>
@@ -472,7 +494,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     <button
                       onClick={handleNextMonth}
                       className="p-2 hover:bg-[#1E2638] rounded-full transition-colors"
-                      aria-label="Mois suivant"
+                      aria-label={t('calendar.nextMonth', 'booking')}
                     >
                       <ChevronRight size={20} className="text-gray-400" />
                     </button>
@@ -522,7 +544,7 @@ Message: ${formData.message || 'Pas de message'}`;
                             }
                             ${isToday && !isSelected ? 'border-2 border-blue-500/50' : ''}
                           `}
-                          aria-label={`Sélectionner le ${date.getDate()} ${monthNames[date.getMonth()]}`}
+                          aria-label={t('calendar.selectDate', 'booking').replace('{{date}}', `${date.getDate()} ${monthNames[date.getMonth()]}`)}
                         >
                           <span className="text-sm sm:text-base">{date.getDate()}</span>
                         </button>
@@ -544,10 +566,10 @@ Message: ${formData.message || 'Pas de message'}`;
                         <ThumbsUp size={20} className="text-green-400 flex-shrink-0" />
                         <div>
                           <p className="text-sm text-green-400 font-medium">
-                            Date sélectionnée !
+                            {t('timeSelection.confirmDate', 'booking')}
                           </p>
                           <p className="text-xs text-gray-300 mt-0.5">
-                            Maintenant, indiquez l'heure qui vous arrange
+                            {t('timeSelection.confirmDateMessage', 'booking')}
                           </p>
                         </div>
                       </div>
@@ -566,7 +588,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     >
                       <label className="block text-sm font-medium text-gray-300">
                         <Clock size={16} className="inline mr-2 text-blue-400" />
-                        Indiquez l'heure du rendez-vous :
+                        {t('timeSelection.label', 'booking')}
                       </label>
                       
                       <div className="space-y-3">
@@ -576,7 +598,7 @@ Message: ${formData.message || 'Pas de message'}`;
                           onChange={handleTimeInputChange}
                           onFocus={handleTimeInputFocus}
                           onKeyPress={(e) => e.key === 'Enter' && !timeError && handleTimeSubmit()}
-                          placeholder="Ex: 14h30, 17h, 20 heures, 09:45..."
+                          placeholder={t('timeSelection.placeholder', 'booking')}
                           className={`w-full px-4 py-4 sm:py-3 bg-[#0A0F1C] border rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 ${
                             timeError ? 'border-red-500' : 'border-[#1F2937]'
                           }`}
@@ -596,7 +618,7 @@ Message: ${formData.message || 'Pas de message'}`;
                         
                         {/* Exemples visuels */}
                         <div className="flex flex-wrap gap-2">
-                          {['8h', '10h', '14h', '16h30', '18h', '20h', '21h15'].map((example) => {
+                          {(t('timeSelection.examples', 'booking') as unknown as string[]).map((example: string) => {
                             const isPastExample = selectedDate ? isTimePast(selectedDate, example) : false;
                             return (
                               <button
@@ -608,7 +630,7 @@ Message: ${formData.message || 'Pas de message'}`;
                                     ? 'bg-[#1E2638] text-gray-600 cursor-not-allowed line-through opacity-50' 
                                     : 'bg-[#1E2638] text-gray-300 hover:bg-[#2A3442]'
                                 }`}
-                                title={isPastExample ? "Cette heure est déjà passée" : ""}
+                                title={isPastExample ? (language === 'fr' ? "Cette heure est déjà passée" : "This time has already passed") : ""}
                               >
                                 {example}
                               </button>
@@ -622,7 +644,7 @@ Message: ${formData.message || 'Pas de message'}`;
                           className="w-full bg-blue-500 text-white px-4 py-4 sm:py-3 rounded-xl text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                           <CheckCircle size={18} />
-                          Continuer
+                          {t('timeSelection.continue', 'booking')}
                         </button>
                       </div>
                     </motion.div>
@@ -634,7 +656,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   <div className="bg-[#141B2B] rounded-xl p-6 text-center border border-[#1F2937] border-dashed">
                     <Calendar size={32} className="mx-auto text-gray-600 mb-2" />
                     <p className="text-sm text-gray-400">
-                      Choisissez une date dans le calendrier
+                      {t('timeSelection.noDateMessage', 'booking')}
                     </p>
                   </div>
                 )}
@@ -644,7 +666,7 @@ Message: ${formData.message || 'Pas de message'}`;
                 {/* Récapitulatif */}
                 {selectedDate && selectedTime && (
                   <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
-                    <p className="text-xs text-gray-400 mb-2">Récapitulatif de votre rendez-vous :</p>
+                    <p className="text-xs text-gray-400 mb-2">{t('summary.title', 'booking')}</p>
                     <div className="flex flex-col sm:flex-row gap-2">
                       <div className="flex items-center gap-2 bg-[#141B2B] px-3 py-2 rounded-lg border border-[#1F2937]">
                         <Calendar size={16} className="text-blue-400 flex-shrink-0" />
@@ -663,7 +685,7 @@ Message: ${formData.message || 'Pas de message'}`;
                 {/* Choix du mode de contact */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-300">
-                    Comment souhaitez-vous être contacté ?
+                    {t('contactMethod.label', 'booking')}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
@@ -676,7 +698,7 @@ Message: ${formData.message || 'Pas de message'}`;
                       }`}
                     >
                       <MessageCircle size={18} />
-                      <span className="text-sm font-medium">WhatsApp</span>
+                      <span className="text-sm font-medium">{t('contactMethod.whatsapp', 'booking')}</span>
                     </button>
                     <button
                       type="button"
@@ -688,7 +710,7 @@ Message: ${formData.message || 'Pas de message'}`;
                       }`}
                     >
                       <Mail size={18} />
-                      <span className="text-sm font-medium">Email</span>
+                      <span className="text-sm font-medium">{t('contactMethod.email', 'booking')}</span>
                     </button>
                   </div>
                 </div>
@@ -697,7 +719,7 @@ Message: ${formData.message || 'Pas de message'}`;
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1.5">
                     <User size={16} className="inline mr-1.5 text-blue-400" />
-                    Votre prénom / nom
+                    {t('form.name.label', 'booking')}
                   </label>
                   <input
                     type="text"
@@ -707,10 +729,10 @@ Message: ${formData.message || 'Pas de message'}`;
                     className={`w-full px-4 py-4 sm:py-3 bg-[#141B2B] border rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 ${
                       formErrors.name ? 'border-red-500' : 'border-[#1F2937]'
                     }`}
-                    placeholder="Ex: Jean Dupont"
+                    placeholder={t('form.name.placeholder', 'booking')}
                   />
                   {formErrors.name && (
-                    <p className="text-xs text-red-400 mt-1">Veuillez entrer votre nom</p>
+                    <p className="text-xs text-red-400 mt-1">{t('form.name.error', 'booking')}</p>
                   )}
                 </div>
 
@@ -719,7 +741,7 @@ Message: ${formData.message || 'Pas de message'}`;
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1.5">
                       <Phone size={16} className="inline mr-1.5 text-blue-400" />
-                      Numéro WhatsApp
+                      {t('form.phone.label', 'booking')}
                     </label>
                     <div className="flex flex-col sm:flex-row gap-2">
                       {/* Sélecteur de pays avec IMAGES */}
@@ -775,7 +797,7 @@ Message: ${formData.message || 'Pas de message'}`;
                                       sizes="20px"
                                     />
                                   </div>
-                                  <span className="text-sm text-gray-300 flex-1">{country.name}</span>
+                                  <span className="text-sm text-gray-300 flex-1">{t(`countries.${country.code}`, 'booking') || country.name}</span>
                                   <span className="text-xs text-gray-500">{country.dialCode}</span>
                                 </button>
                               ))}
@@ -793,22 +815,22 @@ Message: ${formData.message || 'Pas de message'}`;
                         className={`flex-1 px-4 py-4 sm:py-3 bg-[#141B2B] border rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 ${
                           formErrors.phone ? 'border-red-500' : 'border-[#1F2937]'
                         }`}
-                        placeholder="XX XX XX XX"
+                        placeholder={t('form.phone.placeholder', 'booking')}
                       />
                     </div>
                     {formErrors.phone && (
-                      <p className="text-xs text-red-400 mt-1">Veuillez entrer votre numéro</p>
+                      <p className="text-xs text-red-400 mt-1">{t('form.phone.error', 'booking')}</p>
                     )}
                     <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                       <MessageCircle size={12} className="text-green-500" />
-                      Gratuit - Votre demande sera envoyée directement sur WhatsApp
+                      {t('contactMethod.whatsappDescription', 'booking')}
                     </p>
                   </div>
                 ) : (
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-1.5">
                       <Mail size={16} className="inline mr-1.5 text-blue-400" />
-                      Votre email
+                      {t('form.email.label', 'booking')}
                     </label>
                     <input
                       type="email"
@@ -818,14 +840,14 @@ Message: ${formData.message || 'Pas de message'}`;
                       className={`w-full px-4 py-4 sm:py-3 bg-[#141B2B] border rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 ${
                         formErrors.email ? 'border-red-500' : 'border-[#1F2937]'
                       }`}
-                      placeholder="exemple@email.com"
+                      placeholder={t('form.email.placeholder', 'booking')}
                     />
                     {formErrors.email && (
-                      <p className="text-xs text-red-400 mt-1">Email valide requis</p>
+                      <p className="text-xs text-red-400 mt-1">{t('form.email.error', 'booking')}</p>
                     )}
                     <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                       <Mail size={12} className="text-blue-400" />
-                      Gratuit - Je vous répondrai par email
+                      {t('contactMethod.emailDescription', 'booking')}
                     </p>
                   </div>
                 )}
@@ -834,14 +856,14 @@ Message: ${formData.message || 'Pas de message'}`;
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1.5">
                     <MessageSquare size={16} className="inline mr-1.5 text-blue-400" />
-                    Parlez-moi de votre projet (optionnel)
+                    {t('form.message.label', 'booking')}
                   </label>
                   <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     rows={3}
                     className="w-full px-4 py-4 sm:py-3 bg-[#141B2B] border border-[#1F2937] rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-sm text-white placeholder-gray-500 resize-none"
-                    placeholder="Site web, application mobile, outil sur-mesure... Dites-moi tout !"
+                    placeholder={t('form.message.placeholder', 'booking')}
                   />
                 </div>
 
@@ -851,8 +873,8 @@ Message: ${formData.message || 'Pas de message'}`;
                     <CheckCircle size={14} className="flex-shrink-0 mt-0.5" />
                     <span>
                       {contactMethod === 'whatsapp' 
-                        ? 'En cliquant sur "Confirmer", vous serez redirigé vers WhatsApp. Gratuit et sans engagement.'
-                        : 'En cliquant sur "Confirmer", je vous répondrai par email. Gratuit et sans engagement.'
+                        ? t('confirmationMessage.whatsapp', 'booking')
+                        : t('confirmationMessage.email', 'booking')
                       }
                     </span>
                   </p>
@@ -866,7 +888,7 @@ Message: ${formData.message || 'Pas de message'}`;
                     className="w-full sm:flex-1 px-4 py-4 sm:py-3 border border-[#1F2937] rounded-xl text-sm font-medium text-gray-300 hover:bg-[#1E2638] transition-colors flex items-center justify-center gap-2"
                   >
                     <ChevronLeft size={16} />
-                    Retour
+                    {t('buttons.back', 'booking')}
                   </button>
                   <button
                     type="submit"
@@ -876,12 +898,12 @@ Message: ${formData.message || 'Pas de message'}`;
                     {isSubmitted ? (
                       <>
                         <CheckCircle size={16} />
-                        Rendez-vous confirmé !
+                        {t('buttons.confirmed', 'booking')}
                       </>
                     ) : (
                       <>
                         {contactMethod === 'whatsapp' ? <MessageCircle size={16} /> : <Mail size={16} />}
-                        Confirmer
+                        {t('buttons.confirm', 'booking')}
                       </>
                     )}
                   </button>

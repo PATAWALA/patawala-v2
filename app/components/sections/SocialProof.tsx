@@ -1,14 +1,13 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Star, Quote, Building2, Users, Sparkles, ChevronLeft, ChevronRight, CheckCircle, ArrowRight, MapPin, Award } from 'lucide-react';
+import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
 import Image from 'next/image';
 import clientImage from '../../assets/images/profile2.jpeg';
 import chimeneImage from '../../assets/images/profile4.png';
 import cesarImage from '../../assets/images/profile5.png';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Interface pour typer les témoignages
 interface Testimonial {
   name: string;
   content: string;
@@ -21,7 +20,6 @@ interface Testimonial {
   flag?: string;
 }
 
-// Interface pour les types de projets
 interface ProjectType {
   icon: any;
   title: string;
@@ -33,37 +31,39 @@ interface ProjectType {
 const SocialProof = memo(function SocialProof() {
   const { t, language } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [isAutoScrolling, setIsAutoScrolling] = useState(true);
   const animationRef = useRef<number>();
+  const floatAnimationRef = useRef<number>();
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [isDesktop, setIsDesktop] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const timeRef = useRef(Date.now());
-  const animationFrameRef = useRef<number>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const startTimeRef = useRef(Date.now());
+  const [isDesktop, setIsDesktop] = useState(false);
 
-  // Détection hydratation
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Charger les témoignages depuis les traductions
+  // Détection desktop/mobile
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
+
+  // Charger les témoignages
   useEffect(() => {
     try {
       const testimonialsData = t('testimonials', 'testimonials');
       if (Array.isArray(testimonialsData)) {
-        // Associer les images et autres données statiques
-        const enrichedTestimonials = testimonialsData.map((testimonial: any, index: number) => {
-          // Associer les images et initiales selon l'index (ou selon le nom)
-          const baseTestimonial = {
-            ...testimonial,
-            rating: 5,
-          };
+        const enrichedTestimonials = testimonialsData.map((testimonial: any) => {
+          const baseTestimonial = { ...testimonial, rating: 5 };
 
-          // Correspondance avec les données originales
           if (testimonial.name.includes('Ninsemouh')) {
             return { ...baseTestimonial, image: clientImage, isRealImage: true, flag: '🇨🇮' };
           } else if (testimonial.name.includes('Marie')) {
@@ -90,17 +90,7 @@ const SocialProof = memo(function SocialProof() {
     }
   }, [t, language]);
 
-  // Détection desktop/mobile
-  useEffect(() => {
-    const checkScreen = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    checkScreen();
-    window.addEventListener('resize', checkScreen);
-    return () => window.removeEventListener('resize', checkScreen);
-  }, []);
-
-  // Types de projets (traduits)
+  // Types de projets
   const projectTypes: ProjectType[] = [
     {
       icon: Building2,
@@ -122,88 +112,77 @@ const SocialProof = memo(function SocialProof() {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
-      window.history.pushState(null, '', '/#contact');
     }
   }, []);
 
-  // Fonction de défilement continu
-  const continuousScroll = useCallback(() => {
-    if (scrollRef.current && isAutoScrolling) {
-      const { current } = scrollRef;
-      const maxScroll = current.scrollWidth - current.clientWidth;
-      
-      const speed = isDesktop ? 0.6 : 1.2;
-      
-      let newScrollLeft = current.scrollLeft + speed;
-      if (newScrollLeft >= maxScroll) {
-        newScrollLeft = 0;
+  // Animation de défilement horizontal (SUR TOUS LES APPAREILS)
+  useEffect(() => {
+    let rafId: number;
+    
+    const scroll = () => {
+      if (scrollRef.current && isAutoScrolling) {
+        const { current } = scrollRef;
+        const maxScroll = current.scrollWidth - current.clientWidth;
+        
+        if (maxScroll > 0) {
+          // Vitesse adaptative : plus lente sur desktop, normale sur mobile
+          const speed = isDesktop ? 0.3 : 0.5;
+          let newScrollLeft = current.scrollLeft + speed;
+          
+          if (newScrollLeft >= maxScroll) {
+            newScrollLeft = 0;
+          }
+          
+          current.scrollLeft = newScrollLeft;
+          
+          setShowLeftArrow(newScrollLeft > 20);
+          setShowRightArrow(newScrollLeft + current.clientWidth < current.scrollWidth - 20);
+        }
       }
       
-      current.scrollLeft = newScrollLeft;
-      
-      animationRef.current = requestAnimationFrame(continuousScroll);
-    }
+      rafId = requestAnimationFrame(scroll);
+    };
+    
+    rafId = requestAnimationFrame(scroll);
+    
+    return () => cancelAnimationFrame(rafId);
   }, [isAutoScrolling, isDesktop]);
 
-  useEffect(() => {
-    if (isAutoScrolling) {
-      animationRef.current = requestAnimationFrame(continuousScroll);
-    } else if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isAutoScrolling, continuousScroll]);
-
-  // Animation des cartes (montée/descente)
+  // Animation de flottement (UNIQUEMENT SUR DESKTOP)
   useEffect(() => {
     if (!isDesktop) return;
-
-    const updateCardPositions = () => {
-      timeRef.current = Date.now() / 1000;
+    
+    let rafId: number;
+    
+    const float = () => {
+      const now = Date.now();
+      const elapsed = (now - startTimeRef.current) / 1000;
+      const cycleDuration = 6;
+      const progress = (elapsed % cycleDuration) / cycleDuration;
+      const angle = progress * Math.PI * 2;
+      const amplitude = 12;
       
       cardRefs.current.forEach((card, index) => {
         if (card) {
-          const containerRect = containerRef.current?.getBoundingClientRect();
-          const cardRect = card.getBoundingClientRect();
-          
-          if (containerRect) {
-            const containerCenter = containerRect.left + containerRect.width / 2;
-            const cardCenter = cardRect.left + cardRect.width / 2;
-            
-            const distance = (cardCenter - containerCenter) / (containerRect.width / 2);
-            const proximity = Math.max(0, 1 - Math.abs(distance));
-            
-            const phase = index * 2;
-            const baseAmplitude = 25;
-            const amplitude = proximity * baseAmplitude;
-            const verticalMovement = amplitude * Math.sin(timeRef.current * 3 + phase);
-            const centerBoost = proximity > 0.7 ? (proximity - 0.7) * 40 : 0;
-            const finalY = verticalMovement + centerBoost;
-            const scale = 1 + (proximity * 0.05);
-            
-            card.style.transform = `translateY(${finalY}px) scale(${scale})`;
-          }
+          const phase = index * 0.8;
+          const moveY = Math.sin(angle + phase) * amplitude;
+          card.style.transform = `translateY(${moveY}px) translateZ(0)`;
         }
       });
       
-      animationFrameRef.current = requestAnimationFrame(updateCardPositions);
+      rafId = requestAnimationFrame(float);
     };
-
-    animationFrameRef.current = requestAnimationFrame(updateCardPositions);
-
+    
+    rafId = requestAnimationFrame(float);
+    
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
+      cancelAnimationFrame(rafId);
+      cardRefs.current.forEach(card => {
+        if (card) card.style.transform = '';
+      });
     };
   }, [isDesktop]);
 
-  // Vérification des boutons de défilement
   const checkScrollButtons = useCallback(() => {
     if (scrollRef.current) {
       const { current } = scrollRef;
@@ -224,12 +203,10 @@ const SocialProof = memo(function SocialProof() {
       const scrollAmount = direction === 'left' ? -(cardWidth + gap) : (cardWidth + gap);
       
       current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      
       setTimeout(checkScrollButtons, 300);
     }
   }, [checkScrollButtons]);
 
-  // Arrêt du défilement
   const handleMouseEnter = useCallback(() => setIsAutoScrolling(false), []);
   const handleMouseLeave = useCallback(() => setIsAutoScrolling(true), []);
   const handleTouchStart = useCallback(() => setIsAutoScrolling(false), []);
@@ -243,7 +220,6 @@ const SocialProof = memo(function SocialProof() {
     return () => window.removeEventListener('resize', checkScrollButtons);
   }, [checkScrollButtons]);
 
-  // Points lumineux statiques
   const lightPoints = useRef(
     [...Array(8)].map(() => ({
       left: `${Math.random() * 100}%`,
@@ -251,7 +227,6 @@ const SocialProof = memo(function SocialProof() {
     }))
   ).current;
 
-  // Duplication pour effet infini
   const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
   return (
@@ -259,7 +234,7 @@ const SocialProof = memo(function SocialProof() {
       className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
       aria-label={language === 'fr' ? "Témoignages clients" : "Client testimonials"}
     >
-      {/* FOND OPTIMISÉ */}
+      {/* FOND */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div className="absolute inset-0" style={{
           backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.03) 0px, rgba(59,130,246,0.03) 1px, transparent 1px, transparent 60px)`
@@ -268,29 +243,25 @@ const SocialProof = memo(function SocialProof() {
           backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.03) 0px, rgba(6,182,212,0.03) 1px, transparent 1px, transparent 60px)`
         }} />
         
-        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl will-change-transform" />
-        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl will-change-transform" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl will-change-transform" />
+        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         
         {lightPoints.map((point, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
-            style={{
-              left: point.left,
-              top: point.top,
-            }}
+            style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />
         ))}
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* En-tête de section */}
+        {/* En-tête */}
         <div className="text-center mb-12 md:mb-16">
           {isMounted && (
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-              <Award size={14} className="text-blue-400" aria-hidden="true" />
+              <Award size={14} className="text-blue-400" />
               <span className="text-xs sm:text-sm font-medium text-blue-400">
                 {t('badge', 'testimonials')}
               </span>
@@ -309,16 +280,15 @@ const SocialProof = memo(function SocialProof() {
           </p>
         </div>
 
-        {/* Carrousel */}
+        {/* CARROUSEL */}
         <div 
-          ref={containerRef}
           className="relative max-w-7xl mx-auto mb-16 md:mb-20"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Flèches de navigation */}
+          {/* Flèches - cachées sur mobile */}
           {isDesktop && (
             <>
               <button
@@ -328,7 +298,7 @@ const SocialProof = memo(function SocialProof() {
                 aria-label={language === 'fr' ? "Témoignages précédents" : "Previous testimonials"}
                 disabled={!showLeftArrow}
               >
-                <ChevronLeft size={20} aria-hidden="true" />
+                <ChevronLeft size={20} />
               </button>
 
               <button
@@ -338,14 +308,14 @@ const SocialProof = memo(function SocialProof() {
                 aria-label={language === 'fr' ? "Témoignages suivants" : "Next testimonials"}
                 disabled={!showRightArrow}
               >
-                <ChevronRight size={20} aria-hidden="true" />
+                <ChevronRight size={20} />
               </button>
             </>
           )}
 
-          {/* Indicateur de défilement */}
+          {/* Indicateur - caché sur mobile */}
           {isDesktop && (
-            <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937]">
+            <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937] z-10">
               <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
                 {isAutoScrolling ? t('autoScroll.playing', 'testimonials') : t('autoScroll.paused', 'testimonials')}
               </span>
@@ -364,63 +334,57 @@ const SocialProof = memo(function SocialProof() {
               WebkitOverflowScrolling: 'touch'
             }}
           >
-            {duplicatedTestimonials.map((testimonial, index) => {
-              const setCardRef = (el: HTMLDivElement | null) => {
-                cardRefs.current[index] = el;
-              };
-
-              return (
-                <div
-                  key={`${testimonial.name}-${index}`}
-                  ref={setCardRef}
-                  className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-2xl transition-all duration-200 group relative flex-shrink-0 will-change-transform"
-                  style={isDesktop ? { willChange: 'transform' } : {}}
-                >
-                  <div className="relative z-10">
-                    <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" aria-hidden="true" />
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <div
+                key={`${testimonial.name}-${index}`}
+                ref={el => { cardRefs.current[index] = el; }}
+                className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-2xl transition-all duration-300 group relative flex-shrink-0"
+                style={{ willChange: isDesktop ? 'transform' : 'auto' }}
+              >
+                <div className="relative z-10">
+                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" />
+                  
+                  <div className="flex mb-2 md:mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="fill-blue-400 text-blue-400" size={14} />
+                    ))}
+                  </div>
+                  
+                  <p className="text-gray-300 mb-3 md:mb-4 italic text-xs sm:text-sm md:text-base">
+                    "{testimonial.content}"
+                  </p>
+                  
+                  <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
+                    {testimonial.isRealImage && testimonial.image ? (
+                      <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
+                        <Image
+                          src={testimonial.image}
+                          alt={`${language === 'fr' ? 'Photo de' : 'Photo of'} ${testimonial.name}`}
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                          quality={75}
+                        />
+                      </div>
+                    ) : (
+                      <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0`}>
+                        {testimonial.initials || testimonial.name.substring(0, 2).toUpperCase()}
+                      </div>
+                    )}
                     
-                    <div className="flex mb-2 md:mb-3" aria-label={`${t('rating', 'testimonials')}: ${testimonial.rating || 5}`}>
-                      {[...Array(testimonial.rating || 5)].map((_, i) => (
-                        <Star key={i} className="fill-blue-400 text-blue-400" size={14} aria-hidden="true" />
-                      ))}
-                    </div>
-                    
-                    <p className="text-gray-300 mb-3 md:mb-4 italic text-xs sm:text-sm md:text-base">
-                      "{testimonial.content}"
-                    </p>
-                    
-                    <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
-                      {testimonial.isRealImage && testimonial.image ? (
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0">
-                          <Image
-                            src={testimonial.image}
-                            alt={`${language === 'fr' ? 'Photo de' : 'Photo of'} ${testimonial.name}`}
-                            fill
-                            className="object-cover"
-                            sizes="48px"
-                            quality={75}
-                          />
-                        </div>
-                      ) : (
-                        <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0`}>
-                          {testimonial.initials || testimonial.name.substring(0, 2).toUpperCase()}
-                        </div>
-                      )}
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base truncate">
-                          {testimonial.name}
-                        </div>
-                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
-                          <MapPin size={10} className="text-blue-400 flex-shrink-0" aria-hidden="true" />
-                          <span className="truncate">{testimonial.flag || '🌍'} {testimonial.country}</span>
-                        </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base truncate">
+                        {testimonial.name}
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+                        <MapPin size={10} className="text-blue-400 flex-shrink-0" />
+                        <span className="truncate">{testimonial.flag || '🌍'} {testimonial.country}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -438,7 +402,7 @@ const SocialProof = memo(function SocialProof() {
               >
                 <div className="flex items-start gap-3 sm:gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors flex-shrink-0">
-                    <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" aria-hidden="true" />
+                    <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
                   </div>
                   <div>
                     <h4 className="text-base sm:text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
@@ -454,13 +418,12 @@ const SocialProof = memo(function SocialProof() {
                   <button
                     onClick={scrollToContact}
                     className="w-full flex items-center justify-between group/btn"
-                    aria-label={type.cta}
                   >
                     <span className="text-blue-400 font-medium text-sm sm:text-base md:text-lg group-hover/btn:translate-x-1 transition-transform duration-200">
                       {type.cta}
                     </span>
                     <div className="bg-blue-500/10 p-2 rounded-full group-hover/btn:bg-blue-500/20 transition-colors duration-200">
-                      <ArrowRight size={16} className="text-blue-400 group-hover/btn:translate-x-0.5 transition-transform duration-200" aria-hidden="true" />
+                      <ArrowRight size={16} className="text-blue-400 group-hover/btn:translate-x-0.5 transition-transform duration-200" />
                     </div>
                   </button>
                 </div>
@@ -469,6 +432,7 @@ const SocialProof = memo(function SocialProof() {
           </div>
         </div>
       </div>
+      
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

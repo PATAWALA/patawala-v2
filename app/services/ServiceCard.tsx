@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Service } from './data/servicesData';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BookingModal from '../components/ui/BookingModal';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -17,32 +17,8 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const { t, language } = useLanguage();
 
-  // DÉBOGAGE - Voir les IDs disponibles
-  useEffect(() => {
-    console.log('=== DÉBOGAGE ===');
-    console.log('Service ID reçu:', service.id);
-    console.log('Titre original:', service.title);
-    
-    // Vérifier ce que contient services-data
-    const servicesData = t('services', 'services-data');
-    console.log('Clés disponibles dans services:', Object.keys(servicesData || {}));
-    
-    // Vérifier si notre ID existe - CORRECTION TYPESCRIPT ICI
-    const hasTranslation = servicesData && 
-      typeof servicesData === 'object' && 
-      servicesData !== null && 
-      service.id in servicesData;
-    
-    console.log(`Traduction disponible pour ${service.id}:`, hasTranslation ? 'OUI' : 'NON');
-    
-    if (hasTranslation) {
-      console.log('Données traduites:', (servicesData as Record<string, any>)[service.id]);
-    }
-  }, [language, service.id, t]);
-
   // Récupérer les données de traduction
   const getTranslatedData = () => {
-    // Récupérer tout l'objet services
     const servicesData = t('services', 'services-data');
     const cardData = t('card', 'services-data');
     
@@ -66,26 +42,28 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
 
     const currentDefaults = language === 'fr' ? defaults.fr : defaults.en;
 
-    // Vérifier si nous avons des traductions pour ce service - CORRECTION TYPESCRIPT ICI
+    // Vérifier si nous avons des traductions pour ce service
     let translatedService = null;
     if (servicesData && typeof servicesData === 'object' && servicesData !== null) {
-      // Chercher le service par son ID avec typage sécurisé
       if (service.id in servicesData) {
         translatedService = (servicesData as Record<string, any>)[service.id];
       }
     }
 
-    // Construire les labels de la carte
-    const cardLabels = {
-      popular:  currentDefaults.popular,
-      from: currentDefaults.from,
-      hourly:  currentDefaults.hourly,
-      monthly:  currentDefaults.monthly,
-      more:  currentDefaults.more
-    };
+    // Parser les labels de la carte si nécessaire
+    let cardLabels = currentDefaults;
+    if (cardData && typeof cardData === 'object' && cardData !== null) {
+      cardLabels = {
+        popular: (cardData as any).popular || currentDefaults.popular,
+        from: (cardData as any).from || currentDefaults.from,
+        hourly: (cardData as any).hourly || currentDefaults.hourly,
+        monthly: (cardData as any).monthly || currentDefaults.monthly,
+        more: (cardData as any).features?.more || currentDefaults.more,
+      };
+    }
 
     return {
-      service: translatedService || service, // Fallback aux données originales
+      service: translatedService || service,
       labels: cardLabels
     };
   };
@@ -167,12 +145,13 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
             )}
           </div>
 
+          {/* BOUTON AMÉLIORÉ - Texte centré avec flèche intégrée */}
           <button 
             onClick={handleOpenBooking}
-            className="w-full border border-blue-500/30 bg-blue-500/5 text-blue-400 font-medium py-2.5 px-4 rounded-xl flex items-center justify-between group/btn hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500 hover:text-white transition-all duration-300 backdrop-blur-sm cursor-pointer"
+            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer"
           >
-            <span>{translatedService.ctaText}</span>
-            <ArrowRight size={16} className="group-hover/btn:translate-x-2 transition-transform duration-300" />
+            <span className="text-center">{translatedService.ctaText}</span>
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" />
           </button>
         </div>
       </motion.div>

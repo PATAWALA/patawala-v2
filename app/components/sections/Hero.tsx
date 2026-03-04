@@ -13,8 +13,6 @@ import profile7Image from '../../assets/images/profile7.jpg';
 import profile8Image from '../../assets/images/profile8.jpg';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
-
-// Import direct de Typed.js
 import Typed from 'typed.js';
 
 const HeroSection = memo(function HeroSection() {
@@ -27,26 +25,17 @@ const HeroSection = memo(function HeroSection() {
 
   useEffect(() => {
     setIsMounted(true);
-    
     return () => {
-      if (typedInstanceRef.current) {
-        typedInstanceRef.current.destroy();
-      }
+      if (typedInstanceRef.current) typedInstanceRef.current.destroy();
     };
   }, []);
 
   useEffect(() => {
     if (!typedRef.current || !isMounted) return;
-
     const strings = t('typed.strings', 'hero');
     const stringsArray = Array.isArray(strings) ? strings : [];
-    
     if (stringsArray.length === 0) return;
-
-    if (typedInstanceRef.current) {
-      typedInstanceRef.current.destroy();
-    }
-
+    if (typedInstanceRef.current) typedInstanceRef.current.destroy();
     typedInstanceRef.current = new Typed(typedRef.current, {
       strings: stringsArray,
       typeSpeed: 45,
@@ -58,11 +47,8 @@ const HeroSection = memo(function HeroSection() {
       smartBackspace: true,
       cursorChar: '|'
     });
-
     return () => {
-      if (typedInstanceRef.current) {
-        typedInstanceRef.current.destroy();
-      }
+      if (typedInstanceRef.current) typedInstanceRef.current.destroy();
     };
   }, [isMounted, language, t]);
 
@@ -74,17 +60,9 @@ const HeroSection = memo(function HeroSection() {
     }
   }, []);
 
-  const handleLancerProjet = useCallback(() => {
-    setIsBookingOpen(true);
-  }, []);
-
-  const handleVoirRealisations = useCallback(() => {
-    scrollToSection('projets');
-  }, [scrollToSection]);
-
-  const handleCloseBooking = useCallback(() => {
-    setIsBookingOpen(false);
-  }, []);
+  const handleLancerProjet = useCallback(() => setIsBookingOpen(true), []);
+  const handleVoirRealisations = useCallback(() => scrollToSection('projets'), [scrollToSection]);
+  const handleCloseBooking = useCallback(() => setIsBookingOpen(false), []);
 
   const lightPoints = useRef(
     [...Array(5)].map(() => ({
@@ -126,12 +104,10 @@ const HeroSection = memo(function HeroSection() {
               transparent 1px, 
               transparent 50px)`
           }} />
-          
           <div className="absolute top-20 left-10 w-48 h-48 sm:w-64 sm:h-64 bg-blue-500/10 sm:bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-72 h-72 sm:w-96 sm:h-96 bg-cyan-500/10 sm:bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
-        
-        {/* Container principal */}
+
         <div className="container mx-auto px-4 sm:px-4 md:px-6 relative z-10 py-4 sm:py-6 md:py-8 lg:py-12">
           
           {/* Badge principal - CACHÉ SUR MOBILE, VISIBLE SUR DESKTOP */}
@@ -164,13 +140,13 @@ const HeroSection = memo(function HeroSection() {
                 </p>
               </div>
 
-              {/* CERCLE D'AVATARS - PLUS COMPACT */}
+              {/* CERCLE D'AVATARS - ENCORE PLUS COMPACT */}
               <div className="flex flex-row items-center justify-center lg:justify-start gap-1.5 sm:gap-4 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
-                <div className="flex items-center -space-x-4 sm:-space-x-4">
-                  {avatarImages.slice(0, 5).map((avatar, index) => (
+                <div className="flex items-center -space-x-4 sm:-space-x-5 md:-space-x-6">
+                  {avatarImages.map((avatar, index) => (
                     <div 
                       key={index}
-                      className="relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
+                      className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
                       style={{ zIndex: 10 - index }}
                     >
                       <Image
@@ -178,16 +154,13 @@ const HeroSection = memo(function HeroSection() {
                         alt={avatar.alt}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 28px, (max-width: 768px) 36px, 40px"
+                        sizes="(max-width: 640px) 32px, (max-width: 768px) 36px, 40px"
                         loading="lazy"
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
                       />
                     </div>
                   ))}
-                  <div className="relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] bg-blue-500/20 flex items-center justify-center text-[10px] sm:text-sm font-bold text-blue-400 shadow-lg">
-                    +{avatarImages.length - 5}
-                  </div>
                 </div>
 
                 <div className="flex flex-col items-start">
@@ -195,15 +168,15 @@ const HeroSection = memo(function HeroSection() {
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        size={12} 
+                        size={14} 
                         className="sm:w-4 sm:h-4 md:w-5 md:h-5 fill-orange-400 text-orange-400" 
                         aria-hidden="true"
                       />
                     ))}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-xs sm:text-base md:text-lg font-bold text-white">30+</span>
-                    <span className="text-[9px] sm:text-sm md:text-base text-gray-400 whitespace-nowrap">
+                    <span className="text-sm sm:text-base md:text-lg font-bold text-white">30+</span>
+                    <span className="text-xs sm:text-sm md:text-base text-gray-400 whitespace-nowrap">
                       {t('socialProof.entrepreneurs', 'hero')}
                     </span>
                   </div>

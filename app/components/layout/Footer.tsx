@@ -2,8 +2,8 @@
 
 import { Github, Linkedin, Twitter, Mail, Sparkles, Heart, Zap, Globe } from 'lucide-react';
 import { SOCIAL_LINKS } from '../../lib/constants';
-import Link from 'next/link';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { useCallback } from 'react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -34,6 +34,12 @@ export default function Footer() {
     { href: SOCIAL_LINKS.linkedin, icon: Linkedin, label: 'LinkedIn', color: 'hover:bg-blue-600' },
     { href: SOCIAL_LINKS.twitter, icon: Twitter, label: 'Twitter', color: 'hover:bg-sky-500' },
   ];
+
+  // Navigation directe (comme dans la navbar)
+  const handleNavigation = useCallback((e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    window.location.href = href;
+  }, []);
 
   return (
     <footer className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden">
@@ -102,13 +108,14 @@ export default function Footer() {
             <ul className="space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.key}>
-                  <Link
+                  <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group"
+                    onClick={(e) => handleNavigation(e, link.href)}
+                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                     {t(`navbar.${link.key}`, 'common')}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -123,13 +130,14 @@ export default function Footer() {
             <ul className="space-y-4">
               {legalLinks.map((link) => (
                 <li key={link.key}>
-                  <Link
+                  <a
                     href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group"
+                    onClick={(e) => handleNavigation(e, link.href)}
+                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer"
                   >
                     <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                     {t(`${link.key}`, 'footer')}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

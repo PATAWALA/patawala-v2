@@ -2,51 +2,47 @@
   "badge": "Disponibilité & Contact",
   "title": "Discutons de votre projet",
   "titleHighlight": "Je suis à votre écoute",
-  "subtitle": "Un projet complexe ou une simple question ? Choisissez le canal qui vous convient le mieux pour amorcer notre collaboration.",
+  "subtitle": "Un projet complexe ou une simple question ? Choisissez le canal qui vous convient le mieux.",
 
   "contactCards": {
     "direct": {
       "title": "Lignes directes",
-      "whatsapp": "WhatsApp Business",
+      "whatsapp": "WhatsApp",
       "calls": "Appels & SMS",
-      "emergency": "Ligne Prioritaire"
+      "emergency": "Urgence projet"
     },
     "info": {
-      "title": "Informations & Email",
-      "email": "Email Professionnel",
-      "website": "Portfolio",
+      "title": "Infos & Email",
+      "email": "Email",
       "location": "Localisation"
     }
   },
 
   "social": {
-    "title": "Suivre mes actualités tech"
+    "title": "Suivez-moi"
   },
 
   "guarantees": {
-    "firstExchange": "Premier échange offert",
-    "free30min": "30 min de conseil",
+    "firstExchange": "1er échange offert",
+    "free30min": "30 min conseils",
     "noCommitment": "Sans engagement"
   },
 
   "buttons": {
-    "whatsapp": "Lancer la discussion",
-    "schedule": "Réserver un créneau",
-    "copy": "Copier",
-    "copied": "Copié !",
-    "send": "Envoyer",
-    "visit": "Consulter"
+    "whatsapp": "WhatsApp direct",
+    "schedule": "Planifier un appel",
+    "copy": "Copier"
   },
 
   "availability": {
-    "thisWeek": "Disponibilité cette semaine :",
-    "slots": "créneaux restants"
+    "thisWeek": "Cette semaine :",
+    "slots": "créneaux disponibles"
   },
 
   "contactInfo": {
     "whatsapp": "+229 62 27 80 90",
     "calls": "+229 62 27 80 90",
-    "emergency": "+229 46495875",
+    "emergency": "+229 46 49 58 75",
     "email": "patawalaabdoulaye2003@gmail.com",
     "location": "Cotonou, Bénin"
   }
