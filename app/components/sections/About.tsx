@@ -3,7 +3,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile1.png';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -20,7 +19,6 @@ interface VisionData {
 
 const AboutSection = memo(function AboutSection() {
   const { t } = useTranslation();
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [visionCards, setVisionCards] = useState<VisionCard[]>([]);
@@ -32,15 +30,10 @@ const AboutSection = memo(function AboutSection() {
   // Récupérer les cartes de vision au chargement et quand la langue change
   useEffect(() => {
     try {
-      // Récupérer les données de vision
       const visionData = t('vision', 'about') as unknown as VisionData;
-      
-      // Vérifier si c'est un objet avec la propriété cards
       if (visionData && typeof visionData === 'object' && 'cards' in visionData) {
         setVisionCards(visionData.cards);
-        console.log('Vision cards chargées:', visionData.cards);
       } else {
-        console.error('Format de vision data incorrect:', visionData);
         setVisionCards([]);
       }
     } catch (error) {
@@ -69,9 +62,10 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(true);
   }, []);
 
+  // Navigation directe vers /services (comme dans la navbar)
   const handleVoirOffres = useCallback(() => {
-    router.push('/services');
-  }, [router]);
+    window.location.href = '/services';
+  }, []);
 
   const handleCloseBooking = useCallback(() => {
     setIsBookingOpen(false);

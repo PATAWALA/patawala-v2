@@ -22,13 +22,6 @@ export default function Footer() {
     { href: '/cgu', key: 'terms' },
   ];
 
-  const techStack = [
-    { name: 'TypeScript', color: 'text-blue-400' },
-    { name: 'Next.js 14', color: 'text-white' },
-    { name: 'Tailwind CSS', color: 'text-cyan-400' },
-    { name: 'Framer Motion', color: 'text-purple-400' },
-  ];
-
   const socialLinks = [
     { href: SOCIAL_LINKS.github, icon: Github, label: 'GitHub', color: 'hover:bg-gray-700' },
     { href: SOCIAL_LINKS.linkedin, icon: Linkedin, label: 'LinkedIn', color: 'hover:bg-blue-600' },
@@ -61,21 +54,13 @@ export default function Footer() {
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         {/* Section principale */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
-          {/* Colonne marque */}
+          {/* Colonne marque - sans icône, nom lumineux */}
           <div className="md:col-span-2 lg:col-span-4 space-y-6">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur opacity-60" />
-                <div className="relative w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                  <Sparkles size={24} className="text-white" />
-                </div>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  {t('brand', 'common')}
-                </h2>
-                <p className="text-sm text-gray-500">{t('role', 'footer')}</p>
-              </div>
+            <div className="space-y-1">
+              <h2 className="text-2xl sm:text-3xl font-bold italic bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
+                {t('brand', 'common')}
+              </h2>
+              <p className="text-sm text-gray-500">{t('role', 'footer')}</p>
             </div>
 
             <p className="text-gray-400 leading-relaxed">
@@ -198,10 +183,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright et technologies */}
+        {/* Copyright */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
           <p className="text-gray-500 order-2 md:order-1">
-            &copy; {currentYear} Patawala. {t('rights', 'footer')}
+            &copy; {currentYear} Abdoulaye Patawala. {t('rights', 'footer')}
           </p>
         </div>
       </div>
