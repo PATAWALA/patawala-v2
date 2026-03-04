@@ -16,14 +16,14 @@ export const NAV_ITEMS = [
 ];
 
 export const SOCIAL_LINKS = {
-  github: 'https://github.com/votreusername',
-  linkedin: 'https://linkedin.com/in/votreusername',
-  twitter: 'https://twitter.com/votreusername',
-  email: 'contact@patawala.dev'
+  github: 'https://github.com/PATAWALA',
+  linkedin: 'https://www.linkedin.com/in/abdoulaye-patawala-84b138381/',
+  twitter: 'https://x.com/AbdoulayeP79682',
+  email: 'patawalaabdoulaye2003@gmail.com'
 };
 
 export const CONTACT_INFO = {
-  email: 'contact@patawala.dev',
+  email: 'patawalaabdoulaye2003@gmail.com',
   phone: '+33 6 XX XX XX XX',
   location: 'Paris, France'
 };
