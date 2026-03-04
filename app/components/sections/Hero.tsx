@@ -14,7 +14,7 @@ import profile8Image from '../../assets/images/profile8.jpg';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Import direct de Typed.js (pas de dynamic car ce n'est pas un composant React)
+// Import direct de Typed.js
 import Typed from 'typed.js';
 
 const HeroSection = memo(function HeroSection() {
@@ -28,7 +28,6 @@ const HeroSection = memo(function HeroSection() {
   useEffect(() => {
     setIsMounted(true);
     
-    // Nettoyage
     return () => {
       if (typedInstanceRef.current) {
         typedInstanceRef.current.destroy();
@@ -36,7 +35,6 @@ const HeroSection = memo(function HeroSection() {
     };
   }, []);
 
-  // Mise à jour du Typed quand la langue change
   useEffect(() => {
     if (!typedRef.current || !isMounted) return;
 
@@ -45,12 +43,10 @@ const HeroSection = memo(function HeroSection() {
     
     if (stringsArray.length === 0) return;
 
-    // Détruire l'instance précédente
     if (typedInstanceRef.current) {
       typedInstanceRef.current.destroy();
     }
 
-    // Créer nouvelle instance
     typedInstanceRef.current = new Typed(typedRef.current, {
       strings: stringsArray,
       typeSpeed: 45,
@@ -90,7 +86,6 @@ const HeroSection = memo(function HeroSection() {
     setIsBookingOpen(false);
   }, []);
 
-  // Points lumineux statiques - réduits pour performance
   const lightPoints = useRef(
     [...Array(5)].map(() => ({
       left: `${Math.random() * 100}%`,
@@ -98,7 +93,6 @@ const HeroSection = memo(function HeroSection() {
     }))
   ).current;
 
-  // Images pour le cercle d'avatars
   const avatarImages = [
     { src: profile2Image, alt: t('altImages.avatar', 'hero') || 'Client satisfait' },
     { src: profile5Image, alt: t('altImages.avatar', 'hero') || 'Client satisfait' },
@@ -112,11 +106,11 @@ const HeroSection = memo(function HeroSection() {
     <>
       <section 
         id="hero" 
-        className="min-h-screen relative overflow-hidden flex items-center pt-12 sm:pt-16 md:pt-20 lg:pt-10 xl:pt-12"
+        className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12"
         aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
         aria-labelledby="hero-title"
       >
-        {/* FOND OPTIMISÉ - avec dégradé et formes floues */}
+        {/* FOND OPTIMISÉ */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35] will-change-transform">
           <div className="absolute inset-0 opacity-30 sm:opacity-40" style={{
             backgroundImage: `repeating-linear-gradient(90deg, 
@@ -140,13 +134,13 @@ const HeroSection = memo(function HeroSection() {
         {/* Container principal */}
         <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10 py-4 sm:py-6 md:py-8 lg:py-12">
           
-          {/* Badge principal - seulement le badge qui remonte sur mobile */}
-<div className="w-full flex justify-center relative z-20 -top-8 sm:top-0 mb-2 sm:mb-2 lg:mb-8 xl:mb-10">
-  <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
-    <Sparkles size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-    <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
-  </div>
-</div>
+          {/* Badge principal - CACHÉ SUR MOBILE, VISIBLE SUR DESKTOP */}
+          <div className="w-full hidden sm:flex justify-center mb-4 sm:mb-2 lg:mb-8 xl:mb-10">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
+              <Sparkles size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
+            </div>
+          </div>
 
           {/* Contenu principal */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
@@ -172,7 +166,6 @@ const HeroSection = memo(function HeroSection() {
 
               {/* CERCLE D'AVATARS */}
               <div className="flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-6 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
-                {/* Avatars superposés */}
                 <div className="flex items-center -space-x-3 sm:-space-x-4">
                   {avatarImages.slice(0, 5).map((avatar, index) => (
                     <div 
@@ -192,13 +185,11 @@ const HeroSection = memo(function HeroSection() {
                       />
                     </div>
                   ))}
-                  {/* +1 badge */}
                   <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] bg-blue-500/20 flex items-center justify-center text-xs sm:text-sm font-bold text-blue-400 shadow-lg">
                     +{avatarImages.length - 5}
                   </div>
                 </div>
 
-                {/* Étoiles et texte */}
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-0.5" aria-label="Note 5 étoiles">
                     {[...Array(5)].map((_, i) => (
@@ -242,15 +233,11 @@ const HeroSection = memo(function HeroSection() {
 
             {/* Photo de profil principale */}
             <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
-              
-              {/* Conteneur avec dimensions exactes */}
               <div className="relative w-full max-w-[260px] xs:max-w-[300px] sm:max-w-[340px] md:max-w-sm lg:max-w-md">
                 
-                {/* Éléments de fond - luminosité réduite sur mobile */}
                 <div className="absolute inset-0 bg-blue-500/20 sm:bg-blue-500/30 md:bg-blue-500/40 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
                 <div className="absolute -inset-4 sm:-inset-5 md:-inset-6 border border-cyan-400/20 sm:border-2 sm:border-cyan-400/30 rounded-full -z-10 will-change-transform" aria-hidden="true" />
                 
-                {/* Points lumineux - réduits */}
                 {lightPoints.map((point, i) => (
                   <div
                     key={i}
@@ -264,7 +251,6 @@ const HeroSection = memo(function HeroSection() {
                   />
                 ))}
 
-                {/* Badge en haut à droite */}
                 <div className="absolute top-0 right-0 z-30" style={{ transform: 'translate(5%, -5%)' }}>
                   <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937]">
                     <Globe size={7} className="xs:w-1.5 xs:h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5" aria-hidden="true" />
@@ -273,7 +259,6 @@ const HeroSection = memo(function HeroSection() {
                   </div>
                 </div>
 
-                {/* Badge en bas à gauche */}
                 <div className="absolute bottom-0 left-0 z-30" style={{ transform: 'translate(-5%, 5%)' }}>
                   <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937]">
                     <div className="w-1 h-1 xs:w-1 xs:h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
@@ -281,7 +266,6 @@ const HeroSection = memo(function HeroSection() {
                   </div>
                 </div>
 
-                {/* Photo de profil principale */}
                 <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg sm:shadow-xl border-2 sm:border-3 md:border-4 border-[#1F2937] bg-[#141B2B] transform-gpu">
                   <div className="aspect-square relative">
                     <Image
@@ -305,7 +289,6 @@ const HeroSection = memo(function HeroSection() {
         </div>
       </section>
 
-      {/* Modal de réservation */}
       <BookingModal 
         isOpen={isBookingOpen} 
         onClose={handleCloseBooking} 
