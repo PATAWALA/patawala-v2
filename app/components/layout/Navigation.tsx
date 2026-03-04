@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Type pour les items de navigation - CORRECTION: Utiliser Omit de TypeScript directement
+// Type simplifié pour éviter les erreurs
 type NavItem = {
   readonly key: string;
   readonly href: string;
@@ -16,7 +16,7 @@ type NavItem = {
   readonly submenu?: readonly {
     readonly key: string;
     readonly href: string;
-    readonly icon: React.ForwardRefExoticComponent<Omit<React.SVGProps<SVGSVGElement>, 'ref'>>;
+    readonly icon: React.ElementType;
     readonly category: string;
   }[];
 };
@@ -309,7 +309,7 @@ export default function Navigation() {
                                         role="menuitem"
                                         aria-current={isActive ? 'page' : undefined}
                                       >
-                                        <Icon size={18} className={isActive ? 'text-blue-400' : 'text-gray-400'} aria-hidden="true" />
+                                        <Icon className={`w-5 h-5 ${isActive ? 'text-blue-400' : 'text-gray-400'}`} aria-hidden="true" />
                                         <span className="font-medium">{subItemLabel}</span>
                                       </Link>
                                     );
@@ -359,8 +359,8 @@ export default function Navigation() {
                   aria-controls={isOpen ? "mobile-menu" : undefined}
                 >
                   {isOpen ? 
-                    <X size={20} className="text-blue-400" aria-hidden="true" /> : 
-                    <Menu size={20} className="text-gray-300" aria-hidden="true" />
+                    <X className="w-5 h-5 text-blue-400" aria-hidden="true" /> : 
+                    <Menu className="w-5 h-5 text-gray-300" aria-hidden="true" />
                   }
                 </button>
               </div>
@@ -401,7 +401,7 @@ export default function Navigation() {
                                 role="menuitem"
                               >
                                 {itemLabel}
-                                <ChevronDown size={16} className="rotate-180" aria-hidden="true" />
+                                <ChevronDown className="w-4 h-4 rotate-180" aria-hidden="true" />
                               </a>
                               
                               {/* Sous-menu mobile */}
@@ -424,7 +424,7 @@ export default function Navigation() {
                                       role="menuitem"
                                       aria-current={isActive ? 'page' : undefined}
                                     >
-                                      <Icon size={16} aria-hidden="true" />
+                                      <Icon className="w-4 h-4" aria-hidden="true" />
                                       <span className="font-medium">{subItemLabel}</span>
                                     </Link>
                                   );

@@ -37,21 +37,29 @@ export default function ServicesPage() {
   
   const { t, language } = useLanguage();
   const isInitialLoad = useRef(true);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
-  const [isHovering, setIsHovering] = useState(false);
+  
+  // Refs pour le défilement
+  const filterScrollRef = useRef<HTMLDivElement>(null);
+  const cardsScrollRef = useRef<HTMLDivElement>(null);
+  
+  // États pour les flèches des filtres
+  const [showFilterLeftArrow, setShowFilterLeftArrow] = useState(false);
+  const [showFilterRightArrow, setShowFilterRightArrow] = useState(true);
+  const [isFilterHovering, setIsFilterHovering] = useState(false);
+  
+  // États pour les flèches des cartes
+  const [showCardsLeftArrow, setShowCardsLeftArrow] = useState(false);
+  const [showCardsRightArrow, setShowCardsRightArrow] = useState(true);
+  const [isCardsHovering, setIsCardsHovering] = useState(false);
 
   // Fonction pour parser les traductions en toute sécurité
   const safeParse = <T,>(data: any, defaultValue: T): T => {
     if (!data) return defaultValue;
     
-    // Si c'est déjà un objet, le retourner
     if (typeof data === 'object' && data !== null) {
       return data as T;
     }
     
-    // Si c'est une chaîne, essayer de la parser
     if (typeof data === 'string') {
       try {
         return JSON.parse(data) as T;
@@ -64,21 +72,37 @@ export default function ServicesPage() {
     return defaultValue;
   };
 
-  // Récupérer les traductions avec parsing sécurisé
+  // Récupérer les traductions de base
   const translations = {
     badge: t('badge', 'services-data') as string,
     title: t('title', 'services-data') as string,
     titleHighlight: t('titleHighlight', 'services-data') as string,
     subtitle: t('subtitle', 'services-data') as string,
-    filters: safeParse(t('filters', 'services-data'), {}),
     disclaimer: t('disclaimer', 'services-data') as string
   };
 
-  // Parser la FAQ et le CTA séparément
+  // Parser les filtres séparément
+  const rawFilters = t('filters', 'services-data');
+  const filters = safeParse<Record<string, any>>(rawFilters, {
+    all: 'Tous les services',
+    web: 'Développement Web',
+    mobile: 'Applications Mobile',
+    design: 'Design & Identité',
+    consulting: 'Conseil & Audit',
+    description: {
+      all: "L'ensemble de mes services pour votre présence digitale",
+      web: "Des sites vitrines aux applications web complexes, performants et évolutifs",
+      mobile: "Applications natives et hybrides pour iOS et Android",
+      design: "Interfaces intuitives et expériences utilisateur mémorables",
+      consulting: "Conseil technique et stratégique pour vos projets digitaux"
+    }
+  });
+
+  // Parser FAQ et CTA
   const rawFaq = t('faq', 'services-data');
   const rawCta = t('cta', 'services-data');
 
-  // Valeurs par défaut pour la FAQ
+  // Valeurs par défaut
   const defaultFaq: Record<string, FaqTranslations> = {
     fr: {
       title: 'Questions fréquentes',
@@ -126,7 +150,6 @@ export default function ServicesPage() {
     }
   };
 
-  // Valeurs par défaut pour le CTA
   const defaultCta: Record<string, CtaTranslations> = {
     fr: {
       title: 'Vous ne trouvez pas ce que vous cherchez ?',
@@ -138,13 +161,29 @@ export default function ServicesPage() {
     }
   };
 
-  // Parser la FAQ et utiliser les valeurs par défaut si nécessaire
   const parsedFaq = safeParse<FaqTranslations>(rawFaq, defaultFaq[language]);
   const faq = parsedFaq.title ? parsedFaq : defaultFaq[language];
 
-  // Parser le CTA et utiliser les valeurs par défaut si nécessaire
   const parsedCta = safeParse<CtaTranslations>(rawCta, defaultCta[language]);
   const cta = parsedCta.title ? parsedCta : defaultCta[language];
+
+  // Gestion du défilement des filtres
+  const checkFilterScroll = () => {
+    if (filterScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = filterScrollRef.current;
+      setShowFilterLeftArrow(scrollLeft > 10);
+      setShowFilterRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  // Gestion du défilement des cartes
+  const checkCardsScroll = () => {
+    if (cardsScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = cardsScrollRef.current;
+      setShowCardsLeftArrow(scrollLeft > 20);
+      setShowCardsRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
+    }
+  };
 
   // Écouter les changements d'URL hash
   useEffect(() => {
@@ -186,39 +225,66 @@ export default function ServicesPage() {
     }
   }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav]);
 
-  // Gestion du défilement horizontal
-  const checkScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
-      setShowLeftArrow(scrollLeft > 20);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 20);
-    }
-  };
-
+  // Setup des écouteurs de scroll
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (container) {
-      container.addEventListener('scroll', checkScroll);
-      setTimeout(checkScroll, 100);
+    const filterContainer = filterScrollRef.current;
+    const cardsContainer = cardsScrollRef.current;
+    
+    if (filterContainer) {
+      filterContainer.addEventListener('scroll', checkFilterScroll);
+      setTimeout(checkFilterScroll, 100);
       
       const observer = new ResizeObserver(() => {
-        checkScroll();
+        checkFilterScroll();
       });
       
-      observer.observe(container);
+      observer.observe(filterContainer);
       
       return () => {
-        container.removeEventListener('scroll', checkScroll);
+        filterContainer.removeEventListener('scroll', checkFilterScroll);
+        observer.disconnect();
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    const cardsContainer = cardsScrollRef.current;
+    
+    if (cardsContainer) {
+      cardsContainer.addEventListener('scroll', checkCardsScroll);
+      setTimeout(checkCardsScroll, 100);
+      
+      const observer = new ResizeObserver(() => {
+        checkCardsScroll();
+      });
+      
+      observer.observe(cardsContainer);
+      
+      return () => {
+        cardsContainer.removeEventListener('scroll', checkCardsScroll);
         observer.disconnect();
       };
     }
   }, [activeCategory]);
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const container = scrollContainerRef.current;
+  // Fonctions de scroll
+  const scrollFilters = (direction: 'left' | 'right') => {
+    if (filterScrollRef.current) {
+      const scrollAmount = 200;
+      const newScrollLeft = filterScrollRef.current.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+      
+      filterScrollRef.current.scrollTo({
+        left: newScrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const scrollCards = (direction: 'left' | 'right') => {
+    if (cardsScrollRef.current) {
+      const container = cardsScrollRef.current;
       const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
-      const gap = 24; // gap-6 = 24px
+      const gap = 24;
       const scrollAmount = cardWidth + gap;
       
       const newScrollLeft = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
@@ -236,15 +302,15 @@ export default function ServicesPage() {
       window.history.replaceState(null, '', `/services#${categoryId}`);
       
       setTimeout(() => {
-        if (scrollContainerRef.current) {
-          scrollContainerRef.current.scrollLeft = 0;
-          checkScroll();
+        if (cardsScrollRef.current) {
+          cardsScrollRef.current.scrollLeft = 0;
+          checkCardsScroll();
         }
       }, 100);
     }
   };
 
-  // Déterminer les services à afficher selon la catégorie active
+  // Déterminer les services à afficher
   const getActiveServices = () => {
     if (activeCategory === 'all') {
       return allServices;
@@ -256,9 +322,8 @@ export default function ServicesPage() {
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* BEAU FOND - avec dégradé et formes floues */}
+      {/* Fond */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
         <div className="absolute inset-0" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
@@ -274,20 +339,13 @@ export default function ServicesPage() {
             transparent 60px)`
         }}></div>
         
-        {/* Éléments décoratifs flous */}
         <motion.div
-          animate={{ 
-            x: [0, 40, 0],
-            y: [0, -40, 0],
-          }}
+          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
+          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
           transition={{ duration: 18, repeat: Infinity }}
           className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
         />
@@ -319,30 +377,145 @@ export default function ServicesPage() {
           </p>
         </motion.div>
 
-        {/* Filtres */}
-        <ServiceFilter
-          activeCategory={activeCategory}
-          onCategoryChange={handleCategoryChange}
-        />
+        {/* Section Filtres avec flèches */}
+        <div className="mb-8 lg:mb-12">
+          <div 
+            className="relative lg:hidden"
+            onMouseEnter={() => setIsFilterHovering(true)}
+            onMouseLeave={() => setIsFilterHovering(false)}
+          >
+            {/* Flèche gauche filtres */}
+            <AnimatePresence>
+              {showFilterLeftArrow && (
+                <motion.button
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  onClick={() => scrollFilters('left')}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-[#0A0F1C] to-transparent pr-6 pl-2 py-2"
+                >
+                  <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                    <ChevronLeft size={18} className="text-white" />
+                  </div>
+                </motion.button>
+              )}
+            </AnimatePresence>
 
-        {/* Grille des services avec flèches de défilement améliorées */}
+            {/* Flèche droite filtres */}
+            <AnimatePresence>
+              {showFilterRightArrow && (
+                <motion.button
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  onClick={() => scrollFilters('right')}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-[#0A0F1C] to-transparent pl-6 pr-2 py-2"
+                >
+                  <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                    <ChevronRight size={18} className="text-white" />
+                  </div>
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            {/* Conteneur des filtres */}
+            <div 
+              ref={filterScrollRef}
+              className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}
+            >
+              <div className="flex gap-2 min-w-max px-1">
+                {filterCategories.map((category) => {
+                  const Icon = category.icon;
+                  const isActive = activeCategory === category.id;
+                  
+                  const getGradientColor = () => {
+                    if (category.id === 'web') return 'from-violet-500 to-purple-500';
+                    return category.color;
+                  };
+                  
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => handleCategoryChange(category.id)}
+                      className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
+                        ${isActive 
+                          ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                          : 'bg-[#141B2B] text-gray-400 border border-[#1F2937] hover:border-gray-600 hover:text-white'
+                        }`}
+                    >
+                      <Icon size={16} />
+                      {filters?.[category.id] || category.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Version desktop des filtres */}
+          <div className="hidden lg:flex justify-center">
+            <div className="inline-flex bg-[#141B2B] rounded-2xl p-1.5 shadow-md border border-[#1F2937]">
+              {filterCategories.map((category) => {
+                const Icon = category.icon;
+                const isActive = activeCategory === category.id;
+                
+                const getGradientColor = () => {
+                  if (category.id === 'web') return 'from-violet-500 to-purple-500';
+                  return category.color;
+                };
+                
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryChange(category.id)}
+                    className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all
+                      ${isActive 
+                        ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                        : 'text-gray-400 hover:text-white hover:bg-[#1E2638]'
+                      }`}
+                  >
+                    <Icon size={18} />
+                    {filters?.[category.id] || category.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Description de la catégorie */}
+          <motion.p
+            key={activeCategory}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center text-gray-400 mt-4 max-w-2xl mx-auto"
+          >
+            {filters?.description?.[activeCategory] || 
+             filterCategories.find(c => c.id === activeCategory)?.description}
+          </motion.p>
+        </div>
+
+        {/* Section Cartes avec flèches */}
         <div 
           className="relative"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+          onMouseEnter={() => setIsCardsHovering(true)}
+          onMouseLeave={() => setIsCardsHovering(false)}
         >
-          {/* Flèche gauche */}
+          {/* Flèche gauche cartes */}
           <AnimatePresence>
-            {(showLeftArrow) && (
+            {(showCardsLeftArrow) && (
               <motion.button
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                onClick={() => scroll('left')}
+                onClick={() => scrollCards('left')}
                 className={`absolute left-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
-                  ${isHovering ? 'md:opacity-100' : 'md:opacity-0'} 
+                  ${isCardsHovering ? 'md:opacity-100' : 'md:opacity-0'} 
                   bg-gradient-to-r from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pl-2 pr-6 py-4`}
-                aria-label="Défiler vers la gauche"
               >
                 <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
                   <ChevronLeft size={24} className="text-white" />
@@ -351,18 +524,17 @@ export default function ServicesPage() {
             )}
           </AnimatePresence>
 
-          {/* Flèche droite */}
+          {/* Flèche droite cartes */}
           <AnimatePresence>
-            {(showRightArrow) && (
+            {(showCardsRightArrow) && (
               <motion.button
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
-                onClick={() => scroll('right')}
+                onClick={() => scrollCards('right')}
                 className={`absolute right-0 top-1/2 -translate-y-1/2 z-20 transition-all duration-300
-                  ${isHovering ? 'md:opacity-100' : 'md:opacity-0'} 
+                  ${isCardsHovering ? 'md:opacity-100' : 'md:opacity-0'} 
                   bg-gradient-to-l from-[#0A0F1C] via-[#0A0F1C]/90 to-transparent pr-2 pl-6 py-4`}
-                aria-label="Défiler vers la droite"
               >
                 <div className="bg-blue-500/90 backdrop-blur-sm p-3 rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 transition-all duration-300 border border-blue-400/30">
                   <ChevronRight size={24} className="text-white" />
@@ -371,12 +543,12 @@ export default function ServicesPage() {
             )}
           </AnimatePresence>
 
-          {/* Indicateurs de défilement */}
+          {/* Indicateurs de défilement cartes */}
           <div className="flex justify-center gap-1.5 mt-2 md:hidden">
             {activeServices.map((_, index) => {
               const isVisible = () => {
-                if (!scrollContainerRef.current) return false;
-                const container = scrollContainerRef.current;
+                if (!cardsScrollRef.current) return false;
+                const container = cardsScrollRef.current;
                 const cardWidth = container.querySelector('.snap-start')?.clientWidth || 300;
                 const scrollPosition = container.scrollLeft;
                 const viewportWidth = container.clientWidth;
@@ -396,7 +568,7 @@ export default function ServicesPage() {
             })}
           </div>
 
-          {/* Conteneur de cartes */}
+          {/* Conteneur des cartes */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
@@ -406,7 +578,7 @@ export default function ServicesPage() {
               transition={{ duration: 0.3 }}
             >
               <div 
-                ref={scrollContainerRef}
+                ref={cardsScrollRef}
                 className="flex md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-6 md:pb-0 snap-x snap-mandatory scrollbar-hide scroll-smooth"
                 style={{
                   scrollbarWidth: 'none',
@@ -503,7 +675,6 @@ export default function ServicesPage() {
         </motion.p>
       </div>
 
-      {/* Style pour cacher la scrollbar sur mobile */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

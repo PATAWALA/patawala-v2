@@ -2,7 +2,6 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkles, CheckCircle, Globe, Smartphone, Star } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/profile.png';
@@ -15,16 +14,13 @@ import profile8Image from '../../assets/images/profile8.jpg';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Import dynamique de Typed.js pour réduire le bundle initial
-const Typed = dynamic(() => import('typed.js'), { 
-  ssr: false,
-  loading: () => <span className="inline-block w-32 h-8 bg-blue-500/20 animate-pulse rounded" />
-});
+// Import direct de Typed.js (pas de dynamic car ce n'est pas un composant React)
+import Typed from 'typed.js';
 
 const HeroSection = memo(function HeroSection() {
   const { t, language } = useTranslation();
   const typedRef = useRef<HTMLSpanElement>(null);
-  const typedInstanceRef = useRef<any>(null);
+  const typedInstanceRef = useRef<Typed | null>(null);
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -40,7 +36,7 @@ const HeroSection = memo(function HeroSection() {
     };
   }, []);
 
-  // Mise à jour du Typed quand la langue change - optimisé
+  // Mise à jour du Typed quand la langue change
   useEffect(() => {
     if (!typedRef.current || !isMounted) return;
 
@@ -55,18 +51,16 @@ const HeroSection = memo(function HeroSection() {
     }
 
     // Créer nouvelle instance
-    import('typed.js').then(({ default: Typed }) => {
-      typedInstanceRef.current = new Typed(typedRef.current, {
-        strings: stringsArray,
-        typeSpeed: 45,
-        backSpeed: 25,
-        backDelay: 1200,
-        startDelay: 300,
-        loop: true,
-        loopCount: Infinity,
-        smartBackspace: true,
-        cursorChar: '|'
-      });
+    typedInstanceRef.current = new Typed(typedRef.current, {
+      strings: stringsArray,
+      typeSpeed: 45,
+      backSpeed: 25,
+      backDelay: 1200,
+      startDelay: 300,
+      loop: true,
+      loopCount: Infinity,
+      smartBackspace: true,
+      cursorChar: '|'
     });
 
     return () => {
@@ -118,7 +112,7 @@ const HeroSection = memo(function HeroSection() {
     <>
       <section 
         id="hero" 
-        className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12"
+        className="min-h-screen relative overflow-hidden flex items-center pt-12 sm:pt-16 md:pt-20 lg:pt-10 xl:pt-12"
         aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
         aria-labelledby="hero-title"
       >
@@ -146,13 +140,13 @@ const HeroSection = memo(function HeroSection() {
         {/* Container principal */}
         <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10 py-4 sm:py-6 md:py-8 lg:py-12">
           
-          {/* Badge principal - visible sur tous les écrans maintenant */}
-          <div className="w-full flex justify-center mb-4 sm:mb-2 lg:mb-8 xl:mb-10">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
-              <Sparkles size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-              <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
-            </div>
-          </div>
+          {/* Badge principal - seulement le badge qui remonte sur mobile */}
+<div className="w-full flex justify-center relative z-20 -top-8 sm:top-0 mb-2 sm:mb-2 lg:mb-8 xl:mb-10">
+  <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
+    <Sparkles size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
+    <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
+  </div>
+</div>
 
           {/* Contenu principal */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
@@ -311,7 +305,7 @@ const HeroSection = memo(function HeroSection() {
         </div>
       </section>
 
-      {/* Modal de réservation avec lazy loading */}
+      {/* Modal de réservation */}
       <BookingModal 
         isOpen={isBookingOpen} 
         onClose={handleCloseBooking} 

@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { filterCategories, CategoryType } from './data/servicesData';
-import { useLanguage } from '../context/LanguageContext';
 
 interface ServiceFilterProps {
   activeCategory: CategoryType;
@@ -10,9 +9,6 @@ interface ServiceFilterProps {
 }
 
 export default function ServiceFilter({ activeCategory, onCategoryChange }: ServiceFilterProps) {
-  const { t } = useLanguage();
-  const filters = t('filters', 'services-data') || {};
-
   return (
     <div className="mb-12">
       {/* Version mobile - scroll horizontal */}
@@ -41,7 +37,7 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
                   }`}
               >
                 <Icon size={16} />
-                {filters[category.id] || category.label}
+                {category.label}
               </button>
             );
           })}
@@ -74,7 +70,7 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
                   }`}
               >
                 <Icon size={18} />
-                {filters[category.id] || category.label}
+                {category.label}
               </button>
             );
           })}
@@ -88,8 +84,7 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
         animate={{ opacity: 1, y: 0 }}
         className="text-center text-gray-400 mt-6 max-w-2xl mx-auto"
       >
-        {filters.description?.[activeCategory] || 
-         filterCategories.find(c => c.id === activeCategory)?.description}
+        {filterCategories.find(c => c.id === activeCategory)?.description}
       </motion.p>
 
       <style jsx>{`

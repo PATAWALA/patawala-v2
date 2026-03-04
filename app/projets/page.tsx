@@ -191,21 +191,21 @@ export default function ProjetsPage() {
                   )}
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {translatedProjet.tags.slice(0, 3).map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {translatedProjet.tags.length > 3 && (
-                      <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                        {t('card.tags.more', 'projets-page', { count: translatedProjet.tags.length - 3 })}
-                      </span>
-                    )}
-                  </div>
+<div className="flex flex-wrap gap-2 mb-5">
+  {translatedProjet.tags.slice(0, 3).map((tag: string) => (
+    <span
+      key={tag}
+      className="px-2.5 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full"
+    >
+      {tag}
+    </span>
+  ))}
+  {translatedProjet.tags.length > 3 && (
+    <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
+      {t('card.tags.more', 'projets-page').replace('{{count}}', String(translatedProjet.tags.length - 3))}
+    </span>
+  )}
+</div>
 
                   {/* Bouton En savoir plus */}
                   <button 
