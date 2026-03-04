@@ -115,7 +115,7 @@ const SocialProof = memo(function SocialProof() {
     }
   }, []);
 
-  // Animation de défilement horizontal (SUR TOUS LES APPAREILS)
+  // Animation de défilement horizontal
   useEffect(() => {
     let rafId: number;
     
@@ -125,8 +125,7 @@ const SocialProof = memo(function SocialProof() {
         const maxScroll = current.scrollWidth - current.clientWidth;
         
         if (maxScroll > 0) {
-          // Vitesse adaptative : plus lente sur desktop, normale sur mobile
-          const speed = isDesktop ? 0.3 : 0.5;
+          const speed = 0.5;
           let newScrollLeft = current.scrollLeft + speed;
           
           if (newScrollLeft >= maxScroll) {
@@ -146,11 +145,11 @@ const SocialProof = memo(function SocialProof() {
     rafId = requestAnimationFrame(scroll);
     
     return () => cancelAnimationFrame(rafId);
-  }, [isAutoScrolling, isDesktop]);
+  }, [isAutoScrolling]);
 
   // Animation de flottement (UNIQUEMENT SUR DESKTOP)
   useEffect(() => {
-    if (!isDesktop) return;
+    if (!isDesktop) return; // ← SEUL CHANGEMENT ICI
     
     let rafId: number;
     
@@ -181,7 +180,7 @@ const SocialProof = memo(function SocialProof() {
         if (card) card.style.transform = '';
       });
     };
-  }, [isDesktop]);
+  }, [isDesktop]); // ← isDesktop dans les dépendances
 
   const checkScrollButtons = useCallback(() => {
     if (scrollRef.current) {
@@ -288,40 +287,36 @@ const SocialProof = memo(function SocialProof() {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Flèches - cachées sur mobile */}
-          {isDesktop && (
-            <>
-              <button
-                onClick={() => scroll('left')}
-                className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
-                style={{ opacity: showLeftArrow ? 1 : 0 }}
-                aria-label={language === 'fr' ? "Témoignages précédents" : "Previous testimonials"}
-                disabled={!showLeftArrow}
-              >
-                <ChevronLeft size={20} />
-              </button>
+          {/* Flèches */}
+          <>
+            <button
+              onClick={() => scroll('left')}
+              className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
+              style={{ opacity: showLeftArrow ? 1 : 0 }}
+              aria-label={language === 'fr' ? "Témoignages précédents" : "Previous testimonials"}
+              disabled={!showLeftArrow}
+            >
+              <ChevronLeft size={20} />
+            </button>
 
-              <button
-                onClick={() => scroll('right')}
-                className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
-                style={{ opacity: showRightArrow ? 1 : 0 }}
-                aria-label={language === 'fr' ? "Témoignages suivants" : "Next testimonials"}
-                disabled={!showRightArrow}
-              >
-                <ChevronRight size={20} />
-              </button>
-            </>
-          )}
+            <button
+              onClick={() => scroll('right')}
+              className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0"
+              style={{ opacity: showRightArrow ? 1 : 0 }}
+              aria-label={language === 'fr' ? "Témoignages suivants" : "Next testimonials"}
+              disabled={!showRightArrow}
+            >
+              <ChevronRight size={20} />
+            </button>
+          </>
 
-          {/* Indicateur - caché sur mobile */}
-          {isDesktop && (
-            <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937] z-10">
-              <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
-                {isAutoScrolling ? t('autoScroll.playing', 'testimonials') : t('autoScroll.paused', 'testimonials')}
-              </span>
-              <div className={`w-2 h-2 rounded-full ${isAutoScrolling ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`} />
-            </div>
-          )}
+          {/* Indicateur */}
+          <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937] z-10">
+            <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
+              {isAutoScrolling ? t('autoScroll.playing', 'testimonials') : t('autoScroll.paused', 'testimonials')}
+            </span>
+            <div className={`w-2 h-2 rounded-full ${isAutoScrolling ? 'bg-blue-400 animate-pulse' : 'bg-gray-600'}`} />
+          </div>
 
           {/* Conteneur des témoignages */}
           <div 
@@ -339,7 +334,7 @@ const SocialProof = memo(function SocialProof() {
                 key={`${testimonial.name}-${index}`}
                 ref={el => { cardRefs.current[index] = el; }}
                 className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-2xl transition-all duration-300 group relative flex-shrink-0"
-                style={{ willChange: isDesktop ? 'transform' : 'auto' }}
+                style={{ willChange: 'transform' }}
               >
                 <div className="relative z-10">
                   <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" />
