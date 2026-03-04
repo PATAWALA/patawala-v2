@@ -1,40 +1,40 @@
 {
-  "badge": "À votre écoute",
+  "badge": "Votre Partenaire Technique",
   "title": "Transformez vos ambitions en",
-  "subtitle": "actifs numériques performants.",
-  "description": "Chaque projet est pour moi l'opportunité de bâtir une solution unique, alignée sur vos objectifs et les besoins de vos utilisateurs.",
+  "subtitle": "actifs digitaux haute performance",
+  "description": "Pour moi, chaque projet est l'opportunité de bâtir une solution unique, alignée sur vos objectifs business et les besoins réels de vos utilisateurs.",
   "whoami": "Qui suis-je ?",
   "vision": {
     "cards": [
       {
-        "title": "Conseil & Stratégie Technologique",
-        "description": "Je sélectionne les technologies les plus rentables pour votre business, en éliminant les surcoûts et les risques techniques dès la conception."
+        "title": "Conseil & Stratégie Tech",
+        "description": "Je sélectionne les technologies les plus rentables pour votre activité, en éliminant les coûts inutiles et les risques techniques dès la phase de conception."
       },
       {
-        "title": "Partenariat Stratégique & Vision Long Terme",
-        "description": "Plus qu'un développeur, je deviens votre conseiller technologique de confiance pour bâtir un partenariat solide, sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance durable."
+        "title": "Partenariat & Vision Long Terme",
+        "description": "Plus qu'un développeur, je deviens votre conseiller tech de confiance (CTO) pour sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
       },
       {
         "title": "Innovation & Performance Commerciale",
         "description": "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
       },
       {
-        "title": "Engagement & Co-conception",
-        "description": "Ma méthode repose sur une écoute active et un échange constant : vous gardez la maîtrise de votre vision pendant que j'en assure la solidité et la pérennité."
+        "title": "Engagement & Co-création",
+        "description": "Ma méthode repose sur une écoute active : vous gardez le contrôle de votre vision pendant que je garantis l'intégrité technique et la pérennité de l'outil."
       }
     ]
   },
   "profile": {
     "name": "Abdoulaye Patawala",
-    "role": "Spécialisé en Développement Web & Mobile",
-    "missionText": "Ma mission est de devenir le socle technique de votre entreprise. Du site vitrine stratégique aux écosystèmes applicatifs complexes, je transforme vos idées en outils de production robustes, pensés pour durer.",
+    "role": "Spécialisé en développement Web & Mobile",
+    "missionText": "Ma mission est de devenir le partenaire technique sur lequel repose votre croissance. Des plateformes stratégiques aux écosystèmes digitaux complexes, je transforme vos ambitions en outils de production robustes, conçus pour évoluer et bâtis pour durer.",
     "badges": {
       "webMobile": "Web & Mobile",
       "available": "Disponible"
     }
   },
   "buttons": {
-    "talk": "Me contacter",
-    "services": "Voir mes offres"
+    "talk": "Discuter de mon projet",
+    "services": "Découvrir mes services"
   }
 }

@@ -1,40 +1,40 @@
 {
-  "badge": "At your service",
-  "title": "Transform your ambitions into",
+  "badge": "Your Technical Partner",
+  "title": "Scaling your ambitions into",
   "subtitle": "high-performance digital assets",
-  "description": "For me, every project is an opportunity to build a unique solution, aligned with your goals and your users' needs.",
+  "description": "I don't just write code; I build tailored solutions designed to scale with your business and meet your users' real-world needs.",
   "whoami": "Who am I?",
   "vision": {
     "cards": [
       {
-        "title": "Tech Strategy & Advisory",
-        "description": "I select the most profitable technologies for your business, eliminating unnecessary costs and technical risks from the design phase."
+        "title": "Strategic Tech Advisory",
+        "description": "I handpick the most profitable technologies for your project, eliminating technical debt and unnecessary costs right from the start."
       },
       {
-        "title": "Strategic Partnership & Long-Term Vision",
-        "description": "More than a developer, I become your trusted technology advisor to build a solid partnership, secure your choices, and evolve your tools alongside your sustainable growth."
+        "title": "Long-Term Growth Partner",
+        "description": "More than a developer, I act as your CTO-on-demand. I ensure your digital tools evolve securely alongside your sustainable business growth."
       },
       {
-        "title": "Innovation & Sales Performance",
-        "description": "I leverage Artificial Intelligence and modern web architectures to design solutions that automate your processes and boost your sales."
+        "title": "AI & Sales Optimization",
+        "description": "I leverage Artificial Intelligence and modern architectures to automate your workflows and turn your traffic into measurable revenue."
       },
       {
-        "title": "Commitment & Co-creation",
-        "description": "My method is built on active listening and constant feedback: you maintain control of your vision while I ensure its technical integrity and longevity."
+        "title": "Technical Integrity",
+        "description": "You keep control of the vision; I guarantee the technical excellence. My method is built on transparency, active listening, and lasting quality."
       }
     ]
   },
   "profile": {
     "name": "Abdoulaye Patawala",
-    "role": "Specialized in Web & Mobile Development",
-    "missionText": "My mission is to become the technical foundation of your business. From strategic showcase sites to complex application ecosystems, I transform your ideas into robust production tools built to last.",
+    "role": "Specializing in Web & Mobile Development",
+    "missionText": "My mission is to be the technical foundation your growth stands on. From strategic platforms to complex digital ecosystems, I transform your ambitions into robust production tools—engineered to scale and built to last.",
     "badges": {
       "webMobile": "Web & Mobile",
-      "available": "Available"
+      "available": "Available for hire"
     }
   },
   "buttons": {
-    "talk": "Contact me",
-    "services": "View my offers"
+    "talk": "Let's discuss your project",
+    "services": "Discover my services"
   }
 }

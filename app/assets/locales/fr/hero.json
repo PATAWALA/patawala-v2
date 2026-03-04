@@ -1,24 +1,35 @@
 {
   "badge": "Spécialisé en développement web & mobile",
+  "title": "Bâtissons",
   "typed": {
     "strings": [
       "votre prochaine application mobile",
       "un e-commerce haute performance",
       "vos outils métier sur-mesure",
       "une expérience utilisateur unique",
-      "votre croissance technologique"
+      "votre succès technologique"
     ]
   },
-  "title": "Bâtissons :",
-  "subtitle": "Développeur Full Stack, je conçois des solutions sur mesure qui propulsent votre activité et structurent votre présence en ligne.",
-  
+  "subtitle": "Développeur Full Stack, je conçois des solutions sur mesure qui structurent votre présence en ligne et dopent votre activité.",
   "socialProof": {
     "stars": "30+ entrepreneurs satisfaits",
     "entrepreneurs": "projets menés avec succès"
   },
-  
   "buttons": {
     "project": "Démarrer mon projet",
     "portfolio": "Découvrir mes travaux"
+  },
+  "badges": {
+    "multisupport": "Multi-support",
+    "available": "Disponible"
+  },
+  "microCTA": {
+    "response": "Réponse sous 24h",
+    "quote": "Devis gratuit",
+    "support": "Accompagnement A à Z"
+  },
+  "altImages": {
+    "avatar": "Client satisfait",
+    "profile": "Abdoulaye Patawala - Développeur web & mobile"
   }
 }

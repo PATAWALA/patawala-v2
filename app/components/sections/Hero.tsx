@@ -143,7 +143,7 @@ const HeroSection = memo(function HeroSection() {
           </div>
 
           {/* Contenu principal */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-5 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
             
             {/* Texte - partie gauche */}
             <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
@@ -158,14 +158,14 @@ const HeroSection = memo(function HeroSection() {
                 </span>
               </h1>
 
-              <div className="space-y-2 sm:space-y-3 mb-5 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
+              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
                 <p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl text-white font-bold leading-relaxed">
                   {t('subtitle', 'hero')}
                 </p>
               </div>
 
-              {/* CERCLE D'AVATARS */}
-              <div className="flex flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-6 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
+              {/* CERCLE D'AVATARS - plus resserré */}
+              <div className="flex flex-row items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
                 <div className="flex items-center -space-x-3 sm:-space-x-4">
                   {avatarImages.slice(0, 5).map((avatar, index) => (
                     <div 
@@ -210,20 +210,19 @@ const HeroSection = memo(function HeroSection() {
                 </div>
               </div>
 
-              {/* BOUTONS - AGRANDIS SUR MOBILE AVEC MEILLEUR ESPACEMENT */}
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-3 lg:px-0">
+              {/* BOUTONS - sans icônes et moins larges */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 md:gap-4 justify-center lg:justify-start px-4 sm:px-3 lg:px-0">
                 <button
                   onClick={handleLancerProjet}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-4 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-base sm:text-base md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[52px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-auto min-h-[44px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   aria-label={t('buttons.project', 'hero')}
                 >
                   {t('buttons.project', 'hero')}
-                  <ArrowRight size={18} className="sm:w-4 sm:h-4 md:w-5 md:h-5" aria-hidden="true" />
                 </button>
                 
                 <button
                   onClick={handleVoirRealisations}
-                  className="bg-transparent text-white px-6 py-4 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-semibold text-base sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-full sm:w-auto min-h-[52px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+                  className="bg-transparent text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-auto min-h-[44px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   aria-label={t('buttons.portfolio', 'hero')}
                 >
                   {t('buttons.portfolio', 'hero')}
@@ -233,7 +232,7 @@ const HeroSection = memo(function HeroSection() {
 
             {/* Photo de profil principale */}
             <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
-              <div className="relative w-full max-w-[260px] xs:max-w-[300px] sm:max-w-[340px] md:max-w-sm lg:max-w-md">
+              <div className="relative w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] md:max-w-sm lg:max-w-md">
                 
                 <div className="absolute inset-0 bg-blue-500/20 sm:bg-blue-500/30 md:bg-blue-500/40 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
                 <div className="absolute -inset-4 sm:-inset-5 md:-inset-6 border border-cyan-400/20 sm:border-2 sm:border-cyan-400/30 rounded-full -z-10 will-change-transform" aria-hidden="true" />
@@ -273,7 +272,7 @@ const HeroSection = memo(function HeroSection() {
                       alt={t('altImages.profile', 'hero') || "Abdoulaye Patawala - Développeur Full Stack"}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 480px) 260px, (max-width: 640px) 300px, (max-width: 768px) 340px, (max-width: 1024px) 384px, 448px"
+                      sizes="(max-width: 480px) 240px, (max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 384px, 448px"
                       priority
                       loading="eager"
                       quality={80}
