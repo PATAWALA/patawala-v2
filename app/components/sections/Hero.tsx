@@ -164,13 +164,13 @@ const HeroSection = memo(function HeroSection() {
                 </p>
               </div>
 
-              {/* CERCLE D'AVATARS - plus resserré */}
-              <div className="flex flex-row items-center justify-center lg:justify-start gap-2 sm:gap-4 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
-                <div className="flex items-center -space-x-3 sm:-space-x-4">
+              {/* CERCLE D'AVATARS - PLUS COMPACT */}
+              <div className="flex flex-row items-center justify-center lg:justify-start gap-1.5 sm:gap-4 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
+                <div className="flex items-center -space-x-4 sm:-space-x-4">
                   {avatarImages.slice(0, 5).map((avatar, index) => (
                     <div 
                       key={index}
-                      className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
+                      className="relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
                       style={{ zIndex: 10 - index }}
                     >
                       <Image
@@ -178,14 +178,14 @@ const HeroSection = memo(function HeroSection() {
                         alt={avatar.alt}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 32px, (max-width: 768px) 36px, 40px"
+                        sizes="(max-width: 640px) 28px, (max-width: 768px) 36px, 40px"
                         loading="lazy"
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
                       />
                     </div>
                   ))}
-                  <div className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] bg-blue-500/20 flex items-center justify-center text-xs sm:text-sm font-bold text-blue-400 shadow-lg">
+                  <div className="relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] bg-blue-500/20 flex items-center justify-center text-[10px] sm:text-sm font-bold text-blue-400 shadow-lg">
                     +{avatarImages.length - 5}
                   </div>
                 </div>
@@ -195,29 +195,30 @@ const HeroSection = memo(function HeroSection() {
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        size={14} 
+                        size={12} 
                         className="sm:w-4 sm:h-4 md:w-5 md:h-5 fill-orange-400 text-orange-400" 
                         aria-hidden="true"
                       />
                     ))}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-sm sm:text-base md:text-lg font-bold text-white">30+</span>
-                    <span className="text-xs sm:text-sm md:text-base text-gray-400 whitespace-nowrap">
+                    <span className="text-xs sm:text-base md:text-lg font-bold text-white">30+</span>
+                    <span className="text-[9px] sm:text-sm md:text-base text-gray-400 whitespace-nowrap">
                       {t('socialProof.entrepreneurs', 'hero')}
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* BOUTONS - sans icônes et moins larges */}
+              {/* BOUTONS - avec flèche sur le premier */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-3 md:gap-4 justify-center lg:justify-start px-4 sm:px-3 lg:px-0">
                 <button
                   onClick={handleLancerProjet}
-                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-auto min-h-[44px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-auto min-h-[44px] sm:min-h-[44px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
                   aria-label={t('buttons.project', 'hero')}
                 >
                   {t('buttons.project', 'hero')}
+                  <ArrowRight size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
                 </button>
                 
                 <button

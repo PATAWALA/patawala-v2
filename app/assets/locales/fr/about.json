@@ -34,7 +34,7 @@
     }
   },
   "buttons": {
-    "talk": "Discuter de mon projet",
-    "services": "Découvrir mes services"
+    "talk": "Me contacter",
+    "services": " Mes offres"
   }
 }
