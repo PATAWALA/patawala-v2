@@ -215,7 +215,7 @@ export default function Navigation() {
                 aria-label={t('logo', 'navigation')}
               >
                 <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
-                  <span className="hidden sm:inline">Abdoulaye Patawla</span>
+                  <span className="hidden sm:inline">Abdoulaye Patawala</span>
                   <span className="sm:hidden">Patawala</span>
                 </span>
               </a>

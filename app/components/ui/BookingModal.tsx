@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   X, Calendar, Clock, User, Mail, Phone, 
@@ -11,6 +12,7 @@ import {
 import Image from 'next/image';
 import { useLanguage } from '../../context/LanguageContext';
 
+// Importer les images des drapeaux
 // Importer les images des drapeaux
 import frFlag from '../../assets/flags/fr.svg';
 import beFlag from '../../assets/flags/be.svg';
@@ -37,6 +39,7 @@ import nlFlag from '../../assets/flags/nl.svg';
 import maFlag from '../../assets/flags/ma.svg';
 import dzFlag from '../../assets/flags/dz.svg';
 import tnFlag from '../../assets/flags/tn.svg';
+// Note: Vérifie que tnFlag est bien importé, sinon utilise l'import correct
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -79,6 +82,7 @@ const WHATSAPP_NUMBER = '22962278090';
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const { t, language } = useLanguage();
+  const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
@@ -114,6 +118,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   // Jours de la semaine traduits
   const weekDays = t('calendar.weekDays', 'booking') as unknown as string[];
+
+  // Mount pour le portail
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  // Empêcher le scroll du body
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   // Scroll en haut du modal quand on passe à l'étape 2
   useEffect(() => {
@@ -399,11 +421,11 @@ Message: ${formData.message || 'No message'}`;
     });
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-0 sm:px-4">
+      <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center px-0 sm:px-4">
         {/* Overlay */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -419,7 +441,7 @@ Message: ${formData.message || 'No message'}`;
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 100 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative bg-[#0A0F1C] rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-[#1F2937]"
+          className="relative bg-[#0A0F1C] rounded-t-3xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden border border-[#1F2937] z-[10000]"
         >
           {/* Bouton fermer */}
           <button
@@ -775,7 +797,7 @@ Message: ${formData.message || 'No message'}`;
                               initial={{ opacity: 0, y: -10 }}
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: -10 }}
-                              className="absolute top-full left-0 mt-1 w-full sm:w-64 max-h-60 overflow-y-auto bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-xl z-50"
+                              className="absolute top-full left-0 mt-1 w-full sm:w-64 max-h-60 overflow-y-auto bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-xl z-[10001]"
                             >
                               {countries.map((country) => (
                                 <button
@@ -913,6 +935,7 @@ Message: ${formData.message || 'No message'}`;
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

@@ -3,11 +3,13 @@
 import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, ArrowLeft, 
-  BookOpen, ArrowRight, Share2
+  ArrowRight, Share2,
+  Maximize2, Minimize2, MessageCircle, Facebook
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { getArticleBySlug, getRelatedArticles } from '../data/articles';
 import profileImage from '../../assets/images/profile3.png';
 
@@ -19,6 +21,8 @@ interface ArticlePageProps {
 
 export default function ArticlePage({ params }: ArticlePageProps) {
   const article = getArticleBySlug(params.slug);
+  const [fontSize, setFontSize] = useState(100); // pourcentage de zoom
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   if (!article) {
     notFound();
@@ -26,9 +30,37 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   const relatedArticles = getRelatedArticles(article.id, article.category, 3);
 
+  const increaseFont = () => setFontSize(prev => Math.min(prev + 10, 200));
+  const decreaseFont = () => setFontSize(prev => Math.max(prev - 10, 70));
+
+  const toggleFullscreen = () => {
+    const elem = document.querySelector('.article-content-area');
+    if (elem) {
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  // Liens sociaux
+  const whatsappLink = 'https://wa.me/22962278090';
+  const facebookLink = 'https://facebook.com/'; // Remplace par ton lien Facebook
+
   return (
     <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* BEAU FOND - avec dégradé et formes floues */}
+      {/* FOND IDENTIQUE À LA PAGE BLOG */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         {/* Lignes subtiles */}
         <div className="absolute inset-0" style={{
@@ -46,22 +78,21 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             transparent 60px)`
         }}></div>
         
-        {/* Éléments décoratifs flous */}
+        {/* Éléments décoratifs flous animés */}
         <motion.div
-          animate={{ 
-            x: [0, 40, 0],
-            y: [0, -40, 0],
-          }}
+          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
           className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{ 
-            x: [0, -40, 0],
-            y: [0, 40, 0],
-          }}
+          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
           transition={{ duration: 18, repeat: Infinity }}
           className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"
         />
       </div>
       
@@ -106,9 +137,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             </div>
           </div>
 
-          {/* Contenu */}
+          {/* Contenu texte et métadonnées */}
           <div className="p-4 sm:p-6 md:p-8 lg:p-10">
-            {/* Meta */}
+            {/* Meta (date, lecture) */}
             <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
               <span className="flex items-center gap-1 sm:gap-1.5">
                 <Calendar size={12} className="sm:w-4 sm:h-4 text-blue-400" />
@@ -138,7 +169,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
               ))}
             </div>
 
-            {/* Auteur */}
+            {/* Bloc auteur + liens sociaux */}
             <div className="flex items-center justify-between mb-6 sm:mb-8 p-3 sm:p-4 md:p-5 bg-[#0A0F1C] rounded-xl sm:rounded-2xl border border-[#1F2937]">
               <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
                 <div className="relative w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full overflow-hidden ring-2 sm:ring-3 ring-blue-500/20">
@@ -155,16 +186,98 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 </div>
               </div>
               
-              <button className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-[#1E2638] hover:text-blue-400 transition-all border border-[#1F2937]">
-                <Share2 size={14} className="sm:w-4 sm:h-4" />
+              <div className="flex items-center gap-2">
+                {/* WhatsApp */}
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-green-600 hover:text-white transition-all border border-[#1F2937]"
+                  title="Envoyer un message WhatsApp"
+                >
+                  <MessageCircle size={14} className="sm:w-4 sm:h-4" />
+                </a>
+                {/* Facebook */}
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-blue-600 hover:text-white transition-all border border-[#1F2937]"
+                  title="Suivez-moi sur Facebook"
+                >
+                  <Facebook size={14} className="sm:w-4 sm:h-4" />
+                </a>
+                {/* Bouton partager (existant) */}
+                <button className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-[#1E2638] hover:text-blue-400 transition-all border border-[#1F2937]">
+                  <Share2 size={14} className="sm:w-4 sm:h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Barre d'outils de lecture */}
+            <div className="flex items-center justify-end gap-2 mb-4">
+              <button
+                onClick={decreaseFont}
+                className="p-2 bg-[#1F2937] text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium"
+                title="Réduire la taille du texte"
+              >
+                A−
+              </button>
+              <span className="text-sm text-gray-400 min-w-[45px] text-center">{fontSize}%</span>
+              <button
+                onClick={increaseFont}
+                className="p-2 bg-[#1F2937] text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium"
+                title="Agrandir la taille du texte"
+              >
+                A+
+              </button>
+              <button
+                onClick={toggleFullscreen}
+                className="p-2 bg-[#1F2937] text-white rounded-lg hover:bg-blue-600 transition"
+                title={isFullscreen ? 'Quitter le plein écran' : 'Lecture plein écran'}
+              >
+                {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </button>
             </div>
 
-            {/* Contenu de l'article */}
-            <div 
-              className="prose prose-sm sm:prose-base md:prose-lg max-w-none prose-headings:text-white prose-p:text-gray-300 prose-li:text-gray-300 prose-strong:text-white prose-a:text-blue-400 prose-img:rounded-xl sm:prose-img:rounded-2xl"
-              dangerouslySetInnerHTML={{ __html: article.content }}
-            />
+            {/* Zone de lecture avec défilement horizontal pour les tableaux */}
+            <div
+              className="article-content-area bg-[#0F172A] rounded-xl p-6 sm:p-8 border border-[#1F2937] transition-all"
+              style={{ fontSize: `${fontSize}%` }}
+            >
+              <div
+                className="prose prose-invert max-w-none"
+                style={{ overflowX: 'auto' }}
+                dangerouslySetInnerHTML={{ __html: article.content }}
+              />
+            </div>
+
+            {/* Styles spécifiques pour les tableaux */}
+            <style jsx>{`
+              .article-content-area table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1.5em 0;
+                font-size: 0.9rem;
+              }
+              .article-content-area th,
+              .article-content-area td {
+                border: 1px solid #374151;
+                padding: 0.75rem;
+                text-align: left;
+              }
+              .article-content-area th {
+                background-color: #1F2937;
+                color: white;
+                font-weight: 600;
+              }
+              .article-content-area tr:nth-child(even) {
+                background-color: #111827;
+              }
+              .article-content-area tr:hover {
+                background-color: #1E293B;
+              }
+            `}</style>
           </div>
         </motion.article>
 

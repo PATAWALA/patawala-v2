@@ -93,7 +93,8 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay, duration: 0.4 }}
         whileHover={{ y: -4 }}
-        className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col"
+        className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative"
+        style={{ isolation: 'isolate' }} /* ← Ajout pour éviter les problèmes de stacking context */
       >
         <div className="p-6 pb-4">
           <div className="flex items-start justify-between mb-4">
@@ -145,7 +146,6 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
             )}
           </div>
 
-          {/* BOUTON AMÉLIORÉ - Texte centré avec flèche intégrée */}
           <button 
             onClick={handleOpenBooking}
             className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer"
@@ -156,6 +156,7 @@ export default function ServiceCard({ service, delay }: ServiceCardProps) {
         </div>
       </motion.div>
 
+      {/* Le modal est rendu ici, mais avec un portail implicite */}
       <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseBooking} />
     </>
   );
