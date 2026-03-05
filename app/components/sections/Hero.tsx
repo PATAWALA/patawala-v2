@@ -64,8 +64,9 @@ const HeroSection = memo(function HeroSection() {
   const handleVoirRealisations = useCallback(() => scrollToSection('projets'), [scrollToSection]);
   const handleCloseBooking = useCallback(() => setIsBookingOpen(false), []);
 
+  // Points lumineux (10 points comme dans About)
   const lightPoints = useRef(
-    [...Array(5)].map(() => ({
+    [...Array(10)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -204,26 +205,31 @@ const HeroSection = memo(function HeroSection() {
               </div>
             </div>
 
-            {/* Photo de profil principale */}
+            {/* Photo de profil principale - AGRANDIE COMME DANS ABOUT */}
             <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
-              <div className="relative w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] md:max-w-sm lg:max-w-md">
+              <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md">
                 
-                <div className="absolute inset-0 bg-blue-500/20 sm:bg-blue-500/30 md:bg-blue-500/40 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
-                <div className="absolute -inset-4 sm:-inset-5 md:-inset-6 border border-cyan-400/20 sm:border-2 sm:border-cyan-400/30 rounded-full -z-10 will-change-transform" aria-hidden="true" />
+                {/* Cercles décoratifs (copiés de About) */}
+                <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
+                <div className="absolute -inset-6 border-2 border-cyan-400/10 rounded-full -z-10 will-change-transform" aria-hidden="true" />
+                <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-xl -z-10 will-change-transform" aria-hidden="true" />
+                <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
                 
+                {/* Points lumineux (10 points) */}
                 {lightPoints.map((point, i) => (
                   <div
                     key={i}
-                    className="absolute w-1 h-1 sm:w-1.5 sm:h-1.5 bg-blue-400/30 rounded-full"
+                    className="absolute w-1.5 h-1.5 bg-blue-400/40 rounded-full shadow-lg shadow-blue-400/30"
                     style={{
                       left: point.left,
                       top: point.top,
-                      opacity: 0.2,
+                      opacity: 0.4,
                     }}
                     aria-hidden="true"
                   />
                 ))}
 
+                {/* Badge en haut à droite */}
                 <div className="absolute top-0 right-0 z-30" style={{ transform: 'translate(5%, -5%)' }}>
                   <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937]">
                     <Globe size={7} className="xs:w-1.5 xs:h-1.5 sm:w-2 sm:h-2 md:w-2.5 md:h-2.5" aria-hidden="true" />
@@ -232,6 +238,7 @@ const HeroSection = memo(function HeroSection() {
                   </div>
                 </div>
 
+                {/* Badge en bas à gauche */}
                 <div className="absolute bottom-0 left-0 z-30" style={{ transform: 'translate(-5%, 5%)' }}>
                   <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-0.5 sm:py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937]">
                     <div className="w-1 h-1 xs:w-1 xs:h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 bg-white rounded-full" />
@@ -239,6 +246,7 @@ const HeroSection = memo(function HeroSection() {
                   </div>
                 </div>
 
+                {/* Photo */}
                 <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg sm:shadow-xl border-2 sm:border-3 md:border-4 border-[#1F2937] bg-[#141B2B] transform-gpu">
                   <div className="aspect-square relative">
                     <Image
@@ -246,7 +254,7 @@ const HeroSection = memo(function HeroSection() {
                       alt={t('altImages.profile', 'hero') || "Abdoulaye Patawala - Développeur Full Stack"}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 480px) 240px, (max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 384px, 448px"
+                      sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
                       priority
                       loading="eager"
                       quality={80}

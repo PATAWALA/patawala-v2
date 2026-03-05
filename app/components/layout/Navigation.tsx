@@ -202,7 +202,7 @@ export default function Navigation() {
         aria-label="Navigation principale"
       >
         <div className="lg:container lg:mx-auto lg:px-6">
-          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-2.5 px-4 lg:px-8 shadow-lg">
+          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
               {/* Logo - STATIQUE, sans animation */}
               <a 
