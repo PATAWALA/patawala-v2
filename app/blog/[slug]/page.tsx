@@ -197,20 +197,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 >
                   <MessageCircle size={14} className="sm:w-4 sm:h-4" />
                 </a>
-                {/* Facebook */}
-                <a
-                  href={facebookLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-blue-600 hover:text-white transition-all border border-[#1F2937]"
-                  title="Suivez-moi sur Facebook"
-                >
-                  <Facebook size={14} className="sm:w-4 sm:h-4" />
-                </a>
-                {/* Bouton partager (existant) */}
-                <button className="p-2 sm:p-2.5 bg-[#141B2B] text-gray-400 rounded-lg sm:rounded-xl hover:bg-[#1E2638] hover:text-blue-400 transition-all border border-[#1F2937]">
-                  <Share2 size={14} className="sm:w-4 sm:h-4" />
-                </button>
               </div>
             </div>
 
