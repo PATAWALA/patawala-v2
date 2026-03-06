@@ -6,7 +6,7 @@ type Language = 'fr' | 'en';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string, section?: string) => string;
+  t: (key: string, section?: string) => string | undefined; // ← retour possible undefined
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -22,6 +22,7 @@ import frTech from '@/app/assets/locales/fr/tech.json';
 import frContact from '@/app/assets/locales/fr/contact.json';
 import frBlog from '@/app/assets/locales/fr/blog.json';
 import frArticles from '@/app/assets/locales/fr/articles.json';
+import frArticlesData from '@/app/assets/locales/fr/articles-details.json'; // ← CORRIGÉ
 import frServices from '@/app/assets/locales/fr/services.json';
 import frServicesData from '@/app/assets/locales/fr/services-data.json';
 import frProjetsPage from '@/app/assets/locales/fr/projets-page.json';
@@ -41,6 +42,7 @@ import enTech from '@/app/assets/locales/en/tech.json';
 import enContact from '@/app/assets/locales/en/contact.json';
 import enBlog from '@/app/assets/locales/en/blog.json';
 import enArticles from '@/app/assets/locales/en/articles.json';
+import enArticlesData from '@/app/assets/locales/en/articles-details.json';
 import enServices from '@/app/assets/locales/en/services.json';
 import enServicesData from '@/app/assets/locales/en/services-data.json';
 import enProjetsPage from '@/app/assets/locales/en/projets-page.json';
@@ -62,6 +64,7 @@ type TranslationsType = {
   contact: any;
   blog: any;
   articles: any;
+  articlesData: any;
   services: any;
   'services-data': any;
   'projets-page': any;
@@ -85,6 +88,7 @@ const translations: Record<Language, TranslationsType> = {
     contact: frContact,
     blog: frBlog,
     articles: frArticles,
+    articlesData: frArticlesData, // ← maintenant c'est le fichier français
     services: frServices,
     'services-data': frServicesData,
     'projets-page': frProjetsPage,
@@ -105,6 +109,7 @@ const translations: Record<Language, TranslationsType> = {
     contact: enContact,
     blog: enBlog,
     articles: enArticles,
+    articlesData: enArticlesData,
     services: enServices,
     'services-data': enServicesData,
     'projets-page': enProjetsPage,
@@ -120,26 +125,33 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('fr');
   const [currentTranslations, setCurrentTranslations] = useState<TranslationsType>(translations.fr);
 
-  // Changer les traductions instantanément
   useEffect(() => {
     setCurrentTranslations(translations[language]);
   }, [language]);
 
   const t = (key: string, section: string = 'common'): any => {
+  console.log(`🔍 t("${key}", "${section}")`);
   const keys = key.split('.');
   let value: any = currentTranslations[section as keyof TranslationsType];
+  
+  // Log pour voir si la section existe
+  if (section === 'articlesData') {
+    console.log(`📦 articlesData présent :`, value ? 'oui' : 'non');
+  }
   
   for (const k of keys) {
     if (value && value[k] !== undefined) {
       value = value[k];
     } else {
-      console.warn(`Traduction manquante: ${section}.${key}`);
-      return key;
+      console.warn(`❌ Traduction manquante: ${section}.${key} (clé "${k}" introuvable)`);
+      return undefined;
     }
   }
   
-  return value; // Retourne la valeur (string, objet ou tableau)
+  console.log(`✅ trouvé:`, value);
+  return value;
 };
+  
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

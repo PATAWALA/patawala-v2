@@ -5,7 +5,6 @@
   "subtitle": "Une sélection de sites web et applications conçus pour répondre à des besoins variés, du MVP au projet d'envergure.",
 
   "card": {
-    "client": "Client",
     "learnMore": "En savoir plus",
     "tags": {
       "more": "+{{count}}"

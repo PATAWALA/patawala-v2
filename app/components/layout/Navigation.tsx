@@ -250,7 +250,7 @@ export default function Navigation() {
                               </a>
                               
                               <button
-                                onMouseEnter={() => handleArrowMouseEnter(itemLabel)}
+                                onMouseEnter={() => itemLabel && handleArrowMouseEnter(itemLabel)}
                                 className={`px-2 py-2 rounded-r-full font-medium text-base transition-colors border-l border-[#1F2937] ${
                                   isServicesHovered || pathname === '/services'
                                     ? 'text-blue-400 bg-blue-500/10' 

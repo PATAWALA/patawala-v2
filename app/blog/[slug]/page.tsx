@@ -9,9 +9,10 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { getArticleBySlug, getRelatedArticles } from '../data/articles';
 import profileImage from '../../assets/images/profile3.png';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface ArticlePageProps {
   params: {
@@ -20,15 +21,46 @@ interface ArticlePageProps {
 }
 
 export default function ArticlePage({ params }: ArticlePageProps) {
-  const article = getArticleBySlug(params.slug);
+  const { t, language } = useTranslation();
+  const baseArticle = getArticleBySlug(params.slug);
   const [fontSize, setFontSize] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  if (!article) {
+  if (!baseArticle) {
     notFound();
   }
 
-  const relatedArticles = getRelatedArticles(article.id, article.category, 3);
+  // Appliquer les traductions à l'article
+  const article = useMemo(() => {
+    const key = `article${baseArticle.id}`;
+    const translatedTitle = t(`${key}.title`, 'articlesData');
+    const translatedExcerpt = t(`${key}.excerpt`, 'articlesData');
+    const translatedCategory = t(`${key}.category`, 'articlesData');
+    const translatedTags = t(`${key}.tags`, 'articlesData');
+    const translatedContent = t(`${key}.content`, 'articlesData');
+
+    return {
+      ...baseArticle,
+      title: typeof translatedTitle === 'string' ? translatedTitle : baseArticle.title,
+      excerpt: typeof translatedExcerpt === 'string' ? translatedExcerpt : baseArticle.excerpt,
+      category: typeof translatedCategory === 'string' ? translatedCategory : baseArticle.category,
+      tags: Array.isArray(translatedTags) ? translatedTags : baseArticle.tags,
+      content: typeof translatedContent === 'string' ? translatedContent : baseArticle.content,
+    };
+  }, [baseArticle, t, language]);
+
+  // Articles similaires traduits
+  const baseRelated = getRelatedArticles(article.id, article.category, 3);
+  const relatedArticles = useMemo(() => {
+    return baseRelated.map(related => {
+      const key = `article${related.id}`;
+      const translatedTitle = t(`${key}.title`, 'articlesData');
+      return {
+        ...related,
+        title: typeof translatedTitle === 'string' ? translatedTitle : related.title,
+      };
+    });
+  }, [baseRelated, t, language]);
 
   const increaseFont = () => setFontSize(prev => Math.min(prev + 10, 200));
   const decreaseFont = () => setFontSize(prev => Math.max(prev - 10, 70));
@@ -88,16 +120,18 @@ export default function ArticlePage({ params }: ArticlePageProps) {
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-        {/* Bouton retour */}
+        {/* Bouton retour - avec bordure toujours visible */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="mb-4 sm:mb-6 md:mb-8"
         >
           <Link href="/blog">
-            <button className="group inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl border border-[#1F2937] hover:border-blue-500 hover:shadow-md transition-all text-xs sm:text-sm">
-              <ArrowLeft size={14} className="sm:w-4 sm:h-4 text-gray-400 group-hover:text-blue-400 group-hover:-translate-x-1 transition-all" />
-              <span className="text-gray-400 group-hover:text-blue-400 font-medium">Retour au blog</span>
+            <button className="group inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl border-2 border-blue-500/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all text-xs sm:text-sm">
+              <ArrowLeft size={14} className="sm:w-4 sm:h-4 text-blue-400 group-hover:text-blue-300 group-hover:-translate-x-1 transition-all" />
+              <span className="text-blue-400 group-hover:text-blue-300 font-medium">
+                {t('backToBlog', 'blog') || 'Retour au blog'}
+              </span>
             </button>
           </Link>
         </motion.div>
@@ -178,10 +212,10 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors shadow-md hover:shadow-lg"
-                title="Envoyer un message WhatsApp"
+                title={t('whatsappMessage', 'blog') || 'Envoyer un message WhatsApp'}
               >
                 <MessageCircle size={14} className="sm:w-4 sm:h-4" />
-                <span>Message</span>
+                <span>{t('message', 'blog') || 'Message'}</span>
               </a>
             </div>
           </div>
@@ -192,7 +226,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <button
             onClick={decreaseFont}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title="Réduire la taille du texte"
+            title={t('decreaseFont', 'blog') || 'Réduire la taille du texte'}
           >
             A−
           </button>
@@ -200,14 +234,14 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <button
             onClick={increaseFont}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title="Agrandir la taille du texte"
+            title={t('increaseFont', 'blog') || 'Agrandir la taille du texte'}
           >
             A+
           </button>
           <button
             onClick={toggleFullscreen}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition border border-[#1F2937]"
-            title={isFullscreen ? 'Quitter le plein écran' : 'Lecture plein écran'}
+            title={isFullscreen ? (t('exitFullscreen', 'blog') || 'Quitter le plein écran') : (t('fullscreen', 'blog') || 'Lecture plein écran')}
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
@@ -262,7 +296,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           >
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-5 md:mb-6 text-white flex items-center gap-2 sm:gap-3">
               <span className="w-1 h-4 sm:h-5 md:h-6 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
-              Articles similaires
+              {t('relatedArticles', 'blog') || 'Articles similaires'}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
@@ -294,7 +328,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                         <span>{related.publishedAt}</span>
                       </div>
                       <div className="flex items-center gap-0.5 text-blue-400 font-medium text-[8px] sm:text-[10px] group/link">
-                        <span>Lire</span>
+                        <span>{t('readMore', 'blog') || 'Lire'}</span>
                         <ArrowRight size={6} className="group-hover/link:translate-x-1 transition-transform" />
                       </div>
                     </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import { motion } from 'framer-motion';
 import { filterCategories, CategoryType } from './data/servicesData';
 
@@ -8,7 +9,7 @@ interface ServiceFilterProps {
   onCategoryChange: (category: CategoryType) => void;
 }
 
-export default function ServiceFilter({ activeCategory, onCategoryChange }: ServiceFilterProps) {
+const ServiceFilter = memo(function ServiceFilter({ activeCategory, onCategoryChange }: ServiceFilterProps) {
   return (
     <div className="mb-12">
       {/* Version mobile - scroll horizontal */}
@@ -17,26 +18,25 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
           {filterCategories.map((category) => {
             const Icon = category.icon;
             const isActive = activeCategory === category.id;
-            
-            // Déterminer la couleur du dégradé en fonction de la catégorie active
+
             const getGradientColor = () => {
-              if (category.id === 'web') {
-                return 'from-violet-500 to-purple-500';
-              }
+              if (category.id === 'web') return 'from-violet-500 to-purple-500';
               return category.color;
             };
-            
+
             return (
               <button
                 key={category.id}
                 onClick={() => onCategoryChange(category.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
-                  ${isActive 
-                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]
+                  ${isActive
+                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg`
                     : 'bg-[#141B2B] text-gray-400 border border-[#1F2937] hover:border-gray-600 hover:text-white'
                   }`}
+                aria-label={`Filtrer par ${category.label}`}
+                aria-pressed={isActive}
               >
-                <Icon size={16} />
+                <Icon size={16} aria-hidden="true" />
                 {category.label}
               </button>
             );
@@ -50,26 +50,25 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
           {filterCategories.map((category) => {
             const Icon = category.icon;
             const isActive = activeCategory === category.id;
-            
-            // Déterminer la couleur du dégradé en fonction de la catégorie active
+
             const getGradientColor = () => {
-              if (category.id === 'web') {
-                return 'from-violet-500 to-purple-500';
-              }
+              if (category.id === 'web') return 'from-violet-500 to-purple-500';
               return category.color;
             };
-            
+
             return (
               <button
                 key={category.id}
                 onClick={() => onCategoryChange(category.id)}
-                className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all
-                  ${isActive 
-                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg` 
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]
+                  ${isActive
+                    ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg`
                     : 'text-gray-400 hover:text-white hover:bg-[#1E2638]'
                   }`}
+                aria-label={`Filtrer par ${category.label}`}
+                aria-pressed={isActive}
               >
-                <Icon size={18} />
+                <Icon size={18} aria-hidden="true" />
                 {category.label}
               </button>
             );
@@ -83,6 +82,8 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center text-gray-400 mt-6 max-w-2xl mx-auto"
+        role="status"
+        aria-live="polite"
       >
         {filterCategories.find(c => c.id === activeCategory)?.description}
       </motion.p>
@@ -94,4 +95,8 @@ export default function ServiceFilter({ activeCategory, onCategoryChange }: Serv
       `}</style>
     </div>
   );
-}
+});
+
+ServiceFilter.displayName = 'ServiceFilter';
+
+export default ServiceFilter;

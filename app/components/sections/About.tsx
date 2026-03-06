@@ -1,6 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import profileImage from '../../assets/images/profile1.png';
@@ -27,7 +28,7 @@ const AboutSection = memo(function AboutSection() {
     setIsMounted(true);
   }, []);
 
-  // Récupérer les cartes de vision au chargement et quand la langue change
+  // Récupérer les cartes de vision
   useEffect(() => {
     try {
       const visionData = t('vision', 'about') as unknown as VisionData;
@@ -42,7 +43,7 @@ const AboutSection = memo(function AboutSection() {
     }
   }, [t]);
 
-  // Points lumineux statiques
+  // Points lumineux statiques (pour les badges)
   const lightPoints = useRef(
     [...Array(10)].map(() => ({
       left: `${Math.random() * 100}%`,
@@ -62,7 +63,6 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(true);
   }, []);
 
-  // Navigation directe vers /services (comme dans la navbar)
   const handleVoirOffres = useCallback(() => {
     window.location.href = '/services';
   }, []);
@@ -73,36 +73,52 @@ const AboutSection = memo(function AboutSection() {
 
   return (
     <>
-      <section 
-        id="about" 
+      <section
+        id="about"
         className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
         aria-label={t('badge', 'about')}
       >
-        {/* FOND - avec dégradé et formes floues */}
+        {/* FOND AMÉLIORÉ - densité augmentée */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(90deg, 
-              rgba(59,130,246,0.02) 0px, 
-              rgba(59,130,246,0.02) 1px, 
-              transparent 1px, 
-              transparent 60px)`
-          }}></div>
-          <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(0deg, 
-              rgba(6,182,212,0.02) 0px, 
-              rgba(6,182,212,0.02) 1px, 
-              transparent 1px, 
-              transparent 60px)`
-          }}></div>
-          
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
+          {/* Lignes subtiles - opacité 0.08 */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
+            }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Cercles flous animés - opacité 30% */}
+          <motion.div
+            animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
+          <motion.div
+            animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
+          <motion.div
+            animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
+            transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
         </div>
-        
+
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-5xl mx-auto">
-            
             {/* Badge centré principal */}
             <div className="w-full flex justify-center mb-6 sm:mb-8">
               {isMounted ? (
@@ -132,36 +148,38 @@ const AboutSection = memo(function AboutSection() {
 
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
-            
+
             {/* CARTES MA VISION */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
               {Array.isArray(visionCards) && visionCards.length > 0 ? (
                 visionCards.map((card: VisionCard, index: number) => {
-                  const Icon = 
+                  const Icon =
                     index === 0 ? Lightbulb :
                     index === 1 ? Handshake :
                     index === 2 ? Sparkles :
                     MessagesSquare;
-                  
+
                   return (
                     <div
                       key={index}
-                      className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative"
+                      className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative will-change-transform"
+                      role="article"
+                      aria-labelledby={`vision-title-${index}`}
                     >
-                      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      
+                      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-3xl sm:text-4xl font-bold text-blue-400/80 group-hover:text-blue-400 transition-colors">
                             {`0${index + 1}`}
                           </span>
-                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" />
+                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
                         </div>
-                        
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+
+                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
                           {card.title}
                         </h3>
-                        
+
                         <p className="text-sm sm:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                           {card.description}
                         </p>
@@ -179,24 +197,37 @@ const AboutSection = memo(function AboutSection() {
             {/* BADGE "Qui suis-je ?" */}
             <div className="flex justify-center mb-6 md:mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
-                <User size={16} className="sm:w-4 sm:h-4 text-blue-400" />
+                <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
                 <span className="text-sm sm:text-base font-semibold tracking-wide">{t('whoami', 'about')}</span>
               </div>
             </div>
 
             {/* Section image et bio */}
             <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              
               {/* Image à gauche */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
-                  
-                  {/* Cercles */}
-                  <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl -z-10 scale-125 will-change-transform" aria-hidden="true" />
-                  <div className="absolute -inset-6 border-2 border-cyan-400/10 rounded-full -z-10 will-change-transform" aria-hidden="true" />
-                  <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-xl -z-10 will-change-transform" aria-hidden="true" />
-                  <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
-                  
+                  {/* Cercles animés */}
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute inset-0 bg-blue-500/30 rounded-full blur-2xl -z-10 will-change-transform"
+                    aria-hidden="true"
+                  />
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    className="absolute -inset-6 border-2 border-cyan-400/20 rounded-full -z-10 will-change-transform"
+                    aria-hidden="true"
+                  />
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl -z-10 will-change-transform"
+                    aria-hidden="true"
+                  />
+                  <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
+
                   {/* Points lumineux */}
                   {lightPoints.map((point, i) => (
                     <div
@@ -233,7 +264,7 @@ const AboutSection = memo(function AboutSection() {
                   <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-3 sm:border-4 border-[#1F2937] bg-[#141B2B]">
                     <Image
                       src={profileImage}
-                      alt="Abdoulaye Patawala"
+                      alt="Abdoulaye Patawala - Développeur Full Stack"
                       fill
                       className="object-cover"
                       sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
@@ -247,13 +278,12 @@ const AboutSection = memo(function AboutSection() {
 
               {/* BIO à droite */}
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
-                
                 <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-white">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {t('profile.name', 'about')}
                   </span>
                 </h3>
-                
+
                 <p className="text-base sm:text-lg md:text-xl text-blue-400/90 font-medium mb-4">
                   {t('profile.role', 'about')}
                 </p>
@@ -275,7 +305,7 @@ const AboutSection = memo(function AboutSection() {
                     <MessageSquare size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
                     {t('buttons.talk', 'about')}
                   </button>
-                  
+
                   <button
                     onClick={handleVoirOffres}
                     className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px]"
@@ -291,10 +321,7 @@ const AboutSection = memo(function AboutSection() {
       </section>
 
       {/* Modal de réservation */}
-      <BookingModal 
-        isOpen={isBookingOpen} 
-        onClose={handleCloseBooking} 
-      />
+      <BookingModal isOpen={isBookingOpen} onClose={handleCloseBooking} />
     </>
   );
 });

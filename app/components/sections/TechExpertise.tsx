@@ -1,8 +1,9 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { 
-  Code, Database, Cloud, Shield, 
+import { motion } from 'framer-motion';
+import {
+  Code, Database, Cloud, Shield,
   Sparkles, Rocket, Layers, Gauge,
   CheckCircle, ArrowRight, Cpu, Globe,
   Settings, MousePointer, Award
@@ -68,39 +69,65 @@ const TechExpertise = memo(function TechExpertise() {
   }, []);
 
   return (
-    <section 
+    <section
       className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
       aria-label={language === 'fr' ? "Expertise technique" : "Technical expertise"}
     >
-      {/* FOND OPTIMISÉ */}
+      {/* FOND OPTIMISÉ - densité augmentée comme dans Réalisations */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.03) 0px, rgba(59,130,246,0.03) 1px, transparent 1px, transparent 60px)`
-        }} />
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.03) 0px, rgba(6,182,212,0.03) 1px, transparent 1px, transparent 60px)`
-        }} />
-        
-        {/* Éléments décoratifs */}
-        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl will-change-transform" />
-        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl will-change-transform" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl will-change-transform" />
-        
+        {/* Lignes subtiles - opacité portée à 0.08 */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
+          }}
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Cercles flous animés - opacité /30 et animations fluides */}
+        <motion.div
+          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
+          aria-hidden="true"
+        />
+        <motion.div
+          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
+          aria-hidden="true"
+        />
+        <motion.div
+          animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+          className="absolute top-1/3 left-1/4 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
+          aria-hidden="true"
+        />
+        <motion.div
+          animate={{ x: [0, -30, 0], y: [0, -30, 0] }}
+          transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+          className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl will-change-transform"
+          aria-hidden="true"
+        />
+
         {/* Points lumineux */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
-            style={{
-              left: point.left,
-              top: point.top,
-            }}
+            style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />
         ))}
       </div>
-      
+
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* Badge centré */}
         <div className="w-full flex justify-center mb-6 md:mb-8">
@@ -126,24 +153,24 @@ const TechExpertise = memo(function TechExpertise() {
               {t('titleHighlight', 'tech')}
             </span>
           </h2>
-          
+
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
             {t('subtitle', 'tech')}
           </p>
         </div>
 
         {/* Technologies principales */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-16 md:mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-16 md:mb-20 auto-rows-fr">
           {Array.isArray(techStack) && techStack.map((tech, index) => {
             const Icon = getIcon(tech.name);
-            
+
             return (
               <div
                 key={tech.name}
-                className="group bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 relative will-change-transform hover:-translate-y-2"
+                className="group bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 transition-all duration-300 relative will-change-transform hover:-translate-y-2 flex flex-col"
               >
                 {/* Ombre au hover */}
-                <div 
+                <div
                   className="absolute inset-0 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
                   style={{
                     boxShadow: '0 25px 40px -12px rgba(59, 130, 246, 0.6)',
@@ -152,7 +179,7 @@ const TechExpertise = memo(function TechExpertise() {
                   }}
                 />
 
-                <div className="relative z-10">
+                <div className="relative z-10 flex-1 flex flex-col">
                   {/* En-tête avec icône et niveau */}
                   <div className="flex items-start gap-3 sm:gap-4 mb-4">
                     <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-300 flex-shrink-0">
@@ -164,7 +191,7 @@ const TechExpertise = memo(function TechExpertise() {
                           {tech.name}
                         </h3>
                         <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-medium ${
-                          tech.level === 'Expert' || tech.level === 'Expert' 
+                          tech.level === 'Expert' || tech.level === 'Expert'
                             ? 'bg-blue-500/20 text-blue-400'
                             : tech.level === 'Avancé' || tech.level === 'Advanced'
                             ? 'bg-blue-500/10 text-blue-400'
@@ -180,7 +207,7 @@ const TechExpertise = memo(function TechExpertise() {
                   </div>
 
                   {/* Points d'expertise */}
-                  <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-5">
+                  <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-5 flex-1">
                     {tech.expertise.map((item: string) => (
                       <div key={item} className="flex items-center gap-2 group-hover:translate-x-1 transition-transform duration-200">
                         <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
@@ -194,16 +221,16 @@ const TechExpertise = memo(function TechExpertise() {
                     <div className="flex items-center justify-between text-xs sm:text-sm">
                       <span className="text-gray-500">{t('mastery', 'tech')}</span>
                       <span className="text-blue-400 font-medium">
-                        {tech.level === 'Expert' || tech.level === 'Expert' ? '90%' : 
-                         tech.level === 'Avancé' || tech.level === 'Advanced' ? '80%' : '70%'}
+                        {tech.level === 'Expert' || tech.level === 'Expert' ? '90%' :
+                          tech.level === 'Avancé' || tech.level === 'Advanced' ? '80%' : '70%'}
                       </span>
                     </div>
                     <div className="w-full h-1.5 bg-gray-700 rounded-full mt-2 overflow-hidden">
-                      <div 
+                      <div
                         className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition-all duration-300"
-                        style={{ 
-                          width: tech.level === 'Expert' || tech.level === 'Expert' ? '90%' : 
-                                 tech.level === 'Avancé' || tech.level === 'Advanced' ? '80%' : '70%' 
+                        style={{
+                          width: tech.level === 'Expert' || tech.level === 'Expert' ? '90%' :
+                            tech.level === 'Avancé' || tech.level === 'Advanced' ? '80%' : '70%'
                         }}
                       />
                     </div>

@@ -2,13 +2,22 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Calendar, Sparkles, CheckCircle, MessageCircle, Phone, 
+import {
+  Calendar, Sparkles, CheckCircle, MessageCircle, Phone,
   Mail, MapPin, Heart, Smartphone, Send, Clock,
-  Instagram, Linkedin, Twitter, Github, Facebook, Youtube 
+  Instagram, Linkedin, Twitter, Github, Facebook, Youtube
 } from 'lucide-react';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '../../hooks/useTranslation';
+
+// Interface pour typer les informations de contact
+interface ContactInfo {
+  whatsapp: [string, string];   // [numéro, affichage]
+  calls: [string, string];
+  emergency: [string, string];
+  email: string;
+  location: string;
+}
 
 const CTASection = memo(function CTASection() {
   const { t } = useTranslation();
@@ -21,12 +30,31 @@ const CTASection = memo(function CTASection() {
     setIsMounted(true);
   }, []);
 
+  // Points lumineux statiques
   const lightPoints = useRef(
     [...Array(8)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
   ).current;
+
+  // Récupération des informations de contact avec valeurs par défaut (évite les undefined)
+  const contactInfo: ContactInfo = {
+    whatsapp: [
+      '22962278090',
+      t('contactInfo.whatsapp', 'contact') || '+229 62 27 80 90'
+    ],
+    calls: [
+      '22962278090',
+      t('contactInfo.calls', 'contact') || '+229 62 27 80 90'
+    ],
+    emergency: [
+      '22946495875',
+      t('contactInfo.emergency', 'contact') || '+229 46 49 58 75'
+    ],
+    email: t('contactInfo.email', 'contact') || 'patawalaabdoulaye2003@gmail.com',
+    location: t('contactInfo.location', 'contact') || 'Cotonou, Benin'
+  };
 
   const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
@@ -49,19 +77,6 @@ const CTASection = memo(function CTASection() {
     }, 2000);
   }, []);
 
-  const formatPhoneNumber = (num: string) => {
-    return num === '22946495875' ? '+229 46 49 58 75' : '+229 62 27 80 90';
-  };
-
-  // Récupérer les infos de contact depuis les traductions - avec section 'contact'
-  const contactInfo = {
-    whatsapp: ['22962278090', t('contactInfo.whatsapp', 'contact')],
-    calls: ['22962278090', t('contactInfo.calls', 'contact')],
-    emergency: ['22946495875', t('contactInfo.emergency', 'contact')],
-    email: t('contactInfo.email', 'contact'),
-    location: t('contactInfo.location', 'contact')
-  };
-
   const socialLinks = [
     { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '+229 62 27 80 90' },
     { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: '@patawala' },
@@ -73,8 +88,8 @@ const CTASection = memo(function CTASection() {
 
   return (
     <>
-      <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
-        
+      <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden" aria-labelledby="contact-title">
+
         <AnimatePresence>
           {showCopyAlert && (
             <motion.div
@@ -82,41 +97,70 @@ const CTASection = memo(function CTASection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
+              role="status"
+              aria-live="polite"
             >
-              <CheckCircle size={18} />
+              <CheckCircle size={18} aria-hidden="true" />
               <span className="text-sm font-medium">{copiedText} ✓</span>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Background */}
+        {/* Fond amélioré - densité augmentée */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.03) 0px, rgba(59,130,246,0.03) 1px, transparent 1px, transparent 60px)`
-          }} />
-          <div className="absolute inset-0" style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.03) 0px, rgba(6,182,212,0.03) 1px, transparent 1px, transparent 60px)`
-          }} />
-          
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-          
+          {/* Lignes répétitives - opacité 0.08 */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
+            }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Cercles flous animés */}
+          <motion.div
+            animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
+            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
+          <motion.div
+            animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
+          <motion.div
+            animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
+            transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-1/3 left-1/4 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
+            aria-hidden="true"
+          />
+
+          {/* Points lumineux */}
           {lightPoints.map((point, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
               style={{ left: point.left, top: point.top }}
+              aria-hidden="true"
             />
           ))}
         </div>
-        
+
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            
             <div className="w-full flex justify-center mb-6 md:mb-8">
               {isMounted ? (
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-                  <Sparkles size={14} className="text-blue-400" />
+                  <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
                   <span className="text-xs sm:text-sm font-medium text-blue-400">
                     {t('badge', 'contact')}
                   </span>
@@ -130,13 +174,13 @@ const CTASection = memo(function CTASection() {
               )}
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 px-4 text-white leading-tight">
+            <h2 id="contact-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 px-4 text-white leading-tight">
               {t('title', 'contact')}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2">
                 {t('titleHighlight', 'contact')}
               </span>
             </h2>
-            
+
             <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 md:mb-8 max-w-2xl mx-auto px-4">
               {t('subtitle', 'contact')}
             </p>
@@ -144,20 +188,19 @@ const CTASection = memo(function CTASection() {
 
           {/* Contact Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
-            
             {/* Direct Contact Card */}
             <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Phone size={18} className="text-blue-400" />
+                <Phone size={18} className="text-blue-400" aria-hidden="true" />
                 {t('contactCards.direct.title', 'contact')}
               </h3>
-              
+
               <div className="space-y-3">
                 {/* WhatsApp */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <MessageCircle size={16} className="text-green-400" />
+                      <MessageCircle size={16} className="text-green-400" aria-hidden="true" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <p className="text-xs text-gray-400">{t('contactCards.direct.whatsapp', 'contact')}</p>
@@ -167,8 +210,9 @@ const CTASection = memo(function CTASection() {
                   <button
                     onClick={() => handleWhatsAppClick(contactInfo.whatsapp[0])}
                     className="w-full sm:w-auto px-4 py-2 bg-green-500/20 rounded-lg hover:bg-green-500/30 transition-colors text-sm text-green-400 font-medium flex items-center justify-center gap-2"
+                    aria-label={`WhatsApp ${contactInfo.whatsapp[1]}`}
                   >
-                    <MessageCircle size={16} />
+                    <MessageCircle size={16} aria-hidden="true" />
                     <span>WhatsApp</span>
                   </button>
                 </div>
@@ -177,7 +221,7 @@ const CTASection = memo(function CTASection() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Smartphone size={16} className="text-blue-400" />
+                      <Smartphone size={16} className="text-blue-400" aria-hidden="true" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <p className="text-xs text-gray-400">{t('contactCards.direct.calls', 'contact')}</p>
@@ -188,12 +232,14 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`tel:${contactInfo.calls[0]}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-medium text-center"
+                      aria-label={`Appeler ${contactInfo.calls[1]}`}
                     >
                       Appeler
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.calls[0], contactInfo.calls[1])}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-medium"
+                      aria-label={`Copier ${contactInfo.calls[1]}`}
                     >
                       {t('buttons.copy', 'contact')}
                     </button>
@@ -204,7 +250,7 @@ const CTASection = memo(function CTASection() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-red-500/10 rounded-lg border border-red-500/20 gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Phone size={16} className="text-red-400" />
+                      <Phone size={16} className="text-red-400" aria-hidden="true" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <p className="text-xs text-red-400">{t('contactCards.direct.emergency', 'contact')}</p>
@@ -215,12 +261,14 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`tel:${contactInfo.emergency[0]}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-medium text-center"
+                      aria-label={`Appeler urgence ${contactInfo.emergency[1]}`}
                     >
                       Appeler
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.emergency[0], contactInfo.emergency[1])}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-medium"
+                      aria-label={`Copier ${contactInfo.emergency[1]}`}
                     >
                       {t('buttons.copy', 'contact')}
                     </button>
@@ -232,16 +280,16 @@ const CTASection = memo(function CTASection() {
             {/* Info Card */}
             <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
               <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <Mail size={18} className="text-blue-400" />
+                <Mail size={18} className="text-blue-400" aria-hidden="true" />
                 {t('contactCards.info.title', 'contact')}
               </h3>
-              
+
               <div className="space-y-3">
                 {/* Email */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Mail size={16} className="text-blue-400" />
+                      <Mail size={16} className="text-blue-400" aria-hidden="true" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <p className="text-xs text-gray-400">{t('contactCards.info.email', 'contact')}</p>
@@ -252,13 +300,15 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`mailto:${contactInfo.email}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors flex items-center justify-center gap-1"
+                      aria-label={`Envoyer un email à ${contactInfo.email}`}
                     >
-                      <Send size={14} className="text-blue-400" />
+                      <Send size={14} className="text-blue-400" aria-hidden="true" />
                       <span className="text-xs text-blue-400 sm:hidden">Email</span>
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.email, contactInfo.email)}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-medium"
+                      aria-label={`Copier l'adresse email`}
                     >
                       {t('buttons.copy', 'contact')}
                     </button>
@@ -268,7 +318,7 @@ const CTASection = memo(function CTASection() {
                 {/* Localisation */}
                 <div className="flex items-center gap-3 p-3 bg-[#1F2937] rounded-lg">
                   <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin size={16} className="text-cyan-400" />
+                    <MapPin size={16} className="text-cyan-400" aria-hidden="true" />
                   </div>
                   <div className="text-left min-w-0">
                     <p className="text-xs text-gray-400">{t('contactCards.info.location', 'contact')}</p>
@@ -282,10 +332,10 @@ const CTASection = memo(function CTASection() {
           {/* Social Links */}
           <div className="max-w-4xl mx-auto mb-12">
             <h3 className="text-center text-lg font-semibold text-white mb-6 flex items-center justify-center gap-2">
-              <Heart size={18} className="text-blue-400" />
+              <Heart size={18} className="text-blue-400" aria-hidden="true" />
               {t('social.title', 'contact')}
             </h3>
-            
+
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {socialLinks.map((social, index) => (
                 <a
@@ -294,8 +344,9 @@ const CTASection = memo(function CTASection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 hover:border-opacity-50 group`}
+                  aria-label={`${social.name} (s'ouvre dans un nouvel onglet)`}
                 >
-                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
+                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
                   <div className="flex-1 text-left overflow-hidden">
                     <p className="text-xs text-gray-400">{social.name}</p>
                     <p className="text-xs text-white truncate">{social.username}</p>
@@ -310,23 +361,23 @@ const CTASection = memo(function CTASection() {
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
                   <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">
                     {t('guarantees.firstExchange', 'contact')}
                   </span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline">•</span>
-                
+                <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
+
                 <div className="flex items-center gap-1.5">
-                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
                   <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">
                     {t('guarantees.free30min', 'contact')}
                   </span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline">•</span>
-                
+                <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
+
                 <div className="flex items-center gap-1.5">
-                  <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
                   <span className="text-xs text-gray-400 sm:text-sm sm:text-gray-300 whitespace-nowrap">
                     {t('guarantees.noCommitment', 'contact')}
                   </span>
@@ -338,16 +389,18 @@ const CTASection = memo(function CTASection() {
               <button
                 onClick={handleDirectWhatsApp}
                 className="group bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-green-500/30 w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98]"
+                aria-label="Ouvrir WhatsApp direct"
               >
-                <MessageCircle size={18} className="sm:w-5 sm:h-5" />
+                <MessageCircle size={18} className="sm:w-5 sm:h-5" aria-hidden="true" />
                 <span>{t('buttons.whatsapp', 'contact')}</span>
               </button>
 
               <button
                 onClick={handleOpenModal}
                 className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-base flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98]"
+                aria-label="Planifier un rendez-vous"
               >
-                <Calendar size={18} className="sm:w-5 sm:h-5 group-hover:rotate-6 transition-transform" />
+                <Calendar size={18} className="sm:w-5 sm:h-5 group-hover:rotate-6 transition-transform" aria-hidden="true" />
                 <span>{t('buttons.schedule', 'contact')}</span>
               </button>
             </div>

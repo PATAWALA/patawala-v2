@@ -5,7 +5,6 @@
   "subtitle": "A selection of websites and applications designed to meet various needs, from MVP to large-scale projects.",
 
   "card": {
-    "client": "Client",
     "learnMore": "Learn more",
     "tags": {
       "more": "+{{count}}"
