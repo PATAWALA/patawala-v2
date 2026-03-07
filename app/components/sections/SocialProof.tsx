@@ -256,20 +256,20 @@ const SocialProof = memo(function SocialProof() {
           {isMounted && (
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
               <Award size={14} className="text-blue-400" />
-              <span className="text-xs sm:text-sm font-medium text-blue-400">
+              <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
                 {t('badge', 'testimonials')}
               </span>
             </div>
           )}
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight">
             {t('title', 'testimonials')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
               {t('titleHighlight', 'testimonials')}
             </span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium">
             {t('subtitle', 'testimonials')}
           </p>
         </div>
@@ -306,7 +306,7 @@ const SocialProof = memo(function SocialProof() {
           </>
 
           {/* Indicateur de lecture automatique */}
-          <div className="absolute -top-8 right-0 text-xs font-medium flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937] z-10">
+          <div className="absolute -top-8 right-0 text-xs font-semibold flex items-center gap-2 bg-[#141B2B]/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1F2937] z-10 tracking-tight">
             <span className={isAutoScrolling ? "text-blue-400" : "text-gray-400"}>
               {isAutoScrolling ? t('autoScroll.playing', 'testimonials') : t('autoScroll.paused', 'testimonials')}
             </span>
@@ -341,7 +341,7 @@ const SocialProof = memo(function SocialProof() {
                     ))}
                   </div>
 
-                  <p className="text-gray-300 mb-3 md:mb-4 italic text-xs sm:text-sm md:text-base">
+                  <p className="text-gray-200 mb-3 md:mb-4 italic text-xs sm:text-sm md:text-base font-medium">
                     "{testimonial.content}"
                   </p>
 
@@ -358,16 +358,16 @@ const SocialProof = memo(function SocialProof() {
                         />
                       </div>
                     ) : (
-                      <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-bold border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0`}>
+                      <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-black border-2 border-[#1F2937] shadow-md ring-2 ring-blue-500/20 group-hover:ring-blue-500/40 transition-all flex-shrink-0 tracking-tight`}>
                         {testimonial.initials || testimonial.name.substring(0, 2).toUpperCase()}
                       </div>
                     )}
 
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base truncate">
+                      <div className="font-extrabold text-white group-hover:text-blue-400 transition-colors text-xs sm:text-sm md:text-base tracking-tight">
                         {testimonial.name}
                       </div>
-                      <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+                      <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5 font-medium">
                         <MapPin size={10} className="text-blue-400 flex-shrink-0" />
                         <span className="truncate">{testimonial.flag || '🌍'} {testimonial.country}</span>
                       </div>
@@ -381,7 +381,7 @@ const SocialProof = memo(function SocialProof() {
 
         {/* Types de projets */}
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-8 md:mb-10 text-white">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight">
             {t('projectTypes.title', 'testimonials')}
           </h3>
 
@@ -396,10 +396,10 @@ const SocialProof = memo(function SocialProof() {
                     <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
                   </div>
                   <div>
-                    <h4 className="text-base sm:text-lg md:text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                    <h4 className="text-base sm:text-lg md:text-xl font-extrabold text-white group-hover:text-blue-400 transition-colors tracking-tight">
                       {type.title}
                     </h4>
-                    <p className="text-xs sm:text-sm md:text-base text-gray-400 mt-1">
+                    <p className="text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium">
                       {type.description}
                     </p>
                   </div>
@@ -411,7 +411,7 @@ const SocialProof = memo(function SocialProof() {
                     className="w-full flex items-center justify-between group/btn"
                     aria-label={type.cta}
                   >
-                    <span className="text-blue-400 font-medium text-sm sm:text-base md:text-lg group-hover/btn:translate-x-1 transition-transform duration-200">
+                    <span className="text-blue-400 font-semibold text-sm sm:text-base md:text-lg group-hover/btn:translate-x-1 transition-transform duration-200 tracking-tight">
                       {type.cta}
                     </span>
                     <div className="bg-blue-500/10 p-2 rounded-full group-hover/btn:bg-blue-500/20 transition-colors duration-200">

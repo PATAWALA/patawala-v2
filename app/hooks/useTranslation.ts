@@ -25,6 +25,7 @@ const componentToSection: Record<string, string> = {
   'BlogPage': 'blog',
   'ServicesData': 'services-data',
   'ProjetsData': 'projets-data',
+  'WhatsAppWidget': 'widget' // ← NOUVEAU
 };
 
 export function useTranslation() {
@@ -41,5 +42,11 @@ export function useTranslation() {
     return contextT(key, 'common');
   };
 
-  return { t, language };
+  // Fonction pour obtenir le mapping de section basé sur le composant
+  const getComponentTranslation = (componentName: string, key: string) => {
+    const section = componentToSection[componentName] || 'common';
+    return contextT(key, section);
+  };
+
+  return { t, language, getComponentTranslation };
 }

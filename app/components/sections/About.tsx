@@ -124,25 +124,25 @@ const AboutSection = memo(function AboutSection() {
               {isMounted ? (
                 <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-sm border border-blue-500/20 backdrop-blur-sm">
                   <Sparkles size={14} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">{t('badge', 'about')}</span>
+                  <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">{t('badge', 'about')}</span>
                 </div>
               ) : (
                 <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full border border-blue-500/20">
-                  <span className="text-sm font-medium">{t('badge', 'about')}</span>
+                  <span className="text-sm font-semibold tracking-tight">{t('badge', 'about')}</span>
                 </div>
               )}
             </div>
 
             {/* Titre et sous-titre */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
                 {t('title', 'about')}
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1 sm:mt-2">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1 sm:mt-2 font-extrabold tracking-tight">
                   {t('subtitle', 'about')}
                 </span>
               </h2>
 
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4">
+              <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4 font-medium leading-relaxed">
                 {t('description', 'about')}
               </p>
 
@@ -170,17 +170,17 @@ const AboutSection = memo(function AboutSection() {
 
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-4">
-                          <span className="text-3xl sm:text-4xl font-bold text-blue-400/80 group-hover:text-blue-400 transition-colors">
+                          <span className="text-3xl sm:text-4xl font-black text-blue-400/80 group-hover:text-blue-400 transition-colors tracking-tighter">
                             {`0${index + 1}`}
                           </span>
                           <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
                         </div>
 
-                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white group-hover:text-blue-400 transition-colors tracking-tight">
                           {card.title}
                         </h3>
 
-                        <p className="text-sm sm:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        <p className="text-sm sm:text-base text-gray-300 group-hover:text-gray-200 transition-colors leading-relaxed font-medium">
                           {card.description}
                         </p>
                       </div>
@@ -198,7 +198,7 @@ const AboutSection = memo(function AboutSection() {
             <div className="flex justify-center mb-6 md:mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
                 <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
-                <span className="text-sm sm:text-base font-semibold tracking-wide">{t('whoami', 'about')}</span>
+                <span className="text-sm sm:text-base font-bold tracking-tight">{t('whoami', 'about')}</span>
               </div>
             </div>
 
@@ -248,7 +248,7 @@ const AboutSection = memo(function AboutSection() {
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <Globe size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
                       <Smartphone size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-semibold whitespace-nowrap">{t('profile.badges.webMobile', 'about')}</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">{t('profile.badges.webMobile', 'about')}</span>
                     </div>
                   </div>
 
@@ -256,7 +256,7 @@ const AboutSection = memo(function AboutSection() {
                   <div className="absolute bottom-0 right-0 z-30" style={{ transform: 'translate(5%, 5%)' }}>
                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-semibold whitespace-nowrap">{t('profile.badges.available', 'about')}</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">{t('profile.badges.available', 'about')}</span>
                     </div>
                   </div>
 
@@ -278,19 +278,19 @@ const AboutSection = memo(function AboutSection() {
 
               {/* BIO à droite */}
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-white">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 text-white tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {t('profile.name', 'about')}
                   </span>
                 </h3>
 
-                <p className="text-base sm:text-lg md:text-xl text-blue-400/90 font-medium mb-4">
+                <p className="text-base sm:text-lg md:text-xl text-blue-400 font-semibold mb-4 tracking-tight">
                   {t('profile.role', 'about')}
                 </p>
 
                 {/* Mission */}
                 <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed font-medium">
                     {t('profile.missionText', 'about')}
                   </p>
                 </div>
@@ -299,7 +299,7 @@ const AboutSection = memo(function AboutSection() {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px]"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-bold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px] tracking-tight"
                     aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
@@ -308,7 +308,7 @@ const AboutSection = memo(function AboutSection() {
 
                   <button
                     onClick={handleVoirOffres}
-                    className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px]"
+                    className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >
                     {t('buttons.services', 'about')}
@@ -326,4 +326,4 @@ const AboutSection = memo(function AboutSection() {
   );
 });
 
-export default AboutSection
+export default AboutSection;

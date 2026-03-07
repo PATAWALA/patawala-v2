@@ -134,7 +134,7 @@ export default function BlogPage() {
             className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm"
           >
             <BookOpen size={14} className="sm:w-4 sm:h-4 text-blue-400" />
-            <span className="text-xs sm:text-sm font-medium text-blue-400">
+            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
               {t('badge', 'blog')}
             </span>
           </motion.div>
@@ -143,11 +143,11 @@ export default function BlogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-3 sm:mb-4 md:mb-6 px-2 text-white"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-3 sm:mb-4 md:mb-6 px-2 text-white tracking-tight"
           >
             {t('title', 'blog')}
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-black tracking-tight">
               {t('titleHighlight', 'blog')}
             </span>
           </motion.h1>
@@ -156,7 +156,7 @@ export default function BlogPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl mx-auto px-3 leading-relaxed"
+            className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium"
           >
             {t('subtitle', 'blog')}
           </motion.p>
@@ -178,7 +178,7 @@ export default function BlogPage() {
                 placeholder={t('search.placeholder', 'blog')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 sm:pl-14 pr-8 sm:pr-10 py-3 sm:py-4 md:py-5 bg-[#141B2B]/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all shadow-md sm:shadow-lg text-sm sm:text-base text-white placeholder-gray-500"
+                className="w-full pl-9 sm:pl-14 pr-8 sm:pr-10 py-3 sm:py-4 md:py-5 bg-[#141B2B]/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all shadow-md sm:shadow-lg text-sm sm:text-base text-white placeholder-gray-500 font-medium"
               />
               {searchQuery && (
                 <button
@@ -208,9 +208,9 @@ export default function BlogPage() {
             >
               <div className="flex items-center gap-2">
                 <Filter size={18} className="text-blue-400" />
-                <span className="font-medium text-sm text-gray-300">{t('filters.title', 'blog')}</span>
+                <span className="font-bold text-sm text-gray-200 tracking-tight">{t('filters.title', 'blog')}</span>
               </div>
-              <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">
+              <span className="text-xs bg-blue-500/20 text-blue-400 font-bold px-2 py-1 rounded-full tracking-tight">
                 {selectedCategory}
               </span>
             </button>
@@ -229,10 +229,10 @@ export default function BlogPage() {
                         setSelectedCategory(category);
                         setIsFilterOpen(false);
                       }}
-                      className={`px-3 py-2 rounded-xl text-xs font-medium transition-all flex-1 min-w-[80px] ${
+                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 min-w-[80px] tracking-tight ${
                         selectedCategory === category
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
-                          : 'bg-[#0A0F1C] text-gray-400 hover:bg-[#1E2638] hover:text-blue-400 border border-[#1F2937]'
+                          : 'bg-[#0A0F1C] text-gray-400 hover:bg-[#1E2638] hover:text-blue-400 border border-[#1F2937] font-semibold'
                       }`}
                     >
                       {category}
@@ -250,10 +250,10 @@ export default function BlogPage() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 md:px-4 lg:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                  className={`px-3 md:px-4 lg:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 whitespace-nowrap tracking-tight ${
                     selectedCategory === category
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
-                      : 'text-gray-400 hover:text-blue-400 hover:bg-[#1E2638]'
+                      : 'text-gray-400 hover:text-blue-400 hover:bg-[#1E2638] font-semibold'
                   }`}
                 >
                   {category}
@@ -269,7 +269,7 @@ export default function BlogPage() {
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white"
+              className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight"
             >
               <span className="w-1 h-5 sm:h-6 md:h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
               {t('featured.title', 'blog')}
@@ -302,7 +302,7 @@ export default function BlogPage() {
                         
                         {/* Badge catégorie */}
                         <div className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4">
-                          <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-semibold text-blue-400 border border-blue-500/20 shadow-md">
+                          <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-md tracking-tight">
                             {article.category}
                           </span>
                         </div>
@@ -310,7 +310,7 @@ export default function BlogPage() {
 
                       <div className="p-3 sm:p-4 md:p-5 lg:p-6">
                         {/* Meta */}
-                        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2 font-medium">
                           <Calendar size={12} className="text-blue-400" />
                           <span>{article.publishedAt}</span>
                           <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
@@ -318,11 +318,11 @@ export default function BlogPage() {
                           <span>{article.readTime}</span>
                         </div>
 
-                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-extrabold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 tracking-tight">
                           {article.title}
                         </h3>
                         
-                        <p className="text-xs sm:text-sm text-gray-400 mb-3 line-clamp-2 sm:line-clamp-3">
+                        <p className="text-xs sm:text-sm text-gray-300 mb-3 line-clamp-2 sm:line-clamp-3 font-medium">
                           {article.excerpt}
                         </p>
 
@@ -331,13 +331,13 @@ export default function BlogPage() {
                           {tags.slice(0, 2).map((tag: string) => (
                             <span
                               key={tag}
-                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-[8px] sm:text-xs font-medium rounded-full"
+                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-[8px] sm:text-xs font-bold rounded-full tracking-tight"
                             >
                               #{tag}
                             </span>
                           ))}
                           {tags.length > 2 && (
-                            <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-800 text-gray-400 text-[8px] sm:text-xs font-medium rounded-full">
+                            <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-800 text-gray-300 text-[8px] sm:text-xs font-semibold rounded-full tracking-tight">
                               {moreTagsTemplate.replace('{{count}}', (tags.length - 2).toString())}
                             </span>
                           )}
@@ -354,9 +354,9 @@ export default function BlogPage() {
                                 className="object-cover"
                               />
                             </div>
-                            <span className="text-xs sm:text-sm font-medium text-gray-300">{article.author.name}</span>
+                            <span className="text-xs sm:text-sm font-bold text-gray-200 tracking-tight">{article.author.name}</span>
                           </div>
-                          <div className="inline-flex items-center gap-1 text-blue-400 font-medium text-xs group/link">
+                          <div className="inline-flex items-center gap-1 text-blue-400 font-bold text-xs group/link tracking-tight">
                             <span>{t('featured.readMore', 'blog')}</span>
                             <ArrowRight size={10} className="group-hover/link:translate-x-1 transition-transform" />
                           </div>
@@ -398,7 +398,7 @@ export default function BlogPage() {
                       
                       {/* Badge catégorie */}
                       <div className="absolute top-1 sm:top-2 left-1 sm:left-2">
-                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[8px] sm:text-xs font-semibold text-blue-400 border border-blue-500/20 shadow-sm">
+                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[8px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-sm tracking-tight">
                           {article.category}
                         </span>
                       </div>
@@ -406,7 +406,7 @@ export default function BlogPage() {
 
                     <div className="p-2 sm:p-3 md:p-4">
                       {/* Date */}
-                      <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-400 mb-1.5">
+                      <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-400 mb-1.5 font-medium">
                         <Calendar size={10} className="text-blue-400" />
                         <span>{article.publishedAt}</span>
                         <span className="w-0.5 h-0.5 bg-gray-600 rounded-full"></span>
@@ -414,11 +414,11 @@ export default function BlogPage() {
                         <span>{article.readTime}</span>
                       </div>
 
-                      <h3 className="text-xs sm:text-sm md:text-base font-bold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors">
+                      <h3 className="text-xs sm:text-sm md:text-base font-extrabold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors tracking-tight">
                         {article.title}
                       </h3>
                       
-                      <p className="text-[10px] sm:text-xs text-gray-400 mb-2 line-clamp-2">
+                      <p className="text-[10px] sm:text-xs text-gray-300 mb-2 line-clamp-2 font-medium">
                         {article.excerpt}
                       </p>
 
@@ -427,7 +427,7 @@ export default function BlogPage() {
                         {tags.slice(0, 2).map((tag: string) => (
                           <span
                             key={tag}
-                            className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[6px] sm:text-[10px] font-medium rounded-full"
+                            className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[6px] sm:text-[10px] font-bold rounded-full tracking-tight"
                           >
                             #{tag}
                           </span>
@@ -445,11 +445,11 @@ export default function BlogPage() {
                               className="object-cover"
                             />
                           </div>
-                          <span className="text-[8px] sm:text-xs font-medium text-gray-400 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px]">
+                          <span className="text-[8px] sm:text-xs font-bold text-gray-300 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px] tracking-tight">
                             {article.author.name}
                           </span>
                         </div>
-                        <div className="inline-flex items-center gap-0.5 text-blue-400 font-medium text-[8px] sm:text-xs group/link">
+                        <div className="inline-flex items-center gap-0.5 text-blue-400 font-bold text-[8px] sm:text-xs group/link tracking-tight">
                           <span>{t('featured.readMore', 'blog')}</span>
                           <ArrowRight size={8} className="group-hover/link:translate-x-1 transition-transform" />
                         </div>
@@ -462,8 +462,8 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-400">{t('noResults', 'blog')}</p>
-            <p className="text-sm text-gray-500 mt-2">{t('tryAdjusting', 'blog')}</p>
+            <p className="text-gray-300 font-semibold">{t('noResults', 'blog')}</p>
+            <p className="text-sm text-gray-500 mt-2 font-medium">{t('tryAdjusting', 'blog')}</p>
           </div>
         )}
 
@@ -477,7 +477,7 @@ export default function BlogPage() {
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400"
+              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.previous', 'blog')}
             >
               <ChevronLeft size={14} className="sm:w-4 sm:h-4" />
@@ -488,7 +488,7 @@ export default function BlogPage() {
                 <button
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-medium text-xs sm:text-sm transition-all ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all tracking-tight ${
                     currentPage === i + 1
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105 sm:scale-110'
                       : 'border border-[#1F2937] hover:border-blue-500 hover:text-blue-400 hover:shadow-md bg-[#141B2B] text-gray-400'
@@ -502,7 +502,7 @@ export default function BlogPage() {
             <button
               onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400"
+              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.next', 'blog')}
             >
               <ChevronRight size={14} className="sm:w-4 sm:h-4" />
@@ -523,10 +523,10 @@ export default function BlogPage() {
             <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             
-            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-1 sm:mb-2 md:mb-3 text-white">
+            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold mb-1 sm:mb-2 md:mb-3 text-white tracking-tight">
               {t('newsletter.title', 'blog')}
             </h3>
-            <p className="text-xs sm:text-sm md:text-base text-gray-400 mb-4 sm:mb-6 md:mb-8">
+            <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 md:mb-8 font-medium">
               {t('newsletter.subtitle', 'blog')}
             </p>
             
@@ -534,14 +534,14 @@ export default function BlogPage() {
               <input
                 type="email"
                 placeholder={t('newsletter.emailPlaceholder', 'blog')}
-                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500"
+                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
               />
-              <button className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap">
+              <button className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight">
                 {t('newsletter.button', 'blog')}
               </button>
             </div>
             
-            <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2">
+            <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
               <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
               {t('newsletter.footer', 'blog')}
               <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>

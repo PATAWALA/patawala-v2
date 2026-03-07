@@ -1,4 +1,5 @@
 'use client';
+
 import { createContext, useState, useContext, useEffect } from 'react';
 
 type Language = 'fr' | 'en';
@@ -6,7 +7,7 @@ type Language = 'fr' | 'en';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string, section?: string) => string | undefined; // ← retour possible undefined
+  t: (key: string, section?: string) => string | undefined;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -22,7 +23,7 @@ import frTech from '@/app/assets/locales/fr/tech.json';
 import frContact from '@/app/assets/locales/fr/contact.json';
 import frBlog from '@/app/assets/locales/fr/blog.json';
 import frArticles from '@/app/assets/locales/fr/articles.json';
-import frArticlesData from '@/app/assets/locales/fr/articles-details.json'; // ← CORRIGÉ
+import frArticlesData from '@/app/assets/locales/fr/articles-details.json';
 import frServices from '@/app/assets/locales/fr/services.json';
 import frServicesData from '@/app/assets/locales/fr/services-data.json';
 import frProjetsPage from '@/app/assets/locales/fr/projets-page.json';
@@ -31,6 +32,7 @@ import frProjectModal from '@/app/assets/locales/fr/project-modal.json';
 import frBooking from '@/app/assets/locales/fr/booking.json';
 import frRealisations from '@/app/assets/locales/fr/realisations.json';
 import frFooter from '@/app/assets/locales/fr/footer.json';
+import frWidget from '@/app/assets/locales/fr/widget.json'; // ← NOUVEAU
 
 import enCommon from '@/app/assets/locales/en/common.json';
 import enNavigation from '@/app/assets/locales/en/navigation.json';
@@ -51,6 +53,7 @@ import enProjectModal from '@/app/assets/locales/en/project-modal.json';
 import enBooking from '@/app/assets/locales/en/booking.json';
 import enRealisations from '@/app/assets/locales/en/realisations.json';
 import enFooter from '@/app/assets/locales/en/footer.json';
+import enWidget from '@/app/assets/locales/en/widget.json'; // ← NOUVEAU
 
 // Type pour les traductions
 type TranslationsType = {
@@ -73,6 +76,7 @@ type TranslationsType = {
   booking: any;
   realisations: any;
   footer: any;
+  widget: any; // ← NOUVEAU
 };
 
 // Structure des traductions - statique, chargée immédiatement
@@ -88,7 +92,7 @@ const translations: Record<Language, TranslationsType> = {
     contact: frContact,
     blog: frBlog,
     articles: frArticles,
-    articlesData: frArticlesData, // ← maintenant c'est le fichier français
+    articlesData: frArticlesData,
     services: frServices,
     'services-data': frServicesData,
     'projets-page': frProjetsPage,
@@ -96,7 +100,8 @@ const translations: Record<Language, TranslationsType> = {
     'project-modal': frProjectModal,
     booking: frBooking,
     realisations: frRealisations,
-    footer: frFooter
+    footer: frFooter,
+    widget: frWidget // ← NOUVEAU
   },
   en: {
     common: enCommon,
@@ -117,7 +122,8 @@ const translations: Record<Language, TranslationsType> = {
     'project-modal': enProjectModal,
     booking: enBooking,
     realisations: enRealisations,
-    footer: enFooter
+    footer: enFooter,
+    widget: enWidget // ← NOUVEAU
   }
 };
 
@@ -129,36 +135,35 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setCurrentTranslations(translations[language]);
   }, [language]);
 
-  // Dans LanguageContext
-const t = (key: string, section: string = 'common'): any => {
-  console.log(`🔍 t("${key}", "${section}")`);
-  
-  // Si key est vide, retourner toute la section
-  if (!key) {
-    return currentTranslations[section as keyof TranslationsType];
-  }
-  
-  const keys = key.split('.');
-  let value: any = currentTranslations[section as keyof TranslationsType];
-  
-  // Si la section n'existe pas
-  if (!value) {
-    console.warn(`❌ Section introuvable: ${section}`);
-    return undefined;
-  }
-  
-  // Parcourir les clés
-  for (const k of keys) {
-    if (value && value[k] !== undefined) {
-      value = value[k];
-    } else {
-      console.warn(`❌ Traduction manquante: ${section}.${key} (clé "${k}" introuvable)`);
+  const t = (key: string, section: string = 'common'): any => {
+    console.log(`🔍 t("${key}", "${section}")`);
+    
+    // Si key est vide, retourner toute la section
+    if (!key) {
+      return currentTranslations[section as keyof TranslationsType];
+    }
+    
+    const keys = key.split('.');
+    let value: any = currentTranslations[section as keyof TranslationsType];
+    
+    // Si la section n'existe pas
+    if (!value) {
+      console.warn(`❌ Section introuvable: ${section}`);
       return undefined;
     }
-  }
-  
-  return value;
-};
+    
+    // Parcourir les clés
+    for (const k of keys) {
+      if (value && value[k] !== undefined) {
+        value = value[k];
+      } else {
+        console.warn(`❌ Traduction manquante: ${section}.${key} (clé "${k}" introuvable)`);
+        return undefined;
+      }
+    }
+    
+    return value;
+  };
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

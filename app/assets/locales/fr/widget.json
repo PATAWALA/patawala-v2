@@ -1,0 +1,29 @@
+{
+  "button": {
+    "ariaLabel": "Ouvrir le chat WhatsApp",
+    "title": "Contacter via WhatsApp"
+  },
+  "header": {
+    "title": "WhatsApp Direct",
+    "subtitle": "Réponse sous 24h",
+    "closeAriaLabel": "Fermer"
+  },
+  "body": {
+    "welcomeMessage": "👋 Envoyez-moi un message directement sur WhatsApp. Je vous répondrai dans les plus brefs délais.",
+    "messageLabel": "Votre message",
+    "messagePlaceholder": "Bonjour, je souhaite discuter de mon projet...",
+    "messageAriaLabel": "Votre message",
+    "characterCount": "{count}/1000"
+  },
+  "success": {
+    "message": "Message prêt ! WhatsApp va s'ouvrir."
+  },
+  "buttonStates": {
+    "sending": "Préparation...",
+    "success": "Prêt !",
+    "send": "Envoyer"
+  },
+  "footer": {
+    "note": "En cliquant sur \"Envoyer\", vous serez redirigé vers WhatsApp. Aucune donnée n'est stockée."
+  }
+}
