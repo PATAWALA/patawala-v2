@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search, Frown, AlertCircle, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -9,7 +8,7 @@ export default function NotFound() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  // Mouse position
+  // Mouse position - GARDÉ car c'est interactif et léger
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
@@ -18,21 +17,38 @@ export default function NotFound() {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   // Window dimensions pour particules
   useEffect(() => {
     setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    
+    const handleResize = () => {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    };
+    
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Points lumineux statiques pour les particules (réduits à 12)
+  const particles = [...Array(12)].map((_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    delay: Math.random() * 2,
+    duration: 3 + Math.random() * 2,
+  }));
 
   return (
     <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
-      {/* BEAU FOND - avec dégradé et formes floues */}
+      {/* FOND OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+        {/* Lignes subtiles - une seule couche */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-30"
           style={{
             backgroundImage: `repeating-linear-gradient(90deg, 
               rgba(59,130,246,0.05) 0px, 
@@ -40,91 +56,65 @@ export default function NotFound() {
               transparent 1px, 
               transparent 60px)`,
           }}
-        ></div>
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, 
-              rgba(6,182,212,0.05) 0px, 
-              rgba(6,182,212,0.05) 1px, 
-              transparent 1px, 
-              transparent 60px)`,
-          }}
-        ></div>
+          aria-hidden="true"
+        />
       </div>
 
-      {/* Éléments décoratifs animés */}
-      <motion.div
-        animate={{ x: mousePosition.x, y: mousePosition.y }}
-        transition={{ type: 'spring', stiffness: 50, damping: 30 }}
-        className="absolute top-20 left-10 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"
+      {/* Éléments décoratifs avec CSS transform (ultra léger) */}
+      <div
+        className="absolute top-20 left-10 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl transition-transform duration-300"
+        style={{
+          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+        }}
+        aria-hidden="true"
       />
-      <motion.div
-        animate={{ x: -mousePosition.x, y: -mousePosition.y }}
-        transition={{ type: 'spring', stiffness: 50, damping: 30 }}
-        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+      <div
+        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl transition-transform duration-300"
+        style={{
+          transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px)`,
+        }}
+        aria-hidden="true"
       />
 
       {/* Conteneur principal */}
       <div className="relative z-10 max-w-3xl w-full">
-        {/* Animation 404 */}
+        {/* Animation 404 - AVEC CSS AU LIEU DE FRAMER MOTION */}
         <div className="relative mb-8 flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="relative"
-          >
+          <div className="relative">
             <div className="flex items-center justify-center gap-2 sm:gap-4">
-              <motion.div
-                animate={{ y: [0, -10, 0], rotate: [0, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none"
-              >
+              <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none animate-float1">
                 4
-              </motion.div>
+              </div>
 
-              <motion.div
-                animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-                className="relative"
-              >
-                <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 select-none">
+              <div className="relative">
+                <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 select-none animate-pulse-slow">
                   0
                 </div>
-                <motion.div
-                  animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute inset-0 bg-blue-500/30 rounded-full blur-xl"
-                />
-              </motion.div>
+                <div className="absolute inset-0 bg-blue-500/30 rounded-full blur-xl animate-ping-slow" />
+              </div>
 
-              <motion.div
-                animate={{ y: [0, 10, 0], rotate: [0, 5, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
-                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none"
-              >
+              <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none animate-float2">
                 4
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Message principal */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center mb-8">
+        <div className="text-center mb-8 animate-fadeIn" style={{ animationDelay: '0.3s' }}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">Oups ! Page introuvable</h1>
           <div className="flex items-center justify-center gap-2 text-gray-300 mb-6">
             <AlertCircle size={20} className="text-blue-400" />
             <p className="text-lg sm:text-xl">La page que vous cherchez n'existe pas ou a été déplacée.</p>
           </div>
 
-          <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }} className="inline-block mb-8">
+          <div className="inline-block mb-8 animate-wobble">
             <Frown size={48} className="text-blue-400/50" />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Suggestions */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-8 border border-[#1F2937] shadow-xl">
+        <div className="bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-8 border border-[#1F2937] shadow-xl animate-fadeIn" style={{ animationDelay: '0.4s' }}>
           <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4 flex items-center gap-2">
             <Compass size={24} className="text-blue-400" />
             Que faire maintenant ?
@@ -132,7 +122,7 @@ export default function NotFound() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/">
-              <motion.div whileHover={{ scale: 1.02, x: 4 }} className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-colors cursor-pointer group border border-blue-500/20">
+              <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Home size={20} className="text-white" />
                 </div>
@@ -140,11 +130,11 @@ export default function NotFound() {
                   <span className="font-semibold text-white">Page d'accueil</span>
                   <p className="text-xs text-gray-400">Retourner à l'accueil</p>
                 </div>
-              </motion.div>
+              </div>
             </Link>
 
             <Link href="/projets">
-              <motion.div whileHover={{ scale: 1.02, x: 4 }} className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-colors cursor-pointer group border border-blue-500/20">
+              <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Compass size={20} className="text-white" />
                 </div>
@@ -152,11 +142,11 @@ export default function NotFound() {
                   <span className="font-semibold text-white">Mes projets</span>
                   <p className="text-xs text-gray-400">Découvrir mes réalisations</p>
                 </div>
-              </motion.div>
+              </div>
             </Link>
 
             <Link href="/#contact">
-              <motion.div whileHover={{ scale: 1.02, x: 4 }} className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-colors cursor-pointer group sm:col-span-2 border border-blue-500/20">
+              <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group sm:col-span-2 border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Search size={20} className="text-white" />
                 </div>
@@ -164,13 +154,13 @@ export default function NotFound() {
                   <span className="font-semibold text-white">Me contacter</span>
                   <p className="text-xs text-gray-400">Discuter de votre projet</p>
                 </div>
-              </motion.div>
+              </div>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
         {/* Bouton retour */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center">
+        <div className="text-center animate-fadeIn" style={{ animationDelay: '0.5s' }}>
           <button
             onClick={() => {
               if (typeof window !== 'undefined') window.history.back();
@@ -180,34 +170,112 @@ export default function NotFound() {
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span>Retour à la page précédente</span>
           </button>
-        </motion.div>
+        </div>
 
-        {/* Particules */}
+        {/* Particules - OPTIMISÉES AVEC CSS */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{
-                x: Math.random() * (dimensions.width || 0),
-                y: Math.random() * (dimensions.height || 0),
-                scale: 0,
+          {particles.map((particle) => (
+            <div
+              key={particle.id}
+              className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-particle"
+              style={{
+                left: particle.left,
+                top: particle.top,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`,
               }}
-              animate={{
-                y: [null, -30],
-                scale: [0, 1, 0],
-                opacity: [0, 0.5, 0],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: 'easeInOut',
-              }}
-              className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
             />
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float1 {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(-5deg); }
+        }
+        
+        @keyframes float2 {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(10px) rotate(5deg); }
+        }
+        
+        @keyframes pulseSlow {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        @keyframes pingSlow {
+          0% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.5); opacity: 0; }
+          100% { transform: scale(1); opacity: 0.3; }
+        }
+        
+        @keyframes wobble {
+          0%, 100% { transform: rotate(0deg); }
+          25% { transform: rotate(5deg); }
+          75% { transform: rotate(-5deg); }
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes particle {
+          0% {
+            opacity: 0;
+            transform: scale(0) translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: scale(1) translateY(-30px);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0) translateY(-60px);
+          }
+        }
+        
+        .animate-float1 {
+          animation: float1 4s ease-in-out infinite;
+        }
+        
+        .animate-float2 {
+          animation: float2 4s ease-in-out infinite;
+        }
+        
+        .animate-pulse-slow {
+          animation: pulseSlow 3s ease-in-out infinite;
+        }
+        
+        .animate-ping-slow {
+          animation: pingSlow 2s ease-in-out infinite;
+        }
+        
+        .animate-wobble {
+          animation: wobble 4s ease-in-out infinite;
+        }
+        
+        .animate-fadeIn {
+          opacity: 0;
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .animate-particle {
+          animation: particle 4s ease-in-out infinite;
+        }
+        
+        .hover\\:scale-102:hover {
+          transform: scale(1.02);
+        }
+      `}</style>
     </div>
   );
 }
