@@ -25,28 +25,40 @@ const componentToSection: Record<string, string> = {
   'BlogPage': 'blog',
   'ServicesData': 'services-data',
   'ProjetsData': 'projets-data',
-  'WhatsAppWidget': 'widget' // ← NOUVEAU
+  'WhatsAppWidget': 'widget'
 };
 
 export function useTranslation() {
   const { t: contextT, language } = useLanguage();
   
-  // Fonction de traduction - immédiate, pas de loading
-  const t = (key: string, forcedSection?: string) => {
-    // Si une section est forcée, l'utiliser
-    if (forcedSection) {
-      return contextT(key, forcedSection);
-    }
+  // Fonction de traduction principale - retourne toujours une string
+  const t = (key: string, forcedSection?: string): string => {
+    const result = forcedSection 
+      ? contextT(key, forcedSection)
+      : contextT(key, 'common');
     
-    // Par défaut, chercher dans common
-    return contextT(key, 'common');
+    // Si le résultat est undefined, retourner la clé comme fallback
+    return result ?? key;
   };
 
-  // Fonction pour obtenir le mapping de section basé sur le composant
-  const getComponentTranslation = (componentName: string, key: string) => {
+  // Fonction pour obtenir la traduction basée sur le composant
+  const getComponentTranslation = (componentName: string, key: string): string => {
     const section = componentToSection[componentName] || 'common';
-    return contextT(key, section);
+    const result = contextT(key, section);
+    return result ?? key;
   };
 
-  return { t, language, getComponentTranslation };
+  // Fonction pour obtenir une traduction avec paramètres (ex: {count})
+  const tWithParams = (key: string, params: Record<string, string | number>, forcedSection?: string): string => {
+    let text = t(key, forcedSection);
+    
+    // Remplacer les paramètres dans le texte
+    Object.entries(params).forEach(([param, value]) => {
+      text = text.replace(new RegExp(`{${param}}`, 'g'), String(value));
+    });
+    
+    return text;
+  };
+
+  return { t, language, getComponentTranslation, tWithParams };
 }

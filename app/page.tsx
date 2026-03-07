@@ -1,7 +1,6 @@
 // app/page.tsx
 import HeroSection from './components/sections/Hero';
 import SocialProof from './components/sections/SocialProof';
-import ValueProposition from './components/sections/ValueProposition';
 import TechExpertise from './components/sections/TechExpertise';
 import AboutSection from './components/sections/About'; 
 import RealisationsSection from './components/sections/Realisations';

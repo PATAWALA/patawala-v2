@@ -47,8 +47,8 @@ export default function LoadingScreen() {
             transition={{ duration: 0.2 }}
             className="relative"
           >
-            {/* Nom en grand et orange */}
-            <span className="text-5xl sm:text-6xl font-black text-[#FF9800] tracking-tight">
+            {/* Nom en grand et orange avec tracking plus serré */}
+            <span className="text-5xl sm:text-6xl font-black text-[#FF9800] tracking-[-0.05em]">
               Patawala
             </span>
             
