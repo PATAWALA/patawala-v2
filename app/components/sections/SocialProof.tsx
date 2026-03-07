@@ -4,9 +4,9 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
 import Image from 'next/image';
-import clientImage from '../../assets/images/profile2.jpeg';
-import chimeneImage from '../../assets/images/profile4.png';
-import cesarImage from '../../assets/images/profile5.png';
+import clientImage from '../../assets/images/profile2.webp';
+import chimeneImage from '../../assets/images/profile4.webp';
+import cesarImage from '../../assets/images/profile5.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface Testimonial {

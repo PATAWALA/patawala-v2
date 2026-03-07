@@ -1,12 +1,12 @@
 // data/projets.ts
 import { ShoppingBag, Truck, Building2, Globe, Users, Smartphone, Heart, Activity, Package, Store } from 'lucide-react';
 import dashbordImage from '../../assets/images/Dashbordpme.webp';
-import designImage from '../../assets/images/design.png';
-import techChoiceImage from '../../assets/images/tech-choice.jpg.png';
-import fitnessImage from '../../assets/images/fitness.png';
-import learnImage from '../../assets/images/learn.png';
-import santéeImage from "../../assets/images/sante.png";
-import imobilierImage from "../../assets/images/imobilier.png";
+import designImage from '../../assets/images/design.webp';
+import techChoiceImage from '../../assets/images/tech-projet.webp';
+import fitnessImage from '../../assets/images/fitness.webp';
+import learnImage from '../../assets/images/learn.webp';
+import santéeImage from "../../assets/images/sante.webp";
+import imobilierImage from "../../assets/images/imobilier.webp";
 
 export interface Project {
   id: number;

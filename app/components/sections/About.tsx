@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
-import profileImage from '../../assets/images/profile1.png';
+import profileImage from '../../assets/images/about1.png';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
 

@@ -1,6 +1,7 @@
 {
   "name": "patawala-v2",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,12 +14,14 @@
     "@vercel/analytics": "^1.6.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.29",
+    "glob": "^13.0.6",
     "lucide-react": "^0.378.0",
     "next": "14.2.35",
     "react": "^18",
     "react-dom": "^18",
     "react-intersection-observer": "^9.5.4",
     "react-scroll": "^1.9.0",
+    "sharp": "^0.34.5",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "typed.js": "^2.1.0"

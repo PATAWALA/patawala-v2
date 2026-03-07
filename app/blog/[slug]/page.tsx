@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { useState, useEffect, useMemo } from 'react';
 import { getArticleBySlug, getRelatedArticles } from '../data/articles';
-import profileImage from '../../assets/images/profile3.png';
+import profileImage from '../../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface ArticlePageProps {

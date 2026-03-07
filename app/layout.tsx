@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import './globals.css';
 import { ServiceProvider } from './services/context/ServiceContext';
 import { LanguageProvider } from './context/LanguageContext'; 
@@ -12,25 +11,6 @@ import LoadingScreen from './components/ui/LoadingScreen';
 
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
-
-const inter = localFont({
-  src: './fonts/Inter-VariableFont_opsz,wght.ttf',
-  weight: '100 900',
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const poppins = localFont({
-  src: [
-    { path: './fonts/Poppins-Regular.ttf', weight: '400' },
-    { path: './fonts/Poppins-Medium.ttf', weight: '500' },
-    { path: './fonts/Poppins-SemiBold.ttf', weight: '600' },
-    { path: './fonts/Poppins-Bold.ttf', weight: '700' },
-    { path: './fonts/Poppins-ExtraBold.ttf', weight: '800' },
-  ],
-  variable: '--font-poppins',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Patawala | Développeur Full-Stack & Consultant Digital',
@@ -54,8 +34,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="scroll-smooth">
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased bg-[#0A0F1C] text-gray-200`}>
-        <LanguageProvider> {/* DÉCOMMENTÉ */}
+      <body className="font-sans antialiased bg-[#0A0F1C] text-gray-200">
+        <LanguageProvider>
           <ServiceProvider>
             <PopupProvider> 
               <Toaster 
@@ -79,7 +59,7 @@ export default function RootLayout({
               <Analytics />
             </PopupProvider>
           </ServiceProvider>
-        </LanguageProvider> {/* DÉCOMMENTÉ */}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { articles as baseArticles } from './data/articles';
-import profileImage from '../assets/images/profile3.png';
+import profileImage from '../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 export default function BlogPage() {

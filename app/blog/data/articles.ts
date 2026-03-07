@@ -9,15 +9,15 @@ import {
 import { Article, Author } from '../types';
 
 // Import des images depuis assets
-import techChoice from '../../assets/images/tech-choice.jpg';
+import techChoice from '../../assets/images/tech-choice.webp';
 import ecommerce from '../../assets/images/ecommerce.webp';
-import mobile from '../../assets/images/mobile.jpg';
+import mobile from '../../assets/images/mobile.webp';
 import design from '../../assets/images/design.webp';
-import seo from '../../assets/images/seo.png';
+import seo from '../../assets/images/seo.webp';
 import automation from '../../assets/images/automation.webp';
-import trends from '../../assets/images/trends.jpg';
-import security from '../../assets/images/security.jpg';
-import mvp from '../../assets/images/mvp.jpg';
+import trends from '../../assets/images/trends.webp';
+import security from "../../assets/images/security.webp";
+import mvp from '../../assets/images/mvp.webp';
 
 // Auteur principal - Identité professionnelle renforcée
 const author: Author = {
