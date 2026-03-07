@@ -288,6 +288,10 @@
         "answer": "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
       },
       {
+        "question": "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
+        "answer": "Je travaille jusqu'à votre entière satisfaction. Si un élément ne vous convient pas, j'apporte les améliorations nécessaires jusqu'à ce que vous soyez pleinement satisfait. C'est pourquoi mes clients sont très positifs sur mon travail."
+      },
+      {
         "question": "Proposez-vous un suivi après la livraison ?",
         "answer": "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
       },
@@ -298,6 +302,10 @@
       {
         "question": "Les prix affichés sont-ils définitifs ?",
         "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
+      },
+      {
+        "question": "Comment fonctionne la consultation initiale ?",
+        "answer": "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs, de vos idées et de voir ensemble si nous sommes sur la même longueur d'onde avant de commencer le véritable travail."
       }
     ]
   },

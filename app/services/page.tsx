@@ -3,12 +3,17 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
-import ServiceFilter from './ServiceFilter';
 import ServiceCard from './ServiceCard';
 import { servicesByCategory, allServices, filterCategories, CategoryType } from './data/servicesData';
 import Link from 'next/link';
 import { useServiceContext } from './context/ServiceContext';
 import { useLanguage } from '../context/LanguageContext';
+
+// IMPORT DES DEUX FICHIERS JSON
+import frServicesData from '@/app/assets/locales/fr/services-data.json';
+import enServicesData from '@/app/assets/locales/en/services-data.json';
+import frServices from '@/app/assets/locales/fr/services.json';
+import enServices from '@/app/assets/locales/en/services.json';
 
 // Types pour les traductions
 interface FaqItem {
@@ -35,7 +40,7 @@ const ServicesPage = memo(function ServicesPage() {
     setIsNavigatingFromNav
   } = useServiceContext();
 
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const isInitialLoad = useRef(true);
 
   // Refs pour le défilement des filtres uniquement
@@ -53,117 +58,91 @@ const ServicesPage = memo(function ServicesPage() {
     }))
   ).current;
 
-  // Fonction pour parser les traductions en toute sécurité
-  const safeParse = <T,>(data: any, defaultValue: T): T => {
-    if (!data) return defaultValue;
-    if (typeof data === 'object' && data !== null) {
-      return data as T;
-    }
-    if (typeof data === 'string') {
-      try {
-        return JSON.parse(data) as T;
-      } catch (e) {
-        console.error('Erreur de parsing JSON:', e);
-        return defaultValue;
-      }
-    }
-    return defaultValue;
-  };
+  // CHARGEMENT DIRECT DES DONNÉES SELON LA LANGUE
+  const servicesData = language === 'fr' ? frServicesData : enServicesData;
+  const services = language === 'fr' ? frServices : enServices;
 
-  // Récupérer les traductions de base
+  // ========== TRADUCTIONS DE BASE (depuis services-data.json) ==========
   const translations = {
-    badge: t('badge', 'services-data') as string,
-    title: t('title', 'services-data') as string,
-    titleHighlight: t('titleHighlight', 'services-data') as string,
-    subtitle: t('subtitle', 'services-data') as string,
-    disclaimer: t('disclaimer', 'services-data') as string
+    badge: servicesData?.badge || 'Solutions sur mesure',
+    title: servicesData?.title || 'Solutions digitales',
+    titleHighlight: servicesData?.titleHighlight || 'adaptées à vos besoins',
+    subtitle: servicesData?.subtitle || 'Sites web, applications, design ou conseil — Je vous accompagne de l\'idée à la réalisation.',
+    disclaimer: servicesData?.disclaimer || '* Les prix sont donnés à titre indicatif. Chaque projet reçoit un devis personnalisé.'
   };
 
-  // Parser les filtres séparément
-  const rawFilters = t('filters', 'services-data');
-  const filters = safeParse<Record<string, any>>(rawFilters, {
-    all: 'Tous les services',
-    web: 'Développement Web',
-    mobile: 'Applications Mobile',
-    design: 'Design & Identité',
-    consulting: 'Conseil & Audit',
+  // ========== FILTRES (depuis services-data.json) ==========
+  const filters = servicesData?.filters || {
+    all: 'Tous',
+    web: 'Sites web',
+    mobile: 'Applications',
+    design: 'Design & UX',
+    consulting: 'Conseil & Stratégie',
+    ecommerce: 'E-commerce',
+    maintenance: 'Maintenance',
     description: {
-      all: "L'ensemble de mes services pour votre présence digitale",
+      all: "Découvrez tous mes services pour votre présence digitale",
       web: "Des sites vitrines aux applications web complexes, performants et évolutifs",
       mobile: "Applications natives et hybrides pour iOS et Android",
       design: "Interfaces intuitives et expériences utilisateur mémorables",
-      consulting: "Conseil technique et stratégique pour vos projets digitaux"
-    }
-  });
-
-  // Parser FAQ et CTA
-  const rawFaq = t('faq', 'services-data');
-  const rawCta = t('cta', 'services-data');
-
-  // Valeurs par défaut
-  const defaultFaq: Record<string, FaqTranslations> = {
-    fr: {
-      title: 'Questions fréquentes',
-      subtitle: 'Pour vous éclairer sur ma façon de travailler',
-      items: [
-        {
-          question: 'Quelle est la durée moyenne d\'un projet ?',
-          answer: 'Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure.'
-        },
-        {
-          question: 'Proposez-vous un suivi après la livraison ?',
-          answer: 'Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles.'
-        },
-        {
-          question: 'Puis-je modifier le projet en cours de route ?',
-          answer: 'Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins.'
-        },
-        {
-          question: 'Les prix affichés sont-ils définitifs ?',
-          answer: 'Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins.'
-        }
-      ]
-    },
-    en: {
-      title: 'Frequently asked questions',
-      subtitle: 'To clarify how I work',
-      items: [
-        {
-          question: 'What is the average duration of a project?',
-          answer: 'It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application.'
-        },
-        {
-          question: 'Do you offer post-delivery support?',
-          answer: 'Yes, one month of support is included after launch. Maintenance packages are also available.'
-        },
-        {
-          question: 'Can I modify the project along the way?',
-          answer: 'Absolutely! We work in stages with regular validations to adjust as closely as possible to your needs.'
-        },
-        {
-          question: 'Are the displayed prices final?',
-          answer: 'They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs.'
-        }
-      ]
+      consulting: "Conseil technique et stratégique pour vos projets digitaux",
+      ecommerce: "Boutiques en ligne optimisées pour la conversion",
+      maintenance: "Suivi, mises à jour et support technique continu"
     }
   };
 
-  const defaultCta: Record<string, CtaTranslations> = {
-    fr: {
-      title: 'Vous ne trouvez pas ce que vous cherchez ?',
-      button: 'Discuter de mon projet'
-    },
-    en: {
-      title: 'Can\'t find what you\'re looking for?',
-      button: 'Discuss my project'
-    }
+  // ========== FAQ (depuis services.json qui a les 8 questions) ==========
+  const faq: FaqTranslations = services?.faq || {
+    title: 'Questions fréquentes',
+    subtitle: 'Pour vous éclairer sur ma façon de travailler',
+    items: [
+      {
+        question: "Comment fonctionne la consultation initiale ?",
+        answer: "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs, de vos idées et de voir ensemble si nous sommes sur la même longueur d'onde avant de commencer le véritable travail."
+      },
+      {
+        question: "Quelle est la durée moyenne d'un projet ?",
+        answer: "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
+      },
+      {
+        question: "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
+        answer: "Je travaille jusqu'à votre entière satisfaction. Si un élément ne vous convient pas, j'apporte les améliorations nécessaires jusqu'à ce que vous soyez pleinement satisfait. C'est pourquoi mes clients sont très positifs sur mon travail."
+      },
+      {
+        question: "Quels types de projets développez-vous ?",
+        answer: "Je développe une large gamme de solutions digitales : des sites vitrines aux applications web complexes, en passant par les applications mobiles (iOS/Android), les boutiques e-commerce, et je propose aussi des services de conseil et de design UX/UI."
+      },
+      {
+        question: "Proposez-vous un suivi après la livraison ?",
+        answer: "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
+      },
+      {
+        question: "Puis-je modifier le projet en cours de route ?",
+        answer: "Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins."
+      },
+      {
+        question: "Comment garantissez-vous la qualité de votre travail ?",
+        answer: "Je suis des processus de développement rigoureux avec des tests réguliers pour m'assurer que tout fonctionne parfaitement. Mon engagement est de livrer un produit fiable, performant et sécurisé."
+      },
+      {
+        question: "Les prix affichés sont-ils définitifs ?",
+        answer: "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
+      }
+    ]
   };
 
-  const parsedFaq = safeParse<FaqTranslations>(rawFaq, defaultFaq[language]);
-  const faq = parsedFaq.title ? parsedFaq : defaultFaq[language];
+  // ========== CTA (depuis services.json) ==========
+  const cta: CtaTranslations = services?.cta || {
+    title: 'Vous ne trouvez pas ce que vous cherchez ?',
+    button: 'Discuter de mon projet'
+  };
 
-  const parsedCta = safeParse<CtaTranslations>(rawCta, defaultCta[language]);
-  const cta = parsedCta.title ? parsedCta : defaultCta[language];
+  // ========== LOGS DE DÉBOGAGE ==========
+  console.log('🌍 Langue:', language);
+  console.log('📦 services-data.json (textes page):', servicesData);
+  console.log('📦 services.json (cartes + FAQ):', services);
+  console.log('📦 FAQ items:', faq.items);
+  console.log('📦 Nombre de questions:', faq.items?.length);
 
   // Gestion du défilement des filtres
   const checkFilterScroll = useCallback(() => {
@@ -489,7 +468,7 @@ const ServicesPage = memo(function ServicesPage() {
           </motion.div>
         </AnimatePresence>
 
-        {/* FAQ */}
+        {/* SECTION FAQ - AVEC LES 8 QUESTIONS */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

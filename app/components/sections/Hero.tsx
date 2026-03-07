@@ -139,30 +139,30 @@ const HeroSection = memo(function HeroSection() {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-4 sm:gap-5 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
             {/* Texte à gauche */}
             <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
-              <h1 id="hero-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-5 leading-tight px-1 sm:px-2 text-white">
+              <h1 id="hero-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-5 leading-tight px-1 sm:px-2 text-white">
                 {t('title', 'hero')}
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 sm:mt-2 font-black">
                   <span
                     ref={typedRef}
-                    className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl"
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl"
                     aria-label={language === 'fr' ? "Texte animé" : "Animated text"}
                   />
                 </span>
               </h1>
 
               <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
-                <p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl text-white font-bold leading-relaxed">
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold leading-relaxed">
                   {t('subtitle', 'hero')}
                 </p>
               </div>
 
-              {/* Avatars + note */}
-              <div className="flex flex-row items-center justify-center lg:justify-start gap-1.5 sm:gap-4 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
-                <div className="flex items-center -space-x-4 sm:-space-x-5 md:-space-x-6">
+              {/* Avatars + note - CONSERVÉ COMPACT */}
+              <div className="flex flex-row items-center justify-center lg:justify-start gap-1.5 sm:gap-2 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
+                <div className="flex items-center -space-x-3 sm:-space-x-4 md:-space-x-5">
                   {avatarImages.map((avatar, index) => (
                     <div
                       key={index}
-                      className="relative w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
+                      className="relative w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg transform-gpu"
                       style={{ zIndex: 10 - index }}
                     >
                       <Image
@@ -170,7 +170,7 @@ const HeroSection = memo(function HeroSection() {
                         alt={avatar.alt}
                         fill
                         className="object-cover"
-                        sizes="(max-width: 640px) 32px, (max-width: 768px) 36px, 40px"
+                        sizes="(max-width: 640px) 28px, (max-width: 768px) 32px, 36px"
                         loading="lazy"
                         placeholder="blur"
                       />
@@ -183,15 +183,15 @@ const HeroSection = memo(function HeroSection() {
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        size={14}
-                        className="sm:w-4 sm:h-4 md:w-5 md:h-5 fill-orange-400 text-orange-400"
+                        size={12}
+                        className="sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 fill-orange-400 text-orange-400"
                         aria-hidden="true"
                       />
                     ))}
                   </div>
                   <div className="flex items-center gap-1">
-                    <span className="text-sm sm:text-base md:text-lg font-bold text-white">30+</span>
-                    <span className="text-xs sm:text-sm md:text-base text-gray-400 whitespace-nowrap">
+                    <span className="text-xs sm:text-sm md:text-base font-bold text-white">30+</span>
+                    <span className="text-[10px] sm:text-xs md:text-sm text-gray-400 whitespace-nowrap">
                       {t('socialProof.entrepreneurs', 'hero')}
                     </span>
                   </div>

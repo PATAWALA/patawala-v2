@@ -135,14 +135,14 @@ const AboutSection = memo(function AboutSection() {
 
             {/* Titre et sous-titre */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white">
                 {t('title', 'about')}
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1 sm:mt-2">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-1 sm:mt-2">
                   {t('subtitle', 'about')}
                 </span>
               </h2>
 
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4">
+              <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
                 {t('description', 'about')}
               </p>
 
@@ -176,11 +176,11 @@ const AboutSection = memo(function AboutSection() {
                           <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
                         </div>
 
-                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+                        <h3 id={`vision-title-${index}`} className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
                           {card.title}
                         </h3>
 
-                        <p className="text-sm sm:text-base text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
+                        <p className="text-base sm:text-lg text-gray-400 group-hover:text-gray-300 transition-colors leading-relaxed">
                           {card.description}
                         </p>
                       </div>
@@ -198,7 +198,7 @@ const AboutSection = memo(function AboutSection() {
             <div className="flex justify-center mb-6 md:mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
                 <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
-                <span className="text-sm sm:text-base font-semibold tracking-wide">{t('whoami', 'about')}</span>
+                <span className="text-base sm:text-lg font-semibold tracking-wide">{t('whoami', 'about')}</span>
               </div>
             </div>
 
@@ -278,19 +278,19 @@ const AboutSection = memo(function AboutSection() {
 
               {/* BIO à droite */}
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 text-white">
+                <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-white">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {t('profile.name', 'about')}
                   </span>
                 </h3>
 
-                <p className="text-base sm:text-lg md:text-xl text-blue-400/90 font-medium mb-4">
+                <p className="text-lg sm:text-xl md:text-2xl text-blue-400/90 font-medium mb-4">
                   {t('profile.role', 'about')}
                 </p>
 
                 {/* Mission */}
                 <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
                     {t('profile.missionText', 'about')}
                   </p>
                 </div>
@@ -299,7 +299,7 @@ const AboutSection = memo(function AboutSection() {
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px]"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-base sm:text-lg md:text-xl flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px]"
                     aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
@@ -308,7 +308,7 @@ const AboutSection = memo(function AboutSection() {
 
                   <button
                     onClick={handleVoirOffres}
-                    className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px]"
+                    className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-base sm:text-lg md:text-xl border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px]"
                     aria-label={t('buttons.services', 'about')}
                   >
                     {t('buttons.services', 'about')}

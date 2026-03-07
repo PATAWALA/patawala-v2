@@ -1,8 +1,8 @@
 {
   "badge": "Solutions sur mesure",
-  "title": "Des solutions digitales",
+  "title": "Solutions digitales",
   "titleHighlight": "adaptées à vos besoins",
-  "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de la réflexion à la réalisation.",
+  "subtitle": "Sites web, applications, design ou conseil — Je vous accompagne de l'idée à la réalisation.",
 
   "filters": {
     "all": "Tous",
@@ -13,13 +13,13 @@
     "ecommerce": "E-commerce",
     "maintenance": "Maintenance",
     "description": {
-      "all": "Découvrez l'ensemble de mes services pour votre présence digitale",
-      "web": "Des sites vitrines aux applications web complexes, performants et évolutifs",
+      "all": "Découvrez tous mes services pour votre présence digitale",
+      "web": "Sites vitrine aux applications web complexes, performants et évolutifs",
       "mobile": "Applications natives et hybrides pour iOS et Android",
       "design": "Interfaces intuitives et expériences utilisateur mémorables",
       "consulting": "Conseil technique et stratégique pour vos projets digitaux",
       "ecommerce": "Boutiques en ligne optimisées pour la conversion",
-      "maintenance": "Suivi, évolutions et support technique continu"
+      "maintenance": "Suivi, mises à jour et support technique continu"
     }
   },
 
@@ -28,7 +28,7 @@
     "from": "À partir de",
     "hourly": "/h",
     "features": {
-      "more": "+{{count}} autres fonctionnalités"
+      "more": "+{{count}} fonctionnalités supplémentaires"
     },
     "cta": "En savoir plus"
   },
@@ -42,6 +42,10 @@
         "answer": "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
       },
       {
+        "question": "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
+        "answer": "Je travaille jusqu'à votre entière satisfaction. Si un élément ne vous convient pas, j'apporte les améliorations nécessaires jusqu'à ce que vous soyez pleinement satisfait. C'est pourquoi mes clients sont très positifs sur mon travail."
+      },
+      {
         "question": "Proposez-vous un suivi après la livraison ?",
         "answer": "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
       },
@@ -52,6 +56,10 @@
       {
         "question": "Les prix affichés sont-ils définitifs ?",
         "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
+      },
+      {
+        "question": "Comment fonctionne la consultation initiale ?",
+        "answer": "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs, de vos idées et de voir ensemble si nous sommes sur la même longueur d'onde avant de commencer le véritable travail."
       }
     ]
   },
@@ -61,5 +69,5 @@
     "button": "Discuter de mon projet"
   },
 
-  "disclaimer": "* Les prix sont donnés à titre indicatif. Chaque projet fait l'objet d'un devis personnalisé."
+  "disclaimer": "* Les prix sont donnés à titre indicatif. Chaque projet reçoit un devis personnalisé."
 }

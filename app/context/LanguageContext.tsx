@@ -129,16 +129,25 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setCurrentTranslations(translations[language]);
   }, [language]);
 
-  const t = (key: string, section: string = 'common'): any => {
+  // Dans LanguageContext
+const t = (key: string, section: string = 'common'): any => {
   console.log(`🔍 t("${key}", "${section}")`);
+  
+  // Si key est vide, retourner toute la section
+  if (!key) {
+    return currentTranslations[section as keyof TranslationsType];
+  }
+  
   const keys = key.split('.');
   let value: any = currentTranslations[section as keyof TranslationsType];
   
-  // Log pour voir si la section existe
-  if (section === 'articlesData') {
-    console.log(`📦 articlesData présent :`, value ? 'oui' : 'non');
+  // Si la section n'existe pas
+  if (!value) {
+    console.warn(`❌ Section introuvable: ${section}`);
+    return undefined;
   }
   
+  // Parcourir les clés
   for (const k of keys) {
     if (value && value[k] !== undefined) {
       value = value[k];
@@ -148,10 +157,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     }
   }
   
-  console.log(`✅ trouvé:`, value);
   return value;
 };
-  
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

@@ -200,7 +200,7 @@ const Footer = memo(function Footer() {
                     rel="noopener noreferrer"
                     className={`p-3 bg-gray-800/50 rounded-xl hover:scale-110 transition-all duration-300 border border-gray-700/50 ${social.color} group focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]`}
                     aria-label={`${social.label} (s'ouvre dans un nouvel onglet)`}
-                  >
+                  >                     
                     <Icon size={20} className="text-gray-300 group-hover:text-white" aria-hidden="true" />
                   </a>
                 );

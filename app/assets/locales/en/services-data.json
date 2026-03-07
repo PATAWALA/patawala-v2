@@ -288,6 +288,10 @@
         "answer": "It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application."
       },
       {
+        "question": "What if I'm not satisfied with the result?",
+        "answer": "I work until your complete satisfaction. If something isn't right, I make the necessary improvements until you are fully happy. This is why my clients are very positive about my work."
+      },
+      {
         "question": "Do you offer post-delivery support?",
         "answer": "Yes, one month of support is included after launch. Maintenance packages are also available."
       },
@@ -298,9 +302,14 @@
       {
         "question": "Are the displayed prices final?",
         "answer": "They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs."
+      },
+      {
+        "question": "How does the initial consultation work?",
+        "answer": "It is free and lasts about 30 minutes. It's an opportunity to discuss your goals, your ideas, and see if we are on the same page before starting the actual work."
       }
     ]
   },
+
 
   "cta": {
     "title": "Can't find what you're looking for?",
