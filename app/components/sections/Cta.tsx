@@ -1,18 +1,17 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Sparkles, CheckCircle, MessageCircle, Phone,
   Mail, MapPin, Heart, Smartphone, Send, Clock,
-  Instagram, Linkedin, Twitter, Github, Facebook, Youtube
+  Instagram, Linkedin, Twitter, Github, Facebook
 } from 'lucide-react';
 import BookingModal from '../ui/BookingModal';
 import { useTranslation } from '../../hooks/useTranslation';
 
 // Interface pour typer les informations de contact
 interface ContactInfo {
-  whatsapp: [string, string];   // [numéro, affichage]
+  whatsapp: [string, string];
   calls: [string, string];
   emergency: [string, string];
   email: string;
@@ -22,23 +21,18 @@ interface ContactInfo {
 const CTASection = memo(function CTASection() {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Points lumineux statiques
+  // Points lumineux statiques - RÉDUITS À 3
   const lightPoints = useRef(
-    [...Array(8)].map(() => ({
+    [...Array(3)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
   ).current;
 
-  // Récupération des informations de contact avec valeurs par défaut (évite les undefined)
+  // Récupération des informations de contact
   const contactInfo: ContactInfo = {
     whatsapp: [
       '22962278090',
@@ -90,65 +84,35 @@ const CTASection = memo(function CTASection() {
     <>
       <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden" aria-labelledby="contact-title">
 
-        <AnimatePresence>
-          {showCopyAlert && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
-              role="status"
-              aria-live="polite"
-            >
-              <CheckCircle size={18} aria-hidden="true" />
-              <span className="text-sm font-bold tracking-tight">{copiedText} ✓</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Alert de copie - SANS FRAMER MOTION */}
+        {showCopyAlert && (
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
+            <CheckCircle size={18} aria-hidden="true" />
+            <span className="text-sm font-bold tracking-tight">{copiedText} ✓</span>
+          </div>
+        )}
 
-        {/* Fond amélioré - densité augmentée */}
+        {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes répétitives - opacité 0.08 */}
+          {/* Lignes répétitives - une seule couche */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-20"
             style={{
-              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
-            }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
             }}
             aria-hidden="true"
           />
 
-          {/* Cercles flous animés */}
-          <motion.div
-            animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
-          <motion.div
-            animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
-          <motion.div
-            animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
-            transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-1/3 left-1/4 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
+          {/* Cercles flous STATIQUES */}
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+          <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
           {/* Points lumineux */}
           {lightPoints.map((point, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
+              className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
               style={{ left: point.left, top: point.top }}
               aria-hidden="true"
             />
@@ -158,20 +122,12 @@ const CTASection = memo(function CTASection() {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center mb-12">
             <div className="w-full flex justify-center mb-6 md:mb-8">
-              {isMounted ? (
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-                  <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
-                  <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
-                    {t('badge', 'contact')}
-                  </span>
-                </div>
-              ) : (
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20">
-                  <span className="text-sm font-bold text-blue-400 tracking-tight">
-                    {t('badge', 'contact')}
-                  </span>
-                </div>
-              )}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
+                <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
+                <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
+                  {t('badge', 'contact')}
+                </span>
+              </div>
             </div>
 
             <h2 id="contact-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 px-4 text-white leading-tight tracking-tight">
@@ -343,7 +299,7 @@ const CTASection = memo(function CTASection() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 hover:border-opacity-50 group`}
+                  className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 group`}
                   aria-label={`${social.name} (s'ouvre dans un nouvel onglet)`}
                 >
                   <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
@@ -362,7 +318,7 @@ const CTASection = memo(function CTASection() {
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm sm:text-gray-300 whitespace-nowrap font-medium">
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
                     {t('guarantees.firstExchange', 'contact')}
                   </span>
                 </div>
@@ -370,7 +326,7 @@ const CTASection = memo(function CTASection() {
 
                 <div className="flex items-center gap-1.5">
                   <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm sm:text-gray-300 whitespace-nowrap font-medium">
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
                     {t('guarantees.free30min', 'contact')}
                   </span>
                 </div>
@@ -378,7 +334,7 @@ const CTASection = memo(function CTASection() {
 
                 <div className="flex items-center gap-1.5">
                   <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm sm:text-gray-300 whitespace-nowrap font-medium">
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
                     {t('guarantees.noCommitment', 'contact')}
                   </span>
                 </div>
@@ -388,7 +344,7 @@ const CTASection = memo(function CTASection() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 px-4">
               <button
                 onClick={handleDirectWhatsApp}
-                className="group bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-green-500/30 w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
+                className="group bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
                 aria-label="Ouvrir WhatsApp direct"
               >
                 <MessageCircle size={18} className="sm:w-5 sm:h-5" aria-hidden="true" />
@@ -397,15 +353,15 @@ const CTASection = memo(function CTASection() {
 
               <button
                 onClick={handleOpenModal}
-                className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
+                className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
                 aria-label="Planifier un rendez-vous"
               >
-                <Calendar size={18} className="sm:w-5 sm:h-5 group-hover:rotate-6 transition-transform" aria-hidden="true" />
+                <Calendar size={18} className="sm:w-5 sm:h-5" aria-hidden="true" />
                 <span>{t('buttons.schedule', 'contact')}</span>
               </button>
             </div>
 
-            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-lg hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300">
+            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-sm sm:text-base text-gray-200 font-semibold">
@@ -424,5 +380,7 @@ const CTASection = memo(function CTASection() {
     </>
   );
 });
+
+CTASection.displayName = 'CTASection';
 
 export default CTASection;

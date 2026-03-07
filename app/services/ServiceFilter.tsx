@@ -1,7 +1,6 @@
 'use client';
 
 import { memo } from 'react';
-import { motion } from 'framer-motion';
 import { filterCategories, CategoryType } from './data/servicesData';
 
 interface ServiceFilterProps {
@@ -76,21 +75,34 @@ const ServiceFilter = memo(function ServiceFilter({ activeCategory, onCategoryCh
         </div>
       </div>
 
-      {/* Description de la catégorie active */}
-      <motion.p
+      {/* Description de la catégorie active - OPTIMISÉ SANS FRAMER MOTION */}
+      <p
         key={activeCategory}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center text-gray-400 mt-6 max-w-2xl mx-auto"
+        className="text-center text-gray-400 mt-6 max-w-2xl mx-auto animate-fadeIn"
         role="status"
         aria-live="polite"
       >
         {filterCategories.find(c => c.id === activeCategory)?.description}
-      </motion.p>
+      </p>
 
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
         }
       `}</style>
     </div>

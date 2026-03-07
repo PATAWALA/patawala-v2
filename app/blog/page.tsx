@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, ArrowRight, 
   Sparkles, BookOpen, Search,
@@ -91,84 +90,48 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* BEAU FOND - inchangé */}
+      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div className="absolute inset-0" style={{
+        {/* Lignes subtiles - une seule couche */}
+        <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
             rgba(59,130,246,0.05) 1px, 
             transparent 1px, 
             transparent 60px)`
         }}></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, 
-            rgba(6,182,212,0.05) 0px, 
-            rgba(6,182,212,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
         
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity }}
-          className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"
-        />
+        {/* Cercles flous STATIQUES */}
+        <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
         {/* En-tête */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm"
-          >
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm">
             <BookOpen size={14} className="sm:w-4 sm:h-4 text-blue-400" />
             <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
               {t('badge', 'blog')}
             </span>
-          </motion.div>
+          </div>
           
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-3 sm:mb-4 md:mb-6 px-2 text-white tracking-tight"
-          >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-3 sm:mb-4 md:mb-6 px-2 text-white tracking-tight">
             {t('title', 'blog')}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-black tracking-tight">
               {t('titleHighlight', 'blog')}
             </span>
-          </motion.h1>
+          </h1>
           
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium"
-          >
+          <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium">
             {t('subtitle', 'blog')}
-          </motion.p>
+          </p>
         </div>
 
         {/* Barre de recherche */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="max-w-2xl sm:max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2 sm:px-0"
-        >
+        <div className="max-w-2xl sm:max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2 sm:px-0">
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
             <div className="relative flex items-center">
@@ -191,15 +154,10 @@ export default function BlogPage() {
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Filtres catégories */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mb-10 sm:mb-12 md:mb-16"
-        >
+        <div className="mb-10 sm:mb-12 md:mb-16">
           {/* Version mobile avec bouton filtre */}
           <div className="lg:hidden mb-3 px-2">
             <button
@@ -216,11 +174,7 @@ export default function BlogPage() {
             </button>
             
             {isFilterOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-2 p-3 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto"
-              >
+              <div className="mt-2 p-3 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto animate-fadeIn">
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
@@ -239,7 +193,7 @@ export default function BlogPage() {
                     </button>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             )}
           </div>
 
@@ -261,20 +215,16 @@ export default function BlogPage() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Articles à la une */}
         {effectiveCategory === allCategory && !searchQuery && featuredArticles.length > 0 && (
           <div className="mb-12 sm:mb-16 md:mb-20">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight"
-            >
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight">
               <span className="w-1 h-5 sm:h-6 md:h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
               {t('featured.title', 'blog')}
               <Sparkles size={16} className="sm:w-5 sm:h-5 text-blue-400" />
-            </motion.h2>
+            </h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               {featuredArticles.slice(0, 2).map((article, index) => {
@@ -282,12 +232,8 @@ export default function BlogPage() {
                 const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
                 return (
                   <Link href={`/blog/${article.slug}`} key={article.id}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -4 }}
-                      className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer"
+                    <div
+                      className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
                     >
                       {/* Image de couverture */}
                       <div className="relative h-40 xs:h-48 sm:h-56 md:h-64 overflow-hidden">
@@ -297,6 +243,8 @@ export default function BlogPage() {
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          loading={index === 0 ? "eager" : "lazy"}
+                          quality={75}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                         
@@ -352,6 +300,7 @@ export default function BlogPage() {
                                 alt={article.author.name}
                                 fill
                                 className="object-cover"
+                                loading="lazy"
                               />
                             </div>
                             <span className="text-xs sm:text-sm font-bold text-gray-200 tracking-tight">{article.author.name}</span>
@@ -362,7 +311,7 @@ export default function BlogPage() {
                           </div>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   </Link>
                 );
               })}
@@ -378,12 +327,8 @@ export default function BlogPage() {
               const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
               return (
                 <Link href={`/blog/${article.slug}`} key={article.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ y: -4 }}
-                    className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer"
+                  <div
+                    className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
                   >
                     {/* Image de couverture */}
                     <div className="relative h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 overflow-hidden">
@@ -393,6 +338,8 @@ export default function BlogPage() {
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                         sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                        loading="lazy"
+                        quality={70}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                       
@@ -443,6 +390,7 @@ export default function BlogPage() {
                               alt={article.author.name}
                               fill
                               className="object-cover"
+                              loading="lazy"
                             />
                           </div>
                           <span className="text-[8px] sm:text-xs font-bold text-gray-300 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px] tracking-tight">
@@ -455,7 +403,7 @@ export default function BlogPage() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </Link>
               );
             })}
@@ -469,11 +417,7 @@ export default function BlogPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex justify-center items-center gap-1 sm:gap-2 md:gap-3 flex-wrap px-2"
-          >
+          <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-3 flex-wrap px-2">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
@@ -507,16 +451,11 @@ export default function BlogPage() {
             >
               <ChevronRight size={14} className="sm:w-4 sm:h-4" />
             </button>
-          </motion.div>
+          </div>
         )}
 
         {/* Newsletter */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4"
-        >
+        <div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
           <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
           <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
             {/* Éléments décoratifs */}
@@ -547,8 +486,24 @@ export default function BlogPage() {
               <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+      `}</style>
     </main>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Menu, X, ChevronDown, Globe, Smartphone, Palette, TrendingUp } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
@@ -204,7 +203,7 @@ export default function Navigation() {
         <div className="lg:container lg:mx-auto lg:px-6">
           <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
-              {/* Logo - STATIQUE, sans animation */}
+              {/* Logo */}
               <a 
                 href="/"
                 onClick={(e) => {
@@ -269,7 +268,7 @@ export default function Navigation() {
 
                             {isServicesHovered && (
                               <div
-                                className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50"
+                                className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50 animate-fadeIn"
                                 onMouseEnter={handleSubmenuMouseEnter}
                                 onMouseLeave={handleServicesMouseLeave}
                               >
@@ -334,99 +333,123 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Mobile Menu */}
-            <AnimatePresence>
-              {isOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden"
-                >
-                  <div className="p-3 space-y-1">
-                    {navItems.map((item, index) => {
-                      const itemLabel = t(`navItems.${item.key}`, 'navigation');
-                      const isActive = isLinkActive(item);
-                      
-                      return (
-                        <div key={item.key}>
-                          {item.submenu ? (
-                            <div className="space-y-1">
-                              <a
-                                ref={index === 0 ? firstMenuItemRef : undefined}
-                                href={item.href}
-                                onClick={(e) => handleNavigation(e, item.href)}
-                                className="flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base text-blue-400 bg-blue-500/10 border border-blue-500/20"
-                              >
-                                <span>{itemLabel}</span>
-                                <ChevronDown className="w-4 h-4 rotate-180 text-blue-400" />
-                              </a>
-                              
-                              <div className="pl-4 space-y-1 border-l-2 border-blue-500/30 ml-4">
-                                {item.submenu.map((subItem) => {
-                                  const Icon = subItem.icon;
-                                  const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
-                                  
-                                  return (
-                                    <a
-                                      key={subItem.key}
-                                      href={subItem.href}
-                                      onClick={(e) => handleNavigation(e, subItem.href)}
-                                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-base text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
-                                    >
-                                      <Icon className="w-4 h-4" />
-                                      <span className="font-medium">{subItemLabel}</span>
-                                    </a>
-                                  );
-                                })}
-                              </div>
-                            </div>
-                          ) : (
+            {/* Mobile Menu - AVEC CSS AU LIEU DE FRAMER MOTION */}
+            {isOpen && (
+              <div className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden animate-slideDown">
+                <div className="p-3 space-y-1">
+                  {navItems.map((item, index) => {
+                    const itemLabel = t(`navItems.${item.key}`, 'navigation');
+                    const isActive = isLinkActive(item);
+                    
+                    return (
+                      <div key={item.key}>
+                        {item.submenu ? (
+                          <div className="space-y-1">
                             <a
-                              ref={index === navItems.length - 1 ? lastMenuItemRef : undefined}
+                              ref={index === 0 ? firstMenuItemRef : undefined}
                               href={item.href}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                if (item.href.includes('#') && pathname === '/') {
-                                  const targetId = item.href.replace('/#', '');
-                                  const element = document.getElementById(targetId);
-                                  if (element) {
-                                    element.scrollIntoView({ behavior: 'smooth' });
-                                    window.history.pushState(null, '', item.href);
-                                    setActiveSection(targetId);
-                                  }
-                                } else {
-                                  window.location.href = item.href;
-                                }
-                                setIsOpen(false);
-                              }}
-                              className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base transition-colors ${
-                                isActive
-                                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                                  : item.key === 'contact'
-                                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg border border-blue-400/30' // Fond bleu/cyan sur mobile
-                                    : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
-                              }`}
+                              onClick={(e) => handleNavigation(e, item.href)}
+                              className="flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base text-blue-400 bg-blue-500/10 border border-blue-500/20"
                             >
-                              <span className={item.key === 'contact' ? 'mx-auto font-semibold' : ''}>
-                                {itemLabel}
-                              </span>
+                              <span>{itemLabel}</span>
+                              <ChevronDown className="w-4 h-4 rotate-180 text-blue-400" />
                             </a>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                            
+                            <div className="pl-4 space-y-1 border-l-2 border-blue-500/30 ml-4">
+                              {item.submenu.map((subItem) => {
+                                const Icon = subItem.icon;
+                                const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
+                                
+                                return (
+                                  <a
+                                    key={subItem.key}
+                                    href={subItem.href}
+                                    onClick={(e) => handleNavigation(e, subItem.href)}
+                                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
+                                  >
+                                    <Icon className="w-4 h-4" />
+                                    <span className="font-medium">{subItemLabel}</span>
+                                  </a>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ) : (
+                          <a
+                            ref={index === navItems.length - 1 ? lastMenuItemRef : undefined}
+                            href={item.href}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (item.href.includes('#') && pathname === '/') {
+                                const targetId = item.href.replace('/#', '');
+                                const element = document.getElementById(targetId);
+                                if (element) {
+                                  element.scrollIntoView({ behavior: 'smooth' });
+                                  window.history.pushState(null, '', item.href);
+                                  setActiveSection(targetId);
+                                }
+                              } else {
+                                window.location.href = item.href;
+                              }
+                              setIsOpen(false);
+                            }}
+                            className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base transition-colors ${
+                              isActive
+                                ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                                : item.key === 'contact'
+                                  ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg border border-blue-400/30'
+                                  : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                            }`}
+                          >
+                            <span className={item.key === 'contact' ? 'mx-auto font-semibold' : ''}>
+                              {itemLabel}
+                            </span>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </nav>
       
       {/* Main content anchor */}
       <div id="main-content" tabIndex={-1} className="outline-none" />
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease-out;
+        }
+        
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-slideDown {
+          animation: slideDown 0.2s ease-out;
+        }
+      `}</style>
     </>
   );
 }

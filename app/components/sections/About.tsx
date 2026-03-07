@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import profileImage from '../../assets/images/about1.png';
@@ -43,9 +42,9 @@ const AboutSection = memo(function AboutSection() {
     }
   }, [t]);
 
-  // Points lumineux statiques (pour les badges)
+  // Points lumineux statiques - RÉDUITS à 6 pour les performances
   const lightPoints = useRef(
-    [...Array(10)].map(() => ({
+    [...Array(6)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -71,6 +70,9 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(false);
   }, []);
 
+  // Icônes pour les cartes (statique)
+  const cardIcons = [Lightbulb, Handshake, Sparkles, MessagesSquare];
+
   return (
     <>
       <section
@@ -78,9 +80,9 @@ const AboutSection = memo(function AboutSection() {
         className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
         aria-label={t('badge', 'about')}
       >
-        {/* FOND AMÉLIORÉ - densité augmentée */}
+        {/* FOND OPTIMISÉ - Pas d'animations lourdes */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles - opacité 0.08 */}
+          {/* Lignes subtiles - CSS pur */}
           <div
             className="absolute inset-0"
             style={{
@@ -96,41 +98,20 @@ const AboutSection = memo(function AboutSection() {
             aria-hidden="true"
           />
 
-          {/* Cercles flous animés - opacité 30% */}
-          <motion.div
-            animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
-          <motion.div
-            animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
-          <motion.div
-            animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
-            transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
+          {/* Cercles flous STATIQUES (pas d'animations) */}
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
+          <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl" aria-hidden="true" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Badge centré principal */}
             <div className="w-full flex justify-center mb-6 sm:mb-8">
-              {isMounted ? (
-                <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-sm border border-blue-500/20 backdrop-blur-sm">
-                  <Sparkles size={14} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">{t('badge', 'about')}</span>
-                </div>
-              ) : (
-                <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full border border-blue-500/20">
-                  <span className="text-sm font-semibold tracking-tight">{t('badge', 'about')}</span>
-                </div>
-              )}
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
+                <Sparkles size={14} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
+                <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">{t('badge', 'about')}</span>
+              </div>
             </div>
 
             {/* Titre et sous-titre */}
@@ -149,38 +130,32 @@ const AboutSection = memo(function AboutSection() {
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION */}
+            {/* CARTES MA VISION - Optimisées (sans animations inutiles) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
               {Array.isArray(visionCards) && visionCards.length > 0 ? (
                 visionCards.map((card: VisionCard, index: number) => {
-                  const Icon =
-                    index === 0 ? Lightbulb :
-                    index === 1 ? Handshake :
-                    index === 2 ? Sparkles :
-                    MessagesSquare;
+                  const Icon = cardIcons[index] || MessagesSquare;
 
                   return (
                     <div
                       key={index}
-                      className="group bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/20 hover:border-blue-500/30 relative will-change-transform"
+                      className="bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
                       role="article"
                       aria-labelledby={`vision-title-${index}`}
                     >
-                      <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
                       <div className="relative z-10">
                         <div className="flex items-center justify-between mb-4">
-                          <span className="text-3xl sm:text-4xl font-black text-blue-400/80 group-hover:text-blue-400 transition-colors tracking-tighter">
+                          <span className="text-3xl sm:text-4xl font-black text-blue-400/80 tracking-tighter">
                             {`0${index + 1}`}
                           </span>
-                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
+                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70" aria-hidden="true" />
                         </div>
 
-                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white group-hover:text-blue-400 transition-colors tracking-tight">
+                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white tracking-tight">
                           {card.title}
                         </h3>
 
-                        <p className="text-sm sm:text-base text-gray-300 group-hover:text-gray-200 transition-colors leading-relaxed font-medium">
+                        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-medium">
                           {card.description}
                         </p>
                       </div>
@@ -196,7 +171,7 @@ const AboutSection = memo(function AboutSection() {
 
             {/* BADGE "Qui suis-je ?" */}
             <div className="flex justify-center mb-6 md:mb-8">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full shadow-md border border-blue-500/30 backdrop-blur-sm">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/30 backdrop-blur-sm">
                 <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
                 <span className="text-sm sm:text-base font-bold tracking-tight">{t('whoami', 'about')}</span>
               </div>
@@ -204,31 +179,16 @@ const AboutSection = memo(function AboutSection() {
 
             {/* Section image et bio */}
             <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              {/* Image à gauche */}
+              {/* Image à gauche - OPTIMISÉE (pas d'animations) */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
-                  {/* Cercles animés */}
-                  <motion.div
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute inset-0 bg-blue-500/30 rounded-full blur-2xl -z-10 will-change-transform"
-                    aria-hidden="true"
-                  />
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                    className="absolute -inset-6 border-2 border-cyan-400/20 rounded-full -z-10 will-change-transform"
-                    aria-hidden="true"
-                  />
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl -z-10 will-change-transform"
-                    aria-hidden="true"
-                  />
-                  <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl -z-20 will-change-transform" aria-hidden="true" />
+                  {/* Cercles STATIQUES (pas d'animations) */}
+                  <div className="absolute inset-0 bg-blue-500/30 rounded-full blur-2xl -z-10" aria-hidden="true" />
+                  <div className="absolute -inset-6 border-2 border-cyan-400/20 rounded-full -z-10" aria-hidden="true" />
+                  <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl -z-10" aria-hidden="true" />
+                  <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl -z-20" aria-hidden="true" />
 
-                  {/* Points lumineux */}
+                  {/* Points lumineux - réduits */}
                   {lightPoints.map((point, i) => (
                     <div
                       key={i}
@@ -237,7 +197,6 @@ const AboutSection = memo(function AboutSection() {
                         left: point.left,
                         top: point.top,
                         opacity: 0.4,
-                        transform: 'translateZ(0)'
                       }}
                       aria-hidden="true"
                     />
@@ -260,7 +219,7 @@ const AboutSection = memo(function AboutSection() {
                     </div>
                   </div>
 
-                  {/* Photo */}
+                  {/* Photo - PRIORITÉ MAX */}
                   <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-3 sm:border-4 border-[#1F2937] bg-[#141B2B]">
                     <Image
                       src={profileImage}
@@ -269,7 +228,9 @@ const AboutSection = memo(function AboutSection() {
                       className="object-cover"
                       sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
                       priority
+                      fetchPriority="high"
                       quality={85}
+                      placeholder="blur"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent pointer-events-none" aria-hidden="true" />
                   </div>
@@ -325,5 +286,7 @@ const AboutSection = memo(function AboutSection() {
     </>
   );
 });
+
+AboutSection.displayName = 'AboutSection';
 
 export default AboutSection;

@@ -1,9 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Image from 'next/image';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { projets, Project } from '../../projets/data/projets';
 import ProjectModal from '../../components/ui/ProjectModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -32,118 +31,99 @@ export default function RealisationsSection() {
     return map;
   }, [translatedProjects]);
 
-  const getTranslatedProject = (original: Project) => projectMap.get(original.id) || original;
+  const getTranslatedProject = useCallback((original: Project) => 
+    projectMap.get(original.id) || original, [projectMap]);
 
-  const openModal = (project: Project) => {
+  const openModal = useCallback((project: Project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
     document.body.style.overflow = 'hidden';
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     document.body.style.overflow = 'unset';
     setTimeout(() => setSelectedProject(null), 300);
-  };
+  }, []);
 
   // Gestion du clavier pour les cartes (accessibilité)
-  const handleCardKeyDown = (e: React.KeyboardEvent, project: Project) => {
+  const handleCardKeyDown = useCallback((e: React.KeyboardEvent, project: Project) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       openModal(project);
     }
-  };
+  }, [openModal]);
 
   // Vérification de validité d'image
-  const hasValidImage = (image: any): boolean => {
+  const hasValidImage = useCallback((image: any): boolean => {
     if (!image) return false;
     if (typeof image === 'object') return true;
     if (typeof image === 'string') return !image.includes('/images/projects/');
     return false;
-  };
+  }, []);
+
+  // Points lumineux statiques
+  const lightPoints = useMemo(() => 
+    [...Array(3)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`
+    })), []);
 
   return (
     <>
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
-        {/* Fond avec dégradé et formes floues - densité augmentée */}
+        {/* Fond OPTIMISÉ - pas d'animations */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles */}
+          {/* Lignes subtiles - une seule couche */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `repeating-linear-gradient(90deg, 
-                rgba(59,130,246,0.08) 0px, 
-                rgba(59,130,246,0.08) 1px, 
-                transparent 1px, 
-                transparent 60px)`
-            }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `repeating-linear-gradient(0deg, 
-                rgba(6,182,212,0.08) 0px, 
-                rgba(6,182,212,0.08) 1px, 
+                rgba(59,130,246,0.05) 0px, 
+                rgba(59,130,246,0.05) 1px, 
                 transparent 1px, 
                 transparent 60px)`
             }}
             aria-hidden="true"
           />
 
-          {/* Cercles flous animés */}
-          <motion.div
-            animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
-          <motion.div
-            animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
-            aria-hidden="true"
-          />
+          {/* Cercles flous STATIQUES */}
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+
+          {/* Points lumineux */}
+          {lightPoints.map((point, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
+              style={{ left: point.left, top: point.top }}
+              aria-hidden="true"
+            />
+          ))}
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           {/* Badge */}
           <div className="w-full flex justify-center mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm"
-            >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
               <Sparkles size={16} className="text-blue-400" />
               <span className="text-sm font-bold text-blue-400 tracking-tight">
                 {t('badge', 'realisations')}
               </span>
-            </motion.div>
+            </div>
           </div>
 
           {/* Titre */}
           <div className="text-center mb-12">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight"
-            >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight">
               {t('title', 'realisations')}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 font-black tracking-tight">
                 {t('titleHighlight', 'realisations')}
               </span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: 0.1 }}
-              className="text-lg text-gray-200 max-w-2xl mx-auto font-medium"
-            >
+            </h2>
+            <p className="text-lg text-gray-200 max-w-2xl mx-auto font-medium">
               {t('subtitle', 'realisations')}
-            </motion.p>
+            </p>
           </div>
 
           {/* Grille des projets */}
@@ -154,19 +134,15 @@ export default function RealisationsSection() {
               const translated = getTranslatedProject(projet);
 
               return (
-                <motion.div
+                <div
                   key={projet.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
                   onClick={() => openModal(projet)}
                   onKeyDown={(e) => handleCardKeyDown(e, projet)}
                   role="button"
                   tabIndex={0}
                   aria-label={`Voir les détails du projet ${translated.title}`}
-                  className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full"
+                  className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full"
+                  style={{ willChange: 'transform' }}
                 >
                   {/* Image ou placeholder */}
                   <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
@@ -176,14 +152,15 @@ export default function RealisationsSection() {
                         alt={translated.title}
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
+                        quality={75}
                       />
                     ) : (
                       <>
-                        <div className="absolute inset-0 bg-blue-500/10 group-hover:scale-110 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-blue-500/10 group-hover:scale-105 transition-transform duration-300" />
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-16 h-16 bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300 border border-[#1F2937]">
+                          <div className="w-16 h-16 bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl border border-[#1F2937]">
                             <Icon size={32} className="text-blue-400" />
                           </div>
                         </div>
@@ -196,9 +173,9 @@ export default function RealisationsSection() {
                     </div>
                   </div>
 
-                  {/* Contenu - flex column pour pousser le bouton vers le bas */}
+                  {/* Contenu */}
                   <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-xl font-extrabold text-white mb-2 group-hover:text-blue-400 transition-colors tracking-tight">
+                    <h3 className="text-xl font-extrabold text-white mb-2 tracking-tight">
                       {translated.title}
                     </h3>
                     <p className="text-gray-300 text-sm mb-4 line-clamp-2 flex-1 font-medium">
@@ -217,74 +194,58 @@ export default function RealisationsSection() {
                       ))}
                       {translated.tags && translated.tags.length > 3 && (
                         <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-300 text-xs font-medium rounded-full border border-[#1F2937]">
-                          {t('card.tags.more', 'projets-page')
-                            ?.replace('{{count}}', String(translated.tags.length - 3)) ||
-                            `+${translated.tags.length - 3}`}
+                          +{translated.tags.length - 3}
                         </span>
                       )}
                     </div>
 
-                    {/* Bouton En savoir plus - centré en bas */}
+                    {/* Bouton En savoir plus */}
                     <div className="flex justify-center w-full mt-auto pt-4">
-                      <span className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm group-hover:text-blue-300 transition-colors tracking-tight">
+                      <span className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm tracking-tight">
                         <span>{t('card.learnMore', 'realisations')}</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
 
           {/* Bouton Voir tous les projets */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ delay: 0.3 }}
-            className="text-center"
-          >
+          <div className="text-center">
             <a
               href="/projets"
               className="inline-block"
               aria-label={t('buttons.viewAll', 'realisations')}
             >
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto tracking-tight"
+              <button
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto tracking-tight"
               >
                 <span>{t('buttons.viewAll', 'realisations')}</span>
                 <ArrowRight size={20} />
-              </motion.button>
+              </button>
             </a>
-          </motion.div>
+          </div>
 
           {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ delay: 0.4 }}
-            className="flex justify-center mt-16"
-          >
-            <div className="flex flex-wrap justify-center gap-6 px-0 py-0 sm:px-8 sm:py-5 sm:bg-[#141B2B] sm:rounded-2xl sm:border sm:border-[#1F2937] sm:shadow-md">
+          <div className="flex justify-center mt-16">
+            <div className="flex flex-wrap justify-center gap-6 px-0 py-0 sm:px-8 sm:py-5 sm:bg-[#141B2B] sm:rounded-2xl sm:border sm:border-[#1F2937]">
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-black text-blue-400 tracking-tight">11+</span>
-                <span className="text-xs text-gray-300 sm:text-gray-300 font-medium">
+                <span className="text-xs text-gray-300 font-medium">
                   {t('stats.projects', 'realisations')}
                 </span>
               </div>
               <div className="w-px h-8 bg-gray-700 hidden sm:block" aria-hidden="true" />
               <div className="flex flex-col items-center">
                 <span className="text-2xl font-black text-blue-400 tracking-tight">4.9</span>
-                <span className="text-xs text-gray-300 sm:text-gray-300 font-medium">
+                <span className="text-xs text-gray-300 font-medium">
                   {t('stats.rating', 'realisations')}
                 </span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 

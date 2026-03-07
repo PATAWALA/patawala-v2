@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useCallback, useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Service } from './data/servicesData';
 import BookingModal from '../components/ui/BookingModal';
@@ -84,12 +83,8 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
   return (
     <>
-      <motion.article
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay, duration: 0.4 }}
-        whileHover={{ y: -4 }}
-        className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+      <article
+        className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] hover:-translate-y-1"
         style={{ isolation: 'isolate' }}
         aria-labelledby={cardTitleId}
         role="article"
@@ -152,14 +147,14 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
           <button
             onClick={handleOpenBooking}
-            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98]"
             aria-label={translatedService.ctaText}
           >
             <span>{translatedService.ctaText}</span>
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
           </button>
         </div>
-      </motion.article>
+      </article>
 
       {/* Modal – une seule instance par carte (ok pour un petit nombre) */}
       <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseBooking} />

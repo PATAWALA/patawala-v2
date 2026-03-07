@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -64,9 +63,9 @@ const ProjetsPage = memo(function ProjetsPage() {
     return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   }, [translatedProjects]);
 
-  // Points lumineux statiques
+  // Points lumineux statiques - RÉDUITS À 3
   const lightPoints = useRef(
-    [...Array(12)].map(() => ({
+    [...Array(3)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -77,49 +76,27 @@ const ProjetsPage = memo(function ProjetsPage() {
       className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="page-title"
     >
-      {/* FOND AMÉLIORÉ - densité augmentée */}
+      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - opacité 0.08 */}
+        {/* Lignes subtiles - une seule couche */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
           }}
           aria-hidden="true"
         />
 
-        {/* Cercles flous animés */}
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
-        <motion.div
-          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-          className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
+        {/* Cercles flous STATIQUES */}
+        <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
         {/* Points lumineux */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
+            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
             style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />
@@ -129,36 +106,24 @@ const ProjetsPage = memo(function ProjetsPage() {
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* En-tête */}
         <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm"
-          >
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
             <span className="text-sm font-medium text-blue-400">{t('badge', 'projets-page')}</span>
-          </motion.div>
+          </div>
 
-          <motion.h1
+          <h1
             id="page-title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
           >
             {t('title', 'projets-page')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
               {t('titleHighlight', 'projets-page')}
             </span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg text-gray-300 max-w-2xl mx-auto"
-          >
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             {t('subtitle', 'projets-page')}
-          </motion.p>
+          </p>
         </div>
 
         {/* Grille des projets */}
@@ -169,17 +134,13 @@ const ProjetsPage = memo(function ProjetsPage() {
             const translatedProjet = getTranslatedProject(projet);
 
             return (
-              <motion.div
+              <div
                 key={projet.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -8 }}
                 onClick={() => openModal(projet)}
                 onKeyDown={(e) => handleCardKeyDown(e, projet)}
                 role="button"
                 tabIndex={0}
-                className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full"
+                className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full hover:-translate-y-1"
                 aria-label={`Voir les détails du projet ${translatedProjet.title}`}
               >
                 {/* Image ou placeholder avec icône */}
@@ -193,7 +154,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       loading={index < 3 ? 'eager' : 'lazy'}
                       priority={index < 3}
-                      quality={85}
+                      quality={75}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -259,41 +220,29 @@ const ProjetsPage = memo(function ProjetsPage() {
                     </span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* BOUTON UNIQUE - LANCER MON PROJET */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="flex justify-center items-center max-w-2xl mx-auto"
-        >
+        <div className="flex justify-center items-center max-w-2xl mx-auto">
           <Link href="/#contact" className="w-full sm:w-auto" passHref>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
+            <button
+              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98]"
               aria-label={t('buttons.discuss', 'projets-page')}
             >
               <MessageSquare size={20} aria-hidden="true" />
               <span>{t('buttons.discuss', 'projets-page')}</span>
               <ArrowRight size={20} aria-hidden="true" />
-            </motion.button>
+            </button>
           </Link>
-        </motion.div>
+        </div>
 
         {/* Note de bas de page */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="text-center text-xs text-gray-500 mt-8"
-        >
+        <p className="text-center text-xs text-gray-500 mt-8">
           {t('footer.note', 'projets-page')}
-        </motion.p>
+        </p>
       </div>
 
       {/* Modal des détails du projet */}

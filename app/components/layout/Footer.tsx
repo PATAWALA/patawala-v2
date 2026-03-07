@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useCallback } from 'react';
-import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, Sparkles, Heart, Zap, Globe } from 'lucide-react';
 import { SOCIAL_LINKS } from '../../lib/constants';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -29,14 +28,14 @@ const Footer = memo(function Footer() {
     { href: SOCIAL_LINKS.twitter, icon: Twitter, label: 'Twitter', color: 'hover:bg-sky-500' },
   ];
 
-  // Navigation directe (comme dans la navbar)
+  // Navigation directe
   const handleNavigation = useCallback((e: React.MouseEvent, href: string) => {
     e.preventDefault();
     window.location.href = href;
   }, []);
 
-  // Points lumineux statiques (10 points)
-  const lightPoints = [...Array(10)].map(() => ({
+  // Points lumineux statiques (réduits à 4)
+  const lightPoints = [...Array(4)].map(() => ({
     left: `${Math.random() * 100}%`,
     top: `${Math.random() * 100}%`
   }));
@@ -46,23 +45,13 @@ const Footer = memo(function Footer() {
       className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden"
       aria-label={t('footer.label', 'footer') || 'Pied de page'}
     >
-      {/* Éléments décoratifs - densité augmentée */}
+      {/* Éléments décoratifs - OPTIMISÉS SANS ANIMATIONS */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Cercles flous animés (via framer-motion) */}
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
-        <motion.div
-          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-          className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
+        {/* Cercles flous STATIQUES */}
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Grille de fond - plus dense */}
+        {/* Grille de fond */}
         <div
           className="absolute inset-0"
           style={{
@@ -72,11 +61,11 @@ const Footer = memo(function Footer() {
           aria-hidden="true"
         />
 
-        {/* Points lumineux supplémentaires */}
+        {/* Points lumineux (réduits) */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/30 rounded-full"
+            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
             style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />

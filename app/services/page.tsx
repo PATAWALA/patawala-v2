@@ -1,7 +1,6 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Sparkles, HelpCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import ServiceCard from './ServiceCard';
 import { servicesByCategory, allServices, filterCategories, CategoryType } from './data/servicesData';
@@ -50,9 +49,9 @@ const ServicesPage = memo(function ServicesPage() {
   const [showFilterLeftArrow, setShowFilterLeftArrow] = useState(false);
   const [showFilterRightArrow, setShowFilterRightArrow] = useState(true);
 
-  // Points lumineux statiques
+  // Points lumineux statiques - RÉDUITS À 3
   const lightPoints = useRef(
-    [...Array(12)].map(() => ({
+    [...Array(3)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -248,49 +247,27 @@ const ServicesPage = memo(function ServicesPage() {
       className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="services-title"
     >
-      {/* FOND AMÉLIORÉ - densité augmentée */}
+      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes répétitives - opacité 0.08 */}
+        {/* Lignes répétitives - une seule couche */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
           }}
           aria-hidden="true"
         />
 
-        {/* Cercles flous animés */}
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-20 right-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
-        <motion.div
-          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-          className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
-        <motion.div
-          animate={{ x: [0, 30, 0], y: [0, 30, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-          className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl will-change-transform"
-          aria-hidden="true"
-        />
+        {/* Cercles flous STATIQUES */}
+        <div className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
         {/* Points lumineux */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
+            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
             style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />
@@ -299,11 +276,7 @@ const ServicesPage = memo(function ServicesPage() {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="services-content">
         {/* Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center max-w-3xl mx-auto mb-12"
-        >
+        <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
             <span className="text-sm font-medium text-blue-400">
@@ -321,46 +294,36 @@ const ServicesPage = memo(function ServicesPage() {
           <p className="text-lg text-gray-300">
             {translations.subtitle}
           </p>
-        </motion.div>
+        </div>
 
         {/* Section Filtres avec flèches */}
         <div className="mb-8 lg:mb-12">
           <div className="relative lg:hidden">
             {/* Flèche gauche filtres */}
-            <AnimatePresence>
-              {showFilterLeftArrow && (
-                <motion.button
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  onClick={() => scrollFilters('left')}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-[#0A0F1C] to-transparent pr-6 pl-2 py-2"
-                  aria-label="Filtres précédents"
-                >
-                  <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
-                    <ChevronLeft size={18} className="text-white" aria-hidden="true" />
-                  </div>
-                </motion.button>
-              )}
-            </AnimatePresence>
+            {showFilterLeftArrow && (
+              <button
+                onClick={() => scrollFilters('left')}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-[#0A0F1C] to-transparent pr-6 pl-2 py-2"
+                aria-label="Filtres précédents"
+              >
+                <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                  <ChevronLeft size={18} className="text-white" aria-hidden="true" />
+                </div>
+              </button>
+            )}
 
             {/* Flèche droite filtres */}
-            <AnimatePresence>
-              {showFilterRightArrow && (
-                <motion.button
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  onClick={() => scrollFilters('right')}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-[#0A0F1C] to-transparent pl-6 pr-2 py-2"
-                  aria-label="Filtres suivants"
-                >
-                  <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
-                    <ChevronRight size={18} className="text-white" aria-hidden="true" />
-                  </div>
-                </motion.button>
-              )}
-            </AnimatePresence>
+            {showFilterRightArrow && (
+              <button
+                onClick={() => scrollFilters('right')}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-[#0A0F1C] to-transparent pl-6 pr-2 py-2"
+                aria-label="Filtres suivants"
+              >
+                <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
+                  <ChevronRight size={18} className="text-white" aria-hidden="true" />
+                </div>
+              </button>
+            )}
 
             {/* Conteneur des filtres */}
             <div
@@ -435,46 +398,34 @@ const ServicesPage = memo(function ServicesPage() {
             </div>
           </div>
 
-          {/* Description de la catégorie */}
-          <motion.p
+          {/* Description de la catégorie - AVEC ANIMATION CSS */}
+          <p
             key={activeCategory}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center text-gray-400 mt-4 max-w-2xl mx-auto"
+            className="text-center text-gray-400 mt-4 max-w-2xl mx-auto animate-fadeIn"
           >
             {filters?.description?.[activeCategory] ||
              filterCategories.find(c => c.id === activeCategory)?.description}
-          </motion.p>
+          </p>
         </div>
 
-        {/* Grille des cartes */}
-        <AnimatePresence mode="wait">
-          <motion.div
+        {/* Grille des cartes - AVEC ANIMATION CSS ULTRA LÉGÈRE */}
+        <div>
+          <div 
             key={activeCategory}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-grid"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {activeServices.map((service, index) => (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                  delay={index * 0.1}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            {activeServices.map((service, index) => (
+              <ServiceCard
+                key={service.id}
+                service={service}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
+        </div>
 
-        {/* SECTION FAQ - AVEC LES 8 QUESTIONS */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-20"
-        >
+        {/* SECTION FAQ */}
+        <div className="mt-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
               {faq.title}
@@ -486,11 +437,8 @@ const ServicesPage = memo(function ServicesPage() {
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {faq.items.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
                 className="bg-[#141B2B] p-6 rounded-xl shadow-md border border-[#1F2937] hover:shadow-lg transition-shadow"
                 role="article"
                 aria-labelledby={`faq-q-${index}`}
@@ -502,51 +450,69 @@ const ServicesPage = memo(function ServicesPage() {
                     <p className="text-sm text-gray-400">{item.answer}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA final */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="text-center mt-16"
-        >
+        <div className="text-center mt-16">
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
             {cta.title}
           </h3>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/#contact" passHref>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0"
+              <button
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0 active:scale-[0.98]"
                 aria-label={cta.button}
               >
                 <span>{cta.button}</span>
                 <ArrowRight size={20} aria-hidden="true" />
-              </motion.button>
+              </button>
             </Link>
           </div>
-        </motion.div>
+        </div>
 
         {/* Micro-message */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="text-center text-xs text-gray-500 mt-8"
-        >
+        <p className="text-center text-xs text-gray-500 mt-8">
           {translations.disclaimer}
-        </motion.p>
+        </p>
       </div>
 
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
+        }
+        
+        @keyframes gridAppear {
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        
+        .animate-grid {
+          animation: gridAppear 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
         }
       `}</style>
     </main>

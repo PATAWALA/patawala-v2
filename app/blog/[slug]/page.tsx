@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, ArrowLeft, 
   ArrowRight, MessageCircle,
@@ -90,42 +89,25 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* FOND UNIQUE DE LA PAGE */}
+      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div className="absolute inset-0" style={{
+        {/* Lignes subtiles - une seule couche */}
+        <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
             rgba(59,130,246,0.05) 1px, 
             transparent 1px, 
             transparent 60px)`
         }}></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `repeating-linear-gradient(0deg, 
-            rgba(6,182,212,0.05) 0px, 
-            rgba(6,182,212,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
         
-        <motion.div
-          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
-          transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ x: [0, -40, 0], y: [0, 40, 0] }}
-          transition={{ duration: 18, repeat: Infinity }}
-          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-        />
+        {/* Cercles flous STATIQUES */}
+        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-        {/* Bouton retour - avec bordure toujours visible */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-4 sm:mb-6 md:mb-8"
-        >
+        {/* Bouton retour */}
+        <div className="mb-4 sm:mb-6 md:mb-8">
           <Link href="/blog">
             <button className="group inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl border-2 border-blue-500/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all text-xs sm:text-sm">
               <ArrowLeft size={14} className="sm:w-4 sm:h-4 text-blue-400 group-hover:text-blue-300 group-hover:-translate-x-1 transition-all" />
@@ -134,10 +116,10 @@ export default function ArticlePage({ params }: ArticlePageProps) {
               </span>
             </button>
           </Link>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Image pleine largeur - SORTIE du conteneur pour occuper tout l'écran */}
+      {/* Image pleine largeur */}
       <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10">
         <Image
           src={article.image}
@@ -146,6 +128,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           className="object-cover"
           priority
           sizes="100vw"
+          quality={80}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent"></div>
         <div className="absolute top-2 sm:top-3 md:top-4 left-3 sm:left-4 md:left-6 lg:left-8">
@@ -155,9 +138,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         </div>
       </div>
 
-      {/* Conteneur principal pour le reste du contenu */}
+      {/* Conteneur principal */}
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-        {/* En-tête avec métadonnées et auteur - disposition en flex sur desktop */}
+        {/* En-tête */}
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8">
           {/* Partie gauche : titre, date, tags */}
           <div className="flex-1">
@@ -199,6 +182,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                     alt={article.author.name}
                     fill
                     className="object-cover"
+                    sizes="48px"
                   />
                 </div>
                 <div>
@@ -221,7 +205,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           </div>
         </div>
 
-        {/* Barre d'outils de lecture - alignée à droite */}
+        {/* Barre d'outils de lecture */}
         <div className="flex items-center justify-end gap-2 mb-4 sm:mb-6">
           <button
             onClick={decreaseFont}
@@ -247,7 +231,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           </button>
         </div>
 
-        {/* Zone de lecture - avec largeur optimisée pour la lisibilité */}
+        {/* Zone de lecture */}
         <div
           className="article-content-area bg-black/30 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-[#1F2937] transition-all mx-auto lg:mx-0 lg:max-w-4xl"
           style={{ fontSize: `${fontSize}%` }}
@@ -288,12 +272,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
         {/* Articles similaires */}
         {relatedArticles.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-10 sm:mt-12 md:mt-16"
-          >
+          <div className="mt-10 sm:mt-12 md:mt-16">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-5 md:mb-6 text-white flex items-center gap-2 sm:gap-3">
               <span className="w-1 h-4 sm:h-5 md:h-6 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
               {t('relatedArticles', 'blog') || 'Articles similaires'}
@@ -302,12 +281,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
               {relatedArticles.map((related, index) => (
                 <Link href={`/blog/${related.slug}`} key={related.id}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    whileHover={{ y: -4 }}
-                    className="group bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-[#1F2937] h-full cursor-pointer"
+                  <div
+                    className="group bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
                   >
                     <div className="relative h-20 xs:h-24 sm:h-28 md:h-32 overflow-hidden">
                       <Image
@@ -316,6 +291,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                         sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 25vw"
+                        loading="lazy"
+                        quality={70}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     </div>
@@ -332,11 +309,11 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                         <ArrowRight size={6} className="group-hover/link:translate-x-1 transition-transform" />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
     </main>
