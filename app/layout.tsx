@@ -4,13 +4,12 @@ import { ServiceProvider } from './services/context/ServiceContext';
 import { LanguageProvider } from './context/LanguageContext'; 
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
-import { PopupProvider } from './components/layout/PopupContext';
-import ExitIntentPopup from './components/ui/ExitIntentPopup';
 import Chatbot from './components/ui/Chatbot';
 import LoadingScreen from './components/ui/LoadingScreen';
 
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
+import { Suspense, memo } from 'react';
 
 export const metadata: Metadata = {
   title: 'Patawala | Développeur Full-Stack & Consultant Digital',
@@ -27,6 +26,12 @@ export const metadata: Metadata = {
   },
 };
 
+// Composants mémoïsés pour éviter les re-rendus inutiles
+const MemoizedNavigation = memo(Navigation);
+const MemoizedFooter = memo(Footer);
+const MemoizedChatbot = memo(Chatbot);
+const MemoizedToaster = memo(Toaster);
+
 export default function RootLayout({
   children,
 }: {
@@ -37,27 +42,41 @@ export default function RootLayout({
       <body className="font-sans antialiased bg-[#0A0F1C] text-gray-200">
         <LanguageProvider>
           <ServiceProvider>
-            <PopupProvider> 
-              <Toaster 
-                position="top-right"
-                toastOptions={{
-                  duration: 4000,
-                  style: {
-                    background: '#1e40af',
-                    color: '#fff',
-                  },
-                }}
-              />
+            {/* Toaster avec configuration optimisée */}
+            <MemoizedToaster 
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#1e40af',
+                  color: '#fff',
+                },
+              }}
+            />
+            
+            {/* LoadingScreen avec Suspense pour le chargement différé */}
+            <Suspense fallback={null}>
               <LoadingScreen />
-              <Navigation />
-              <main className="min-h-screen">
-                {children}
-              </main>
-              <Footer />
-              <Chatbot />
-              <ExitIntentPopup />
-              <Analytics />
-            </PopupProvider>
+            </Suspense>
+            
+            {/* Navigation - toujours visible */}
+            <MemoizedNavigation />
+            
+            {/* Contenu principal */}
+            <main className="min-h-screen">
+              {children}
+            </main>
+            
+            {/* Footer - toujours visible */}
+            <MemoizedFooter />
+            
+            {/* Chatbot - chargé de manière différée */}
+            <Suspense fallback={null}>
+              <MemoizedChatbot />
+            </Suspense>
+            
+            {/* Analytics - toujours en dernier */}
+            <Analytics />
           </ServiceProvider>
         </LanguageProvider>
       </body>

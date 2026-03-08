@@ -75,7 +75,7 @@ const ServiceFilter = memo(function ServiceFilter({ activeCategory, onCategoryCh
         </div>
       </div>
 
-      {/* Description de la catégorie active - OPTIMISÉ SANS FRAMER MOTION */}
+      {/* Description de la catégorie active */}
       <p
         key={activeCategory}
         className="text-center text-gray-400 mt-6 max-w-2xl mx-auto animate-fadeIn"

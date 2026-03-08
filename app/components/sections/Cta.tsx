@@ -23,16 +23,21 @@ const CTASection = memo(function CTASection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Points lumineux statiques - RÉDUITS À 3
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
   const lightPoints = useRef(
-    [...Array(3)].map(() => ({
+    [...Array(2)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
   ).current;
 
-  // Récupération des informations de contact
+  // Récupération des informations de contact - MÉMOÏSÉES
   const contactInfo: ContactInfo = {
     whatsapp: [
       '22962278090',
@@ -71,6 +76,7 @@ const CTASection = memo(function CTASection() {
     }, 2000);
   }, []);
 
+  // Social links - STATIQUES
   const socialLinks = [
     { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '+229 62 27 80 90' },
     { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: '@patawala' },
@@ -84,7 +90,7 @@ const CTASection = memo(function CTASection() {
     <>
       <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden" aria-labelledby="contact-title">
 
-        {/* Alert de copie - SANS FRAMER MOTION */}
+        {/* Alert de copie - SIMPLE */}
         {showCopyAlert && (
           <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
             <CheckCircle size={18} aria-hidden="true" />
@@ -92,23 +98,22 @@ const CTASection = memo(function CTASection() {
           </div>
         )}
 
-        {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
+        {/* FOND ULTRA-OPTIMISÉ */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes répétitives - une seule couche */}
+          {/* Lignes répétitives - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
           <div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-10"
             style={{
               backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
             }}
             aria-hidden="true"
           />
 
-          {/* Cercles flous STATIQUES */}
+          {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
-          {/* Points lumineux */}
+          {/* Points lumineux - 2 SEULEMENT */}
           {lightPoints.map((point, i) => (
             <div
               key={i}
@@ -142,7 +147,7 @@ const CTASection = memo(function CTASection() {
             </p>
           </div>
 
-          {/* Contact Cards */}
+          {/* Contact Cards - OPTIMISÉES */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
             {/* Direct Contact Card */}
             <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
@@ -285,7 +290,7 @@ const CTASection = memo(function CTASection() {
             </div>
           </div>
 
-          {/* Social Links */}
+          {/* Social Links - OPTIMISÉS */}
           <div className="max-w-4xl mx-auto mb-12">
             <h3 className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight">
               <Heart size={18} className="text-blue-400" aria-hidden="true" />
@@ -312,7 +317,7 @@ const CTASection = memo(function CTASection() {
             </div>
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons - OPTIMISÉS */}
           <div className="max-w-2xl mx-auto text-center">
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">

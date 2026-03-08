@@ -12,9 +12,16 @@ export default function RealisationsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Charger les projets traduits
   useEffect(() => {
+    if (!isMounted) return;
+    
     try {
       const projectsData = t('projects', 'projets-data');
       setTranslatedProjects(Array.isArray(projectsData) ? projectsData : projets);
@@ -22,7 +29,7 @@ export default function RealisationsSection() {
       console.error('Erreur chargement projets traduits:', error);
       setTranslatedProjects(projets);
     }
-  }, [t, language]);
+  }, [t, language, isMounted]);
 
   // Mémoïsation de la correspondance projet original ↔ traduit
   const projectMap = useMemo(() => {
@@ -46,7 +53,7 @@ export default function RealisationsSection() {
     setTimeout(() => setSelectedProject(null), 300);
   }, []);
 
-  // Gestion du clavier pour les cartes (accessibilité)
+  // Gestion du clavier pour les cartes
   const handleCardKeyDown = useCallback((e: React.KeyboardEvent, project: Project) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -54,17 +61,14 @@ export default function RealisationsSection() {
     }
   }, [openModal]);
 
-  // Vérification de validité d'image
+  // Vérification de validité d'image - SIMPLIFIÉE
   const hasValidImage = useCallback((image: any): boolean => {
-    if (!image) return false;
-    if (typeof image === 'object') return true;
-    if (typeof image === 'string') return !image.includes('/images/projects/');
-    return false;
+    return !!image && typeof image !== 'string';
   }, []);
 
-  // Points lumineux statiques
+  // Points lumineux statiques - RÉDUITS À 2
   const lightPoints = useMemo(() => 
-    [...Array(3)].map(() => ({
+    [...Array(2)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     })), []);
@@ -72,11 +76,11 @@ export default function RealisationsSection() {
   return (
     <>
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
-        {/* Fond OPTIMISÉ - pas d'animations */}
+        {/* FOND ULTRA-OPTIMISÉ */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles - une seule couche */}
+          {/* Lignes subtiles - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
           <div
-            className="absolute inset-0 opacity-20"
+            className="absolute inset-0 opacity-10"
             style={{
               backgroundImage: `repeating-linear-gradient(90deg, 
                 rgba(59,130,246,0.05) 0px, 
@@ -87,11 +91,11 @@ export default function RealisationsSection() {
             aria-hidden="true"
           />
 
-          {/* Cercles flous STATIQUES */}
+          {/* Cercles flous - 2 SEULEMENT */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-          {/* Points lumineux */}
+          {/* Points lumineux - 2 SEULEMENT */}
           {lightPoints.map((point, i) => (
             <div
               key={i}
@@ -126,9 +130,9 @@ export default function RealisationsSection() {
             </p>
           </div>
 
-          {/* Grille des projets */}
+          {/* Grille des projets - OPTIMISÉE */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12 auto-rows-fr">
-            {projets.slice(0, 6).map((projet, index) => {
+            {projets.slice(0, 6).map((projet) => {
               const Icon = projet.icon;
               const showImage = hasValidImage(projet.image);
               const translated = getTranslatedProject(projet);
@@ -142,19 +146,18 @@ export default function RealisationsSection() {
                   tabIndex={0}
                   aria-label={`Voir les détails du projet ${translated.title}`}
                   className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full"
-                  style={{ willChange: 'transform' }}
                 >
-                  {/* Image ou placeholder */}
+                  {/* Image ou placeholder - OPTIMISÉ */}
                   <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
                     {showImage ? (
                       <Image
                         src={projet.image}
                         alt={translated.title}
                         fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
-                        quality={75}
+                        quality={70} // Réduit de 75 à 70
                       />
                     ) : (
                       <>
@@ -173,7 +176,7 @@ export default function RealisationsSection() {
                     </div>
                   </div>
 
-                  {/* Contenu */}
+                  {/* Contenu - OPTIMISÉ */}
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-xl font-extrabold text-white mb-2 tracking-tight">
                       {translated.title}
@@ -182,7 +185,7 @@ export default function RealisationsSection() {
                       {translated.description}
                     </p>
 
-                    {/* Tags */}
+                    {/* Tags - OPTIMISÉS */}
                     <div className="flex flex-wrap gap-2 mb-5">
                       {translated.tags?.slice(0, 3).map((tag: string) => (
                         <span
@@ -212,23 +215,21 @@ export default function RealisationsSection() {
             })}
           </div>
 
-          {/* Bouton Voir tous les projets */}
+          {/* Bouton Voir tous les projets - OPTIMISÉ */}
           <div className="text-center">
             <a
               href="/projets"
               className="inline-block"
               aria-label={t('buttons.viewAll', 'realisations')}
             >
-              <button
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto tracking-tight"
-              >
+              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto tracking-tight">
                 <span>{t('buttons.viewAll', 'realisations')}</span>
                 <ArrowRight size={20} />
-              </button>
+              </div>
             </a>
           </div>
 
-          {/* Stats */}
+          {/* Stats - OPTIMISÉES */}
           <div className="flex justify-center mt-16">
             <div className="flex flex-wrap justify-center gap-6 px-0 py-0 sm:px-8 sm:py-5 sm:bg-[#141B2B] sm:rounded-2xl sm:border sm:border-[#1F2937]">
               <div className="flex flex-col items-center">

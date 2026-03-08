@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { 
   X, Calendar, Clock, User, Mail, Phone, 
@@ -45,8 +45,16 @@ interface BookingModalProps {
 
 type ContactMethod = 'whatsapp' | 'email';
 
-// Liste des pays avec indicatifs et images de drapeaux
-const countries = [
+// Définir un type pour les pays
+type Country = {
+  readonly code: string;
+  readonly name: string;
+  readonly dialCode: string;
+  readonly flag: any;
+};
+
+// Liste des pays avec indicatifs et images de drapeaux - MÉMOÏSÉE
+const COUNTRIES: readonly Country[] = [
   { code: 'FR', name: 'France', dialCode: '+33', flag: frFlag },
   { code: 'BE', name: 'Belgique', dialCode: '+32', flag: beFlag },
   { code: 'CH', name: 'Suisse', dialCode: '+41', flag: chFlag },
@@ -72,7 +80,7 @@ const countries = [
   { code: 'MA', name: 'Maroc', dialCode: '+212', flag: maFlag },
   { code: 'DZ', name: 'Algérie', dialCode: '+213', flag: dzFlag },
   { code: 'TN', name: 'Tunisie', dialCode: '+216', flag: tnFlag },
-];
+] as const;
 
 // Numéro WhatsApp cible
 const WHATSAPP_NUMBER = '22962278090';
@@ -88,7 +96,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [calendarDays, setCalendarDays] = useState<Date[]>([]);
   const [contactMethod, setContactMethod] = useState<ContactMethod>('whatsapp');
-  const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.code === 'BJ') || countries[0]);
+  // Correction du typage : selectedCountry peut être n'importe quel pays de COUNTRIES
+  const [selectedCountry, setSelectedCountry] = useState<Country>(COUNTRIES.find(c => c.code === 'BJ') || COUNTRIES[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -107,21 +116,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   
   const countryDropdownRef = useRef<HTMLDivElement>(null);
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
-  // Mois en français/anglais selon la langue
-  const monthNames = language === 'fr' 
-    ? ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
-    : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  // Jours de la semaine traduits avec fallback
-  const weekDaysRaw = t('calendar.weekDays', 'booking');
-  const weekDays: string[] = Array.isArray(weekDaysRaw) ? weekDaysRaw : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-
-  // Exemples d'heures avec fallback
-  const timeExamplesRaw = t('timeSelection.examples', 'booking');
-  const timeExamples: string[] = Array.isArray(timeExamplesRaw) ? timeExamplesRaw : ['14h', '15h30', '17h45', '20h', '21h15'];
-
-  // Mount pour le portail
+  // Montage pour le portail
   useEffect(() => {
     setMounted(true);
     return () => setMounted(false);
@@ -142,10 +139,13 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   // Scroll en haut du modal quand on passe à l'étape 2
   useEffect(() => {
     if (step === 2 && modalContentRef.current) {
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         modalContentRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
     }
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, [step]);
 
   // Fermer le dropdown quand on clique dehors
@@ -158,6 +158,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Données mémorisées pour éviter les recalculs
+  const monthNames = useMemo(() => 
+    language === 'fr' 
+      ? ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+      : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    [language]
+  );
+
+  const weekDays = useMemo(() => {
+    const weekDaysRaw = t('calendar.weekDays', 'booking');
+    return Array.isArray(weekDaysRaw) ? weekDaysRaw : ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  }, [t, language]);
+
+  const timeExamples = useMemo(() => {
+    const timeExamplesRaw = t('timeSelection.examples', 'booking');
+    return Array.isArray(timeExamplesRaw) ? timeExamplesRaw : ['14h', '15h30', '17h45', '20h', '21h15'];
+  }, [t, language]);
 
   // Générer les jours du calendrier pour le mois courant
   useEffect(() => {
@@ -181,25 +199,26 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setCalendarDays(days);
   }, [currentMonth]);
 
-  const handlePrevMonth = () => {
+  // Handlers mémorisés
+  const handlePrevMonth = useCallback(() => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
     setSelectedDate('');
     setSelectedTime('');
     setShowTimeField(false);
     setDateSelectedMessage(false);
     setTimeError(null);
-  };
+  }, [currentMonth]);
 
-  const handleNextMonth = () => {
+  const handleNextMonth = useCallback(() => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
     setSelectedDate('');
     setSelectedTime('');
     setShowTimeField(false);
     setDateSelectedMessage(false);
     setTimeError(null);
-  };
+  }, [currentMonth]);
 
-  const handleDateSelect = (date: Date) => {
+  const handleDateSelect = useCallback((date: Date) => {
     const localDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
     
     const year = localDate.getFullYear();
@@ -212,14 +231,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setShowTimeField(true);
     setDateSelectedMessage(true);
     setTimeError(null);
-  };
+  }, []);
 
-  const handleTimeInputFocus = () => {
+  const handleTimeInputFocus = useCallback(() => {
     setDateSelectedMessage(false);
     setTimeError(null);
-  };
+  }, []);
 
-  const parseTime = (input: string): { hours: number; minutes: number } | null => {
+  const parseTime = useCallback((input: string): { hours: number; minutes: number } | null => {
     const patterns = [
       /(\d{1,2})\s*h(?:\s*(\d{1,2})\s*(?:min|mn|minutes?)?)?/i,
       /(\d{1,2}):(\d{2})/,
@@ -238,9 +257,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       }
     }
     return null;
-  };
+  }, []);
 
-  const isTimePast = (dateStr: string, timeStr: string): boolean => {
+  const isTimePast = useCallback((dateStr: string, timeStr: string): boolean => {
     const parsedTime = parseTime(timeStr);
     if (!parsedTime) return false;
 
@@ -249,9 +268,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const now = new Date();
     
     return selectedDateTime < now;
-  };
+  }, [parseTime]);
 
-  const handleTimeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setTimeInput(input);
     setDateSelectedMessage(false);
@@ -274,9 +293,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     } else {
       setTimeError(null);
     }
-  };
+  }, [selectedDate, language, parseTime, isTimePast]);
 
-  const handleExampleTimeClick = (example: string) => {
+  const handleExampleTimeClick = useCallback((example: string) => {
     setTimeInput(example);
     setDateSelectedMessage(false);
     
@@ -289,9 +308,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         setTimeError(null);
       }
     }
-  };
+  }, [selectedDate, language, isTimePast]);
 
-  const handleTimeSubmit = () => {
+  const handleTimeSubmit = useCallback(() => {
     if (timeInput.trim()) {
       if (selectedDate && isTimePast(selectedDate, timeInput)) {
         setTimeError(language === 'fr'
@@ -303,14 +322,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       setSelectedTime(timeInput);
       setStep(2);
     }
-  };
+  }, [timeInput, selectedDate, language, isTimePast]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     setStep(1);
     setTimeInput(selectedTime);
-  };
+  }, [selectedTime]);
 
-  const validateForm = () => {
+  const validateForm = useCallback(() => {
     const errors = {
       name: !formData.name.trim(),
       email: contactMethod === 'email' && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)),
@@ -324,9 +343,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     } else {
       return !errors.name && !errors.email;
     }
-  };
+  }, [formData, contactMethod]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -387,7 +406,7 @@ Message: ${formData.message || 'No message'}`;
     
     setIsSubmitted(true);
     
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       onClose();
       setStep(1);
       setSelectedDate('');
@@ -401,9 +420,9 @@ Message: ${formData.message || 'No message'}`;
       setDateSelectedMessage(false);
       setTimeError(null);
     }, 2000);
-  };
+  }, [formData, contactMethod, selectedCountry, selectedDate, selectedTime, language, onClose, validateForm]);
 
-  const isDateSelectable = (date: Date) => {
+  const isDateSelectable = useCallback((date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -411,9 +430,9 @@ Message: ${formData.message || 'No message'}`;
     compareDate.setHours(0, 0, 0, 0);
     
     return compareDate >= today;
-  };
+  }, []);
 
-  const formatDisplayDate = (dateStr: string) => {
+  const formatDisplayDate = useCallback((dateStr: string) => {
     const [year, month, day] = dateStr.split('-').map(Number);
     const date = new Date(year, month - 1, day);
     return date.toLocaleDateString(language === 'fr' ? 'fr-FR' : 'en-US', { 
@@ -421,7 +440,23 @@ Message: ${formData.message || 'No message'}`;
       day: 'numeric', 
       month: 'short' 
     });
-  };
+  }, [language]);
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setStep(1);
+      setSelectedDate('');
+      setSelectedTime('');
+      setTimeInput('');
+      setShowTimeField(false);
+      setCurrentMonth(new Date());
+      setFormData({ name: '', email: '', phone: '', message: '' });
+      setFormErrors({ name: false, email: false, phone: false });
+      setDateSelectedMessage(false);
+      setTimeError(null);
+    }
+  }, [isOpen]);
 
   if (!isOpen || !mounted) return null;
 
@@ -775,7 +810,7 @@ Message: ${formData.message || 'No message'}`;
                       {/* Dropdown des pays avec IMAGES */}
                       {showCountryDropdown && (
                         <div className="absolute top-full left-0 mt-1 w-full sm:w-64 max-h-60 overflow-y-auto bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-xl z-[10001] animate-fadeIn">
-                          {countries.map((country) => (
+                          {COUNTRIES.map((country) => (
                             <button
                               key={country.code}
                               type="button"

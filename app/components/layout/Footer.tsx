@@ -1,7 +1,7 @@
 'use client';
 
-import { memo, useCallback } from 'react';
-import { Github, Linkedin, Twitter, Mail, Sparkles, Heart, Zap, Globe } from 'lucide-react';
+import { memo, useCallback, useMemo } from 'react';
+import { Github, Linkedin, Twitter, Mail, Heart, Zap, Globe } from 'lucide-react';
 import { SOCIAL_LINKS } from '../../lib/constants';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
@@ -9,67 +9,61 @@ const Footer = memo(function Footer() {
   const currentYear = new Date().getFullYear();
   const { t } = useTranslation();
 
-  const quickLinks = [
+  // Données statiques - MÉMOÏSÉES
+  const quickLinks = useMemo(() => [
     { href: '/', key: 'home' },
     { href: '/projets', key: 'projects' },
     { href: '/services', key: 'services' },
     { href: '/blog', key: 'blog' },
-  ];
+  ], []);
 
-  const legalLinks = [
+  const legalLinks = useMemo(() => [
     { href: '/mentions-legales', key: 'legal' },
     { href: '/confidentialite', key: 'privacy' },
     { href: '/cgu', key: 'terms' },
-  ];
+  ], []);
 
-  const socialLinks = [
+  const socialLinks = useMemo(() => [
     { href: SOCIAL_LINKS.github, icon: Github, label: 'GitHub', color: 'hover:bg-gray-700' },
     { href: SOCIAL_LINKS.linkedin, icon: Linkedin, label: 'LinkedIn', color: 'hover:bg-blue-600' },
     { href: SOCIAL_LINKS.twitter, icon: Twitter, label: 'Twitter', color: 'hover:bg-sky-500' },
-  ];
+  ], []);
 
-  // Navigation directe
+  // Badges - MÉMOÏSÉS
+  const badges = useMemo(() => [
+    { key: 'available', icon: Zap, color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
+    { key: 'opensource', icon: Heart, color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+    { key: 'remote', icon: Globe, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
+  ], []);
+
+  // Navigation directe - MÉMOÏSÉE
   const handleNavigation = useCallback((e: React.MouseEvent, href: string) => {
     e.preventDefault();
     window.location.href = href;
   }, []);
 
-  // Points lumineux statiques (réduits à 4)
-  const lightPoints = [...Array(4)].map(() => ({
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`
-  }));
-
   return (
     <footer
       className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden"
-      aria-label={t('footer.label', 'footer') || 'Pied de page'}
+      aria-label={t('label', 'footer') || 'Pied de page'} // CORRECTION ICI
     >
-      {/* Éléments décoratifs - OPTIMISÉS SANS ANIMATIONS */}
+      {/* Éléments décoratifs - UNIQUEMENT LES CERCLES */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Cercles flous STATIQUES */}
+        {/* Cercles flous - 2 SEULEMENT */}
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Grille de fond */}
+        {/* Grille de fond - OPACITÉ RÉDUITE */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-50"
           style={{
             backgroundImage: `radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.1) 1px, transparent 0)`,
             backgroundSize: '40px 40px'
           }}
           aria-hidden="true"
         />
-
-        {/* Points lumineux (réduits) */}
-        {lightPoints.map((point, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
-            style={{ left: point.left, top: point.top }}
-            aria-hidden="true"
-          />
-        ))}
+        
+        {/* PLUS DE POINTS LUMINEUX - SUPPRIMÉS */}
       </div>
 
       {/* Ligne de séparation lumineuse */}
@@ -91,20 +85,20 @@ const Footer = memo(function Footer() {
               {t('description', 'footer')}
             </p>
 
-            {/* Badges */}
+            {/* Badges - OPTIMISÉS */}
             <div className="flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-500/10 text-blue-400 rounded-full text-sm border border-blue-500/20">
-                <Zap size={14} aria-hidden="true" />
-                {t('badge.available', 'footer')}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm border border-purple-500/20">
-                <Heart size={14} aria-hidden="true" />
-                {t('badge.opensource', 'footer')}
-              </span>
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-cyan-500/10 text-cyan-400 rounded-full text-sm border border-cyan-500/20">
-                <Globe size={14} aria-hidden="true" />
-                {t('badge.remote', 'footer')}
-              </span>
+              {badges.map((badge) => {
+                const Icon = badge.icon;
+                return (
+                  <span
+                    key={badge.key}
+                    className={`inline-flex items-center gap-1 px-3 py-1 ${badge.bg} ${badge.color} rounded-full text-sm border ${badge.border}`}
+                  >
+                    <Icon size={14} aria-hidden="true" />
+                    {t(`badge.${badge.key}`, 'footer')}
+                  </span>
+                );
+              })}
             </div>
           </div>
 

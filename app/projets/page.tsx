@@ -14,9 +14,16 @@ const ProjetsPage = memo(function ProjetsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Charger les projets traduits
   useEffect(() => {
+    if (!isMounted) return;
+    
     try {
       const projectsData = t('projects', 'projets-data');
       if (Array.isArray(projectsData)) {
@@ -28,7 +35,7 @@ const ProjetsPage = memo(function ProjetsPage() {
       console.error('Erreur chargement projets traduits:', error);
       setTranslatedProjects(projets);
     }
-  }, [t, language]);
+  }, [t, language, isMounted]);
 
   const openModal = useCallback((project: Project) => {
     setSelectedProject(project);
@@ -50,22 +57,19 @@ const ProjetsPage = memo(function ProjetsPage() {
     }
   }, [openModal]);
 
-  // Fonction pour vérifier si l'image est valide
+  // Fonction pour vérifier si l'image est valide - SIMPLIFIÉE
   const hasValidImage = useCallback((image: any): boolean => {
-    if (!image) return false;
-    if (typeof image === 'object') return true;
-    if (typeof image === 'string') return !image.includes('/images/projects/');
-    return false;
+    return !!image && typeof image !== 'string';
   }, []);
 
-  // Fonction pour trouver le projet traduit correspondant
+  // Fonction pour trouver le projet traduit correspondant - MÉMOÏSÉE
   const getTranslatedProject = useCallback((originalProject: Project) => {
     return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   }, [translatedProjects]);
 
-  // Points lumineux statiques - RÉDUITS À 3
+  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
   const lightPoints = useRef(
-    [...Array(3)].map(() => ({
+    [...Array(2)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -76,23 +80,22 @@ const ProjetsPage = memo(function ProjetsPage() {
       className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="page-title"
     >
-      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
+      {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche */}
+        {/* Lignes subtiles - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
           }}
           aria-hidden="true"
         />
 
-        {/* Cercles flous STATIQUES */}
+        {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
         <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux */}
+        {/* Points lumineux - 2 SEULEMENT */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
@@ -126,7 +129,7 @@ const ProjetsPage = memo(function ProjetsPage() {
           </p>
         </div>
 
-        {/* Grille des projets */}
+        {/* Grille des projets - OPTIMISÉE */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16 auto-rows-fr">
           {projets.map((projet, index) => {
             const Icon = projet.icon;
@@ -143,18 +146,18 @@ const ProjetsPage = memo(function ProjetsPage() {
                 className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full hover:-translate-y-1"
                 aria-label={`Voir les détails du projet ${translatedProjet.title}`}
               >
-                {/* Image ou placeholder avec icône */}
+                {/* Image ou placeholder avec icône - OPTIMISÉ */}
                 <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
                   {showImage ? (
                     <Image
                       src={projet.image}
                       alt={translatedProjet.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       loading={index < 3 ? 'eager' : 'lazy'}
                       priority={index < 3}
-                      quality={75}
+                      quality={70} // Réduit de 75 à 70
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -170,7 +173,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                   </div>
                 </div>
 
-                {/* Contenu */}
+                {/* Contenu - OPTIMISÉ */}
                 <div className="p-6 flex flex-col flex-1">
                   <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors mb-3">
                     {translatedProjet.title}
@@ -180,7 +183,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                     {translatedProjet.description}
                   </p>
 
-                  {/* Tags */}
+                  {/* Tags - OPTIMISÉS */}
                   <div className="flex flex-wrap gap-2 mb-5">
                     {translatedProjet.tags.slice(0, 3).map((tag: string) => (
                       <span
@@ -197,7 +200,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                       )}
                   </div>
 
-                  {/* Bouton En savoir plus */}
+                  {/* Bouton En savoir plus - OPTIMISÉ */}
                   <div className="flex justify-center w-full mt-auto pt-4">
                     <span
                       className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group-hover:text-blue-300 transition-colors cursor-pointer"

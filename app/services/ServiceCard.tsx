@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useState, useMemo } from 'react';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Service } from './data/servicesData';
 import BookingModal from '../components/ui/BookingModal';
@@ -20,8 +20,8 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
   const handleOpenBooking = useCallback(() => setIsBookingModalOpen(true), []);
   const handleCloseBooking = useCallback(() => setIsBookingModalOpen(false), []);
 
-  // Récupérer les données de traduction (simplifié avec fallback)
-  const getTranslatedData = () => {
+  // Récupérer les données de traduction - OPTIMISÉ AVEC useMemo
+  const { translatedService, labels } = useMemo(() => {
     const servicesData = t('services', 'services-data');
     const cardData = t('card', 'services-data');
 
@@ -32,14 +32,14 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
         from: 'À partir de',
         hourly: '/h',
         monthly: '/mois',
-        more: '+{{count}} autres fonctionnalités'
+        more: '+{{count}} autres'
       },
       en: {
         popular: 'Popular',
         from: 'From',
         hourly: '/h',
         monthly: '/month',
-        more: '+{{count}} more features'
+        more: '+{{count}} more'
       }
     };
 
@@ -65,21 +65,28 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
       };
     }
 
-    return { service: translatedService, labels: cardLabels };
-  };
+    return { translatedService, labels: cardLabels };
+  }, [service, t, language]); // Dépendances explicites
 
-  const { service: translatedService, labels } = getTranslatedData();
-
-  // Déterminer le suffixe de prix
-  const getPriceSuffix = () => {
+  // Déterminer le suffixe de prix - OPTIMISÉ AVEC useMemo
+  const priceSuffix = useMemo(() => {
     const priceType = translatedService.pricing?.type;
     if (priceType === 'horaire' ) return labels.hourly;
     if (priceType === 'mensuel') return labels.monthly;
     return '';
-  };
+  }, [translatedService.pricing?.type, labels.hourly, labels.monthly]);
 
   // Générer un ID unique pour le titre de la carte (accessibilité)
   const cardTitleId = `service-${service.id}-title`;
+
+  // Features à afficher - OPTIMISÉ AVEC useMemo
+  const { visibleFeatures, moreCount } = useMemo(() => {
+    const features = translatedService.features || [];
+    return {
+      visibleFeatures: features.slice(0, 3),
+      moreCount: features.length > 3 ? features.length - 3 : 0
+    };
+  }, [translatedService.features]);
 
   return (
     <>
@@ -116,12 +123,12 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
             {translatedService.shortDesc}
           </p>
 
-          <div className="mb-4" aria-label={`Prix : ${labels.from} ${translatedService.pricing?.startingAt} ${translatedService.pricing?.currency}${getPriceSuffix()}`}>
+          <div className="mb-4" aria-label={`Prix : ${labels.from} ${translatedService.pricing?.startingAt} ${translatedService.pricing?.currency}${priceSuffix}`}>
             <span className="text-2xl font-bold text-white">
               {labels.from} {translatedService.pricing?.startingAt} {translatedService.pricing?.currency}
             </span>
-            {getPriceSuffix() && (
-              <span className="text-gray-500 text-sm ml-1">{getPriceSuffix()}</span>
+            {priceSuffix && (
+              <span className="text-gray-500 text-sm ml-1">{priceSuffix}</span>
             )}
           </div>
 
@@ -132,15 +139,15 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
         <div className="px-6 pb-6 flex-1">
           <div className="space-y-2 mb-6">
-            {translatedService.features?.slice(0, 3).map((feature: string, idx: number) => (
+            {visibleFeatures.map((feature: string, idx: number) => (
               <div key={idx} className="flex items-start gap-2">
                 <CheckCircle size={14} className="text-cyan-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
                 <span className="text-sm text-gray-300">{feature}</span>
               </div>
             ))}
-            {translatedService.features?.length > 3 && (
-              <div className="text-xs text-gray-500 ml-6" aria-label={labels.more.replace('{{count}}', String(translatedService.features.length - 3))}>
-                {labels.more.replace('{{count}}', String(translatedService.features.length - 3))}
+            {moreCount > 0 && (
+              <div className="text-xs text-gray-500 ml-6" aria-label={labels.more.replace('{{count}}', String(moreCount))}>
+                {labels.more.replace('{{count}}', String(moreCount))}
               </div>
             )}
           </div>
@@ -156,7 +163,7 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
         </div>
       </article>
 
-      {/* Modal – une seule instance par carte (ok pour un petit nombre) */}
+      {/* Modal – une seule instance par carte */}
       <BookingModal isOpen={isBookingModalOpen} onClose={handleCloseBooking} />
     </>
   );

@@ -7,6 +7,7 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 // Constantes hors du composant
 const PHONE_NUMBER = '22946495875';
 const SUCCESS_DELAY = 2000;
+const MAX_MESSAGE_LENGTH = 1000;
 
 const WhatsAppWidget = memo(function WhatsAppWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +19,9 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
   const { getComponentTranslation, tWithParams } = useTranslation();
   
   // Fonction de traduction sécurisée pour le widget
-  const t = (key: string): string => {
+  const t = useCallback((key: string): string => {
     return getComponentTranslation('WhatsAppWidget', key);
-  };
+  }, [getComponentTranslation]);
   
   // Refs
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -28,7 +29,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
   const widgetRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Détection mobile
+  // Détection mobile - OPTIMISÉE
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
@@ -78,6 +79,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, isMobile]);
 
+  // Handlers - MÉMOÏSÉS
   const handleClose = useCallback(() => {
     setIsOpen(false);
     setMessage('');
@@ -95,6 +97,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     
     setIsSending(true);
     
+    // Utilisation de requestAnimationFrame pour optimiser
     requestAnimationFrame(() => {
       const encodedMessage = encodeURIComponent(trimmedMessage);
       const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`;
@@ -134,6 +137,10 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     }
   }, [handleClose, isMobile]);
 
+  const handleMessageChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value.slice(0, MAX_MESSAGE_LENGTH));
+  }, []);
+
   return (
     <>
       {/* Bouton flottant - AVEC CSS AU LIEU DE FRAMER MOTION */}
@@ -156,10 +163,9 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
           className={`
             fixed z-50 bg-[#141B2B] border border-[#1F2937] overflow-hidden
             ${isMobile 
-              ? 'inset-0 rounded-none' 
+              ? 'inset-0 rounded-none animate-slideInMobile' 
               : 'bottom-6 right-6 w-96 max-h-[600px] rounded-2xl animate-slideInDesktop'
             }
-            ${isMobile ? 'animate-slideInMobile' : ''}
           `}
           role="dialog"
           aria-label={t('header.title')}
@@ -218,11 +224,11 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                   ref={inputRef}
                   id="whatsapp-message"
                   value={message}
-                  onChange={(e) => setMessage(e.target.value.slice(0, 1000))}
+                  onChange={handleMessageChange}
                   onKeyDown={handleKeyDown}
                   placeholder={t('body.messagePlaceholder')}
                   rows={isMobile ? 5 : 4}
-                  maxLength={1000}
+                  maxLength={MAX_MESSAGE_LENGTH}
                   className="w-full bg-[#141B2B] border border-[#1F2937] rounded-xl px-4 py-3 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition-all text-white placeholder-gray-500 resize-none"
                   aria-label={t('body.messageAriaLabel')}
                   disabled={showSuccess}

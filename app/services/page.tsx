@@ -41,6 +41,11 @@ const ServicesPage = memo(function ServicesPage() {
 
   const { language } = useLanguage();
   const isInitialLoad = useRef(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Refs pour le défilement des filtres uniquement
   const filterScrollRef = useRef<HTMLDivElement>(null);
@@ -49,9 +54,9 @@ const ServicesPage = memo(function ServicesPage() {
   const [showFilterLeftArrow, setShowFilterLeftArrow] = useState(false);
   const [showFilterRightArrow, setShowFilterRightArrow] = useState(true);
 
-  // Points lumineux statiques - RÉDUITS À 3
+  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
   const lightPoints = useRef(
-    [...Array(3)].map(() => ({
+    [...Array(2)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -90,42 +95,42 @@ const ServicesPage = memo(function ServicesPage() {
     }
   };
 
-  // ========== FAQ (depuis services.json qui a les 8 questions) ==========
+  // ========== FAQ (depuis services.json) ==========
   const faq: FaqTranslations = services?.faq || {
     title: 'Questions fréquentes',
     subtitle: 'Pour vous éclairer sur ma façon de travailler',
     items: [
       {
         question: "Comment fonctionne la consultation initiale ?",
-        answer: "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs, de vos idées et de voir ensemble si nous sommes sur la même longueur d'onde avant de commencer le véritable travail."
+        answer: "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs."
       },
       {
         question: "Quelle est la durée moyenne d'un projet ?",
-        answer: "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
+        answer: "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 2 à 4 mois pour une application."
       },
       {
-        question: "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
-        answer: "Je travaille jusqu'à votre entière satisfaction. Si un élément ne vous convient pas, j'apporte les améliorations nécessaires jusqu'à ce que vous soyez pleinement satisfait. C'est pourquoi mes clients sont très positifs sur mon travail."
+        question: "Que se passe-t-il si je ne suis pas satisfait ?",
+        answer: "Je travaille jusqu'à votre entière satisfaction avec des améliorations jusqu'à ce que vous soyez pleinement satisfait."
       },
       {
         question: "Quels types de projets développez-vous ?",
-        answer: "Je développe une large gamme de solutions digitales : des sites vitrines aux applications web complexes, en passant par les applications mobiles (iOS/Android), les boutiques e-commerce, et je propose aussi des services de conseil et de design UX/UI."
+        answer: "Sites vitrines, applications web complexes, applications mobiles (iOS/Android), boutiques e-commerce."
       },
       {
         question: "Proposez-vous un suivi après la livraison ?",
-        answer: "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
+        answer: "Oui, un mois de support est inclus pour vous accompagner après le lancement."
       },
       {
         question: "Puis-je modifier le projet en cours de route ?",
-        answer: "Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins."
+        answer: "Absolument ! Nous travaillons par étapes avec des validations régulières."
       },
       {
-        question: "Comment garantissez-vous la qualité de votre travail ?",
-        answer: "Je suis des processus de développement rigoureux avec des tests réguliers pour m'assurer que tout fonctionne parfaitement. Mon engagement est de livrer un produit fiable, performant et sécurisé."
+        question: "Comment garantissez-vous la qualité ?",
+        answer: "Je suis des processus de développement rigoureux avec des tests réguliers."
       },
       {
         question: "Les prix affichés sont-ils définitifs ?",
-        answer: "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
+        answer: "Ce sont des bases indicatives. Chaque projet reçoit un devis personnalisé."
       }
     ]
   };
@@ -136,12 +141,8 @@ const ServicesPage = memo(function ServicesPage() {
     button: 'Discuter de mon projet'
   };
 
-  // ========== LOGS DE DÉBOGAGE ==========
-  console.log('🌍 Langue:', language);
-  console.log('📦 services-data.json (textes page):', servicesData);
-  console.log('📦 services.json (cartes + FAQ):', services);
-  console.log('📦 FAQ items:', faq.items);
-  console.log('📦 Nombre de questions:', faq.items?.length);
+  // Supprimer les logs de débogage en production
+  // console.log('🌍 Langue:', language);
 
   // Gestion du défilement des filtres
   const checkFilterScroll = useCallback(() => {
@@ -154,6 +155,8 @@ const ServicesPage = memo(function ServicesPage() {
 
   // Écouter les changements d'URL hash
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1);
       if (hash && filterCategories.some(cat => cat.id === hash)) {
@@ -169,10 +172,12 @@ const ServicesPage = memo(function ServicesPage() {
     }
 
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [setActiveCategory]);
+  }, [setActiveCategory, isMounted]);
 
   // Gérer la navigation depuis le menu
   useEffect(() => {
+    if (!isMounted) return;
+    
     if (isNavigatingFromNav && !isInitialLoad.current) {
       window.history.replaceState(null, '', `/services#${activeCategory}`);
       setTimeout(() => setIsNavigatingFromNav(false), 100);
@@ -190,7 +195,7 @@ const ServicesPage = memo(function ServicesPage() {
     if (isInitialLoad.current) {
       isInitialLoad.current = false;
     }
-  }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav]);
+  }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav, isMounted]);
 
   // Setup des écouteurs de scroll pour les filtres
   useEffect(() => {
@@ -247,23 +252,22 @@ const ServicesPage = memo(function ServicesPage() {
       className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="services-title"
     >
-      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
+      {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes répétitives - une seule couche */}
+        {/* Lignes répétitives - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
         <div
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
           }}
           aria-hidden="true"
         />
 
-        {/* Cercles flous STATIQUES */}
+        {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
         <div className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux */}
+        {/* Points lumineux - 2 SEULEMENT */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
@@ -398,7 +402,7 @@ const ServicesPage = memo(function ServicesPage() {
             </div>
           </div>
 
-          {/* Description de la catégorie - AVEC ANIMATION CSS */}
+          {/* Description de la catégorie - AVEC ANIMATION CSS LÉGÈRE */}
           <p
             key={activeCategory}
             className="text-center text-gray-400 mt-4 max-w-2xl mx-auto animate-fadeIn"
@@ -424,7 +428,7 @@ const ServicesPage = memo(function ServicesPage() {
           </div>
         </div>
 
-        {/* SECTION FAQ */}
+        {/* SECTION FAQ - OPTIMISÉE */}
         <div className="mt-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">

@@ -6,7 +6,7 @@ import {
   ChevronLeft, ChevronRight, Filter, X
 } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import { articles as baseArticles } from './data/articles';
 import profileImage from '../assets/images/profile3.webp';
@@ -14,39 +14,50 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 
 export default function BlogPage() {
   const { t, language } = useTranslation();
-
-  // Traduction des catégories depuis blog.json avec fallback typé
-  const categoriesRaw = t('filters.categories', 'blog');
-  const categoriesMap: Record<string, string> = 
-    categoriesRaw && typeof categoriesRaw === 'object' ? categoriesRaw : {};
-
-  const allCategoryRaw = t('filters.all', 'blog');
-  const allCategory = typeof allCategoryRaw === 'string' ? allCategoryRaw : 'Tous';
-
-  const categories = [allCategory, ...Object.values(categoriesMap)];
-
-  const [selectedCategory, setSelectedCategory] = useState(allCategory);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const articlesPerPage = 6;
 
-  // Catégorie effective : si la catégorie sélectionnée n'existe pas dans la nouvelle langue, on prend "Tous/All"
-  const effectiveCategory = categories.includes(selectedCategory) ? selectedCategory : allCategory;
+  // Traduction des catégories - MÉMOÏSÉE
+  const { categories, allCategory } = useMemo(() => {
+    const categoriesRaw = t('filters.categories', 'blog');
+    const categoriesMap: Record<string, string> = 
+      categoriesRaw && typeof categoriesRaw === 'object' ? categoriesRaw : {};
 
-  // Réinitialisation complète lors du changement de langue
+    const allCategoryRaw = t('filters.all', 'blog');
+    const allCategory = typeof allCategoryRaw === 'string' ? allCategoryRaw : 'Tous';
+
+    return {
+      categories: [allCategory, ...Object.values(categoriesMap)],
+      allCategory
+    };
+  }, [t, language]);
+
+  // Initialisation de la catégorie sélectionnée
   useEffect(() => {
     setSelectedCategory(allCategory);
+  }, [allCategory]);
+
+  // Réinitialisation lors du changement de langue
+  useEffect(() => {
     setSearchQuery("");
     setCurrentPage(1);
-  }, [language, allCategory]);
+  }, [language]);
 
   // Reset page quand la catégorie ou la recherche change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, searchQuery]);
 
-  // Fusion des articles avec leurs traductions, fallback sur les données originales
+  // Catégorie effective
+  const effectiveCategory = useMemo(() => 
+    categories.includes(selectedCategory) ? selectedCategory : allCategory,
+    [selectedCategory, categories, allCategory]
+  );
+
+  // Fusion des articles avec leurs traductions - MÉMOÏSÉE
   const translatedArticles = useMemo(() => {
     return baseArticles.map(article => {
       const key = `article${article.id}`;
@@ -68,32 +79,72 @@ export default function BlogPage() {
     });
   }, [t, language]);
 
-  const filteredArticles = translatedArticles.filter(article => {
-    // Créer une variable locale typée pour les tags
-    const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
-    const matchesCategory = effectiveCategory === allCategory || article.category === effectiveCategory;
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  // Articles filtrés - MÉMOÏSÉS
+  const filteredArticles = useMemo(() => {
+    return translatedArticles.filter(article => {
+      const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
+      const matchesCategory = effectiveCategory === allCategory || article.category === effectiveCategory;
+      const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesCategory && matchesSearch;
+    });
+  }, [translatedArticles, effectiveCategory, allCategory, searchQuery]);
 
-  const featuredArticles = translatedArticles.filter(a => a.featured);
-  const indexOfLastArticle = currentPage * articlesPerPage;
-  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
-  const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
-  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+  // Articles à la une - MÉMOÏSÉS
+  const featuredArticles = useMemo(() => 
+    translatedArticles.filter(a => a.featured),
+    [translatedArticles]
+  );
 
-  // Texte pour le tag "plus" avec fallback
-  const moreTagsRaw = t('featured.tags.more', 'blog');
-  const moreTagsTemplate = typeof moreTagsRaw === 'string' ? moreTagsRaw : '+{{count}}';
+  // Pagination - MÉMOÏSÉE
+  const { currentArticles, totalPages } = useMemo(() => {
+    const indexOfLastArticle = currentPage * articlesPerPage;
+    const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+    return {
+      currentArticles: filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle),
+      totalPages: Math.ceil(filteredArticles.length / articlesPerPage)
+    };
+  }, [filteredArticles, currentPage]);
+
+  // Texte pour le tag "plus" - MÉMOÏSÉ
+  const moreTagsTemplate = useMemo(() => {
+    const moreTagsRaw = t('featured.tags.more', 'blog');
+    return typeof moreTagsRaw === 'string' ? moreTagsRaw : '+{{count}}';
+  }, [t]);
+
+  // Handlers - MÉMOÏSÉS
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }, []);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("");
+  }, []);
+
+  const handleCategorySelect = useCallback((category: string) => {
+    setSelectedCategory(category);
+    setIsFilterOpen(false);
+  }, []);
+
+  const handlePrevPage = useCallback(() => {
+    setCurrentPage(prev => Math.max(prev - 1, 1));
+  }, []);
+
+  const handleNextPage = useCallback(() => {
+    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+  }, [totalPages]);
+
+  const handlePageSelect = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
 
   return (
     <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
+      {/* FOND OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche */}
-        <div className="absolute inset-0 opacity-20" style={{
+        {/* Lignes subtiles - une seule couche, opacité réduite */}
+        <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
             rgba(59,130,246,0.05) 1px, 
@@ -101,10 +152,9 @@ export default function BlogPage() {
             transparent 60px)`
         }}></div>
         
-        {/* Cercles flous STATIQUES */}
+        {/* Cercles flous - 2 SEULEMENT */}
         <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl"></div>
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
@@ -140,12 +190,12 @@ export default function BlogPage() {
                 type="text"
                 placeholder={t('search.placeholder', 'blog')}
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearchChange}
                 className="w-full pl-9 sm:pl-14 pr-8 sm:pr-10 py-3 sm:py-4 md:py-5 bg-[#141B2B]/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all shadow-md sm:shadow-lg text-sm sm:text-base text-white placeholder-gray-500 font-medium"
               />
               {searchQuery && (
                 <button
-                  onClick={() => setSearchQuery("")}
+                  onClick={handleClearSearch}
                   className="absolute right-3 sm:right-5 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
                   aria-label={t('search.clear', 'blog')}
                 >
@@ -179,10 +229,7 @@ export default function BlogPage() {
                   {categories.map((category) => (
                     <button
                       key={category}
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setIsFilterOpen(false);
-                      }}
+                      onClick={() => handleCategorySelect(category)}
                       className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 min-w-[80px] tracking-tight ${
                         selectedCategory === category
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
@@ -228,13 +275,10 @@ export default function BlogPage() {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
               {featuredArticles.slice(0, 2).map((article, index) => {
-                // Extraire les tags typés
                 const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
                 return (
                   <Link href={`/blog/${article.slug}`} key={article.id}>
-                    <div
-                      className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
-                    >
+                    <div className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1">
                       {/* Image de couverture */}
                       <div className="relative h-40 xs:h-48 sm:h-56 md:h-64 overflow-hidden">
                         <Image
@@ -244,7 +288,7 @@ export default function BlogPage() {
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
                           sizes="(max-width: 480px) 100vw, (max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           loading={index === 0 ? "eager" : "lazy"}
-                          quality={75}
+                          quality={70}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                         
@@ -323,13 +367,10 @@ export default function BlogPage() {
         {currentArticles.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-10 sm:mb-12 md:mb-16">
             {currentArticles.map((article, index) => {
-              // Extraire les tags typés
               const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
               return (
                 <Link href={`/blog/${article.slug}`} key={article.id}>
-                  <div
-                    className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
-                  >
+                  <div className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1">
                     {/* Image de couverture */}
                     <div className="relative h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 overflow-hidden">
                       <Image
@@ -419,7 +460,7 @@ export default function BlogPage() {
         {totalPages > 1 && (
           <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-3 flex-wrap px-2">
             <button
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              onClick={handlePrevPage}
               disabled={currentPage === 1}
               className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.previous', 'blog')}
@@ -431,7 +472,7 @@ export default function BlogPage() {
               {[...Array(totalPages)].map((_, i) => (
                 <button
                   key={i}
-                  onClick={() => setCurrentPage(i + 1)}
+                  onClick={() => handlePageSelect(i + 1)}
                   className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all tracking-tight ${
                     currentPage === i + 1
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105 sm:scale-110'
@@ -444,7 +485,7 @@ export default function BlogPage() {
             </div>
             
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              onClick={handleNextPage}
               disabled={currentPage === totalPages}
               className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.next', 'blog')}
@@ -458,7 +499,7 @@ export default function BlogPage() {
         <div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
           <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
           <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
-            {/* Éléments décoratifs */}
+            {/* Éléments décoratifs - allégés */}
             <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             

@@ -2,10 +2,6 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
-import Image from 'next/image';
-import clientImage from '../../assets/images/profile2.webp';
-import chimeneImage from '../../assets/images/profile4.webp';
-import cesarImage from '../../assets/images/profile5.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface Testimonial {
@@ -13,10 +9,8 @@ interface Testimonial {
   content: string;
   country: string;
   rating?: number;
-  image?: any;
-  isRealImage?: boolean;
-  initials?: string;
-  gradient?: string;
+  initials: string; // Maintenant obligatoire
+  gradient: string; // Maintenant obligatoire
   flag?: string;
 }
 
@@ -34,44 +28,53 @@ const SocialProof = memo(function SocialProof() {
   const [showRightArrow, setShowRightArrow] = useState(true);
   const animationRef = useRef<number>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Détection desktop/mobile
   useEffect(() => {
-    const checkScreen = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    checkScreen();
-    window.addEventListener('resize', checkScreen, { passive: true });
-    return () => window.removeEventListener('resize', checkScreen);
+    setIsMounted(true);
   }, []);
 
-  // Charger les témoignages
+  // Charger les témoignages - UNIQUEMENT AVEC COULEURS
   useEffect(() => {
     try {
       const testimonialsData = t('testimonials', 'testimonials');
       if (Array.isArray(testimonialsData)) {
-        const enrichedTestimonials = testimonialsData.map((testimonial: any) => {
-          const baseTestimonial = { ...testimonial, rating: 5 };
+        const enrichedTestimonials = testimonialsData.map((testimonial: any, index: number) => {
+          // Assigner des gradients fixes basés sur l'index pour la cohérence
+          const gradients = [
+            'from-blue-500 to-cyan-500',
+            'from-emerald-500 to-teal-500',
+            'from-amber-500 to-orange-500',
+            'from-green-500 to-emerald-500',
+            'from-indigo-500 to-purple-500',
+            'from-pink-500 to-rose-500',
+            'from-violet-500 to-purple-500',
+            'from-red-500 to-pink-500'
+          ];
+          
+          // Générer des initiales à partir du nom
+          const nameParts = testimonial.name.split(' ');
+          const initials = nameParts.map((part: string) => part[0]).join('').substring(0, 2).toUpperCase();
+          
+          // Flags par pays
+          const flags: {[key: string]: string} = {
+            'Côte d\'Ivoire': '🇨🇮',
+            'France': '🇫🇷',
+            'Congo': '🇨🇬',
+            'Cameroun': '🇨🇲',
+            'Bénin': '🇧🇯',
+            'Togo': '🇹🇬',
+            'Sénégal': '🇸🇳',
+            'Belgique': '🇧🇪'
+          };
 
-          if (testimonial.name.includes('Ninsemouh')) {
-            return { ...baseTestimonial, image: clientImage, isRealImage: true, flag: '🇨🇮' };
-          } else if (testimonial.name.includes('Marie')) {
-            return { ...baseTestimonial, initials: 'MA', gradient: 'from-blue-500 to-cyan-500', flag: '🇫🇷' };
-          } else if (testimonial.name.includes('César')) {
-            return { ...baseTestimonial, image: cesarImage, isRealImage: true, flag: '🇨🇬' };
-          } else if (testimonial.name.includes('Maurice')) {
-            return { ...baseTestimonial, initials: 'MA', gradient: 'from-emerald-500 to-teal-500', flag: '🇨🇲' };
-          } else if (testimonial.name.includes('Jean')) {
-            return { ...baseTestimonial, initials: 'JE', gradient: 'from-amber-500 to-orange-500', flag: '🇧🇯' };
-          } else if (testimonial.name.includes('Chimène')) {
-            return { ...baseTestimonial, image: chimeneImage, isRealImage: true, flag: '🇹🇬' };
-          } else if (testimonial.name.includes('Gérard')) {
-            return { ...baseTestimonial, initials: 'GA', gradient: 'from-green-500 to-emerald-500', flag: '🇸🇳' };
-          } else if (testimonial.name.includes('Camille')) {
-            return { ...baseTestimonial, initials: 'CB', gradient: 'from-indigo-500 to-purple-500', flag: '🇧🇪' };
-          }
-          return baseTestimonial;
+          return {
+            ...testimonial,
+            rating: 5,
+            initials,
+            gradient: gradients[index % gradients.length],
+            flag: flags[testimonial.country] || '🌍'
+          };
         });
         setTestimonials(enrichedTestimonials);
       }
@@ -103,13 +106,13 @@ const SocialProof = memo(function SocialProof() {
     }
   }, []);
 
-  // Animation de défilement horizontal - CORRIGÉE
+  // Animation de défilement horizontal
   useEffect(() => {
-    if (testimonials.length === 0 || !scrollRef.current) return;
+    if (testimonials.length === 0 || !scrollRef.current || !isMounted) return;
     
     let rafId: number;
     let lastTimestamp = 0;
-    const speed = 0.5; // Vitesse constante
+    const speed = 0.5;
 
     const scroll = (timestamp: number) => {
       if (!scrollRef.current) {
@@ -125,16 +128,14 @@ const SocialProof = memo(function SocialProof() {
         return;
       }
 
-      // Défilement continu
       let newScrollLeft = current.scrollLeft + speed;
 
       if (newScrollLeft >= maxScroll) {
-        newScrollLeft = 0; // Retour au début
+        newScrollLeft = 0;
       }
 
       current.scrollLeft = newScrollLeft;
 
-      // Mettre à jour les flèches moins souvent
       if (timestamp - lastTimestamp > 200) {
         setShowLeftArrow(newScrollLeft > 20);
         setShowRightArrow(newScrollLeft + current.clientWidth < current.scrollWidth - 20);
@@ -144,13 +145,12 @@ const SocialProof = memo(function SocialProof() {
       rafId = requestAnimationFrame(scroll);
     };
 
-    // Démarrer l'animation
     rafId = requestAnimationFrame(scroll);
 
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [testimonials.length]); // Dépend UNIQUEMENT de testimonials.length
+  }, [testimonials.length, isMounted]);
 
   const checkScrollButtons = useCallback(() => {
     if (scrollRef.current) {
@@ -172,17 +172,15 @@ const SocialProof = memo(function SocialProof() {
     }
   }, [checkScrollButtons]);
 
-  // PAS de mouse enter/leave qui bloquent le défilement
-
   useEffect(() => {
     checkScrollButtons();
     window.addEventListener('resize', checkScrollButtons, { passive: true });
     return () => window.removeEventListener('resize', checkScrollButtons);
   }, [checkScrollButtons]);
 
-  // Points lumineux
+  // Points lumineux réduits
   const lightPoints = useRef(
-    [...Array(3)].map(() => ({
+    [...Array(2)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -195,7 +193,7 @@ const SocialProof = memo(function SocialProof() {
       className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
       aria-label={language === 'fr' ? "Témoignages clients" : "Client testimonials"}
     >
-      {/* FOND */}
+      {/* FOND SIMPLIFIÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div
           className="absolute inset-0 opacity-30"
@@ -205,9 +203,11 @@ const SocialProof = memo(function SocialProof() {
           aria-hidden="true"
         />
 
+        {/* Cercles flous - 2 seulement */}
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
+        {/* Points lumineux - seulement 2 */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
@@ -240,7 +240,7 @@ const SocialProof = memo(function SocialProof() {
           </p>
         </div>
 
-        {/* CARROUSEL - SANS INTERACTIONS BLOQUANTES */}
+        {/* CARROUSEL */}
         <div className="relative max-w-7xl mx-auto mb-16 md:mb-20">
           {/* Flèches */}
           <>
@@ -265,7 +265,7 @@ const SocialProof = memo(function SocialProof() {
             </button>
           </>
 
-          {/* Conteneur des témoignages */}
+          {/* Conteneur des témoignages - ZÉRO IMAGE */}
           <div
             ref={scrollRef}
             className="flex overflow-x-auto gap-4 md:gap-6 pb-8 scrollbar-hide"
@@ -295,23 +295,10 @@ const SocialProof = memo(function SocialProof() {
                   </p>
 
                   <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
-                    {testimonial.isRealImage && testimonial.image ? (
-                      <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#1F2937] shadow-md flex-shrink-0">
-                        <Image
-                          src={testimonial.image}
-                          alt={`${language === 'fr' ? 'Photo de' : 'Photo of'} ${testimonial.name}`}
-                          fill
-                          className="object-cover"
-                          sizes="48px"
-                          quality={70}
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center text-white text-xs md:text-sm font-black border-2 border-[#1F2937] shadow-md flex-shrink-0 tracking-tight`}>
-                        {testimonial.initials || testimonial.name.substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
+                    {/* AVATAR UNIQUEMENT EN COULEUR - PLUS D'IMAGE */}
+                    <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white text-xs md:text-sm font-black border-2 border-[#1F2937] shadow-md flex-shrink-0 tracking-tight`}>
+                      {testimonial.initials}
+                    </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="font-extrabold text-white text-xs sm:text-sm md:text-base tracking-tight truncate">
@@ -319,7 +306,7 @@ const SocialProof = memo(function SocialProof() {
                       </div>
                       <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5 font-medium">
                         <MapPin size={10} className="text-blue-400 flex-shrink-0" />
-                        <span className="truncate">{testimonial.flag || '🌍'} {testimonial.country}</span>
+                        <span className="truncate">{testimonial.flag} {testimonial.country}</span>
                       </div>
                     </div>
                   </div>

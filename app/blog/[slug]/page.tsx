@@ -8,7 +8,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getArticleBySlug, getRelatedArticles } from '../data/articles';
 import profileImage from '../../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -29,7 +29,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  // Appliquer les traductions à l'article
+  // Appliquer les traductions à l'article - MÉMOÏSÉ
   const article = useMemo(() => {
     const key = `article${baseArticle.id}`;
     const translatedTitle = t(`${key}.title`, 'articlesData');
@@ -48,8 +48,12 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     };
   }, [baseArticle, t, language]);
 
-  // Articles similaires traduits
-  const baseRelated = getRelatedArticles(article.id, article.category, 3);
+  // Articles similaires traduits - MÉMOÏSÉ
+  const baseRelated = useMemo(() => 
+    getRelatedArticles(article.id, article.category, 3),
+    [article.id, article.category]
+  );
+  
   const relatedArticles = useMemo(() => {
     return baseRelated.map(related => {
       const key = `article${related.id}`;
@@ -61,10 +65,16 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     });
   }, [baseRelated, t, language]);
 
-  const increaseFont = () => setFontSize(prev => Math.min(prev + 10, 200));
-  const decreaseFont = () => setFontSize(prev => Math.max(prev - 10, 70));
+  // Handlers - MÉMOÏSÉS
+  const increaseFont = useCallback(() => {
+    setFontSize(prev => Math.min(prev + 10, 200));
+  }, []);
 
-  const toggleFullscreen = () => {
+  const decreaseFont = useCallback(() => {
+    setFontSize(prev => Math.max(prev - 10, 70));
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
     const elem = document.querySelector('.article-content-area');
     if (elem) {
       if (!document.fullscreenElement) {
@@ -75,8 +85,9 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         setIsFullscreen(false);
       }
     }
-  };
+  }, []);
 
+  // Effet pour le changement de plein écran
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -87,12 +98,25 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   const whatsappLink = 'https://wa.me/22962278090';
 
+  // Labels traduits - MÉMOÏSÉS
+  const labels = useMemo(() => ({
+    backToBlog: t('backToBlog', 'blog') || 'Retour au blog',
+    whatsappMessage: t('whatsappMessage', 'blog') || 'Envoyer un message WhatsApp',
+    message: t('message', 'blog') || 'Message',
+    decreaseFont: t('decreaseFont', 'blog') || 'Réduire la taille du texte',
+    increaseFont: t('increaseFont', 'blog') || 'Agrandir la taille du texte',
+    exitFullscreen: t('exitFullscreen', 'blog') || 'Quitter le plein écran',
+    fullscreen: t('fullscreen', 'blog') || 'Lecture plein écran',
+    relatedArticles: t('relatedArticles', 'blog') || 'Articles similaires',
+    readMore: t('readMore', 'blog') || 'Lire'
+  }), [t]);
+
   return (
     <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* FOND OPTIMISÉ - PAS D'ANIMATIONS */}
+      {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche */}
-        <div className="absolute inset-0 opacity-20" style={{
+        {/* Lignes subtiles - une seule couche, opacité réduite */}
+        <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
             rgba(59,130,246,0.05) 1px, 
@@ -100,7 +124,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             transparent 60px)`
         }}></div>
         
-        {/* Cercles flous STATIQUES */}
+        {/* Cercles flous - 2 SEULEMENT */}
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
       </div>
@@ -108,18 +132,18 @@ export default function ArticlePage({ params }: ArticlePageProps) {
       <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
         {/* Bouton retour */}
         <div className="mb-4 sm:mb-6 md:mb-8">
-          <Link href="/blog">
+          <Link href="/blog" passHref>
             <button className="group inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl border-2 border-blue-500/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all text-xs sm:text-sm">
               <ArrowLeft size={14} className="sm:w-4 sm:h-4 text-blue-400 group-hover:text-blue-300 group-hover:-translate-x-1 transition-all" />
               <span className="text-blue-400 group-hover:text-blue-300 font-medium">
-                {t('backToBlog', 'blog') || 'Retour au blog'}
+                {labels.backToBlog}
               </span>
             </button>
           </Link>
         </div>
       </div>
 
-      {/* Image pleine largeur */}
+      {/* Image pleine largeur - OPTIMISÉE */}
       <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10">
         <Image
           src={article.image}
@@ -128,7 +152,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           className="object-cover"
           priority
           sizes="100vw"
-          quality={80}
+          quality={75} // Réduit de 80 à 75
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent"></div>
         <div className="absolute top-2 sm:top-3 md:top-4 left-3 sm:left-4 md:left-6 lg:left-8">
@@ -183,6 +207,8 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                     fill
                     className="object-cover"
                     sizes="48px"
+                    loading="lazy"
+                    quality={70}
                   />
                 </div>
                 <div>
@@ -196,10 +222,10 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors shadow-md hover:shadow-lg"
-                title={t('whatsappMessage', 'blog') || 'Envoyer un message WhatsApp'}
+                title={labels.whatsappMessage}
               >
                 <MessageCircle size={14} className="sm:w-4 sm:h-4" />
-                <span>{t('message', 'blog') || 'Message'}</span>
+                <span>{labels.message}</span>
               </a>
             </div>
           </div>
@@ -210,7 +236,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <button
             onClick={decreaseFont}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title={t('decreaseFont', 'blog') || 'Réduire la taille du texte'}
+            title={labels.decreaseFont}
           >
             A−
           </button>
@@ -218,14 +244,14 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <button
             onClick={increaseFont}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title={t('increaseFont', 'blog') || 'Agrandir la taille du texte'}
+            title={labels.increaseFont}
           >
             A+
           </button>
           <button
             onClick={toggleFullscreen}
             className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition border border-[#1F2937]"
-            title={isFullscreen ? (t('exitFullscreen', 'blog') || 'Quitter le plein écran') : (t('fullscreen', 'blog') || 'Lecture plein écran')}
+            title={isFullscreen ? labels.exitFullscreen : labels.fullscreen}
           >
             {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
@@ -243,7 +269,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           />
         </div>
 
-        {/* Styles tableaux */}
+        {/* Styles tableaux - OPTIMISÉS */}
         <style jsx>{`
           .article-content-area table {
             width: 100%;
@@ -275,12 +301,12 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <div className="mt-10 sm:mt-12 md:mt-16">
             <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-5 md:mb-6 text-white flex items-center gap-2 sm:gap-3">
               <span className="w-1 h-4 sm:h-5 md:h-6 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
-              {t('relatedArticles', 'blog') || 'Articles similaires'}
+              {labels.relatedArticles}
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
               {relatedArticles.map((related, index) => (
-                <Link href={`/blog/${related.slug}`} key={related.id}>
+                <Link href={`/blog/${related.slug}`} key={related.id} passHref>
                   <div
                     className="group bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
                   >
@@ -305,7 +331,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                         <span>{related.publishedAt}</span>
                       </div>
                       <div className="flex items-center gap-0.5 text-blue-400 font-medium text-[8px] sm:text-[10px] group/link">
-                        <span>{t('readMore', 'blog') || 'Lire'}</span>
+                        <span>{labels.readMore}</span>
                         <ArrowRight size={6} className="group-hover/link:translate-x-1 transition-transform" />
                       </div>
                     </div>

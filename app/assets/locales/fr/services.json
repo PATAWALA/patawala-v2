@@ -37,30 +37,30 @@
     "title": "Questions fréquentes",
     "subtitle": "Pour vous éclairer sur ma façon de travailler",
     "items": [
-      {
-        "question": "Quelle est la durée moyenne d'un projet ?",
-        "answer": "Cela dépend de la complexité : 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, 2 à 4 mois pour une application sur mesure."
-      },
-      {
-        "question": "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
-        "answer": "Je travaille jusqu'à votre entière satisfaction. Si un élément ne vous convient pas, j'apporte les améliorations nécessaires jusqu'à ce que vous soyez pleinement satisfait. C'est pourquoi mes clients sont très positifs sur mon travail."
-      },
-      {
-        "question": "Proposez-vous un suivi après la livraison ?",
-        "answer": "Oui, un mois de support est inclus pour vous accompagner après le lancement. Des forfaits de maintenance sont également disponibles."
-      },
-      {
-        "question": "Puis-je modifier le projet en cours de route ?",
-        "answer": "Absolument ! Nous travaillons par étapes avec des validations régulières pour ajuster au plus près de vos besoins."
-      },
-      {
-        "question": "Les prix affichés sont-ils définitifs ?",
-        "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis personnalisé après avoir compris vos besoins."
-      },
-      {
-        "question": "Comment fonctionne la consultation initiale ?",
-        "answer": "Elle est gratuite et dure environ 30 minutes. C'est l'occasion de discuter de vos objectifs, de vos idées et de voir ensemble si nous sommes sur la même longueur d'onde avant de commencer le véritable travail."
-      }
+{
+  "question": "Quelle est la durée moyenne d'un projet ?",
+  "answer": "Chaque projet avance à son rythme. Comptez 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, et 2 à 4 mois pour une application sur mesure. L'essentiel ? Un résultat qui vous ressemble, sans compromis sur la qualité."
+},
+{
+  "question": "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
+  "answer": "Votre satisfaction est ma seule ligne d'arrivée. Si un détail ne vous convient pas, je l'améliore sans limite jusqu'à ce que le résultat dépasse vos attentes. C'est pourquoi mes partenaires sont si positifs sur mon travail."
+},
+{
+  "question": "Proposez-vous un suivi après la livraison ?",
+  "answer": "Absolument. Un mois de support est inclus pour vous accompagner après le lancement. Et si besoin, des forfaits de maintenance sont là pour assurer la pérennité de votre projet."
+},
+{
+  "question": "Puis-je modifier le projet en cours de route ?",
+  "answer": "Bien sûr ! Nous travaillons par étapes, avec des validations régulières. Votre projet évolue avec vos idées, et je m'adapte pour qu'il reste aligné avec votre vision."
+},
+{
+  "question": "Les prix affichés sont-ils définitifs ?",
+  "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis sur mesure après avoir compris vos besoins, vos ambitions et votre budget."
+},
+{
+  "question": "Comment fonctionne la consultation initiale ?",
+  "answer": "Gratuite et sans engagement, elle dure environ 30 minutes. C'est le moment d'échanger sur vos objectifs, vos idées, et de voir ensemble si notre collaboration a du sens."
+}
     ]
   },
 

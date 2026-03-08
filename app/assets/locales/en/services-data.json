@@ -283,30 +283,30 @@
     "title": "Frequently asked questions",
     "subtitle": "To clarify how I work",
     "items": [
-      {
-        "question": "What is the average duration of a project?",
-        "answer": "It depends on complexity: 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce, 2 to 4 months for a custom application."
-      },
-      {
-        "question": "What if I'm not satisfied with the result?",
-        "answer": "I work until your complete satisfaction. If something isn't right, I make the necessary improvements until you are fully happy. This is why my clients are very positive about my work."
-      },
-      {
-        "question": "Do you offer post-delivery support?",
-        "answer": "Yes, one month of support is included after launch. Maintenance packages are also available."
-      },
-      {
-        "question": "Can I modify the project along the way?",
-        "answer": "Absolutely! We work in stages with regular validations to adjust as closely as possible to your needs."
-      },
-      {
-        "question": "Are the displayed prices final?",
-        "answer": "They are indicative bases. Each project is unique, so I provide a personalized quote after understanding your needs."
-      },
-      {
-        "question": "How does the initial consultation work?",
-        "answer": "It is free and lasts about 30 minutes. It's an opportunity to discuss your goals, your ideas, and see if we are on the same page before starting the actual work."
-      }
+{
+  "question": "What is the average duration of a project?",
+  "answer": "Each project moves at its own pace. Allow 1 to 2 weeks for a showcase website, 3 to 6 weeks for an e-commerce site, and 2 to 4 months for a custom application. The essential thing? A result that truly reflects you, with no compromise on quality."
+},
+{
+  "question": "What if I'm not satisfied with the result?",
+  "answer": "Your satisfaction is my only finish line. If any detail doesn't meet your expectations, I improve it without limits until the result exceeds them. That's why my partners are so positive about my work."
+},
+{
+  "question": "Do you provide support after delivery?",
+  "answer": "Absolutely. One month of support is included to assist you after launch. And if needed, maintenance packages are available to ensure the longevity of your project."
+},
+{
+  "question": "Can I make changes during the project?",
+  "answer": "Of course! We work in stages with regular checkpoints. Your project evolves with your ideas, and I adapt to keep it perfectly aligned with your vision."
+},
+{
+  "question": "Are the displayed prices final?",
+  "answer": "They are indicative bases. Since each project is unique, I provide a custom quote after understanding your needs, ambitions, and budget."
+},
+{
+  "question": "How does the initial consultation work?",
+  "answer": "Free and with no obligation, it lasts about 30 minutes. It's the perfect time to discuss your goals, your ideas, and see together if our collaboration makes sense."
+}
     ]
   },
 

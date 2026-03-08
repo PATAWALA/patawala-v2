@@ -2,7 +2,7 @@
 
 import { Home, ArrowLeft, Search, Frown, AlertCircle, Compass } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
 export default function NotFound() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -21,34 +21,40 @@ export default function NotFound() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Window dimensions pour particules
+  // Window dimensions pour particules - OPTIMISÉ
   useEffect(() => {
     setDimensions({ width: window.innerWidth, height: window.innerHeight });
     
-    const handleResize = () => {
+    const handleResize = useCallback(() => {
       setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    };
+    }, []);
     
     window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Points lumineux statiques pour les particules (réduits à 12)
-  const particles = [...Array(12)].map((_, i) => ({
-    id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    delay: Math.random() * 2,
-    duration: 3 + Math.random() * 2,
-  }));
+  // Points lumineux statiques pour les particules (RÉDUITS À 8 au lieu de 12)
+  const particles = useMemo(() => 
+    [...Array(8)].map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2,
+    })), []);
+
+  // Handler pour retour - MÉMOÏSÉ
+  const handleGoBack = useCallback(() => {
+    if (typeof window !== 'undefined') window.history.back();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
       {/* FOND OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche */}
+        {/* Lignes subtiles - une seule couche, opacité réduite */}
         <div
-          className="absolute inset-0 opacity-30"
+          className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: `repeating-linear-gradient(90deg, 
               rgba(59,130,246,0.05) 0px, 
@@ -121,7 +127,7 @@ export default function NotFound() {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Link href="/">
+            <Link href="/" passHref>
               <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Home size={20} className="text-white" />
@@ -133,7 +139,7 @@ export default function NotFound() {
               </div>
             </Link>
 
-            <Link href="/projets">
+            <Link href="/projets" passHref>
               <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Compass size={20} className="text-white" />
@@ -145,7 +151,7 @@ export default function NotFound() {
               </div>
             </Link>
 
-            <Link href="/#contact">
+            <Link href="/#contact" passHref>
               <div className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group sm:col-span-2 border border-blue-500/20 hover:scale-102 hover:translate-x-1">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Search size={20} className="text-white" />
@@ -162,9 +168,7 @@ export default function NotFound() {
         {/* Bouton retour */}
         <div className="text-center animate-fadeIn" style={{ animationDelay: '0.5s' }}>
           <button
-            onClick={() => {
-              if (typeof window !== 'undefined') window.history.back();
-            }}
+            onClick={handleGoBack}
             className="inline-flex items-center gap-2 text-blue-400 hover:text-cyan-400 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -172,7 +176,7 @@ export default function NotFound() {
           </button>
         </div>
 
-        {/* Particules - OPTIMISÉES AVEC CSS */}
+        {/* Particules - OPTIMISÉES AVEC CSS (8 au lieu de 12) */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {particles.map((particle) => (
             <div

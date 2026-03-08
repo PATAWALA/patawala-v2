@@ -42,19 +42,10 @@ const AboutSection = memo(function AboutSection() {
     }
   }, [t]);
 
-  // Points lumineux statiques - RÉDUITS à 6 pour les performances
-  const lightPoints = useRef(
-    [...Array(6)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
-
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      window.history.pushState(null, '', `/#${sectionId}`);
     }
   }, []);
 
@@ -80,28 +71,27 @@ const AboutSection = memo(function AboutSection() {
         className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
         aria-label={t('badge', 'about')}
       >
-        {/* FOND OPTIMISÉ - Pas d'animations lourdes */}
+        {/* FOND UNIQUE - MÊME QUE LA HERO SECTION */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles - CSS pur */}
+          {/* Lignes subtiles - CSS pur, ultra léger */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-50"
             style={{
               backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
             }}
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 opacity-50"
             style={{
               backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
             }}
             aria-hidden="true"
           />
 
-          {/* Cercles flous STATIQUES (pas d'animations) */}
+          {/* Cercles flous STATIQUES (2 au lieu de 3) */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl" aria-hidden="true" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
@@ -130,7 +120,7 @@ const AboutSection = memo(function AboutSection() {
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION - Optimisées (sans animations inutiles) */}
+            {/* CARTES MA VISION - Sans animations inutiles */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
               {Array.isArray(visionCards) && visionCards.length > 0 ? (
                 visionCards.map((card: VisionCard, index: number) => {
@@ -179,29 +169,14 @@ const AboutSection = memo(function AboutSection() {
 
             {/* Section image et bio */}
             <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              {/* Image à gauche - OPTIMISÉE (pas d'animations) */}
+              {/* Image à gauche - ULTRA OPTIMISÉE */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
-                  {/* Cercles STATIQUES (pas d'animations) */}
-                  <div className="absolute inset-0 bg-blue-500/30 rounded-full blur-2xl -z-10" aria-hidden="true" />
-                  <div className="absolute -inset-6 border-2 border-cyan-400/20 rounded-full -z-10" aria-hidden="true" />
-                  <div className="absolute -inset-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl -z-10" aria-hidden="true" />
-                  <div className="absolute -inset-10 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl -z-20" aria-hidden="true" />
-
-                  {/* Points lumineux - réduits */}
-                  {lightPoints.map((point, i) => (
-                    <div
-                      key={i}
-                      className="absolute w-1.5 h-1.5 bg-blue-400/40 rounded-full shadow-lg shadow-blue-400/30"
-                      style={{
-                        left: point.left,
-                        top: point.top,
-                        opacity: 0.4,
-                      }}
-                      aria-hidden="true"
-                    />
-                  ))}
-
+                  
+                  {/* SUPPRIMÉ : Tous les cercles décoratifs autour de l'image */}
+                  {/* Plus de : bg-blue-500/30 blur-2xl, border-2 cyan, bg-gradient, blur-3xl, points lumineux */}
+                  {/* L'image est maintenant NETTE, sans fioritures qui ralentissent */}
+                  
                   {/* Badge en haut à gauche */}
                   <div className="absolute top-0 left-0 z-30" style={{ transform: 'translate(-5%, -5%)' }}>
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
@@ -232,7 +207,7 @@ const AboutSection = memo(function AboutSection() {
                       quality={85}
                       placeholder="blur"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent pointer-events-none" aria-hidden="true" />
+                    {/* SUPPRIMÉ : le gradient overlay qui alourdit */}
                   </div>
                 </div>
               </div>
