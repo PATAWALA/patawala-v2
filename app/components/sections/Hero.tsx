@@ -127,7 +127,12 @@ const HeroSection = memo(function HeroSection() {
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-5 leading-tight px-1 sm:px-2 text-white">
               {t('title', 'hero')}
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 sm:mt-2 font-black min-h-[3rem] sm:min-h-[4rem]">
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400">
+                {/* Version mobile : phrase fixe */}
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
+                  {t('mobilePhrase', 'hero')}
+                </span>
+                {/* Version desktop : effet machine à écrire */}
+                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline">
                   {displayText || typedStrings[0]}
                   <span className="animate-pulse">|</span>
                 </span>

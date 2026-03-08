@@ -25,20 +25,14 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
     const servicesData = t('services', 'services-data');
     const cardData = t('card', 'services-data');
 
-    // Valeurs par défaut selon la langue
+    // Valeurs par défaut selon la langue (uniquement ce qui reste)
     const defaults = {
       fr: {
         popular: 'Populaire',
-        from: 'À partir de',
-        hourly: '/h',
-        monthly: '/mois',
         more: '+{{count}} autres'
       },
       en: {
         popular: 'Popular',
-        from: 'From',
-        hourly: '/h',
-        monthly: '/month',
         more: '+{{count}} more'
       }
     };
@@ -52,29 +46,18 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
       if (found) translatedService = found;
     }
 
-    // Labels de la carte
+    // Labels de la carte (popular et more)
     let cardLabels = currentDefaults;
     if (cardData && typeof cardData === 'object' && cardData !== null) {
       const cd = cardData as any;
       cardLabels = {
         popular: cd.popular || currentDefaults.popular,
-        from: cd.from || currentDefaults.from,
-        hourly: cd.hourly || currentDefaults.hourly,
-        monthly: cd.monthly || currentDefaults.monthly,
         more: cd.features?.more || currentDefaults.more,
       };
     }
 
     return { translatedService, labels: cardLabels };
-  }, [service, t, language]); // Dépendances explicites
-
-  // Déterminer le suffixe de prix - OPTIMISÉ AVEC useMemo
-  const priceSuffix = useMemo(() => {
-    const priceType = translatedService.pricing?.type;
-    if (priceType === 'horaire' ) return labels.hourly;
-    if (priceType === 'mensuel') return labels.monthly;
-    return '';
-  }, [translatedService.pricing?.type, labels.hourly, labels.monthly]);
+  }, [service, t, language]);
 
   // Générer un ID unique pour le titre de la carte (accessibilité)
   const cardTitleId = `service-${service.id}-title`;
@@ -123,14 +106,7 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
             {translatedService.shortDesc}
           </p>
 
-          <div className="mb-4" aria-label={`Prix : ${labels.from} ${translatedService.pricing?.startingAt} ${translatedService.pricing?.currency}${priceSuffix}`}>
-            <span className="text-2xl font-bold text-white">
-              {labels.from} {translatedService.pricing?.startingAt} {translatedService.pricing?.currency}
-            </span>
-            {priceSuffix && (
-              <span className="text-gray-500 text-sm ml-1">{priceSuffix}</span>
-            )}
-          </div>
+          {/* Prix supprimé */}
 
           <p className="text-sm text-gray-500 border-t border-[#1F2937] pt-4">
             {translatedService.description}

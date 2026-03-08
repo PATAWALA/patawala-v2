@@ -17,28 +17,48 @@ interface VisionData {
   cards: VisionCard[];
 }
 
+// Données par défaut pour éviter le flash de "Chargement..."
+const DEFAULT_VISION_CARDS: VisionCard[] = [
+  {
+    title: "Conseil & Stratégie Tech",
+    description: "Je sélectionne les technologies les plus rentables pour votre activité, en éliminant les coûts inutiles et les risques techniques dès la phase de conception."
+  },
+  {
+    title: "Partenariat & Vision Long Terme",
+    description: "Plus qu'un développeur, je deviens votre conseiller tech de confiance (CTO) pour sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
+  },
+  {
+    title: "Innovation & Performance Commerciale",
+    description: "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
+  },
+  {
+    title: "Engagement & Co-création",
+    description: "Ma méthode repose sur une écoute active : vous gardez le contrôle de votre vision pendant que je garantis l'intégrité technique et la pérennité de l'outil."
+  }
+];
+
 const AboutSection = memo(function AboutSection() {
   const { t } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [visionCards, setVisionCards] = useState<VisionCard[]>([]);
+  // Initialiser avec les valeurs par défaut pour éviter l'état de chargement
+  const [visionCards, setVisionCards] = useState<VisionCard[]>(DEFAULT_VISION_CARDS);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Récupérer les cartes de vision
+  // Récupérer les cartes de vision - avec fallback immédiat
   useEffect(() => {
     try {
       const visionData = t('vision', 'about') as unknown as VisionData;
-      if (visionData && typeof visionData === 'object' && 'cards' in visionData) {
+      if (visionData && typeof visionData === 'object' && 'cards' in visionData && Array.isArray(visionData.cards) && visionData.cards.length > 0) {
         setVisionCards(visionData.cards);
-      } else {
-        setVisionCards([]);
       }
+      // Si les données ne sont pas disponibles, on garde les valeurs par défaut
     } catch (error) {
       console.error('Erreur lors du chargement des cartes:', error);
-      setVisionCards([]);
+      // On garde les valeurs par défaut
     }
   }, [t]);
 
@@ -120,43 +140,37 @@ const AboutSection = memo(function AboutSection() {
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION - Sans animations inutiles */}
+            {/* CARTES MA VISION - PLUS DE MESSAGE DE CHARGEMENT */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
-              {Array.isArray(visionCards) && visionCards.length > 0 ? (
-                visionCards.map((card: VisionCard, index: number) => {
-                  const Icon = cardIcons[index] || MessagesSquare;
+              {visionCards.map((card: VisionCard, index: number) => {
+                const Icon = cardIcons[index] || MessagesSquare;
 
-                  return (
-                    <div
-                      key={index}
-                      className="bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
-                      role="article"
-                      aria-labelledby={`vision-title-${index}`}
-                    >
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-3xl sm:text-4xl font-black text-blue-400/80 tracking-tighter">
-                            {`0${index + 1}`}
-                          </span>
-                          <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70" aria-hidden="true" />
-                        </div>
-
-                        <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white tracking-tight">
-                          {card.title}
-                        </h3>
-
-                        <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-medium">
-                          {card.description}
-                        </p>
+                return (
+                  <div
+                    key={index}
+                    className="bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
+                    role="article"
+                    aria-labelledby={`vision-title-${index}`}
+                  >
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-3xl sm:text-4xl font-black text-blue-400/80 tracking-tighter">
+                          {`0${index + 1}`}
+                        </span>
+                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70" aria-hidden="true" />
                       </div>
+
+                      <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white tracking-tight">
+                        {card.title}
+                      </h3>
+
+                      <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-medium">
+                        {card.description}
+                      </p>
                     </div>
-                  );
-                })
-              ) : (
-                <div className="col-span-2 text-center text-gray-400 text-base sm:text-lg py-10">
-                  Chargement des données...
-                </div>
-              )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* BADGE "Qui suis-je ?" */}
@@ -172,10 +186,6 @@ const AboutSection = memo(function AboutSection() {
               {/* Image à gauche - ULTRA OPTIMISÉE */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
-                  
-                  {/* SUPPRIMÉ : Tous les cercles décoratifs autour de l'image */}
-                  {/* Plus de : bg-blue-500/30 blur-2xl, border-2 cyan, bg-gradient, blur-3xl, points lumineux */}
-                  {/* L'image est maintenant NETTE, sans fioritures qui ralentissent */}
                   
                   {/* Badge en haut à gauche */}
                   <div className="absolute top-0 left-0 z-30" style={{ transform: 'translate(-5%, -5%)' }}>
@@ -207,7 +217,6 @@ const AboutSection = memo(function AboutSection() {
                       quality={85}
                       placeholder="blur"
                     />
-                    {/* SUPPRIMÉ : le gradient overlay qui alourdit */}
                   </div>
                 </div>
               </div>

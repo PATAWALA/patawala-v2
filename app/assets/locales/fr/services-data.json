@@ -1,64 +1,51 @@
 {
-  "badge": "Solutions sur mesure",
-  "title": "Des solutions digitales",
+  "badge": "Solutions sur-mesure",
+  "title": "Solutions digitales",
   "titleHighlight": "adaptées à vos besoins",
-  "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de la réflexion à la réalisation.",
+  "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de l'idée à la réalisation.",
 
   "filters": {
     "all": "Tous",
-    "web": "Développement Web",
-    "mobile": "Applications Mobile",
-    "design": "Design & Identité",
-    "consulting": "Conseil & Audit",
+    "web": "Développement web",
+    "mobile": "Applications mobiles",
+    "design": "Design & identité",
+    "consulting": "Conseil & audit",
     "description": {
-      "all": "L'ensemble de mes services pour votre présence digitale",
-      "web": "Sites internet, boutiques en ligne et applications web performants et évolutifs",
+      "all": "Tous mes services pour votre présence digitale",
+      "web": "Sites vitrine, e-commerce et applications web, performants et évolutifs",
       "mobile": "Applications natives et hybrides pour iOS, Android et tablettes",
-      "design": "Identité visuelle, maquettes et refonte design pour une image professionnelle",
+      "design": "Identité visuelle, maquettes et refonte pour une image professionnelle",
       "consulting": "Stratégie digitale, audit technique et accompagnement personnalisé"
     }
   },
 
   "card": {
     "popular": "Populaire",
-    "from": "À partir de",
-    "hourly": "/h",
-    "monthly": "/mois",
     "features": {
-      "more": "+{{count}} autres fonctionnalités"
+      "more": "+{{count}} fonctionnalités"
     }
   },
 
   "services": {
     "site-vitrine": {
-      "title": "Site Vitrine",
+      "title": "Site vitrine",
       "shortDesc": "Présentez votre activité avec un site professionnel",
       "description": "Un site élégant et fonctionnel pour présenter votre entreprise, vos services et vos réalisations.",
       "ctaText": "Créer mon site",
-      "pricing": {
-        "startingAt": "200",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Design personnalisé",
         "Adapté aux mobiles",
         "Pages illimitées",
         "Formulaire de contact",
         "Galerie photos",
-        "Mise à jour facile"
+        "Mises à jour faciles"
       ]
     },
     "site-ecommerce": {
-      "title": "Site E-commerce",
-      "shortDesc": "Vendez vos produits en ligne facilement",
-      "description": "Une boutique en ligne complète pour vendre vos produits et gérer vos commandes simplement.",
+      "title": "Site e-commerce",
+      "shortDesc": "Vendez vos produits en ligne simplement",
+      "description": "Une boutique en ligne complète pour vendre vos produits et gérer vos commandes en toute simplicité.",
       "ctaText": "Lancer ma boutique",
-      "pricing": {
-        "startingAt": "500",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Catalogue produits",
         "Panier d'achat",
@@ -69,34 +56,24 @@
       ]
     },
     "application-web": {
-      "title": "Application Web",
+      "title": "Application web",
       "shortDesc": "Des outils en ligne adaptés à vos besoins",
       "description": "Une application web sur mesure pour automatiser vos processus et gérer votre activité.",
       "ctaText": "Développer mon app",
-      "pricing": {
-        "startingAt": "400",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
-        "Espace membres",
+        "Espace membre",
         "Gestion de données",
         "Interface admin",
         "Notifications",
         "Tableaux de bord",
-        "Exports de données"
+        "Export de données"
       ]
     },
     "plateforme-sur-mesure": {
-      "title": "Plateforme Sur Mesure",
+      "title": "Plateforme sur-mesure",
       "shortDesc": "Une solution unique pour votre activité spécifique",
       "description": "Une plateforme entièrement personnalisée pour répondre à des besoins complexes et spécifiques.",
       "ctaText": "Discuter de mon projet",
-      "pricing": {
-        "startingAt": "800",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Fonctionnalités sur mesure",
         "Architecture évolutive",
@@ -109,129 +86,94 @@
     "app-ios-android": {
       "title": "Application iOS & Android",
       "shortDesc": "Une application pour tous vos utilisateurs",
-      "description": "Une application mobile native ou hybride disponible sur iPhone et Android.",
+      "description": "Une application native ou hybride disponible sur iPhone et Android.",
       "ctaText": "Créer mon app",
-      "pricing": {
-        "startingAt": "600",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Compatible iOS/Android",
         "Design mobile",
         "Notifications push",
-        "Hors-ligne possible",
-        "Mise à jour automatique",
+        "Mode hors-ligne",
+        "Mises à jour automatiques",
         "Statistiques d'usage"
       ]
     },
     "app-reservation": {
-      "title": "App de Réservation",
-      "shortDesc": "Prenez des rendez-vous facilement",
-      "description": "Une application pour gérer vos réservations, prises de rendez-vous et planning.",
+      "title": "Application de réservation",
+      "shortDesc": "Prenez vos rendez-vous facilement",
+      "description": "Une application pour gérer vos réservations, rendez-vous et planning.",
       "ctaText": "Gérer mes réservations",
-      "pricing": {
-        "startingAt": "500",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Prise de rendez-vous",
         "Calendrier synchronisé",
         "Rappels automatiques",
         "Paiement en ligne",
         "Gestion des annulations",
-        "Dashboard pro"
+        "Tableau de bord pro"
       ]
     },
     "app-entreprise": {
-      "title": "App d'Entreprise",
+      "title": "Application d'entreprise",
       "shortDesc": "Tous vos outils métier dans la poche",
       "description": "Une application privée pour vos équipes : communication, tâches, documents.",
       "ctaText": "Équiper mon équipe",
-      "pricing": {
-        "startingAt": "400",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Espace privé sécurisé",
         "Messagerie d'équipe",
         "Partage de documents",
-        "Gestion de tâches",
+        "Gestion des tâches",
         "Notifications",
         "Mode hors-ligne"
       ]
     },
     "identite-visuelle": {
-      "title": "Identité Visuelle",
+      "title": "Identité visuelle",
       "shortDesc": "Une image forte et cohérente",
-      "description": "Créez une identité visuelle qui vous ressemble : logo, couleurs, typographies.",
+      "description": "Créez une identité visuelle qui vous ressemble : logo, couleurs, typographie.",
       "ctaText": "Créer mon identité",
-      "pricing": {
-        "startingAt": "200",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
         "Création de logo",
         "Charte graphique",
         "Palette de couleurs",
-        "Choix typographies",
+        "Choix typographiques",
         "Cartes de visite",
         "Kit réseaux sociaux"
       ]
     },
     "maquettes-site": {
-      "title": "Maquettes de Site",
+      "title": "Maquettes de site",
       "shortDesc": "Visualisez votre site avant développement",
       "description": "Des maquettes claires pour voir le rendu final et valider l'ergonomie.",
       "ctaText": "Visualiser mon site",
-      "pricing": {
-        "startingAt": "250",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
-        "Wireframes fonctionnels",
+        "Zoning fonctionnel",
         "Design page par page",
         "Version mobile incluse",
         "Prototypes cliquables",
-        "Corps illimitées",
+        "Modifications illimitées",
         "Fichiers prêts pour dev"
       ]
     },
     "redesign": {
-      "title": "Refonte Design",
-      "shortDesc": "Donnez un coup de jeune à votre site",
+      "title": "Refonte design",
+      "shortDesc": "Donnez un coup de neuf à votre site",
       "description": "Modernisez l'apparence de votre site existant pour plus de professionnalisme.",
       "ctaText": "Moderniser mon site",
-      "pricing": {
-        "startingAt": "300",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
-        "Analyse design existant",
-        "Proposition modernisation",
-        "Amélioration ergonomie",
+        "Analyse du design actuel",
+        "Proposition de modernisation",
+        "Amélioration de l'ergonomie",
         "Harmonisation visuelle",
         "Adaptation mobile",
-        "Optimisation conversion"
+        "Optimisation de la conversion"
       ]
     },
     "audit-site": {
-      "title": "Audit de Site",
+      "title": "Audit de site",
       "shortDesc": "Identifiez les points d'amélioration",
       "description": "Une analyse complète de votre site pour améliorer performances et visibilité.",
       "ctaText": "Auditer mon site",
-      "pricing": {
-        "startingAt": "150",
-        "currency": "€",
-        "type": "forfait"
-      },
       "features": [
-        "Analyse performance",
+        "Analyse des performances",
         "Audit SEO complet",
         "Vérification sécurité",
         "Compatibilité mobile",
@@ -240,19 +182,14 @@
       ]
     },
     "accompagnement": {
-      "title": "Accompagnement Stratégique",
+      "title": "Accompagnement stratégique",
       "shortDesc": "Un expert à vos côtés",
-      "description": "Conseil et accompagnement pour définir votre stratégie digitale et vos priorités.",
+      "description": "Conseils et accompagnement pour définir votre stratégie digitale et vos priorités.",
       "ctaText": "Être accompagné",
-      "pricing": {
-        "startingAt": "50",
-        "currency": "€/h",
-        "type": "horaire"
-      },
       "features": [
-        "Analyse de vos besoins",
-        "Définition priorités",
-        "Choix technologies",
+        "Analyse des besoins",
+        "Définition des priorités",
+        "Choix technologiques",
         "Plan d'action",
         "Suivi mensuel",
         "Ajustements"
@@ -263,50 +200,45 @@
       "shortDesc": "Montez en compétences",
       "description": "Formation personnalisée pour maîtriser les outils et technologies adaptés à vos besoins.",
       "ctaText": "Me former",
-      "pricing": {
-        "startingAt": "300",
-        "currency": "€/jour",
-        "type": "forfait"
-      },
       "features": [
         "Programme personnalisé",
         "Exercices pratiques",
-        "Support de cours",
+        "Supports de cours",
         "Suivi post-formation",
-        "Groupes réduits",
-        "Certificat"
+        "Petits groupes",
+        "Attestation"
       ]
     }
   },
 
   "faq": {
     "title": "Questions fréquentes",
-    "subtitle": "Pour vous éclairer sur ma façon de travailler",
+    "subtitle": "Pour éclaircir ma façon de travailler",
     "items": [
-{
-  "question": "Quelle est la durée moyenne d'un projet ?",
-  "answer": "Chaque projet avance à son rythme. Comptez 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, et 2 à 4 mois pour une application sur mesure. L'essentiel ? Un résultat qui vous ressemble, sans compromis sur la qualité."
-},
-{
-  "question": "Que se passe-t-il si je ne suis pas satisfait du résultat ?",
-  "answer": "Votre satisfaction est ma seule ligne d'arrivée. Si un détail ne vous convient pas, je l'améliore sans limite jusqu'à ce que le résultat dépasse vos attentes. C'est pourquoi mes partenaires sont si positifs sur mon travail."
-},
-{
-  "question": "Proposez-vous un suivi après la livraison ?",
-  "answer": "Absolument. Un mois de support est inclus pour vous accompagner après le lancement. Et si besoin, des forfaits de maintenance sont là pour assurer la pérennité de votre projet."
-},
-{
-  "question": "Puis-je modifier le projet en cours de route ?",
-  "answer": "Bien sûr ! Nous travaillons par étapes, avec des validations régulières. Votre projet évolue avec vos idées, et je m'adapte pour qu'il reste aligné avec votre vision."
-},
-{
-  "question": "Les prix affichés sont-ils définitifs ?",
-  "answer": "Ce sont des bases indicatives. Chaque projet étant unique, je vous établis un devis sur mesure après avoir compris vos besoins, vos ambitions et votre budget."
-},
-{
-  "question": "Comment fonctionne la consultation initiale ?",
-  "answer": "Gratuite et sans engagement, elle dure environ 30 minutes. C'est le moment d'échanger sur vos objectifs, vos idées, et de voir ensemble si notre collaboration a du sens."
-}
+      {
+        "question": "Quelle est la durée moyenne d'un projet ?",
+        "answer": "Chaque projet avance à son rythme. Comptez 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, et 2 à 4 mois pour une application sur mesure. L'essentiel ? Un résultat qui vous ressemble vraiment, sans compromis sur la qualité."
+      },
+      {
+        "question": "Et si je ne suis pas satisfait du résultat ?",
+        "answer": "Votre satisfaction est ma seule ligne d'arrivée. Si un détail ne vous convient pas, je l'améliore sans limite jusqu'à ce que le résultat dépasse vos attentes. C'est pour ça que mes partenaires sont si enthousiastes sur mon travail."
+      },
+      {
+        "question": "Assurez-vous un suivi après la livraison ?",
+        "answer": "Absolument. Un mois de support est inclus pour vous accompagner après le lancement. Et si besoin, des formules de maintenance sont disponibles pour assurer la pérennité de votre projet."
+      },
+      {
+        "question": "Puis-je apporter des modifications en cours de projet ?",
+        "answer": "Bien sûr ! Nous travaillons par étapes avec des points de validation réguliers. Votre projet évolue avec vos idées, et je m'adapte pour qu'il reste parfaitement aligné avec votre vision."
+      },
+      {
+        "question": "Combien coûtent vos services ?",
+        "answer": "Chaque projet est unique. Je réalise un devis personnalisé après avoir compris vos besoins, vos objectifs et le périmètre. Cela garantit une solution parfaitement adaptée à votre vision et à votre budget."
+      },
+      {
+        "question": "Comment se déroule le premier échange ?",
+        "answer": "Gratuit et sans engagement, il dure environ 30 minutes. C'est le moment idéal pour discuter de vos objectifs, de vos idées, et voir ensemble si notre collaboration a du sens."
+      }
     ]
   },
 
@@ -315,5 +247,5 @@
     "button": "Discuter de mon projet"
   },
 
-  "disclaimer": "* Les prix sont donnés à titre indicatif. Chaque projet fait l'objet d'un devis personnalisé."
+  "disclaimer": "* Chaque projet est unique et fait l'objet d'un devis personnalisé."
 }

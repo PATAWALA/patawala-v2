@@ -21,9 +21,6 @@
 
   "card": {
     "popular": "Popular",
-    "from": "From",
-    "hourly": "/h",
-    "monthly": "/month",
     "features": {
       "more": "+{{count}} more features"
     }
@@ -35,11 +32,6 @@
       "shortDesc": "Present your business with a professional website",
       "description": "An elegant and functional website to present your company, services and achievements.",
       "ctaText": "Create my site",
-      "pricing": {
-        "startingAt": "200",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Custom design",
         "Mobile friendly",
@@ -54,11 +46,6 @@
       "shortDesc": "Sell your products online easily",
       "description": "A complete online store to sell your products and manage your orders simply.",
       "ctaText": "Launch my store",
-      "pricing": {
-        "startingAt": "500",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Product catalog",
         "Shopping cart",
@@ -73,11 +60,6 @@
       "shortDesc": "Online tools adapted to your needs",
       "description": "A custom web application to automate your processes and manage your activity.",
       "ctaText": "Develop my app",
-      "pricing": {
-        "startingAt": "400",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Member area",
         "Data management",
@@ -92,11 +74,6 @@
       "shortDesc": "A unique solution for your specific activity",
       "description": "A fully customized platform to meet complex and specific needs.",
       "ctaText": "Discuss my project",
-      "pricing": {
-        "startingAt": "800",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Custom features",
         "Scalable architecture",
@@ -111,11 +88,6 @@
       "shortDesc": "An app for all your users",
       "description": "A native or hybrid mobile app available on iPhone and Android.",
       "ctaText": "Create my app",
-      "pricing": {
-        "startingAt": "600",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "iOS/Android compatible",
         "Mobile design",
@@ -130,11 +102,6 @@
       "shortDesc": "Take appointments easily",
       "description": "An app to manage your bookings, appointments and schedule.",
       "ctaText": "Manage my bookings",
-      "pricing": {
-        "startingAt": "500",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Appointment booking",
         "Synced calendar",
@@ -149,11 +116,6 @@
       "shortDesc": "All your business tools in your pocket",
       "description": "A private app for your teams: communication, tasks, documents.",
       "ctaText": "Equip my team",
-      "pricing": {
-        "startingAt": "400",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Secure private space",
         "Team messaging",
@@ -168,11 +130,6 @@
       "shortDesc": "A strong and consistent image",
       "description": "Create a visual identity that reflects you: logo, colors, typography.",
       "ctaText": "Create my identity",
-      "pricing": {
-        "startingAt": "200",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Logo creation",
         "Brand guidelines",
@@ -187,11 +144,6 @@
       "shortDesc": "Visualize your site before development",
       "description": "Clear mockups to see the final render and validate the ergonomics.",
       "ctaText": "Visualize my site",
-      "pricing": {
-        "startingAt": "250",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Functional wireframes",
         "Page by page design",
@@ -206,11 +158,6 @@
       "shortDesc": "Give your site a fresh look",
       "description": "Modernize the appearance of your existing site for more professionalism.",
       "ctaText": "Modernize my site",
-      "pricing": {
-        "startingAt": "300",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Existing design analysis",
         "Modernization proposal",
@@ -225,11 +172,6 @@
       "shortDesc": "Identify improvement points",
       "description": "A complete analysis of your site to improve performance and visibility.",
       "ctaText": "Audit my site",
-      "pricing": {
-        "startingAt": "150",
-        "currency": "€",
-        "type": "fixed"
-      },
       "features": [
         "Performance analysis",
         "Complete SEO audit",
@@ -244,11 +186,6 @@
       "shortDesc": "An expert by your side",
       "description": "Advice and support to define your digital strategy and priorities.",
       "ctaText": "Get support",
-      "pricing": {
-        "startingAt": "50",
-        "currency": "€/h",
-        "type": "hourly"
-      },
       "features": [
         "Needs analysis",
         "Priority definition",
@@ -263,11 +200,6 @@
       "shortDesc": "Level up your skills",
       "description": "Personalized training to master the tools and technologies adapted to your needs.",
       "ctaText": "Get trained",
-      "pricing": {
-        "startingAt": "300",
-        "currency": "€/day",
-        "type": "fixed"
-      },
       "features": [
         "Personalized program",
         "Practical exercises",
@@ -283,38 +215,37 @@
     "title": "Frequently asked questions",
     "subtitle": "To clarify how I work",
     "items": [
-{
-  "question": "What is the average duration of a project?",
-  "answer": "Each project moves at its own pace. Allow 1 to 2 weeks for a showcase website, 3 to 6 weeks for an e-commerce site, and 2 to 4 months for a custom application. The essential thing? A result that truly reflects you, with no compromise on quality."
-},
-{
-  "question": "What if I'm not satisfied with the result?",
-  "answer": "Your satisfaction is my only finish line. If any detail doesn't meet your expectations, I improve it without limits until the result exceeds them. That's why my partners are so positive about my work."
-},
-{
-  "question": "Do you provide support after delivery?",
-  "answer": "Absolutely. One month of support is included to assist you after launch. And if needed, maintenance packages are available to ensure the longevity of your project."
-},
-{
-  "question": "Can I make changes during the project?",
-  "answer": "Of course! We work in stages with regular checkpoints. Your project evolves with your ideas, and I adapt to keep it perfectly aligned with your vision."
-},
-{
-  "question": "Are the displayed prices final?",
-  "answer": "They are indicative bases. Since each project is unique, I provide a custom quote after understanding your needs, ambitions, and budget."
-},
-{
-  "question": "How does the initial consultation work?",
-  "answer": "Free and with no obligation, it lasts about 30 minutes. It's the perfect time to discuss your goals, your ideas, and see together if our collaboration makes sense."
-}
+      {
+        "question": "What is the average duration of a project?",
+        "answer": "Each project moves at its own pace. Allow 1 to 2 weeks for a showcase website, 3 to 6 weeks for an e-commerce site, and 2 to 4 months for a custom application. The essential thing? A result that truly reflects you, with no compromise on quality."
+      },
+      {
+        "question": "What if I'm not satisfied with the result?",
+        "answer": "Your satisfaction is my only finish line. If any detail doesn't meet your expectations, I improve it without limits until the result exceeds them. That's why my partners are so positive about my work."
+      },
+      {
+        "question": "Do you provide support after delivery?",
+        "answer": "Absolutely. One month of support is included to assist you after launch. And if needed, maintenance packages are available to ensure the longevity of your project."
+      },
+      {
+        "question": "Can I make changes during the project?",
+        "answer": "Of course! We work in stages with regular checkpoints. Your project evolves with your ideas, and I adapt to keep it perfectly aligned with your vision."
+      },
+      {
+        "question": "How much do your services cost?",
+        "answer": "Each project is unique. I provide a personalized quote after understanding your needs, goals, and scope. This guarantees a solution perfectly adapted to your vision and budget."
+      },
+      {
+        "question": "How does the initial consultation work?",
+        "answer": "Free and with no obligation, it lasts about 30 minutes. It's the perfect time to discuss your goals, your ideas, and see together if our collaboration makes sense."
+      }
     ]
   },
-
 
   "cta": {
     "title": "Can't find what you're looking for?",
     "button": "Discuss my project"
   },
 
-  "disclaimer": "* Prices are indicative. Each project receives a personalized quote."
+  "disclaimer": "* Each project is unique and receives a personalized quote."
 }
