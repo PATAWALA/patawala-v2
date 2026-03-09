@@ -6,8 +6,11 @@ import {
   Mail, MapPin, Heart, Smartphone, Send, Clock,
   Instagram, Linkedin, Twitter, Github, Facebook
 } from 'lucide-react';
-import BookingModal from '../ui/BookingModal';
+import dynamic from 'next/dynamic';
 import { useTranslation } from '../../hooks/useTranslation';
+
+// Import dynamique de BookingModal (chargé uniquement à l'ouverture)
+const BookingModal = dynamic(() => import('../ui/BookingModal'), { ssr: false });
 
 // Interface pour typer les informations de contact
 interface ContactInfo {

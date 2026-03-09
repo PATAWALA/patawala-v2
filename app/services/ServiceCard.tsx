@@ -3,13 +3,18 @@
 import { memo, useCallback, useState, useMemo } from 'react';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Service } from './data/servicesData';
-import BookingModal from '../components/ui/BookingModal';
+import dynamic from 'next/dynamic';
 import { useLanguage } from '../context/LanguageContext';
 
 interface ServiceCardProps {
   service: Service;
   delay: number;
 }
+
+const BookingModal = dynamic(() => import('../components/ui/BookingModal'), {
+  ssr: false, // désactive le rendu serveur pour ce composant (car il utilise des API client)
+  loading: () => null, // ou un placeholder si vous voulez
+});
 
 const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardProps) {
   const Icon = service.icon;

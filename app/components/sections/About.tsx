@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import profileImage from '../../assets/images/about1.png';
-import BookingModal from '../ui/BookingModal';
+import dynamic from 'next/dynamic';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 // Interface pour typer les données
@@ -16,6 +16,11 @@ interface VisionCard {
 interface VisionData {
   cards: VisionCard[];
 }
+
+const BookingModal = dynamic(() => import('../ui/BookingModal'), {
+  ssr: false, // désactive le rendu serveur pour ce composant (car il utilise des API client)
+  loading: () => null, // ou un placeholder si vous voulez
+});
 
 // Données par défaut pour éviter le flash de "Chargement..."
 const DEFAULT_VISION_CARDS: VisionCard[] = [

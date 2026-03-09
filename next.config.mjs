@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+let nextConfig = {
   // Optimisation des images
   images: {
     formats: ['image/avif', 'image/webp'],
@@ -44,4 +44,10 @@ const nextConfig = {
   },
 };
 
-export default nextConfig; // ← CHANGEMENT ICI (export default au lieu de module.exports)
+// Activation conditionnelle du bundle analyzer (version ES modules)
+if (process.env.ANALYZE === 'true') {
+  const { default: withBundleAnalyzer } = await import('@next/bundle-analyzer');
+  nextConfig = withBundleAnalyzer({ enabled: true })(nextConfig);
+}
+
+export default nextConfig;
