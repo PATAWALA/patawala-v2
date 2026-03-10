@@ -43,6 +43,9 @@ export default function BlogPage() {
     };
   }, [t, language]);
 
+  console.log('Instance:', process.env.NEXT_PUBLIC_BREVO_INSTANCE);
+  console.log('List ID:', process.env.NEXT_PUBLIC_BREVO_LIST_ID);
+
   // Initialisation de la catégorie sélectionnée
   useEffect(() => {
     setSelectedCategory(allCategory);
@@ -539,25 +542,26 @@ export default function BlogPage() {
     </p>
     
     <form 
-      action={`https://${process.env.NEXT_PUBLIC_BREVO_INSTANCE}.brevo.com/subscribe`} 
-      method="post" 
-      className="flex flex-col xs:flex-row gap-2 sm:gap-3 max-w-md mx-auto"
-    >
-      <input
-        type="email"
-        name="email"
-        placeholder={t('newsletter.emailPlaceholder', 'blog')}
-        required
-        className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
-      />
-      <input type="hidden" name="list" value={process.env.NEXT_PUBLIC_BREVO_LIST_ID} />
-      <button 
-        type="submit"
-        className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight"
-      >
-        {t('newsletter.button', 'blog')}
-      </button>
-    </form>
+  action={`https://${process.env.NEXT_PUBLIC_BREVO_INSTANCE}.brevo.com/subscribe`} 
+  method="post" 
+  className="flex flex-col xs:flex-row gap-2 sm:gap-3 max-w-md mx-auto"
+>
+  <input
+    type="email"
+    name="email"
+    placeholder={t('newsletter.emailPlaceholder', 'blog')}
+    required
+    className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
+  />
+  <input type="hidden" name="list" value={process.env.NEXT_PUBLIC_BREVO_LIST_ID} />
+  <input type="hidden" name="redirection" value="https://patawala-v2-nry6.vercel.app/merci" />
+  <button 
+    type="submit"
+    className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight"
+  >
+    {t('newsletter.button', 'blog')}
+  </button>
+</form>
     
     <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
       <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
