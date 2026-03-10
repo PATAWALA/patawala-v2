@@ -5,7 +5,7 @@ import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, S
 import Image from 'next/image';
 import profileImage from '../../assets/images/about1.png';
 import dynamic from 'next/dynamic';
-import { useTranslation } from '@/app/hooks/useTranslation';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 // Interface pour typer les données
 interface VisionCard {
@@ -18,52 +18,49 @@ interface VisionData {
 }
 
 const BookingModal = dynamic(() => import('../ui/BookingModal'), {
-  ssr: false, // désactive le rendu serveur pour ce composant (car il utilise des API client)
-  loading: () => null, // ou un placeholder si vous voulez
+  ssr: false,
+  loading: () => null,
 });
 
-// Données par défaut pour éviter le flash de "Chargement..."
+// Données par défaut
 const DEFAULT_VISION_CARDS: VisionCard[] = [
   {
-    title: "Conseil & Stratégie Tech",
-    description: "Je sélectionne les technologies les plus rentables pour votre activité, en éliminant les coûts inutiles et les risques techniques dès la phase de conception."
+    "title": "Conseil & Stratégie Tech",
+    "description": "Des choix technologiques adaptés à votre budget et vos objectifs, pour un lancement sans risque et sans coûts cachés."
   },
   {
-    title: "Partenariat & Vision Long Terme",
-    description: "Plus qu'un développeur, je deviens votre conseiller tech de confiance (CTO) pour sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
+    "title": "Partenariat Long Terme",
+    "description": "Un accompagnement CTO sur mesure : je sécurise vos choix techniques et fais évoluer vos outils avec votre croissance."
   },
   {
-    title: "Innovation & Performance Commerciale",
-    description: "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
+    "title": "Innovation & Performance",
+    "description": "IA et architectures modernes pour automatiser vos processus, booster vos ventes et vous démarquer."
   },
   {
-    title: "Engagement & Co-création",
-    description: "Ma méthode repose sur une écoute active : vous gardez le contrôle de votre vision pendant que je garantis l'intégrité technique et la pérennité de l'outil."
+    "title": "Co-création Transparente",
+    "description": "Votre vision guidée par mon expertise : une collaboration fluide pour des outils robustes et durables."
   }
 ];
 
 const AboutSection = memo(function AboutSection() {
-  const { t } = useTranslation();
+  const { t } = useLanguage(); // ← PLUS DE isLoading
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  // Initialiser avec les valeurs par défaut pour éviter l'état de chargement
   const [visionCards, setVisionCards] = useState<VisionCard[]>(DEFAULT_VISION_CARDS);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Récupérer les cartes de vision - avec fallback immédiat
+  // Récupérer les cartes de vision
   useEffect(() => {
     try {
       const visionData = t('vision', 'about') as unknown as VisionData;
       if (visionData && typeof visionData === 'object' && 'cards' in visionData && Array.isArray(visionData.cards) && visionData.cards.length > 0) {
         setVisionCards(visionData.cards);
       }
-      // Si les données ne sont pas disponibles, on garde les valeurs par défaut
     } catch (error) {
       console.error('Erreur lors du chargement des cartes:', error);
-      // On garde les valeurs par défaut
     }
   }, [t]);
 
@@ -86,7 +83,7 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(false);
   }, []);
 
-  // Icônes pour les cartes (statique)
+  // Icônes pour les cartes
   const cardIcons = [Lightbulb, Handshake, Sparkles, MessagesSquare];
 
   return (
@@ -96,9 +93,8 @@ const AboutSection = memo(function AboutSection() {
         className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
         aria-label={t('badge', 'about')}
       >
-        {/* FOND UNIQUE - MÊME QUE LA HERO SECTION */}
+        {/* FOND */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes subtiles - CSS pur, ultra léger */}
           <div
             className="absolute inset-0 opacity-50"
             style={{
@@ -114,7 +110,6 @@ const AboutSection = memo(function AboutSection() {
             aria-hidden="true"
           />
 
-          {/* Cercles flous STATIQUES (2 au lieu de 3) */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
         </div>
@@ -125,14 +120,18 @@ const AboutSection = memo(function AboutSection() {
             <div className="w-full flex justify-center mb-6 sm:mb-8">
               <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
                 <Sparkles size={14} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">{t('badge', 'about')}</span>
+                <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">
+                  {t('badge', 'about')}
+                </span>
               </div>
             </div>
 
             {/* Titre et sous-titre */}
             <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
-                {t('title', 'about')}
+                <span>
+                  {t('title', 'about')}
+                </span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1 sm:mt-2 font-extrabold tracking-tight">
                   {t('subtitle', 'about')}
                 </span>
@@ -145,7 +144,7 @@ const AboutSection = memo(function AboutSection() {
               <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION - PLUS DE MESSAGE DE CHARGEMENT */}
+            {/* CARTES MA VISION */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
               {visionCards.map((card: VisionCard, index: number) => {
                 const Icon = cardIcons[index] || MessagesSquare;
@@ -182,13 +181,15 @@ const AboutSection = memo(function AboutSection() {
             <div className="flex justify-center mb-6 md:mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/30 backdrop-blur-sm">
                 <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
-                <span className="text-sm sm:text-base font-bold tracking-tight">{t('whoami', 'about')}</span>
+                <span className="text-sm sm:text-base font-bold tracking-tight">
+                  {t('whoami', 'about')}
+                </span>
               </div>
             </div>
 
             {/* Section image et bio */}
             <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              {/* Image à gauche - ULTRA OPTIMISÉE */}
+              {/* Image à gauche */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
                   
@@ -197,7 +198,9 @@ const AboutSection = memo(function AboutSection() {
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <Globe size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
                       <Smartphone size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">{t('profile.badges.webMobile', 'about')}</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">
+                        {t('profile.badges.webMobile', 'about')}
+                      </span>
                     </div>
                   </div>
 
@@ -205,11 +208,13 @@ const AboutSection = memo(function AboutSection() {
                   <div className="absolute bottom-0 right-0 z-30" style={{ transform: 'translate(5%, 5%)' }}>
                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
                       <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">{t('profile.badges.available', 'about')}</span>
+                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">
+                        {t('profile.badges.available', 'about')}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Photo - PRIORITÉ MAX */}
+                  {/* Photo */}
                   <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-3 sm:border-4 border-[#1F2937] bg-[#141B2B]">
                     <Image
                       src={profileImage}
@@ -253,7 +258,9 @@ const AboutSection = memo(function AboutSection() {
                     aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
-                    {t('buttons.talk', 'about')}
+                    <span>
+                      {t('buttons.talk', 'about')}
+                    </span>
                   </button>
 
                   <button
@@ -261,7 +268,9 @@ const AboutSection = memo(function AboutSection() {
                     className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >
-                    {t('buttons.services', 'about')}
+                    <span>
+                      {t('buttons.services', 'about')}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -270,7 +279,6 @@ const AboutSection = memo(function AboutSection() {
         </div>
       </section>
 
-      {/* Modal de réservation */}
       <BookingModal isOpen={isBookingOpen} onClose={handleCloseBooking} />
     </>
   );

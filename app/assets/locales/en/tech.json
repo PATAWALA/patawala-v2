@@ -1,16 +1,16 @@
 {
-  "badge": "Technologies I master",
-  "title": "Expertise at the service",
-  "titleHighlight": "of your ambitions",
-  "subtitle": "I select the most suitable technologies for each project. The tool isn't what matters most, but what it helps us build together.",
+  "badge": "Tech expertise",
+  "title": "The right tools",
+  "titleHighlight": "for your ambitions",
+  "subtitle": "I select the best technologies for each project. It's not about the tool—it's about what we can build together.",
   
   "techStack": [
     {
       "name": "Next.js / React",
       "level": "Expert",
-      "desc": "Ultra-fast modern sites and complex web applications",
+      "desc": "Modern, ultra-fast websites and complex web applications",
       "expertise": [
-        "High-performance showcase sites",
+        "High-performance websites",
         "SaaS applications",
         "Custom e-commerce"
       ]
@@ -18,7 +18,7 @@
     {
       "name": "WordPress",
       "level": "Expert",
-      "desc": "Easy-to-manage sites, blogs, stores and showcases",
+      "desc": "Easy-to-manage sites, blogs, shops, and showcases",
       "expertise": [
         "Custom themes",
         "WooCommerce",
@@ -48,7 +48,7 @@
     {
       "name": "Infrastructure & DevOps",
       "level": "Advanced",
-      "desc": "Deployment, hosting, worry-free scaling",
+      "desc": "Deployment, hosting, scaling—done right",
       "expertise": [
         "Vercel / Netlify",
         "AWS",
@@ -58,7 +58,7 @@
     {
       "name": "Security & Performance",
       "level": "Advanced",
-      "desc": "Secure and fast sites, your visitors will love them",
+      "desc": "Secure, fast websites your visitors will love",
       "expertise": [
         "Enhanced security",
         "Optimization",
@@ -67,7 +67,7 @@
     }
   ],
   
-  "note": "I don't choose a tool because it's trendy, but because it's the right one for what we want to build together.",
+  "note": "I don't choose a tool because it's trendy, but because it's the right one for what we're building together.",
   
   "cta": "Discuss my project",
   

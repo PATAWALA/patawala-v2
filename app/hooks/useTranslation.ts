@@ -1,6 +1,5 @@
 'use client';
-
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '@/app/context/LanguageContext';
 
 // Mapping des composants vers leurs sections de traduction
 const componentToSection: Record<string, string> = {

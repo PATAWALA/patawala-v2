@@ -1,17 +1,17 @@
 {
   "badge": "Specialized in web & mobile development",
-  "title": "Let's build",
+  "title": "Building",
   "typed": {
     "strings": [
-      "your next mobile app",
-      "a high-performance e-commerce",
-      "your custom business tools",
-      "a unique user experience",
-      "your technological success"
+      "your digital success.",
+      "a high-performance e-commerce.",
+      "the app that brings your ideas to life.", 
+      "your custom business tool.",
+      "a unique user experience."
     ]
   },
   "mobilePhrase": "your digital vision",
-  "subtitle": "Full Stack Developer, I design tailor-made solutions that structure your online presence and boost your business.",
+  "subtitle": "As a Full Stack Developer, I craft custom web and mobile solutions that structure your online presence and boost your business.",
   "socialProof": {
     "stars": "30+ satisfied entrepreneurs",
     "entrepreneurs": "Positive reviews"
@@ -23,11 +23,6 @@
   "badges": {
     "multisupport": "Multi-device",
     "available": "Available"
-  },
-  "microCTA": {
-    "response": "Reply within 24h",
-    "quote": "Free quote",
-    "support": "End-to-end support"
   },
   "altImages": {
     "avatar": "Happy client",

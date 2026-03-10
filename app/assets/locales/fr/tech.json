@@ -1,8 +1,8 @@
 {
-  "badge": "Technologies que je maîtrise",
-  "title": "Une expertise au service",
-  "titleHighlight": "de vos ambitions",
-  "subtitle": "Je sélectionne les technologies les plus adaptées à chaque projet. L'essentiel n'est pas l'outil, mais ce qu'il permet de construire avec vous.",
+  "badge": "Expertise technique",
+  "title": "Des technologies",
+  "titleHighlight": "au service de vos ambitions",
+  "subtitle": "Je sélectionne les outils les plus adaptés à chaque projet. L'essentiel n'est pas la technologie, mais ce qu'elle permet de construire avec vous.",
   
   "techStack": [
     {
@@ -42,7 +42,7 @@
       "expertise": [
         "Entonnoirs de vente",
         "Email marketing",
-        "Membership sites"
+        "Sites membres"
       ]
     },
     {

@@ -1,48 +1,48 @@
 {
-  "badge": "Successful Projects",
-  "title": "They trust me",
-  "titleHighlight": "to build their solutions",
-  "subtitle": "Discover feedback from my partners on the quality of my technical support and guidance.",
+  "badge": "Client Success",
+  "title": "Trusted by builders",
+  "titleHighlight": "across 8 countries",
+  "subtitle": "Real stories from entrepreneurs who chose a true technical partner.",
   
   "testimonials": [
     {
       "name": "Ninsemouh Gbeo",
-      "content": "My website is starting to bear fruit. Thank you for this support.",
+      "content": "My website is already delivering results. Thank you for the support.",
       "country": "Ivory Coast"
     },
     {
       "name": "Marie Abani",
-      "content": "Finally a website that reflects me. Vibrant, modern, effective.",
+      "content": "Finally a website that truly represents me. Vibrant, modern, effective.",
       "country": "France"
     },
     {
       "name": "César Dossou",
-      "content": "Impeccable service, results delivered. I recommend.",
+      "content": "Flawless service, results delivered. Highly recommend.",
       "country": "Congo"
     },
     {
       "name": "Maurice Acoumba",
-      "content": "A true partner who listens. I'm satisfied with the work done.",
+      "content": "A true partner who listens. Completely satisfied with the work.",
       "country": "Cameroon"
     },
     {
       "name": "Jean Edikou",
-      "content": "Polished website, attentive team. A great collaboration.",
+      "content": "Polished website, attentive team. A great collaboration from start to finish.",
       "country": "Benin"
     },
     {
       "name": "Chimène Koumai",
-      "content": "Fast, professional, attentive. Thank you for everything.",
+      "content": "Fast, professional, and attentive. Thank you for everything.",
       "country": "Togo"
     },
     {
       "name": "Gérard Agatou'n",
-      "content": "Blind trust. A pleasant and efficient work experience.",
+      "content": "Complete trust. A pleasant and efficient experience working together.",
       "country": "Senegal"
     },
     {
       "name": "Camille Benerd",
-      "content": "A website that finally reflects me. Thank you for your patience and attention.",
+      "content": "A website that finally reflects who I am. Thank you for your patience and attention to detail.",
       "country": "Belgium"
     }
   ],
@@ -53,16 +53,16 @@
   },
   
   "projectTypes": {
-    "title": "Tailored support",
+    "title": "Tailored approach",
     "startup": {
       "title": "Startups & Scale-ups",
-      "description": "MVP development and scalable solutions",
-      "cta": "Discuss startup"
+      "description": "From MVP to scalable products—built to grow with you.",
+      "cta": "Discuss your startup →"
     },
     "sme": {
       "title": "SMEs & Large Companies",
-      "description": "Custom support for your digital transformation",
-      "cta": "Discuss my project"
+      "description": "Custom tools and digital transformation for lasting impact.",
+      "cta": "Discuss your project →"
     }
   }
 }

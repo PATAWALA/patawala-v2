@@ -1,40 +1,40 @@
 {
-  "badge": "Your Technical Partner",
-  "title": "Scaling your ambitions into",
-  "subtitle": "high-performance digital assets",
-  "description": "I don't just write code; I build tailored solutions designed to scale with your business and meet your users' real-world needs.",
+  "badge": "Your Trusted Tech Partner",
+  "title": "From vision",
+  "subtitle": "to high-impact digital assets",
+  "description": "Every project is a chance to build something unique—perfectly aligned with your business goals.",
   "whoami": "Who am I?",
   "vision": {
     "cards": [
       {
-        "title": "Strategic Tech Advisory",
-        "description": "I handpick the most profitable technologies for your project, eliminating technical debt and unnecessary costs right from the start."
+        "title": "Tech Strategy & Advisory",
+        "description": "I choose the right technologies for your budget and goals—no risks, no hidden costs."
       },
       {
-        "title": "Long-Term Growth Partner",
-        "description": "More than a developer, I act as your CTO-on-demand. I ensure your digital tools evolve securely alongside your sustainable business growth."
+        "title": "Long-Term Partnership",
+        "description": "More than a developer: I act as your fractional CTO, securing your tech choices and scaling your tools as you grow."
       },
       {
-        "title": "AI & Sales Optimization",
-        "description": "I leverage Artificial Intelligence and modern architectures to automate your workflows and turn your traffic into measurable revenue."
+        "title": "Innovation That Sells",
+        "description": "Leveraging AI and modern architectures to automate processes, boost revenue, and give you a competitive edge."
       },
       {
-        "title": "Technical Integrity",
-        "description": "You keep control of the vision; I guarantee the technical excellence. My method is built on transparency, active listening, and lasting quality."
+        "title": "Built Together",
+        "description": "Your vision, my expertise. A transparent partnership that delivers robust, future-proof solutions."
       }
     ]
   },
   "profile": {
     "name": "Abdoulaye Patawala",
-    "role": "Specializing in Web & Mobile Development",
-    "missionText": "My mission is to be the technical foundation your growth stands on. From strategic platforms to complex digital ecosystems, I transform your ambitions into robust production tools—engineered to scale and built to last.",
+    "role": "Full Stack Developer",
+    "missionText": "I'm the technical partner who grows with you. From strategic platforms to complex ecosystems, I build scalable, durable tools that turn your ambitions into reality.",
     "badges": {
       "webMobile": "Web & Mobile",
-      "available": "Available for hire"
+      "available": "Available"
     }
   },
   "buttons": {
-    "talk": "Contact me",
-    "services": "My offers"
+    "talk": "Let's talk",
+    "services": "View services"
   }
 }

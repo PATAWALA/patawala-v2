@@ -6,62 +6,59 @@ import Image from 'next/image';
 import profileImage from '../../assets/images/horo1.png';
 import profile2Image from '../../assets/images/profile2.webp';
 import profile4Image from '../../assets/images/profile4.webp';
-import { useTranslation } from '@/app/hooks/useTranslation';
+import { useLanguage } from '@/app/context/LanguageContext'; // ← CHANGÉ
 
 const HeroSection = memo(function HeroSection() {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useLanguage(); // ← AJOUT DE isLoading
   const [displayText, setDisplayText] = useState('');
   const [stringIndex, setStringIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const typedStrings = t('typed.strings', 'hero') || [
-    'votre prochaine application mobile',
-    'un e-commerce haute performance',
-    'vos outils métier sur-mesure',
-    'une expérience utilisateur unique',
-    'votre succès technologique'
+      "your digital success.",
+      "a high-performance e-commerce.",
+      "the app that brings your ideas to life.",
+      "your custom business tool.",
+      "a unique user experience."
   ];
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // TYPING EFFECT - VITESSES OPTIMISÉES (plus lentes)
+  // TYPING EFFECT - désactivé pendant le chargement
   useEffect(() => {
-    if (!isMounted || typedStrings.length === 0) return;
+    if (!isMounted || typedStrings.length === 0 || isLoading) return; // ← ATTENDRE LA FIN DU CHARGEMENT
 
     const currentString = typedStrings[stringIndex] || '';
     let timeout: NodeJS.Timeout;
 
     if (isDeleting) {
-      // SUPPRESSION : plus lente pour être visible
       if (charIndex > 0) {
         timeout = setTimeout(() => {
           setCharIndex(charIndex - 1);
           setDisplayText(currentString.substring(0, charIndex - 1));
-        }, 50); // 50ms au lieu de 20ms
+        }, 50);
       } else {
         setIsDeleting(false);
         setStringIndex((stringIndex + 1) % typedStrings.length);
       }
     } else {
-      // ÉCRITURE : vitesse normale et confortable
       if (charIndex < currentString.length) {
         timeout = setTimeout(() => {
           setCharIndex(charIndex + 1);
           setDisplayText(currentString.substring(0, charIndex + 1));
-        }, 80); // 80ms au lieu de 30ms
+        }, 80);
       } else {
-        // PAUSE avant suppression : plus longue
         timeout = setTimeout(() => {
           setIsDeleting(true);
-        }, 2500); // 2.5 secondes au lieu de 1.5
+        }, 2500);
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [isMounted, charIndex, isDeleting, stringIndex, typedStrings]);
+  }, [isMounted, charIndex, isDeleting, stringIndex, typedStrings, isLoading]);
 
   const scrollToContact = useCallback(() => {
     const contactSection = document.getElementById('contact');
@@ -91,7 +88,6 @@ const HeroSection = memo(function HeroSection() {
     >
       {/* FOND GRADIENT */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes fines (CSS pur) */}
         <div
           className="absolute inset-0 opacity-50"
           style={{
@@ -107,7 +103,6 @@ const HeroSection = memo(function HeroSection() {
           aria-hidden="true"
         />
         
-        {/* Cercles flous (CSS pur - aucun impact perf) */}
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
       </div>
@@ -117,7 +112,9 @@ const HeroSection = memo(function HeroSection() {
         <div className="w-full hidden sm:flex justify-center mb-4 sm:mb-2 lg:mb-8 xl:mb-10">
           <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-            <span className="text-xs sm:text-sm font-semibold whitespace-nowrap">{t('badge', 'hero')}</span>
+            <span className={`text-xs sm:text-sm font-semibold whitespace-nowrap transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+              {t('badge', 'hero')}
+            </span>
           </div>
         </div>
 
@@ -125,14 +122,16 @@ const HeroSection = memo(function HeroSection() {
           {/* TEXTE À GAUCHE */}
           <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-3 sm:mb-4 md:mb-5 leading-tight px-1 sm:px-2 text-white">
-              {t('title', 'hero')}
+              <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                {t('title', 'hero')}
+              </span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 sm:mt-2 font-black min-h-[3rem] sm:min-h-[4rem]">
                 {/* Version mobile : phrase fixe */}
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
+                <span className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                   {t('mobilePhrase', 'hero')}
                 </span>
                 {/* Version desktop : effet machine à écrire */}
-                <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline">
+                <span className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                   {displayText || typedStrings[0]}
                   <span className="animate-pulse">|</span>
                 </span>
@@ -140,12 +139,12 @@ const HeroSection = memo(function HeroSection() {
             </h1>
 
             <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-5 md:mb-6 px-2 sm:px-3 md:px-4 lg:px-0">
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold leading-relaxed">
+              <p className={`text-sm sm:text-base md:text-lg lg:text-xl text-white font-bold leading-relaxed transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                 {t('subtitle', 'hero')}
               </p>
             </div>
 
-            {/* AVATARS ULTRA-COMPACTS */}
+            {/* AVATARS ULTRA-COMPACTS (inchangé car indépendant des traductions) */}
             <div className="flex flex-row items-center justify-center lg:justify-start gap-1.5 sm:gap-2 mb-5 sm:mb-7 md:mb-8 px-2 sm:px-3 lg:px-0">
               <div className="flex items-center -space-x-4 sm:-space-x-5">
                 {avatarImages.map((avatar, index) => (
@@ -158,7 +157,7 @@ const HeroSection = memo(function HeroSection() {
                       src={avatar.src}
                       alt={avatar.alt}
                       fill
-                      className="object-cover scale-125" // Zoom plus fort pour masquer les visages
+                      className="object-cover scale-125"
                       sizes="28px"
                       loading="lazy"
                       placeholder="blur"
@@ -180,7 +179,7 @@ const HeroSection = memo(function HeroSection() {
                 </div>
                 <div className="flex items-center gap-1">
                   <span className="text-xs sm:text-sm md:text-base font-bold text-white">30+</span>
-                  <span className="text-[10px] sm:text-xs md:text-sm text-gray-400 whitespace-nowrap">
+                  <span className={`text-[10px] sm:text-xs md:text-sm text-gray-400 whitespace-nowrap transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                     {t('socialProof.entrepreneurs', 'hero')}
                   </span>
                 </div>
@@ -194,7 +193,9 @@ const HeroSection = memo(function HeroSection() {
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-bold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-auto min-h-[44px]"
                 aria-label={t('buttons.project', 'hero')}
               >
-                {t('buttons.project', 'hero')}
+                <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                  {t('buttons.project', 'hero')}
+                </span>
                 <ArrowRight size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
               </button>
 
@@ -203,21 +204,20 @@ const HeroSection = memo(function HeroSection() {
                 className="bg-transparent text-white px-5 py-3 sm:px-6 md:px-7 lg:px-8 sm:py-3 md:py-3.5 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-auto min-h-[44px]"
                 aria-label={t('buttons.portfolio', 'hero')}
               >
-                {t('buttons.portfolio', 'hero')}
+                <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                  {t('buttons.portfolio', 'hero')}
+                </span>
               </button>
             </div>
           </div>
 
-          {/* IMAGE PRINCIPALE AVEC CERCLES OPTIMISÉS */}
+          {/* IMAGE PRINCIPALE */}
           <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
             <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md">
               
-              {/* CERCLES DÉCORATIFS - OPTIMISÉS (identiques sur mobile et desktop) */}
-              {/* Cercle extérieur */}
+              {/* CERCLES DÉCORATIFS */}
               <div className="absolute -inset-6 rounded-full border-2 border-blue-500/30" aria-hidden="true" />
-              {/* Cercle intermédiaire */}
               <div className="absolute -inset-10 rounded-full border border-cyan-500/20" aria-hidden="true" />
-              {/* Lueur subtile */}
               <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500/5 to-cyan-500/5 blur-md" aria-hidden="true" />
               
               {/* Badge multisupport */}
@@ -225,7 +225,9 @@ const HeroSection = memo(function HeroSection() {
                 <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-2 sm:px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937] text-[8px] sm:text-[10px] font-semibold whitespace-nowrap">
                   <Globe size={10} className="sm:w-2.5 sm:h-2.5" aria-hidden="true" />
                   <Smartphone size={10} className="sm:w-2.5 sm:h-2.5" aria-hidden="true" />
-                  <span>{t('badges.multisupport', 'hero')}</span>
+                  <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    {t('badges.multisupport', 'hero')}
+                  </span>
                 </div>
               </div>
 
@@ -233,7 +235,9 @@ const HeroSection = memo(function HeroSection() {
               <div className="absolute -bottom-3 -left-3 z-30">
                 <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2 sm:px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1 border border-[#1F2937] text-[8px] sm:text-[10px] font-semibold whitespace-nowrap">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
-                  <span>{t('badges.available', 'hero')}</span>
+                  <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    {t('badges.available', 'hero')}
+                  </span>
                 </div>
               </div>
 

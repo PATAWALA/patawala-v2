@@ -1,33 +1,33 @@
 {
-  "badge": "Votre Partenaire Technique",
-  "title": "Transformez vos ambitions en",
-  "subtitle": "actifs digitaux haute performance",
-  "description": "Pour moi, chaque projet est l'opportunité de bâtir une solution unique, alignée sur vos objectifs business et les besoins réels de vos utilisateurs.",
+  "badge": "Partenaire Tech de Confiance",
+  "title": "Je transforme vos ambitions",
+  "subtitle": "en actifs digitaux performants",
+  "description": "Pour moi, chaque projet est l'opportunité de bâtir une solution unique, alignée sur vos objectifs business.",
   "whoami": "Qui suis-je ?",
   "vision": {
     "cards": [
       {
         "title": "Conseil & Stratégie Tech",
-        "description": "Je sélectionne les technologies les plus rentables pour votre activité, en éliminant les coûts inutiles et les risques techniques dès la phase de conception."
+        "description": "Des choix technologiques adaptés à votre budget et vos objectifs, pour un lancement sans risque et sans coûts cachés."
       },
       {
-        "title": "Partenariat & Vision Long Terme",
-        "description": "Plus qu'un développeur, je deviens votre conseiller tech de confiance (CTO) pour sécuriser vos choix et faire évoluer vos outils au rythme de votre croissance."
+        "title": "Partenariat Long Terme",
+        "description": "Un accompagnement CTO sur mesure : je sécurise vos choix techniques et fais évoluer vos outils avec votre croissance."
       },
       {
-        "title": "Innovation & Performance Commerciale",
-        "description": "J'exploite l'Intelligence Artificielle et les architectures web modernes pour concevoir des solutions qui automatisent vos processus et boostent vos ventes."
+        "title": "Innovation & Performance",
+        "description": "IA et architectures modernes pour automatiser vos processus, booster vos ventes et vous démarquer."
       },
       {
-        "title": "Engagement & Co-création",
-        "description": "Ma méthode repose sur une écoute active : vous gardez le contrôle de votre vision pendant que je garantis l'intégrité technique et la pérennité de l'outil."
+        "title": "Co-création Transparente",
+        "description": "Votre vision guidée par mon expertise : une collaboration fluide pour des outils robustes et durables."
       }
     ]
   },
   "profile": {
     "name": "Abdoulaye Patawala",
-    "role": "Spécialisé en développement Web & Mobile",
-    "missionText": "Ma mission est de devenir le partenaire technique sur lequel repose votre croissance. Des plateformes stratégiques aux écosystèmes digitaux complexes, je transforme vos ambitions en outils de production robustes, conçus pour évoluer et bâtis pour durer.",
+    "role": "Développeur Full Stack",
+    "missionText": "Mon rôle : être le partenaire technique de votre croissance. Des plateformes stratégiques aux écosystèmes complexes, je construis des outils robustes, évolutifs et conçus pour durer.",
     "badges": {
       "webMobile": "Web & Mobile",
       "available": "Disponible"
@@ -35,6 +35,6 @@
   },
   "buttons": {
     "talk": "Me contacter",
-    "services": " Mes offres"
+    "services": "Mes offres"
   }
 }

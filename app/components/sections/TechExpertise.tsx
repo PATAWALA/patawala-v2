@@ -8,7 +8,7 @@ import {
   Settings, MousePointer, Award
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useTranslation } from '@/app/hooks/useTranslation';
+import { useLanguage } from '@/app/context/LanguageContext'; // ← CHANGÉ
 
 // Interface pour typer les technologies
 interface TechItem {
@@ -19,7 +19,7 @@ interface TechItem {
 }
 
 const TechExpertise = memo(function TechExpertise() {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useLanguage(); // ← AJOUT DE isLoading
   const [techStack, setTechStack] = useState<TechItem[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -64,7 +64,6 @@ const TechExpertise = memo(function TechExpertise() {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
-      // SUPPRIMÉ : window.history.pushState (inutile et coûteux)
     }
   }, []);
 
@@ -92,7 +91,6 @@ const TechExpertise = memo(function TechExpertise() {
     >
       {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -101,11 +99,9 @@ const TechExpertise = memo(function TechExpertise() {
           aria-hidden="true"
         />
 
-        {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux - 2 SEULEMENT */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
@@ -121,7 +117,7 @@ const TechExpertise = memo(function TechExpertise() {
         <div className="w-full flex justify-center mb-6 md:mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
             <Award size={14} className="text-blue-400" aria-hidden="true" />
-            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
+            <span className={`text-xs sm:text-sm font-bold text-blue-400 tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
               {t('badge', 'tech')}
             </span>
           </div>
@@ -130,18 +126,20 @@ const TechExpertise = memo(function TechExpertise() {
         {/* Titre */}
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 text-white px-4 tracking-tight">
-            {t('title', 'tech')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
+            <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+              {t('title', 'tech')}
+            </span>
+            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
               {t('titleHighlight', 'tech')}
             </span>
           </h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 font-medium">
+          <p className={`text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
             {t('subtitle', 'tech')}
           </p>
         </div>
 
-        {/* Technologies principales - OPTIMISÉES */}
+        {/* Technologies principales */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-16 md:mb-20 auto-rows-fr">
           {Array.isArray(techStack) && techStack.map((tech) => {
             const Icon = getIcon(tech.name);
@@ -161,24 +159,28 @@ const TechExpertise = memo(function TechExpertise() {
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                         <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight">
-                          {tech.name}
+                          <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                            {tech.name}
+                          </span>
                         </h3>
-                        <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold tracking-tight ${badgeClass}`}>
+                        <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold tracking-tight ${badgeClass} transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                           {tech.level}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-300 font-medium">
+                      <p className={`text-xs sm:text-sm text-gray-300 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                         {tech.desc}
                       </p>
                     </div>
                   </div>
 
-                  {/* Points d'expertise - LIMITÉS À 3 MAX */}
+                  {/* Points d'expertise */}
                   <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-5 flex-1">
                     {tech.expertise.slice(0, 3).map((item: string) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                        <span className="text-xs sm:text-sm text-gray-200 font-medium truncate">{item}</span>
+                        <span className={`text-xs sm:text-sm text-gray-200 font-medium truncate transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                          {item}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -186,13 +188,17 @@ const TechExpertise = memo(function TechExpertise() {
                   {/* Mini barre de progression */}
                   <div className="mt-4 pt-4 border-t border-[#1F2937]">
                     <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-400 font-medium">{t('mastery', 'tech')}</span>
-                      <span className="text-blue-400 font-bold">{percentage}</span>
+                      <span className={`text-gray-400 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                        {t('mastery', 'tech')}
+                      </span>
+                      <span className={`text-blue-400 font-bold transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                        {percentage}
+                      </span>
                     </div>
                     <div className="w-full h-1.5 bg-gray-700 rounded-full mt-2 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400"
-                        style={{ width: percentage }}
+                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-opacity duration-300"
+                        style={{ width: percentage, opacity: isLoading ? 0 : 1 }}
                       />
                     </div>
                   </div>
@@ -202,11 +208,11 @@ const TechExpertise = memo(function TechExpertise() {
           })}
         </div>
 
-        {/* Note de crédibilité avec CTA - OPTIMISÉE */}
+        {/* Note de crédibilité avec CTA */}
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-6 p-6 md:p-8 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-md max-w-2xl mx-auto hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
             <div className="flex items-center gap-3">
-              <p className="text-sm sm:text-base text-gray-200 font-semibold">
+              <p className={`text-sm sm:text-base text-gray-200 font-semibold transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
                 {t('note', 'tech')}
               </p>
             </div>
@@ -217,7 +223,9 @@ const TechExpertise = memo(function TechExpertise() {
               className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm sm:text-base group hover:text-blue-300 transition-colors tracking-tight"
               aria-label={t('cta', 'tech')}
             >
-              <span>{t('cta', 'tech')}</span>
+              <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                {t('cta', 'tech')}
+              </span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
             </button>
           </div>
