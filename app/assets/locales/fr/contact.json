@@ -7,7 +7,6 @@
   "contactCards": {
     "direct": {
       "title": "Lignes directes",
-      "whatsapp": "WhatsApp",
       "calls": "Appels & SMS",
       "emergency": "Urgence projet"
     },

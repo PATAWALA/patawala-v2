@@ -22,7 +22,7 @@ interface ContactInfo {
 }
 
 const CTASection = memo(function CTASection() {
-  const { t } = useLanguage(); // ← PLUS DE isLoading
+  const { t } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
@@ -34,9 +34,9 @@ const CTASection = memo(function CTASection() {
 
   // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
   const lightPoints = [
-  { left: '15%', top: '25%' },
-  { left: '75%', top: '60%' }
-];
+    { left: '15%', top: '25%' },
+    { left: '75%', top: '60%' }
+  ];
 
   // Récupération des informations de contact - MÉMOÏSÉES
   const contactInfo: ContactInfo = {
@@ -162,28 +162,7 @@ const CTASection = memo(function CTASection() {
               </h3>
 
               <div className="space-y-3">
-                {/* WhatsApp */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
-                  <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <MessageCircle size={16} className="text-green-400" aria-hidden="true" />
-                    </div>
-                    <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-gray-400 font-medium">
-                        {t('contactCards.direct.whatsapp', 'contact')}
-                      </p>
-                      <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.whatsapp[1]}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleWhatsAppClick(contactInfo.whatsapp[0])}
-                    className="w-full sm:w-auto px-4 py-2 bg-green-500/20 rounded-lg hover:bg-green-500/30 transition-colors text-sm text-green-400 font-bold flex items-center justify-center gap-2 tracking-tight"
-                    aria-label={`WhatsApp ${contactInfo.whatsapp[1]}`}
-                  >
-                    <MessageCircle size={16} aria-hidden="true" />
-                    <span>WhatsApp</span>
-                  </button>
-                </div>
+                {/* WhatsApp retiré */}
 
                 {/* Appels */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
@@ -313,39 +292,8 @@ const CTASection = memo(function CTASection() {
             </div>
           </div>
 
-          {/* Social Links - OPTIMISÉS */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <h3 className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight">
-              <Heart size={18} className="text-blue-400" aria-hidden="true" />
-              <span>
-                {t('social.title', 'contact')}
-              </span>
-            </h3>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 group`}
-                  aria-label={`${social.name} (s'ouvre dans un nouvel onglet)`}
-                >
-                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
-                  <div className="flex-1 text-left overflow-hidden">
-                    <p className="text-xs text-gray-400 font-medium">
-                      {social.name}
-                    </p>
-                    <p className="text-xs text-white font-bold truncate tracking-tight">{social.username}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA Buttons - OPTIMISÉS */}
-          <div className="max-w-2xl mx-auto text-center">
+          {/* CTA Buttons - AVANT SOCIAL LINKS */}
+          <div className="max-w-2xl mx-auto text-center mb-12">
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
                 <div className="flex items-center gap-1.5">
@@ -407,6 +355,37 @@ const CTASection = memo(function CTASection() {
               <span className="text-lg sm:text-xl font-black text-blue-400 tracking-tight">
                 2 {t('availability.slots', 'contact')}
               </span>
+            </div>
+          </div>
+
+          {/* Social Links */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <h3 className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight">
+              <Heart size={18} className="text-blue-400" aria-hidden="true" />
+              <span>
+                {t('social.title', 'contact')}
+              </span>
+            </h3>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 group`}
+                  aria-label={`${social.name} (s'ouvre dans un nouvel onglet)`}
+                >
+                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
+                  <div className="flex-1 text-left overflow-hidden">
+                    <p className="text-xs text-gray-400 font-medium">
+                      {social.name}
+                    </p>
+                    <p className="text-xs text-white font-bold truncate tracking-tight">{social.username}</p>
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </div>
