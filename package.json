@@ -7,8 +7,8 @@
     "dev": "next dev",
     "analyze": "cross-env ANALYZE=true next build",
     "build": "next build",
-    "clean-isloading": "node scripts/remove-isloading.js",
-    "clean-isloading:dry": "node scripts/remove-isloading.js --dry-run",
+    "clean-isloading": "node scripts/remove-isloading.cjs",
+    "clean-isloading:dry": "node scripts/remove-isloading.cjs --dry-run",
     "start": "next start",
     "lint": "next lint"
   },

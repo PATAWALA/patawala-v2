@@ -5,7 +5,7 @@ import { Menu, X, ChevronDown, Globe, Smartphone, Palette, TrendingUp } from 'lu
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
-import { useLanguage } from '@/app/context/LanguageContext'; // ← CHANGÉ
+import { useLanguage } from '@/app/context/LanguageContext';
 
 // Type simplifié pour éviter les erreurs
 type NavItem = {
@@ -40,7 +40,7 @@ const NAV_ITEMS: readonly NavItem[] = [
 ] as const;
 
 export default function Navigation() {
-  const { t, isLoading } = useLanguage(); // ← AJOUT DE isLoading
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -208,7 +208,7 @@ export default function Navigation() {
                 : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
             }`}
           >
-            <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span>
               {itemLabel}
             </span>
           </a>
@@ -249,7 +249,7 @@ export default function Navigation() {
                   className="flex items-center gap-3 px-4 py-2.5 text-base text-gray-300 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
                 >
                   <Icon className="w-5 h-5 text-gray-400" />
-                  <span className={`font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                  <span className="font-medium">
                     {subItemLabel}
                   </span>
                 </a>
@@ -259,7 +259,7 @@ export default function Navigation() {
         )}
       </li>
     );
-  }, [pathname, hoveredItem, handleArrowMouseEnter, handleServicesMouseLeave, handleSubmenuMouseEnter, handleNavigation, t, isLoading]);
+  }, [pathname, hoveredItem, handleArrowMouseEnter, handleServicesMouseLeave, handleSubmenuMouseEnter, handleNavigation, t]);
 
   // Rendu d'un lien simple
   const renderSimpleLink = useCallback((item: NavItem, index: number, isFirst: boolean, isLast: boolean) => {
@@ -281,13 +281,13 @@ export default function Navigation() {
               : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
           }`}
         >
-          <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+          <span>
             {itemLabel}
           </span>
         </a>
       </li>
     );
-  }, [pathname, isLinkActive, handleAnchorClick, handleNavigation, t, isLoading]);
+  }, [pathname, isLinkActive, handleAnchorClick, handleNavigation, t]);
 
   return (
     <>
@@ -377,7 +377,7 @@ export default function Navigation() {
                               onClick={(e) => handleNavigation(e, item.href)}
                               className="flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base text-blue-400 bg-blue-500/10 border border-blue-500/20"
                             >
-                              <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                              <span>
                                 {itemLabel}
                               </span>
                               <ChevronDown className="w-4 h-4 rotate-180 text-blue-400" />
@@ -396,7 +396,7 @@ export default function Navigation() {
                                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-base text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
                                   >
                                     <Icon className="w-4 h-4" />
-                                    <span className={`font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                                    <span className="font-medium">
                                       {subItemLabel}
                                     </span>
                                   </a>
@@ -431,7 +431,7 @@ export default function Navigation() {
                                   : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                             }`}
                           >
-                            <span className={`${item.key === 'contact' ? 'mx-auto font-semibold' : ''} transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                            <span className={`${item.key === 'contact' ? 'mx-auto font-semibold' : ''}`}>
                               {itemLabel}
                             </span>
                           </a>

@@ -22,7 +22,7 @@ interface ProjectType {
 }
 
 const SocialProof = memo(function SocialProof() {
-  const { t, language, isLoading } = useLanguage(); // ← AJOUT DE isLoading
+  const { t, language } = useLanguage(); // ← AJOUT DE isLoading
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -218,21 +218,21 @@ const SocialProof = memo(function SocialProof() {
         <div className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Award size={14} className="text-blue-400" />
-            <span className={`text-xs sm:text-sm font-bold text-blue-400 tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span className={`text-xs sm:text-sm font-bold text-blue-400 tracking-tight opacity-100`}>
               {t('badge', 'testimonials')}
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight">
-            <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span className={`opacity-100`}>
               {t('title', 'testimonials')}
             </span>
-            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight opacity-100`}>
               {t('titleHighlight', 'testimonials')}
             </span>
           </h2>
 
-          <p className={`text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+          <p className={`text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium opacity-100`}>
             {t('subtitle', 'testimonials')}
           </p>
         </div>
@@ -314,7 +314,7 @@ const SocialProof = memo(function SocialProof() {
 
         {/* Types de projets */}
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <h3 className={`text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+          <h3 className={`text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight opacity-100`}>
             {t('projectTypes.title', 'testimonials')}
           </h3>
 
@@ -329,10 +329,10 @@ const SocialProof = memo(function SocialProof() {
                     <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
                   </div>
                   <div>
-                    <h4 className={`text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    <h4 className={`text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight opacity-100`}>
                       {type.title}
                     </h4>
-                    <p className={`text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium line-clamp-2 transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    <p className={`text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium line-clamp-2 opacity-100`}>
                       {type.description}
                     </p>
                   </div>
@@ -344,7 +344,7 @@ const SocialProof = memo(function SocialProof() {
                     className="w-full flex items-center justify-between group"
                     aria-label={type.cta}
                   >
-                    <span className={`text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                    <span className={`text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight opacity-100`}>
                       {type.cta}
                     </span>
                     <div className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200">

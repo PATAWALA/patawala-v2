@@ -12,7 +12,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Imports statiques pour éviter le chargement asynchrone
+// Imports statiques (nécessaires pour le chargement synchrone)
 import frCommon from '@/app/assets/locales/fr/common.json';
 import frNavigation from '@/app/assets/locales/fr/navigation.json';
 import frHero from '@/app/assets/locales/fr/hero.json';
@@ -32,7 +32,7 @@ import frProjectModal from '@/app/assets/locales/fr/project-modal.json';
 import frBooking from '@/app/assets/locales/fr/booking.json';
 import frRealisations from '@/app/assets/locales/fr/realisations.json';
 import frFooter from '@/app/assets/locales/fr/footer.json';
-import frWidget from '@/app/assets/locales/fr/widget.json'; // ← NOUVEAU
+import frWidget from '@/app/assets/locales/fr/widget.json';
 
 import enCommon from '@/app/assets/locales/en/common.json';
 import enNavigation from '@/app/assets/locales/en/navigation.json';
@@ -53,9 +53,8 @@ import enProjectModal from '@/app/assets/locales/en/project-modal.json';
 import enBooking from '@/app/assets/locales/en/booking.json';
 import enRealisations from '@/app/assets/locales/en/realisations.json';
 import enFooter from '@/app/assets/locales/en/footer.json';
-import enWidget from '@/app/assets/locales/en/widget.json'; // ← NOUVEAU
+import enWidget from '@/app/assets/locales/en/widget.json';
 
-// Type pour les traductions
 type TranslationsType = {
   common: any;
   navigation: any;
@@ -76,10 +75,9 @@ type TranslationsType = {
   booking: any;
   realisations: any;
   footer: any;
-  widget: any; // ← NOUVEAU
+  widget: any;
 };
 
-// Structure des traductions - statique, chargée immédiatement
 const translations: Record<Language, TranslationsType> = {
   fr: {
     common: frCommon,
@@ -101,7 +99,7 @@ const translations: Record<Language, TranslationsType> = {
     booking: frBooking,
     realisations: frRealisations,
     footer: frFooter,
-    widget: frWidget // ← NOUVEAU
+    widget: frWidget,
   },
   en: {
     common: enCommon,
@@ -123,8 +121,8 @@ const translations: Record<Language, TranslationsType> = {
     booking: enBooking,
     realisations: enRealisations,
     footer: enFooter,
-    widget: enWidget // ← NOUVEAU
-  }
+    widget: enWidget,
+  },
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
@@ -135,33 +133,23 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setCurrentTranslations(translations[language]);
   }, [language]);
 
-  const t = (key: string, section: string = 'common'): any => {
-    console.log(`🔍 t("${key}", "${section}")`);
-    
-    // Si key est vide, retourner toute la section
-    if (!key) {
-      return currentTranslations[section as keyof TranslationsType];
-    }
-    
+  const t = (key: string, section: string = 'common'): string | undefined => {
+    const sectionData = currentTranslations[section as keyof TranslationsType];
+    if (!sectionData) return undefined;
+
+    if (!key) return sectionData;
+
     const keys = key.split('.');
-    let value: any = currentTranslations[section as keyof TranslationsType];
-    
-    // Si la section n'existe pas
-    if (!value) {
-      console.warn(`❌ Section introuvable: ${section}`);
-      return undefined;
-    }
-    
-    // Parcourir les clés
+    let value: any = sectionData;
+
     for (const k of keys) {
       if (value && value[k] !== undefined) {
         value = value[k];
       } else {
-        console.warn(`❌ Traduction manquante: ${section}.${key} (clé "${k}" introuvable)`);
         return undefined;
       }
     }
-    
+
     return value;
   };
 

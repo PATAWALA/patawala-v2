@@ -8,7 +8,7 @@ import {
   Settings, MousePointer, Award
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useLanguage } from '@/app/context/LanguageContext'; // ← CHANGÉ
+import { useLanguage } from '@/app/context/LanguageContext';
 
 // Interface pour typer les technologies
 interface TechItem {
@@ -18,8 +18,16 @@ interface TechItem {
   expertise: string[];
 }
 
+// Points lumineux fixes (déterministes) pour éviter les différences serveur/client
+const LIGHT_POINTS = [
+  { left: '15%', top: '25%' },
+  { left: '75%', top: '60%' },
+  { left: '40%', top: '80%' },
+  { left: '85%', top: '15%' },
+];
+
 const TechExpertise = memo(function TechExpertise() {
-  const { t, language, isLoading } = useLanguage(); // ← AJOUT DE isLoading
+  const { t, language } = useLanguage();
   const [techStack, setTechStack] = useState<TechItem[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -40,14 +48,6 @@ const TechExpertise = memo(function TechExpertise() {
       console.error('Erreur chargement tech stack:', error);
     }
   }, [t, language, isMounted]);
-
-  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
-  const lightPoints = useRef(
-    [...Array(2)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
 
   // Mapping des icônes par nom de technologie - OPTIMISÉ
   const getIcon = (techName: string) => {
@@ -102,7 +102,7 @@ const TechExpertise = memo(function TechExpertise() {
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {lightPoints.map((point, i) => (
+        {LIGHT_POINTS.map((point, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
@@ -117,7 +117,7 @@ const TechExpertise = memo(function TechExpertise() {
         <div className="w-full flex justify-center mb-6 md:mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
             <Award size={14} className="text-blue-400" aria-hidden="true" />
-            <span className={`text-xs sm:text-sm font-bold text-blue-400 tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
               {t('badge', 'tech')}
             </span>
           </div>
@@ -126,15 +126,15 @@ const TechExpertise = memo(function TechExpertise() {
         {/* Titre */}
         <div className="text-center mb-10 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 text-white px-4 tracking-tight">
-            <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span>
               {t('title', 'tech')}
             </span>
-            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
               {t('titleHighlight', 'tech')}
             </span>
           </h2>
 
-          <p className={`text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 font-medium">
             {t('subtitle', 'tech')}
           </p>
         </div>
@@ -143,7 +143,7 @@ const TechExpertise = memo(function TechExpertise() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-16 md:mb-20 auto-rows-fr">
           {Array.isArray(techStack) && techStack.map((tech) => {
             const Icon = getIcon(tech.name);
-            const { isExpert, isAdvanced, percentage, badgeClass } = getTechLevel(tech);
+            const { percentage, badgeClass } = getTechLevel(tech);
 
             return (
               <div
@@ -159,15 +159,15 @@ const TechExpertise = memo(function TechExpertise() {
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                         <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight">
-                          <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                          <span>
                             {tech.name}
                           </span>
                         </h3>
-                        <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold tracking-tight ${badgeClass} transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                        <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold tracking-tight ${badgeClass}`}>
                           {tech.level}
                         </span>
                       </div>
-                      <p className={`text-xs sm:text-sm text-gray-300 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                      <p className="text-xs sm:text-sm text-gray-300 font-medium">
                         {tech.desc}
                       </p>
                     </div>
@@ -178,7 +178,7 @@ const TechExpertise = memo(function TechExpertise() {
                     {tech.expertise.slice(0, 3).map((item: string) => (
                       <div key={item} className="flex items-center gap-2">
                         <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" aria-hidden="true" />
-                        <span className={`text-xs sm:text-sm text-gray-200 font-medium truncate transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                        <span className="text-xs sm:text-sm text-gray-200 font-medium truncate">
                           {item}
                         </span>
                       </div>
@@ -188,17 +188,17 @@ const TechExpertise = memo(function TechExpertise() {
                   {/* Mini barre de progression */}
                   <div className="mt-4 pt-4 border-t border-[#1F2937]">
                     <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className={`text-gray-400 font-medium transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                      <span className="text-gray-400 font-medium">
                         {t('mastery', 'tech')}
                       </span>
-                      <span className={`text-blue-400 font-bold transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+                      <span className="text-blue-400 font-bold">
                         {percentage}
                       </span>
                     </div>
                     <div className="w-full h-1.5 bg-gray-700 rounded-full mt-2 overflow-hidden">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-opacity duration-300"
-                        style={{ width: percentage, opacity: isLoading ? 0 : 1 }}
+                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400"
+                        style={{ width: percentage }}
                       />
                     </div>
                   </div>
@@ -212,7 +212,7 @@ const TechExpertise = memo(function TechExpertise() {
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-6 p-6 md:p-8 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-md max-w-2xl mx-auto hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
             <div className="flex items-center gap-3">
-              <p className={`text-sm sm:text-base text-gray-200 font-semibold transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+              <p className="text-sm sm:text-base text-gray-200 font-semibold">
                 {t('note', 'tech')}
               </p>
             </div>
@@ -223,7 +223,7 @@ const TechExpertise = memo(function TechExpertise() {
               className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm sm:text-base group hover:text-blue-300 transition-colors tracking-tight"
               aria-label={t('cta', 'tech')}
             >
-              <span className={`transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}>
+              <span>
                 {t('cta', 'tech')}
               </span>
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />

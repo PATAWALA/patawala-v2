@@ -9,6 +9,14 @@ import ProjectModal from '@/app/components/ui/ProjectModal';
 import type { Project } from '@/app/projets/data/projets';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
+// Points lumineux fixes (déterministes) pour éviter les différences serveur/client
+const LIGHT_POINTS = [
+  { left: '15%', top: '20%' },
+  { left: '75%', top: '60%' },
+  { left: '45%', top: '80%' },
+  { left: '85%', top: '30%' },
+];
+
 const ProjetsPage = memo(function ProjetsPage() {
   const { t, language } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -67,14 +75,6 @@ const ProjetsPage = memo(function ProjetsPage() {
     return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   }, [translatedProjects]);
 
-  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
-  const lightPoints = useRef(
-    [...Array(2)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
-
   return (
     <main
       className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden"
@@ -91,12 +91,12 @@ const ProjetsPage = memo(function ProjetsPage() {
           aria-hidden="true"
         />
 
-        {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
+        {/* Cercles flous - 2 SEULEMENT */}
         <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux - 2 SEULEMENT */}
-        {lightPoints.map((point, i) => (
+        {/* Points lumineux - fixes */}
+        {LIGHT_POINTS.map((point, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
@@ -157,7 +157,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       loading={index < 3 ? 'eager' : 'lazy'}
                       priority={index < 3}
-                      quality={70} // Réduit de 75 à 70
+                      quality={70}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -194,10 +194,10 @@ const ProjetsPage = memo(function ProjetsPage() {
                       </span>
                     ))}
                     {translatedProjet.tags.length > 3 && (
-                        <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                          {t('card.tags.more', 'projets-page')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
-                        </span>
-                      )}
+                      <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
+                        {t('card.tags.more', 'projets-page')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
+                      </span>
+                    )}
                   </div>
 
                   {/* Bouton En savoir plus - OPTIMISÉ */}

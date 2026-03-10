@@ -33,12 +33,10 @@ const CTASection = memo(function CTASection() {
   }, []);
 
   // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
-  const lightPoints = useRef(
-    [...Array(2)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
+  const lightPoints = [
+  { left: '15%', top: '25%' },
+  { left: '75%', top: '60%' }
+];
 
   // Récupération des informations de contact - MÉMOÏSÉES
   const contactInfo: ContactInfo = {
