@@ -28,6 +28,12 @@ export default function BlogPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const articlesPerPage = 6;
 
+  // Variables d'environnement avec valeurs par défaut
+  const brevoConfig = useMemo(() => ({
+    instance: process.env.NEXT_PUBLIC_BREVO_INSTANCE || 'app',
+    listId: process.env.NEXT_PUBLIC_BREVO_LIST_ID || '3',
+  }), []);
+
   // Traduction des catégories
   const { categories, allCategory } = useMemo(() => {
     const categoriesRaw = t('filters.categories', 'blog');
@@ -42,9 +48,6 @@ export default function BlogPage() {
       allCategory
     };
   }, [t, language]);
-
-  console.log('Instance:', process.env.NEXT_PUBLIC_BREVO_INSTANCE);
-  console.log('List ID:', process.env.NEXT_PUBLIC_BREVO_LIST_ID);
 
   // Initialisation de la catégorie sélectionnée
   useEffect(() => {
@@ -264,7 +267,7 @@ export default function BlogPage() {
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
                           : 'bg-[#0A0F1C] text-gray-400 hover:bg-[#1E2638] hover:text-blue-400 border border-[#1F2937] font-semibold'
                       }`}
-                      title={category} // tooltip au survol
+                      title={category}
                     >
                       {category}
                     </button>
@@ -527,49 +530,49 @@ export default function BlogPage() {
         )}
 
         {/* Newsletter */}
-<div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
-  <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
-  <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
-    {/* Éléments décoratifs */}
-    <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
-    <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
-    
-    <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold mb-1 sm:mb-2 md:mb-3 text-white tracking-tight">
-      {t('newsletter.title', 'blog')}
-    </h3>
-    <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 md:mb-8 font-medium">
-      {t('newsletter.subtitle', 'blog')}
-    </p>
-    
-    <form 
-  action={`https://${process.env.NEXT_PUBLIC_BREVO_INSTANCE}.brevo.com/subscribe`} 
-  method="post" 
-  className="flex flex-col xs:flex-row gap-2 sm:gap-3 max-w-md mx-auto"
->
-  <input
-    type="email"
-    name="email"
-    placeholder={t('newsletter.emailPlaceholder', 'blog')}
-    required
-    className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
-  />
-  <input type="hidden" name="list" value={process.env.NEXT_PUBLIC_BREVO_LIST_ID} />
-  <input type="hidden" name="redirection" value="https://patawala-v2-nry6.vercel.app/merci" />
-  <button 
-    type="submit"
-    className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight"
-  >
-    {t('newsletter.button', 'blog')}
-  </button>
-</form>
-    
-    <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
-      <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
-      {t('newsletter.footer', 'blog')}
-      <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>
-    </p>
-  </div>
-</div>
+        <div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
+          <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
+          <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
+            {/* Éléments décoratifs */}
+            <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
+            
+            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold mb-1 sm:mb-2 md:mb-3 text-white tracking-tight">
+              {t('newsletter.title', 'blog')}
+            </h3>
+            <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 md:mb-8 font-medium">
+              {t('newsletter.subtitle', 'blog')}
+            </p>
+            
+            <form 
+              action={`https://${brevoConfig.instance}.brevo.com/subscribe`} 
+              method="post" 
+              className="flex flex-col xs:flex-row gap-2 sm:gap-3 max-w-md mx-auto"
+            >
+              <input
+                type="email"
+                name="email"
+                placeholder={t('newsletter.emailPlaceholder', 'blog')}
+                required
+                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
+              />
+              <input type="hidden" name="list" value={brevoConfig.listId} />
+              <input type="hidden" name="redirection" value="https://patawala-v2-nry6.vercel.app/merci" />
+              <button 
+                type="submit"
+                className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight"
+              >
+                {t('newsletter.button', 'blog')}
+              </button>
+            </form>
+            
+            <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
+              <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
+              {t('newsletter.footer', 'blog')}
+              <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>
+            </p>
+          </div>
+        </div>
       </div>
 
       <style jsx>{`

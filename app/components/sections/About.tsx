@@ -43,7 +43,7 @@ const DEFAULT_VISION_CARDS: VisionCard[] = [
 ];
 
 const AboutSection = memo(function AboutSection() {
-  const { t } = useLanguage(); // ← PLUS DE isLoading
+  const { t } = useLanguage();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [visionCards, setVisionCards] = useState<VisionCard[]>(DEFAULT_VISION_CARDS);
@@ -90,7 +90,7 @@ const AboutSection = memo(function AboutSection() {
     <>
       <section
         id="about"
-        className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C]"
+        className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C] font-sans"
         aria-label={t('badge', 'about')}
       >
         {/* FOND */}
@@ -117,58 +117,58 @@ const AboutSection = memo(function AboutSection() {
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Badge centré principal */}
-            <div className="w-full flex justify-center mb-6 sm:mb-8">
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-blue-500/10 text-blue-400 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-blue-500/20 backdrop-blur-sm">
-                <Sparkles size={14} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                <span className="text-xs sm:text-sm font-semibold whitespace-nowrap tracking-tight">
+            <div className="w-full flex justify-center mb-8 md:mb-8">
+              <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
+                <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
+                <span className="text-sm md:text-base font-semibold whitespace-nowrap tracking-tight">
                   {t('badge', 'about')}
                 </span>
               </div>
             </div>
 
-            {/* Titre et sous-titre */}
-            <div className="text-center mb-10 sm:mb-12 md:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
+            {/* Titre et sous-titre - PLUS GRAND SUR MOBILE */}
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
                 <span>
                   {t('title', 'about')}
                 </span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-1 sm:mt-2 font-extrabold tracking-tight">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-2xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-2 font-extrabold tracking-tight">
                   {t('subtitle', 'about')}
                 </span>
               </h2>
 
-              <p className="text-sm sm:text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4 font-medium leading-relaxed">
+              <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4 font-normal leading-relaxed">
                 {t('description', 'about')}
               </p>
 
-              <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-5 sm:mt-6 md:mt-8 rounded-full" />
+              <div className="w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-8 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-12 sm:mb-16 md:mb-20">
+            {/* CARTES MA VISION - PLUS AÉRÉES SUR MOBILE */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 mb-16 md:mb-20">
               {visionCards.map((card: VisionCard, index: number) => {
                 const Icon = cardIcons[index] || MessagesSquare;
 
                 return (
                   <div
                     key={index}
-                    className="bg-[#141B2B] rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
+                    className="bg-[#141B2B] rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
                     role="article"
                     aria-labelledby={`vision-title-${index}`}
                   >
                     <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-3xl sm:text-4xl font-black text-blue-400/80 tracking-tighter">
+                      <div className="flex items-center justify-between mb-5">
+                        <span className="text-4xl md:text-4xl font-black text-blue-400/80 tracking-tighter">
                           {`0${index + 1}`}
                         </span>
-                        <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400/70" aria-hidden="true" />
+                        <Icon className="w-7 h-7 md:w-7 md:h-7 text-blue-400/70" aria-hidden="true" />
                       </div>
 
-                      <h3 id={`vision-title-${index}`} className="text-lg sm:text-xl md:text-2xl font-extrabold mb-3 text-white tracking-tight">
+                      <h3 id={`vision-title-${index}`} className="text-xl md:text-2xl font-bold mb-4 text-white tracking-tight">
                         {card.title}
                       </h3>
 
-                      <p className="text-sm sm:text-base text-gray-300 leading-relaxed font-medium">
+                      <p className="text-base md:text-base text-gray-300 leading-relaxed font-normal">
                         {card.description}
                       </p>
                     </div>
@@ -178,27 +178,27 @@ const AboutSection = memo(function AboutSection() {
             </div>
 
             {/* BADGE "Qui suis-je ?" */}
-            <div className="flex justify-center mb-6 md:mb-8">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/30 backdrop-blur-sm">
-                <User size={16} className="sm:w-4 sm:h-4 text-blue-400" aria-hidden="true" />
-                <span className="text-sm sm:text-base font-bold tracking-tight">
+            <div className="flex justify-center mb-8 md:mb-8">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-6 py-3 rounded-full border border-blue-500/30 backdrop-blur-sm">
+                <User size={18} className="text-blue-400" aria-hidden="true" />
+                <span className="text-base md:text-base font-bold tracking-tight">
                   {t('whoami', 'about')}
                 </span>
               </div>
             </div>
 
-            {/* Section image et bio */}
-            <div className="flex flex-col lg:flex-row gap-8 sm:gap-10 md:gap-12 lg:gap-16 items-center">
-              {/* Image à gauche */}
+            {/* Section image et bio - COLONNE SUR MOBILE */}
+            <div className="flex flex-col lg:flex-row gap-10 md:gap-12 lg:gap-16 items-center">
+              {/* Image à gauche - AGRANDIE SANS CERCLE SUR MOBILE */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
-                <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[350px] md:max-w-sm lg:max-w-md aspect-square">
+                <div className="relative w-full max-w-[400px] md:max-w-sm lg:max-w-md aspect-square">
                   
                   {/* Badge en haut à gauche */}
                   <div className="absolute top-0 left-0 z-30" style={{ transform: 'translate(-5%, -5%)' }}>
-                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
-                      <Globe size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
-                      <Smartphone size={9} className="xs:w-2 xs:h-2 sm:w-2.5 sm:h-2.5" aria-hidden="true" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-[#1F2937]">
+                      <Globe size={12} aria-hidden="true" />
+                      <Smartphone size={12} aria-hidden="true" />
+                      <span className="text-xs font-bold tracking-tight whitespace-nowrap">
                         {t('profile.badges.webMobile', 'about')}
                       </span>
                     </div>
@@ -206,58 +206,58 @@ const AboutSection = memo(function AboutSection() {
 
                   {/* Badge en bas à droite */}
                   <div className="absolute bottom-0 right-0 z-30" style={{ transform: 'translate(5%, 5%)' }}>
-                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-1.5 sm:px-2 md:px-2.5 lg:px-3 py-1 sm:py-1 rounded-full shadow-lg flex items-center gap-1 sm:gap-1 border border-[#1F2937]">
-                      <div className="w-1.5 h-1.5 xs:w-1.5 xs:h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
-                      <span className="text-[8px] xs:text-[8px] sm:text-[9px] md:text-[10px] font-bold tracking-tight whitespace-nowrap">
+                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-[#1F2937]">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                      <span className="text-xs font-bold tracking-tight whitespace-nowrap">
                         {t('profile.badges.available', 'about')}
                       </span>
                     </div>
                   </div>
 
-                  {/* Photo */}
-                  <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-3 sm:border-4 border-[#1F2937] bg-[#141B2B]">
+                  {/* Photo - SANS CERCLE, COINS ARRONDIS SIMPLES */}
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
                     <Image
                       src={profileImage}
                       alt="Abdoulaye Patawala - Développeur Full Stack"
                       fill
                       className="object-cover"
-                      sizes="(max-width: 480px) 280px, (max-width: 640px) 320px, (max-width: 768px) 350px, (max-width: 1024px) 384px, 448px"
+                      sizes="(max-width: 768px) 400px, 384px"
                       priority
                       fetchPriority="high"
-                      quality={85}
+                      quality={90}
                       placeholder="blur"
                     />
                   </div>
                 </div>
               </div>
 
-              {/* BIO à droite */}
-              <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-3 sm:px-4 lg:px-0">
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 text-white tracking-tight">
+              {/* BIO à droite - TEXTE PLUS GRAND SUR MOBILE */}
+              <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-4 lg:px-0">
+                <h3 className="text-3xl md:text-4xl font-black mb-4 text-white tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {t('profile.name', 'about')}
                   </span>
                 </h3>
 
-                <p className="text-base sm:text-lg md:text-xl text-blue-400 font-semibold mb-4 tracking-tight">
+                <p className="text-lg md:text-xl text-blue-400 font-semibold mb-6 tracking-tight">
                   {t('profile.role', 'about')}
                 </p>
 
                 {/* Mission */}
-                <div className="mb-4 sm:mb-5 md:mb-6 space-y-3">
-                  <p className="text-sm sm:text-base md:text-lg text-gray-200 leading-relaxed font-medium">
+                <div className="mb-8 md:mb-6 space-y-4">
+                  <p className="text-lg md:text-lg text-gray-200 leading-relaxed font-normal">
                     {t('profile.missionText', 'about')}
                   </p>
                 </div>
 
-                {/* BOUTONS */}
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start">
+                {/* BOUTONS - PLUS GRANDS, PLUS ESPACÉS SUR MOBILE */}
+                <div className="flex flex-col sm:flex-row gap-4 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-bold text-sm sm:text-base md:text-lg flex items-center justify-center gap-1.5 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[44px] tracking-tight"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 md:px-6 py-4 md:py-3 rounded-xl font-bold text-lg md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[52px] tracking-tight"
                     aria-label={t('buttons.talk', 'about')}
                   >
-                    <MessageSquare size={16} className="sm:w-4 sm:h-4" aria-hidden="true" />
+                    <MessageSquare size={20} aria-hidden="true" />
                     <span>
                       {t('buttons.talk', 'about')}
                     </span>
@@ -265,7 +265,7 @@ const AboutSection = memo(function AboutSection() {
 
                   <button
                     onClick={handleVoirOffres}
-                    className="bg-transparent text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-xl font-semibold text-sm sm:text-base md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[44px] tracking-tight"
+                    className="bg-transparent text-white px-6 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-lg md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[52px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >
                     <span>

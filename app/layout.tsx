@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
 import Chatbot from './components/ui/Chatbot';
+import {  } from "module";
 import LoadingScreen from './components/ui/LoadingScreen';
 
 import { Analytics } from '@vercel/analytics/react';
