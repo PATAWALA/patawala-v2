@@ -81,7 +81,7 @@ let rssItems = '';
 articlesArray.forEach(article => {
   const title = escapeXml(article.title);
   const slug = slugify(article.title);
-  const link = `https://https://patawala-v2-nry6.vercel.app/blog/${slug}`; // Remplacez par votre domaine
+  const link = `https://patawala-v2-nry6.vercel.app/blog/${slug}`; // Remplacez par votre domaine
   const description = escapeXml(article.excerpt);
   const category = escapeXml(article.category);
 
@@ -102,7 +102,7 @@ const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
     <title>Le Blog d'Abdoulaye Patawala</title>
     <link>https://https://patawala-v2-nry6.vercel.app</link>
     <description>Articles sur le développement web, mobile, IA et entrepreneuriat</description>
-    <atom:link href="https://https://patawala-v2-nry6.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://patawala-v2-nry6.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
     <language>fr</language>
     <lastBuildDate>${pubDate}</lastBuildDate>
     ${rssItems}
