@@ -2,7 +2,15 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
-import { useLanguage } from '@/app/context/LanguageContext'; // ← CHANGÉ
+import { useLanguage } from '@/app/context/LanguageContext';
+
+// Points lumineux fixes (déterministes)
+const LIGHT_POINTS = [
+  { left: '15%', top: '25%' },
+  { left: '75%', top: '60%' },
+  { left: '40%', top: '80%' },
+  { left: '85%', top: '15%' },
+];
 
 interface Testimonial {
   name: string;
@@ -22,7 +30,7 @@ interface ProjectType {
 }
 
 const SocialProof = memo(function SocialProof() {
-  const { t, language } = useLanguage(); // ← AJOUT DE isLoading
+  const { t, language } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -34,7 +42,7 @@ const SocialProof = memo(function SocialProof() {
     setIsMounted(true);
   }, []);
 
-  // Charger les témoignages - UNIQUEMENT AVEC COULEURS
+  // Charger les témoignages
   useEffect(() => {
     try {
       const testimonialsData = t('testimonials', 'testimonials');
@@ -175,14 +183,6 @@ const SocialProof = memo(function SocialProof() {
     return () => window.removeEventListener('resize', checkScrollButtons);
   }, [checkScrollButtons]);
 
-  // Points lumineux réduits
-  const lightPoints = useRef(
-    [...Array(2)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
-
   const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
   return (
@@ -190,7 +190,7 @@ const SocialProof = memo(function SocialProof() {
       className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
       aria-label={language === 'fr' ? "Témoignages clients" : "Client testimonials"}
     >
-      {/* FOND SIMPLIFIÉ */}
+      {/* FOND AVEC POINTS FIXES */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div
           className="absolute inset-0 opacity-30"
@@ -203,7 +203,7 @@ const SocialProof = memo(function SocialProof() {
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {lightPoints.map((point, i) => (
+        {LIGHT_POINTS.map((point, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
@@ -218,28 +218,28 @@ const SocialProof = memo(function SocialProof() {
         <div className="text-center mb-12 md:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Award size={14} className="text-blue-400" />
-            <span className={`text-xs sm:text-sm font-bold text-blue-400 tracking-tight opacity-100`}>
+            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
               {t('badge', 'testimonials')}
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight">
-            <span className={`opacity-100`}>
+            <span>
               {t('title', 'testimonials')}
             </span>
-            <span className={`block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight opacity-100`}>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
               {t('titleHighlight', 'testimonials')}
             </span>
           </h2>
 
-          <p className={`text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium opacity-100`}>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium">
             {t('subtitle', 'testimonials')}
           </p>
         </div>
 
-        {/* CARROUSEL - Les témoignages sont déjà chargés avec des données, pas besoin de masquage */}
+        {/* Carrousel */}
         <div className="relative max-w-7xl mx-auto mb-16 md:mb-20">
-          {/* Flèches (inchangées) */}
+          {/* Flèches */}
           <>
             <button
               onClick={() => scroll('left')}
@@ -314,7 +314,7 @@ const SocialProof = memo(function SocialProof() {
 
         {/* Types de projets */}
         <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <h3 className={`text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight opacity-100`}>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight">
             {t('projectTypes.title', 'testimonials')}
           </h3>
 
@@ -329,10 +329,10 @@ const SocialProof = memo(function SocialProof() {
                     <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
                   </div>
                   <div>
-                    <h4 className={`text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight opacity-100`}>
+                    <h4 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight">
                       {type.title}
                     </h4>
-                    <p className={`text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium line-clamp-2 opacity-100`}>
+                    <p className="text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium line-clamp-2">
                       {type.description}
                     </p>
                   </div>
@@ -344,7 +344,7 @@ const SocialProof = memo(function SocialProof() {
                     className="w-full flex items-center justify-between group"
                     aria-label={type.cta}
                   >
-                    <span className={`text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight opacity-100`}>
+                    <span className="text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight">
                       {type.cta}
                     </span>
                     <div className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200">

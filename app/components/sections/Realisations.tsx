@@ -75,23 +75,30 @@ export default function RealisationsSection() {
   return (
     <>
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
-        {/* FOND ULTRA-OPTIMISÉ */}
+        {/* FOND AMÉLIORÉ - DOUBLE COUCHE VISIBLE COMME DANS HERO/ABOUT */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          {/* Lignes horizontales bleues */}
           <div
-            className="absolute inset-0 opacity-10"
+            className="absolute inset-0 opacity-50"
             style={{
-              backgroundImage: `repeating-linear-gradient(90deg, 
-                rgba(59,130,246,0.05) 0px, 
-                rgba(59,130,246,0.05) 1px, 
-                transparent 1px, 
-                transparent 60px)`
+              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
+            }}
+            aria-hidden="true"
+          />
+          {/* Lignes verticales cyan */}
+          <div
+            className="absolute inset-0 opacity-50"
+            style={{
+              backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
             }}
             aria-hidden="true"
           />
 
+          {/* Cercles flous */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
+          {/* Points lumineux fixes */}
           {LIGHT_POINTS.map((point, i) => (
             <div
               key={i}

@@ -12,6 +12,14 @@ import { articles as baseArticles } from './data/articles';
 import profileImage from '../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
+// Points lumineux fixes (déterministes)
+const LIGHT_POINTS = [
+  { left: '15%', top: '25%' },
+  { left: '75%', top: '60%' },
+  { left: '40%', top: '80%' },
+  { left: '85%', top: '15%' },
+];
+
 export default function BlogPage() {
   const { t, language } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -20,7 +28,7 @@ export default function BlogPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const articlesPerPage = 6;
 
-  // Traduction des catégories - MÉMOÏSÉE
+  // Traduction des catégories
   const { categories, allCategory } = useMemo(() => {
     const categoriesRaw = t('filters.categories', 'blog');
     const categoriesMap: Record<string, string> = 
@@ -57,7 +65,7 @@ export default function BlogPage() {
     [selectedCategory, categories, allCategory]
   );
 
-  // Fusion des articles avec leurs traductions - MÉMOÏSÉE
+  // Fusion des articles avec leurs traductions
   const translatedArticles = useMemo(() => {
     return baseArticles.map(article => {
       const key = `article${article.id}`;
@@ -79,7 +87,7 @@ export default function BlogPage() {
     });
   }, [t, language]);
 
-  // Articles filtrés - MÉMOÏSÉS
+  // Articles filtrés
   const filteredArticles = useMemo(() => {
     return translatedArticles.filter(article => {
       const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
@@ -91,13 +99,13 @@ export default function BlogPage() {
     });
   }, [translatedArticles, effectiveCategory, allCategory, searchQuery]);
 
-  // Articles à la une - MÉMOÏSÉS
+  // Articles à la une
   const featuredArticles = useMemo(() => 
     translatedArticles.filter(a => a.featured),
     [translatedArticles]
   );
 
-  // Pagination - MÉMOÏSÉE
+  // Pagination
   const { currentArticles, totalPages } = useMemo(() => {
     const indexOfLastArticle = currentPage * articlesPerPage;
     const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
@@ -107,13 +115,13 @@ export default function BlogPage() {
     };
   }, [filteredArticles, currentPage]);
 
-  // Texte pour le tag "plus" - MÉMOÏSÉ
+  // Texte pour le tag "plus"
   const moreTagsTemplate = useMemo(() => {
     const moreTagsRaw = t('featured.tags.more', 'blog');
     return typeof moreTagsRaw === 'string' ? moreTagsRaw : '+{{count}}';
   }, [t]);
 
-  // Handlers - MÉMOÏSÉS
+  // Handlers
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }, []);
@@ -141,20 +149,38 @@ export default function BlogPage() {
 
   return (
     <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* FOND OPTIMISÉ */}
+      {/* FOND AMÉLIORÉ - DOUBLE COUCHE VISIBLE */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche, opacité réduite */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, 
-            rgba(59,130,246,0.05) 0px, 
-            rgba(59,130,246,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
-        
-        {/* Cercles flous - 2 SEULEMENT */}
-        <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
+        {/* Lignes horizontales bleues */}
+        <div
+          className="absolute inset-0 opacity-50"
+          style={{
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
+          }}
+          aria-hidden="true"
+        />
+        {/* Lignes verticales cyan */}
+        <div
+          className="absolute inset-0 opacity-50"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Cercles flous */}
+        <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+
+        {/* Points lumineux fixes */}
+        {LIGHT_POINTS.map((point, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
+            style={{ left: point.left, top: point.top }}
+            aria-hidden="true"
+          />
+        ))}
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
@@ -218,7 +244,7 @@ export default function BlogPage() {
                 <Filter size={18} className="text-blue-400" />
                 <span className="font-bold text-sm text-gray-200 tracking-tight">{t('filters.title', 'blog')}</span>
               </div>
-              <span className="text-xs bg-blue-500/20 text-blue-400 font-bold px-2 py-1 rounded-full tracking-tight">
+              <span className="text-xs bg-blue-500/20 text-blue-400 font-bold px-2 py-1 rounded-full tracking-tight truncate max-w-[120px]">
                 {selectedCategory}
               </span>
             </button>
@@ -230,11 +256,12 @@ export default function BlogPage() {
                     <button
                       key={category}
                       onClick={() => handleCategorySelect(category)}
-                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 min-w-[80px] tracking-tight ${
+                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 min-w-[100px] truncate tracking-tight ${
                         selectedCategory === category
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
                           : 'bg-[#0A0F1C] text-gray-400 hover:bg-[#1E2638] hover:text-blue-400 border border-[#1F2937] font-semibold'
                       }`}
+                      title={category} // tooltip au survol
                     >
                       {category}
                     </button>
@@ -251,11 +278,12 @@ export default function BlogPage() {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 md:px-4 lg:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 whitespace-nowrap tracking-tight ${
+                  className={`px-3 md:px-4 lg:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 whitespace-nowrap tracking-tight truncate max-w-[180px] ${
                     selectedCategory === category
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
                       : 'text-gray-400 hover:text-blue-400 hover:bg-[#1E2638] font-semibold'
                   }`}
+                  title={category}
                 >
                   {category}
                 </button>
