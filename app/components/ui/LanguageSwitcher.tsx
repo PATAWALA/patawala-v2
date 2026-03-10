@@ -58,6 +58,7 @@ export default function LanguageSwitcher() {
             src={currentLanguage.flag}
             alt={currentLanguage.label}
             fill
+            priority 
             className="object-cover"
             sizes="20px"
           />
@@ -88,6 +89,7 @@ export default function LanguageSwitcher() {
                   src={lang.flag}
                   alt={lang.label}
                   fill
+                  priority 
                   className="object-cover"
                   sizes="20px"
                 />

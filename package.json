@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "analyze": "cross-env ANALYZE=true next build",
-    "build": "next build",
+    "build": "npm run generate-rss && next build",
+    "generate-rss": "node scripts/generate-rss.js",
     "clean-isloading": "node scripts/remove-isloading.cjs",
     "clean-isloading:dry": "node scripts/remove-isloading.cjs --dry-run",
     "start": "next start",
