@@ -154,7 +154,7 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
+    <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden font-sans">
       {/* FOND AMÉLIORÉ - DOUBLE COUCHE VISIBLE */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         {/* Lignes horizontales bleues */}
@@ -192,22 +192,22 @@ export default function BlogPage() {
       <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
         {/* En-tête */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm">
-            <BookOpen size={14} className="sm:w-4 sm:h-4 text-blue-400" />
-            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
+          <div className="inline-flex items-center gap-2 px-4 sm:px-4 py-2 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm">
+            <BookOpen size={18} className="sm:w-4 sm:h-4 text-blue-400" />
+            <span className="text-base sm:text-sm font-bold text-blue-400 tracking-tight">
               {t('badge', 'blog')}
             </span>
           </div>
           
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-3 sm:mb-4 md:mb-6 px-2 text-white tracking-tight">
+          <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 sm:mb-4 md:mb-6 px-2 text-white tracking-tight">
             {t('title', 'blog')}
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-black tracking-tight">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-black tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               {t('titleHighlight', 'blog')}
             </span>
           </h1>
           
-          <p className="text-sm sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium">
+          <p className="text-base sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium">
             {t('subtitle', 'blog')}
           </p>
         </div>
@@ -217,21 +217,21 @@ export default function BlogPage() {
           <div className="relative group">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
             <div className="relative flex items-center">
-              <Search className="absolute left-3 sm:left-5 top-1/2 transform -translate-y-1/2 text-blue-400 w-4 h-4 sm:w-5 sm:h-5" />
+              <Search className="absolute left-4 sm:left-5 top-1/2 transform -translate-y-1/2 text-blue-400 w-5 h-5 sm:w-5 sm:h-5" />
               <input
                 type="text"
                 placeholder={t('search.placeholder', 'blog')}
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full pl-9 sm:pl-14 pr-8 sm:pr-10 py-3 sm:py-4 md:py-5 bg-[#141B2B]/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all shadow-md sm:shadow-lg text-sm sm:text-base text-white placeholder-gray-500 font-medium"
+                className="w-full pl-12 sm:pl-14 pr-10 sm:pr-10 py-4 sm:py-4 md:py-5 bg-[#141B2B]/80 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all shadow-md sm:shadow-lg text-base sm:text-base text-white placeholder-gray-500 font-medium"
               />
               {searchQuery && (
                 <button
                   onClick={handleClearSearch}
-                  className="absolute right-3 sm:right-5 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
+                  className="absolute right-4 sm:right-5 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-300"
                   aria-label={t('search.clear', 'blog')}
                 >
-                  <X size={16} className="sm:w-4 sm:h-4" />
+                  <X size={18} className="sm:w-4 sm:h-4" />
                 </button>
               )}
             </div>
@@ -244,25 +244,25 @@ export default function BlogPage() {
           <div className="lg:hidden mb-3 px-2">
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-sm"
+              className="w-full flex items-center justify-between gap-2 px-5 py-4 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-sm"
             >
               <div className="flex items-center gap-2">
-                <Filter size={18} className="text-blue-400" />
-                <span className="font-bold text-sm text-gray-200 tracking-tight">{t('filters.title', 'blog')}</span>
+                <Filter size={20} className="text-blue-400" />
+                <span className="font-bold text-base text-gray-200 tracking-tight">{t('filters.title', 'blog')}</span>
               </div>
-              <span className="text-xs bg-blue-500/20 text-blue-400 font-bold px-2 py-1 rounded-full tracking-tight truncate max-w-[120px]">
+              <span className="text-sm bg-blue-500/20 text-blue-400 font-bold px-3 py-1.5 rounded-full tracking-tight truncate max-w-[140px]">
                 {selectedCategory}
               </span>
             </button>
             
             {isFilterOpen && (
-              <div className="mt-2 p-3 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto animate-fadeIn">
+              <div className="mt-2 p-4 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto animate-fadeIn">
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <button
                       key={category}
                       onClick={() => handleCategorySelect(category)}
-                      className={`px-3 py-2 rounded-xl text-xs font-bold transition-all flex-1 min-w-[100px] truncate tracking-tight ${
+                      className={`px-4 py-3 rounded-xl text-sm font-bold transition-all flex-1 min-w-[120px] truncate tracking-tight ${
                         selectedCategory === category
                           ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30'
                           : 'bg-[#0A0F1C] text-gray-400 hover:bg-[#1E2638] hover:text-blue-400 border border-[#1F2937] font-semibold'
@@ -301,10 +301,10 @@ export default function BlogPage() {
         {/* Articles à la une */}
         {effectiveCategory === allCategory && !searchQuery && featuredArticles.length > 0 && (
           <div className="mb-12 sm:mb-16 md:mb-20">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight">
-              <span className="w-1 h-5 sm:h-6 md:h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight">
+              <span className="w-1 h-6 sm:h-6 md:h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
               {t('featured.title', 'blog')}
-              <Sparkles size={16} className="sm:w-5 sm:h-5 text-blue-400" />
+              <Sparkles size={20} className="sm:w-5 sm:h-5 text-blue-400" />
             </h2>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
@@ -328,27 +328,27 @@ export default function BlogPage() {
                         
                         {/* Badge catégorie */}
                         <div className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4">
-                          <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-md tracking-tight">
+                          <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-xs sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-md tracking-tight">
                             {article.category}
                           </span>
                         </div>
                       </div>
 
-                      <div className="p-3 sm:p-4 md:p-5 lg:p-6">
+                      <div className="p-4 sm:p-4 md:p-5 lg:p-6">
                         {/* Meta */}
-                        <div className="flex items-center gap-2 text-xs text-gray-400 mb-2 font-medium">
-                          <Calendar size={12} className="text-blue-400" />
+                        <div className="flex items-center gap-2 text-sm text-gray-400 mb-2 font-medium">
+                          <Calendar size={14} className="text-blue-400" />
                           <span>{article.publishedAt}</span>
                           <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
-                          <Clock size={12} className="text-blue-400" />
+                          <Clock size={14} className="text-blue-400" />
                           <span>{article.readTime}</span>
                         </div>
 
-                        <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-extrabold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 tracking-tight">
+                        <h3 className="text-base sm:text-base md:text-lg lg:text-xl font-extrabold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 tracking-tight">
                           {article.title}
                         </h3>
                         
-                        <p className="text-xs sm:text-sm text-gray-300 mb-3 line-clamp-2 sm:line-clamp-3 font-medium">
+                        <p className="text-sm sm:text-sm text-gray-300 mb-3 line-clamp-2 sm:line-clamp-3 font-medium">
                           {article.excerpt}
                         </p>
 
@@ -357,13 +357,13 @@ export default function BlogPage() {
                           {tags.slice(0, 2).map((tag: string) => (
                             <span
                               key={tag}
-                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-[8px] sm:text-xs font-bold rounded-full tracking-tight"
+                              className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-xs sm:text-xs font-bold rounded-full tracking-tight"
                             >
                               #{tag}
                             </span>
                           ))}
                           {tags.length > 2 && (
-                            <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-800 text-gray-300 text-[8px] sm:text-xs font-semibold rounded-full tracking-tight">
+                            <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-gray-800 text-gray-300 text-xs sm:text-xs font-semibold rounded-full tracking-tight">
                               {moreTagsTemplate.replace('{{count}}', (tags.length - 2).toString())}
                             </span>
                           )}
@@ -372,7 +372,7 @@ export default function BlogPage() {
                         {/* Auteur */}
                         <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-[#1F2937]">
                           <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="relative w-6 h-6 sm:w-7 md:w-8 sm:h-7 md:h-8 rounded-full overflow-hidden ring-2 ring-blue-500/20">
+                            <div className="relative w-7 h-7 sm:w-7 md:w-8 sm:h-7 md:h-8 rounded-full overflow-hidden ring-2 ring-blue-500/20">
                               <Image
                                 src={profileImage}
                                 alt={article.author.name}
@@ -381,11 +381,11 @@ export default function BlogPage() {
                                 loading="lazy"
                               />
                             </div>
-                            <span className="text-xs sm:text-sm font-bold text-gray-200 tracking-tight">{article.author.name}</span>
+                            <span className="text-sm sm:text-sm font-bold text-gray-200 tracking-tight">{article.author.name}</span>
                           </div>
-                          <div className="inline-flex items-center gap-1 text-blue-400 font-bold text-xs group/link tracking-tight">
+                          <div className="inline-flex items-center gap-1 text-blue-400 font-bold text-sm group/link tracking-tight">
                             <span>{t('featured.readMore', 'blog')}</span>
-                            <ArrowRight size={10} className="group-hover/link:translate-x-1 transition-transform" />
+                            <ArrowRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
                           </div>
                         </div>
                       </div>
@@ -420,27 +420,27 @@ export default function BlogPage() {
                       
                       {/* Badge catégorie */}
                       <div className="absolute top-1 sm:top-2 left-1 sm:left-2">
-                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[8px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-sm tracking-tight">
+                        <span className="px-1.5 sm:px-2 py-0.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-sm tracking-tight">
                           {article.category}
                         </span>
                       </div>
                     </div>
 
-                    <div className="p-2 sm:p-3 md:p-4">
+                    <div className="p-3 sm:p-3 md:p-4">
                       {/* Date */}
-                      <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-400 mb-1.5 font-medium">
-                        <Calendar size={10} className="text-blue-400" />
+                      <div className="flex items-center gap-1.5 text-xs sm:text-xs text-gray-400 mb-1.5 font-medium">
+                        <Calendar size={12} className="text-blue-400" />
                         <span>{article.publishedAt}</span>
                         <span className="w-0.5 h-0.5 bg-gray-600 rounded-full"></span>
-                        <Clock size={10} className="text-blue-400" />
+                        <Clock size={12} className="text-blue-400" />
                         <span>{article.readTime}</span>
                       </div>
 
-                      <h3 className="text-xs sm:text-sm md:text-base font-extrabold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors tracking-tight">
+                      <h3 className="text-sm sm:text-sm md:text-base font-extrabold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors tracking-tight">
                         {article.title}
                       </h3>
                       
-                      <p className="text-[10px] sm:text-xs text-gray-300 mb-2 line-clamp-2 font-medium">
+                      <p className="text-xs sm:text-xs text-gray-300 mb-2 line-clamp-2 font-medium">
                         {article.excerpt}
                       </p>
 
@@ -449,7 +449,7 @@ export default function BlogPage() {
                         {tags.slice(0, 2).map((tag: string) => (
                           <span
                             key={tag}
-                            className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[6px] sm:text-[10px] font-bold rounded-full tracking-tight"
+                            className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[9px] sm:text-[10px] font-bold rounded-full tracking-tight"
                           >
                             #{tag}
                           </span>
@@ -459,7 +459,7 @@ export default function BlogPage() {
                       {/* Auteur */}
                       <div className="flex items-center justify-between pt-1.5 border-t border-[#1F2937]">
                         <div className="flex items-center gap-1.5">
-                          <div className="relative w-5 h-5 sm:w-6 sm:h-6 rounded-full overflow-hidden ring-1 ring-blue-500/20">
+                          <div className="relative w-6 h-6 sm:w-6 sm:h-6 rounded-full overflow-hidden ring-1 ring-blue-500/20">
                             <Image
                               src={profileImage}
                               alt={article.author.name}
@@ -468,13 +468,13 @@ export default function BlogPage() {
                               loading="lazy"
                             />
                           </div>
-                          <span className="text-[8px] sm:text-xs font-bold text-gray-300 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px] tracking-tight">
+                          <span className="text-xs sm:text-xs font-bold text-gray-300 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px] tracking-tight">
                             {article.author.name}
                           </span>
                         </div>
-                        <div className="inline-flex items-center gap-0.5 text-blue-400 font-bold text-[8px] sm:text-xs group/link tracking-tight">
+                        <div className="inline-flex items-center gap-0.5 text-blue-400 font-bold text-xs sm:text-xs group/link tracking-tight">
                           <span>{t('featured.readMore', 'blog')}</span>
-                          <ArrowRight size={8} className="group-hover/link:translate-x-1 transition-transform" />
+                          <ArrowRight size={10} className="group-hover/link:translate-x-1 transition-transform" />
                         </div>
                       </div>
                     </div>
@@ -485,7 +485,7 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-300 font-semibold">{t('noResults', 'blog')}</p>
+            <p className="text-gray-300 font-semibold text-base">{t('noResults', 'blog')}</p>
             <p className="text-sm text-gray-500 mt-2 font-medium">{t('tryAdjusting', 'blog')}</p>
           </div>
         )}
@@ -496,10 +496,10 @@ export default function BlogPage() {
             <button
               onClick={handlePrevPage}
               disabled={currentPage === 1}
-              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
+              className="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.previous', 'blog')}
             >
-              <ChevronLeft size={14} className="sm:w-4 sm:h-4" />
+              <ChevronLeft size={18} className="sm:w-4 sm:h-4" />
             </button>
             
             <div className="flex gap-1 sm:gap-2">
@@ -507,7 +507,7 @@ export default function BlogPage() {
                 <button
                   key={i}
                   onClick={() => handlePageSelect(i + 1)}
-                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all tracking-tight ${
+                  className={`w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-bold text-sm sm:text-sm transition-all tracking-tight ${
                     currentPage === i + 1
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105 sm:scale-110'
                       : 'border border-[#1F2937] hover:border-blue-500 hover:text-blue-400 hover:shadow-md bg-[#141B2B] text-gray-400'
@@ -521,10 +521,10 @@ export default function BlogPage() {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
+              className="w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl border border-[#1F2937] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:border-blue-500 hover:text-blue-400 hover:shadow-md transition-all bg-[#141B2B] text-gray-400 font-bold"
               aria-label={t('pagination.next', 'blog')}
             >
-              <ChevronRight size={14} className="sm:w-4 sm:h-4" />
+              <ChevronRight size={18} className="sm:w-4 sm:h-4" />
             </button>
           </div>
         )}
@@ -532,44 +532,44 @@ export default function BlogPage() {
         {/* Newsletter */}
         <div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
           <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
-          <div className="relative p-4 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
+          <div className="relative p-6 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl text-center overflow-hidden">
             {/* Éléments décoratifs */}
             <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
             
-            <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold mb-1 sm:mb-2 md:mb-3 text-white tracking-tight">
+            <h3 className="text-2xl sm:text-xl md:text-2xl lg:text-3xl font-extrabold mb-2 sm:mb-2 md:mb-3 text-white tracking-tight">
               {t('newsletter.title', 'blog')}
             </h3>
-            <p className="text-xs sm:text-sm md:text-base text-gray-300 mb-4 sm:mb-6 md:mb-8 font-medium">
+            <p className="text-base sm:text-sm md:text-base text-gray-300 mb-5 sm:mb-6 md:mb-8 font-medium">
               {t('newsletter.subtitle', 'blog')}
             </p>
             
             <form 
               action={`https://${brevoConfig.instance}.brevo.com/subscribe`} 
               method="post" 
-              className="flex flex-col xs:flex-row gap-2 sm:gap-3 max-w-md mx-auto"
+              className="flex flex-col gap-4 max-w-md mx-auto"
             >
               <input
                 type="email"
                 name="email"
                 placeholder={t('newsletter.emailPlaceholder', 'blog')}
                 required
-                className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#0A0F1C] rounded-lg sm:rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-2 sm:focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-xs sm:text-sm text-white placeholder-gray-500 font-medium"
+                className="w-full px-5 py-5 bg-[#0A0F1C] rounded-xl border border-[#1F2937] focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 outline-none transition-all text-base text-white placeholder-gray-500 font-medium"
               />
               <input type="hidden" name="list" value={brevoConfig.listId} />
               <input type="hidden" name="redirection" value="https://patawala-v2-nry6.vercel.app/merci" />
               <button 
                 type="submit"
-                className="px-3 sm:px-4 md:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-md sm:shadow-lg hover:shadow-lg sm:hover:shadow-xl hover:shadow-blue-500/30 whitespace-nowrap tracking-tight"
+                className="px-5 py-5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-xl text-base font-extrabold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg hover:shadow-xl hover:shadow-blue-500/30 tracking-tight"
               >
                 {t('newsletter.button', 'blog')}
               </button>
             </form>
             
-            <p className="text-[8px] sm:text-xs text-gray-500 mt-3 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
-              <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
+            <p className="text-xs sm:text-xs text-gray-500 mt-4 sm:mt-4 flex items-center justify-center gap-1 sm:gap-2 font-medium">
+              <span className="w-1 h-1 sm:w-1 sm:h-1 bg-blue-400 rounded-full"></span>
               {t('newsletter.footer', 'blog')}
-              <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>
+              <span className="w-1 h-1 sm:w-1 sm:h-1 bg-cyan-400 rounded-full"></span>
             </p>
           </div>
         </div>
