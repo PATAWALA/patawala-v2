@@ -48,12 +48,10 @@ export default function Navigation() {
   // Refs
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const firstMenuItemRef = useRef<HTMLAnchorElement>(null);
-  const lastMenuItemRef = useRef<HTMLAnchorElement>(null);
   const menuTimeoutRef = useRef<NodeJS.Timeout>();
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections - OPTIMISÉE
+  // Détection des sections
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
@@ -81,13 +79,7 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Navigation simple - on laisse le navigateur gérer
-  const handleNavClick = useCallback(() => {
-    setIsOpen(false);
-    setHoveredItem(null);
-  }, []);
-
-  // Handlers du menu - MÉMOÏSÉS
+  // Handlers desktop
   const handleArrowMouseEnter = useCallback((itemLabel: string) => {
     if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
     setHoveredItem(itemLabel);
@@ -101,56 +93,27 @@ export default function Navigation() {
     if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
   }, []);
 
-  // Gestionnaire de touche clavier
-  const handleMenuKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!isOpen) return;
-
-    switch (e.key) {
-      case 'Escape':
-        setIsOpen(false);
-        menuButtonRef.current?.focus();
-        break;
-      case 'Tab':
-        if (e.shiftKey && document.activeElement === firstMenuItemRef.current) {
-          e.preventDefault();
-          lastMenuItemRef.current?.focus();
-        } else if (!e.shiftKey && document.activeElement === lastMenuItemRef.current) {
-          e.preventDefault();
-          firstMenuItemRef.current?.focus();
-        }
-        break;
-    }
-  }, [isOpen]);
-
-  // Gestionnaire pour fermer le menu au clic outside
-  const handleClickOutside = useCallback((e: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-      setIsOpen(false);
-    }
-  }, []);
-
-  // Effet pour les événements - NETTOYÉ
+  // Fermeture au clic outside
   useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    
     if (isOpen) {
-      document.addEventListener('keydown', handleMenuKeyDown);
       document.addEventListener('mousedown', handleClickOutside);
       document.body.style.overflow = 'hidden';
-      
-      setTimeout(() => {
-        firstMenuItemRef.current?.focus();
-      }, 100);
     } else {
       document.body.style.overflow = '';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleMenuKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
       document.body.style.overflow = '';
     };
-  }, [isOpen, handleMenuKeyDown, handleClickOutside]);
+  }, [isOpen]);
 
-  // Vérification si un lien est actif - MÉMOÏSÉE
   const isLinkActive = useCallback((item: NavItem) => {
     if (pathname === '/') {
       if (item.section) return activeSection === item.section;
@@ -159,131 +122,42 @@ export default function Navigation() {
     return pathname === item.href;
   }, [pathname, activeSection]);
 
-  // NAV_ITEMS est déjà constant, pas besoin de useMemo
   const navItems = NAV_ITEMS;
 
-  // Rendu du sous-menu
-  const renderSubmenu = useCallback((item: NavItem) => {
-    const itemLabel = t(`navItems.${item.key}`, 'navigation');
-    const isServicesHovered = hoveredItem === itemLabel;
-
-    return (
-      <li 
-        key={item.key} 
-        className="relative"
-        onMouseLeave={handleServicesMouseLeave}
-      >
-        <div className="flex items-center">
-          <a
-            href={item.href}
-            onClick={handleNavClick}
-            className={`px-5 py-2 rounded-l-full font-medium text-base transition-colors ${
-              pathname === '/services'
-                ? 'text-blue-400 bg-blue-500/10'
-                : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-            }`}
-          >
-            <span>
-              {itemLabel}
-            </span>
-          </a>
-          
-          <button
-            onMouseEnter={() => itemLabel && handleArrowMouseEnter(itemLabel)}
-            className={`px-2 py-2 rounded-r-full font-medium text-base transition-colors border-l border-[#1F2937] ${
-              isServicesHovered || pathname === '/services'
-                ? 'text-blue-400 bg-blue-500/10' 
-                : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-            }`}
-            aria-label={`Sous-menu ${itemLabel}`}
-          >
-            <ChevronDown 
-              size={16} 
-              className={`transition-transform duration-200 ${
-                isServicesHovered ? 'rotate-180' : ''
-              }`} 
-            />
-          </button>
-        </div>
-
-        {isServicesHovered && (
-          <div
-            className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50 animate-fadeIn"
-            onMouseEnter={handleSubmenuMouseEnter}
-            onMouseLeave={handleServicesMouseLeave}
-          >
-            {item.submenu?.map((subItem) => {
-              const Icon = subItem.icon;
-              const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
-              
-              return (
-                <a
-                  key={subItem.key}
-                  href={subItem.href}
-                  onClick={handleNavClick}
-                  className="flex items-center gap-3 px-4 py-2.5 text-base text-gray-300 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
-                >
-                  <Icon className="w-5 h-5 text-gray-400" />
-                  <span className="font-medium">
-                    {subItemLabel}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        )}
-      </li>
-    );
-  }, [pathname, hoveredItem, handleArrowMouseEnter, handleServicesMouseLeave, handleSubmenuMouseEnter, handleNavClick, t]);
-
-  // Rendu d'un lien simple
-  const renderSimpleLink = useCallback((item: NavItem, index: number, isFirst: boolean, isLast: boolean) => {
-    const itemLabel = t(`navItems.${item.key}`, 'navigation');
-    const isActive = isLinkActive(item);
-
-    return (
-      <li key={item.key} className="relative">
-        <a
-          ref={isFirst ? firstMenuItemRef : isLast ? lastMenuItemRef : undefined}
-          href={item.href}
-          onClick={handleNavClick}
-          className={`px-5 py-2 rounded-full font-medium text-base transition-colors ${
-            isActive
-              ? 'text-blue-400 bg-blue-500/10'
-              : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-          }`}
-        >
-          <span>
-            {itemLabel}
-          </span>
-        </a>
-      </li>
-    );
-  }, [isLinkActive, handleNavClick, t]);
+  // Fonction pour gérer les ancres sur mobile (sans bloquer les liens normaux)
+  const handleMobileAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    // Seulement pour les ancres sur la page d'accueil
+    if (href.includes('#') && pathname === '/') {
+      e.preventDefault();
+      const targetId = href.replace('/#', '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', href);
+        setActiveSection(targetId);
+      }
+      setIsOpen(false);
+    } else {
+      // Pour tous les autres liens, on laisse le navigateur gérer
+      setIsOpen(false);
+      // Pas de preventDefault, le navigateur suit le lien normalement
+    }
+  };
 
   return (
     <>
-      {/* Skip link */}
-      <a 
-        href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-500 text-white px-4 py-2 rounded-lg z-[100]"
-      >
-        Aller au contenu principal
-      </a>
-
       <nav
-        className="fixed w-full z-50 top-0 lg:top-4"
+        className="fixed w-full z-50 top-0 lg:top-4 font-sans"
         ref={menuRef}
         aria-label="Navigation principale"
       >
         <div className="lg:container lg:mx-auto lg:px-6">
-          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-3 lg:py-3 px-4 lg:px-8 shadow-lg">
+          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
               {/* Logo */}
               <a 
                 href="/"
-                onClick={handleNavClick}
-                className="flex items-center font-bold group relative z-50"
+                className="flex items-center font-bold group"
                 aria-label={t('logo', 'navigation')}
               >
                 <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
@@ -292,35 +166,117 @@ export default function Navigation() {
                 </span>
               </a>
 
-              {/* Desktop Navigation */}
+              {/* Desktop Navigation - ORIGINAL AVEC SOUS-MENUS */}
               <div className="hidden lg:flex items-center justify-center flex-1">
                 <ul className="flex items-center gap-2">
-                  {navItems.map((item, index) => {
-                    const isFirst = index === 0;
-                    const isLast = index === navItems.length - 1;
+                  {navItems.map((item) => {
+                    const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
+                    const isActive = isLinkActive(item);
                     
-                    return item.submenu 
-                      ? renderSubmenu(item)
-                      : renderSimpleLink(item, index, isFirst, isLast);
+                    if (item.submenu) {
+                      const isServicesHovered = hoveredItem === itemLabel;
+                      
+                      return (
+                        <li 
+                          key={item.key} 
+                          className="relative"
+                          onMouseLeave={handleServicesMouseLeave}
+                        >
+                          <div className="flex items-center">
+                            <a
+                              href={item.href}
+                              className={`px-5 py-2 rounded-l-full font-medium text-base transition-colors ${
+                                pathname === '/services'
+                                  ? 'text-blue-400 bg-blue-500/10'
+                                  : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                              }`}
+                            >
+                              <span>
+                                {itemLabel}
+                              </span>
+                            </a>
+                            
+                            <button
+                              onMouseEnter={() => handleArrowMouseEnter(itemLabel)}
+                              className={`px-2 py-2 rounded-r-full font-medium text-base transition-colors border-l border-[#1F2937] ${
+                                isServicesHovered || pathname === '/services'
+                                  ? 'text-blue-400 bg-blue-500/10' 
+                                  : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                              }`}
+                              aria-label={`Sous-menu ${itemLabel}`}
+                            >
+                              <ChevronDown 
+                                size={16} 
+                                className={`transition-transform duration-200 ${
+                                  isServicesHovered ? 'rotate-180' : ''
+                                }`} 
+                              />
+                            </button>
+                          </div>
+
+                          {isServicesHovered && (
+                            <div
+                              className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50 animate-fadeIn"
+                              onMouseEnter={handleSubmenuMouseEnter}
+                              onMouseLeave={handleServicesMouseLeave}
+                            >
+                              {item.submenu.map((subItem) => {
+                                const Icon = subItem.icon;
+                                const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation') || subItem.key;
+                                
+                                return (
+                                  <a
+                                    key={subItem.key}
+                                    href={subItem.href}
+                                    className="flex items-center gap-3 px-4 py-2.5 text-base text-gray-300 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
+                                  >
+                                    <Icon className="w-5 h-5 text-gray-400" />
+                                    <span className="font-medium">
+                                      {subItemLabel}
+                                    </span>
+                                  </a>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </li>
+                      );
+                    }
+                    
+                    return (
+                      <li key={item.key} className="relative">
+                        <a
+                          href={item.href}
+                          className={`px-5 py-2 rounded-full font-medium text-base transition-colors ${
+                            isActive
+                              ? 'text-blue-400 bg-blue-500/10'
+                              : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                          }`}
+                        >
+                          <span>
+                            {itemLabel}
+                          </span>
+                        </a>
+                      </li>
+                    );
                   })}
                 </ul>
               </div>
 
               {/* Language Switcher et Menu Mobile */}
-              <div className="flex items-center gap-2 relative z-50">
+              <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 
-                {/* Bouton menu mobile */}
+                {/* HAMBURGER - TON STYLE (SANS FOND) */}
                 <button
                   ref={menuButtonRef}
-                  className="lg:hidden relative w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
+                  className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
-                  aria-expanded={isOpen}
                 >
                   {isOpen ? 
-                    <X className="w-5 h-5 text-blue-400" /> : 
-                    <Menu className="w-5 h-5 text-gray-300" />
+                    <X className="w-6 h-6" /> : 
+                    <Menu className="w-6 h-6" />
                   }
                 </button>
               </div>
@@ -329,32 +285,23 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Menu - Overlay séparé avec des balises <a> normales */}
+      {/* MOBILE MENU - NAVIGATION SIMPLE QUI MARCHE */}
       {isOpen && (
-        <div className="fixed inset-0 bg-[#0A0F1C]/98 backdrop-blur-xl z-[9999] flex flex-col items-center justify-center overflow-y-auto">
-          {/* Bouton de fermeture */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="absolute top-6 right-6 p-2 text-gray-400 hover:text-blue-400 transition-colors z-[10000]"
-            aria-label="Fermer le menu"
-          >
-            <X className="w-8 h-8" />
-          </button>
-
-          <div className="flex flex-col items-center justify-center gap-6 w-full max-w-md px-6 py-12">
-            {navItems.map((item, index) => {
-              const itemLabel = t(`navItems.${item.key}`, 'navigation');
+        <div className="fixed inset-0 top-[57px] left-0 right-0 bottom-0 bg-[#0A0F1C] z-40 overflow-y-auto lg:hidden">
+          <div className="flex flex-col items-center justify-start py-8 px-4 min-h-screen">
+            {navItems.map((item) => {
+              const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
               const isActive = isLinkActive(item);
               
               return (
                 <a
                   key={item.key}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`text-2xl font-bold text-center transition-colors w-full py-3 ${
-                    isActive && item.key !== 'services'
+                  onClick={(e) => handleMobileAnchorClick(e, item.href)}
+                  className={`w-full text-center py-5 text-xl font-bold transition-colors border-b border-[#1F2937]/50 last:border-0 ${
+                    isActive
                       ? 'text-blue-400'
-                      : 'text-gray-300 hover:text-blue-400'
+                      : 'text-white hover:text-blue-400'
                   }`}
                 >
                   {itemLabel}
@@ -365,16 +312,17 @@ export default function Navigation() {
         </div>
       )}
       
-      {/* Main content anchor */}
       <div id="main-content" tabIndex={-1} className="outline-none" />
 
       <style jsx>{`
         @keyframes fadeIn {
           from {
             opacity: 0;
+            transform: translateY(-10px);
           }
           to {
             opacity: 1;
+            transform: translateY(0);
           }
         }
         
