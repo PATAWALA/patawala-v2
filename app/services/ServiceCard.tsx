@@ -74,23 +74,23 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
   return (
     <article
-      className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] hover:-translate-y-1"
+      className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] hover:-translate-y-1 font-sans"
       style={{ isolation: 'isolate' }}
       aria-labelledby={cardTitleId}
       role="article"
     >
-      <div className="p-6 pb-4">
-        <div className="flex items-start justify-between mb-4">
+      <div className="p-6 sm:p-6 pb-4">
+        <div className="flex items-start justify-between mb-4 sm:mb-4">
           <div
-            className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300"
+            className="w-14 h-14 sm:w-12 sm:h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300"
             aria-hidden="true"
           >
-            <Icon size={24} className="text-blue-400 group-hover:text-cyan-400 transition-colors duration-300" />
+            <Icon size={28} className="sm:w-6 sm:h-6 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300" />
           </div>
 
           {service.popular && (
             <span
-              className="bg-[#FF9800] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-[0_4px_10px_rgba(255,152,0,0.4)]"
+              className="bg-[#FF9800] text-white text-sm sm:text-xs font-bold px-4 py-2 sm:px-3 sm:py-1.5 rounded-full shadow-[0_4px_10px_rgba(255,152,0,0.4)]"
               aria-label={labels.popular}
             >
               {labels.popular}
@@ -98,31 +98,31 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
           )}
         </div>
 
-        <h3 id={cardTitleId} className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors duration-300">
+        <h3 id={cardTitleId} className="text-2xl sm:text-xl font-bold text-white mb-3 sm:mb-2 group-hover:text-cyan-400 transition-colors duration-300 tracking-tight">
           {translatedService.title}
         </h3>
 
-        <p className="text-gray-400 text-sm mb-4">
+        <p className="text-gray-400 text-base sm:text-sm mb-4 sm:mb-4 leading-relaxed">
           {translatedService.shortDesc}
         </p>
 
         {/* Prix supprimé */}
 
-        <p className="text-sm text-gray-500 border-t border-[#1F2937] pt-4">
+        <p className="text-base sm:text-sm text-gray-500 border-t border-[#1F2937] pt-4 sm:pt-4 leading-relaxed">
           {translatedService.description}
         </p>
       </div>
 
-      <div className="px-6 pb-6 flex-1">
-        <div className="space-y-2 mb-6">
+      <div className="px-6 sm:px-6 pb-6 sm:pb-6 flex-1">
+        <div className="space-y-3 sm:space-y-2 mb-6 sm:mb-6">
           {visibleFeatures.map((feature: string, idx: number) => (
-            <div key={idx} className="flex items-start gap-2">
-              <CheckCircle size={14} className="text-cyan-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
-              <span className="text-sm text-gray-300">{feature}</span>
+            <div key={idx} className="flex items-start gap-2 sm:gap-2">
+              <CheckCircle size={18} className="sm:w-3.5 sm:h-3.5 text-cyan-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+              <span className="text-base sm:text-sm text-gray-300 leading-relaxed">{feature}</span>
             </div>
           ))}
           {moreCount > 0 && (
-            <div className="text-xs text-gray-500 ml-6" aria-label={labels.more.replace('{{count}}', String(moreCount))}>
+            <div className="text-sm sm:text-xs text-gray-500 ml-7 sm:ml-6" aria-label={labels.more.replace('{{count}}', String(moreCount))}>
               {labels.more.replace('{{count}}', String(moreCount))}
             </div>
           )}
@@ -130,11 +130,11 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
         <button
           onClick={goToContact}
-          className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98]"
+          className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-5 sm:py-3 px-4 rounded-xl flex items-center justify-center gap-2 sm:gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98] min-h-[60px] sm:min-h-[44px]"
           aria-label={translatedService.ctaText}
         >
-          <span>{translatedService.ctaText}</span>
-          <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
+          <span className="text-base sm:text-sm font-semibold">{translatedService.ctaText}</span>
+          <ArrowRight size={20} className="sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
         </button>
       </div>
     </article>
