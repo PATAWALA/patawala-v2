@@ -305,7 +305,7 @@ export default function Navigation() {
         aria-label="Navigation principale"
       >
         <div className="lg:container lg:mx-auto lg:px-6">
-          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
+          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-3 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
               {/* Logo */}
               <a 
@@ -338,34 +338,37 @@ export default function Navigation() {
               </div>
 
               {/* Language Switcher et Menu Mobile */}
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 
-                {/* Bouton menu mobile - PLUS GRAND */}
+                {/* Bouton menu mobile - TAILLE NORMALE */}
                 <button
                   ref={menuButtonRef}
-                  className="lg:hidden relative w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
+                  className="lg:hidden relative w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
                   aria-expanded={isOpen}
                 >
                   {isOpen ? 
-                    <X className="w-6 h-6 text-blue-400" /> : 
-                    <Menu className="w-6 h-6 text-gray-300" />
+                    <X className="w-5 h-5 text-blue-400" /> : 
+                    <Menu className="w-5 h-5 text-gray-300" />
                   }
                 </button>
               </div>
             </div>
 
-            {/* Mobile Menu - SANS SOUS-MENU POUR SERVICES */}
+            {/* Mobile Menu - STYLE UNIFORME POUR TOUS LES LIENS */}
             {isOpen && (
-              <div className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden animate-slideDown">
-                <div className="p-4 space-y-2">
+              <div className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden animate-slideDown max-h-[calc(100vh-120px)] overflow-y-auto">
+                <div className="p-3 space-y-1">
                   {navItems.map((item, index) => {
                     const itemLabel = t(`navItems.${item.key}`, 'navigation');
                     const isActive = isLinkActive(item);
                     const isFirst = index === 0;
                     const isLast = index === navItems.length - 1;
+                    
+                    // Style UNIFORME pour tous les liens (même le contact)
+                    const baseStyle = "block w-full px-4 py-3.5 rounded-xl font-medium text-base text-center transition-colors";
                     
                     // Version simplifiée pour mobile : pas de sous-menu, juste un lien
                     return (
@@ -388,17 +391,13 @@ export default function Navigation() {
                             }
                             setIsOpen(false);
                           }}
-                          className={`block w-full px-5 py-4 rounded-xl font-semibold text-lg text-center transition-colors ${
+                          className={`${baseStyle} ${
                             isActive && item.key !== 'services'
                               ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                              : item.key === 'contact'
-                                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg border border-blue-400/30 mt-2'
-                                : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                              : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                           }`}
                         >
-                          <span className={item.key === 'contact' ? 'font-bold' : ''}>
-                            {itemLabel}
-                          </span>
+                          <span>{itemLabel}</span>
                         </a>
                       </div>
                     );
