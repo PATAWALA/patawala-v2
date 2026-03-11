@@ -338,26 +338,26 @@ export default function Navigation() {
               </div>
 
               {/* Language Switcher et Menu Mobile */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <LanguageSwitcher />
                 
-                {/* Bouton menu mobile */}
+                {/* Bouton menu mobile - PLUS GRAND */}
                 <button
                   ref={menuButtonRef}
-                  className="lg:hidden relative w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
+                  className="lg:hidden relative w-12 h-12 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
                   aria-expanded={isOpen}
                 >
                   {isOpen ? 
-                    <X className="w-5 h-5 text-blue-400" /> : 
-                    <Menu className="w-5 h-5 text-gray-300" />
+                    <X className="w-6 h-6 text-blue-400" /> : 
+                    <Menu className="w-6 h-6 text-gray-300" />
                   }
                 </button>
               </div>
             </div>
 
-            {/* Mobile Menu - TEXTES PLUS GRANDS */}
+            {/* Mobile Menu - SANS SOUS-MENU POUR SERVICES */}
             {isOpen && (
               <div className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden animate-slideDown">
                 <div className="p-4 space-y-2">
@@ -367,75 +367,39 @@ export default function Navigation() {
                     const isFirst = index === 0;
                     const isLast = index === navItems.length - 1;
                     
+                    // Version simplifiée pour mobile : pas de sous-menu, juste un lien
                     return (
-                      <div key={item.key}>
-                        {item.submenu ? (
-                          <div className="space-y-2">
-                            <a
-                              ref={isFirst ? firstMenuItemRef : undefined}
-                              href={item.href}
-                              onClick={(e) => handleNavigation(e, item.href)}
-                              className="flex items-center justify-between px-5 py-4 rounded-xl font-semibold text-lg text-blue-400 bg-blue-500/10 border border-blue-500/20"
-                            >
-                              <span>
-                                {itemLabel}
-                              </span>
-                              <ChevronDown className="w-5 h-5 rotate-180 text-blue-400" />
-                            </a>
-                            
-                            <div className="pl-4 space-y-2 border-l-2 border-blue-500/30 ml-4">
-                              {item.submenu.map((subItem) => {
-                                const Icon = subItem.icon;
-                                const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
-                                
-                                return (
-                                  <a
-                                    key={subItem.key}
-                                    href={subItem.href}
-                                    onClick={(e) => handleNavigation(e, subItem.href)}
-                                    className="flex items-center gap-3 px-5 py-4 rounded-xl text-lg text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
-                                  >
-                                    <Icon className="w-5 h-5" />
-                                    <span className="font-medium">
-                                      {subItemLabel}
-                                    </span>
-                                  </a>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        ) : (
-                          <a
-                            ref={isLast ? lastMenuItemRef : undefined}
-                            href={item.href}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              if (item.href.includes('#') && pathname === '/') {
-                                const targetId = item.href.replace('/#', '');
-                                const element = document.getElementById(targetId);
-                                if (element) {
-                                  element.scrollIntoView({ behavior: 'smooth' });
-                                  window.history.pushState(null, '', item.href);
-                                  setActiveSection(targetId);
-                                }
-                              } else {
-                                window.location.href = item.href;
+                      <div key={item.key} className="w-full">
+                        <a
+                          ref={isLast ? lastMenuItemRef : isFirst ? firstMenuItemRef : undefined}
+                          href={item.href}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (item.href.includes('#') && pathname === '/') {
+                              const targetId = item.href.replace('/#', '');
+                              const element = document.getElementById(targetId);
+                              if (element) {
+                                element.scrollIntoView({ behavior: 'smooth' });
+                                window.history.pushState(null, '', item.href);
+                                setActiveSection(targetId);
                               }
-                              setIsOpen(false);
-                            }}
-                            className={`flex items-center justify-between px-5 py-4 rounded-xl font-semibold text-lg transition-colors ${
-                              isActive
-                                ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-                                : item.key === 'contact'
-                                  ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg border border-blue-400/30'
-                                  : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
-                            }`}
-                          >
-                            <span className={`${item.key === 'contact' ? 'mx-auto font-bold' : ''}`}>
-                              {itemLabel}
-                            </span>
-                          </a>
-                        )}
+                            } else {
+                              window.location.href = item.href;
+                            }
+                            setIsOpen(false);
+                          }}
+                          className={`block w-full px-5 py-4 rounded-xl font-semibold text-lg text-center transition-colors ${
+                            isActive && item.key !== 'services'
+                              ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                              : item.key === 'contact'
+                                ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg border border-blue-400/30 mt-2'
+                                : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
+                          }`}
+                        >
+                          <span className={item.key === 'contact' ? 'font-bold' : ''}>
+                            {itemLabel}
+                          </span>
+                        </a>
                       </div>
                     );
                   })}

@@ -29,12 +29,6 @@ export default function BlogPage() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const articlesPerPage = 6;
 
-  // Variables d'environnement
-  const brevoConfig = useMemo(() => ({
-    instance: process.env.NEXT_PUBLIC_BREVO_INSTANCE || 'app',
-    listId: process.env.NEXT_PUBLIC_BREVO_LIST_ID || '3',
-  }), []);
-
   // Traduction des catégories
   const { categories, allCategory } = useMemo(() => {
     const categoriesRaw = t('filters.categories', 'blog');
@@ -181,11 +175,38 @@ export default function BlogPage() {
           text-decoration: underline;
           color: #2BB2FC;
         }
+        .sib-form {
+          background-color: transparent !important;
+        }
+        #sib-container {
+          background-color: transparent !important;
+          border: none !important;
+        }
+        .sib-form-block p {
+          margin: 0;
+        }
       `}</style>
 
       {/* Scripts Brevo */}
       <Script src="https://sibforms.com/forms/end-form/build/main.js" strategy="lazyOnload" />
-      <Script src="https://www.google.com/recaptcha/api.js?hl=fr" strategy="lazyOnload" />
+      <Script id="brevo-config" strategy="lazyOnload">
+        {`
+          window.REQUIRED_CODE_ERROR_MESSAGE = 'Veuillez choisir un code pays';
+          window.LOCALE = 'fr';
+          window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "Les informations que vous avez fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.";
+          window.REQUIRED_ERROR_MESSAGE = "Vous devez renseigner ce champ. ";
+          window.GENERIC_INVALID_MESSAGE = "Les informations que vous avez fournies ne sont pas valides. Veuillez vérifier le format du champ et réessayer.";
+          window.translation = {
+            common: {
+              selectedList: '{quantity} liste sélectionnée',
+              selectedLists: '{quantity} listes sélectionnées',
+              selectedOption: '{quantity} sélectionné',
+              selectedOptions: '{quantity} sélectionnés',
+            }
+          };
+          var AUTOHIDE = Boolean(0);
+        `}
+      </Script>
 
       <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden font-sans">
         {/* FOND */}
@@ -556,7 +577,7 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Formulaire Brevo */}
+          {/* Formulaire Brevo simplifié */}
           <div className="relative max-w-3xl sm:max-w-4xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
             <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl sm:rounded-3xl blur-lg sm:blur-xl opacity-20"></div>
             <div className="relative p-6 sm:p-6 md:p-8 lg:p-10 bg-[#141B2B]/90 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-[#1F2937] shadow-xl sm:shadow-2xl overflow-hidden">
@@ -564,35 +585,33 @@ export default function BlogPage() {
               <div className="absolute bottom-0 left-0 w-20 sm:w-40 h-20 sm:h-40 bg-cyan-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
               
               {/* Formulaire Brevo intégré */}
-              <div className="sib-form" style={{ textAlign: 'center' }}>
+              <div className="sib-form" style={{ textAlign: 'center', backgroundColor: 'transparent' }}>
                 <div id="sib-form-container" className="sib-form-container">
-                  <div id="error-message" className="sib-form-message-panel" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#661d1d', backgroundColor: '#ffeded', borderRadius: '3px', borderColor: '#ff4949', maxWidth: '540px', display: 'none' }}>
+                  <div id="error-message" className="sib-form-message-panel" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#661d1d', backgroundColor: '#ffeded', borderRadius: '3px', borderColor: '#ff4949', maxWidth: '540px', display: 'none', margin: '0 auto 16px' }}>
                     <div className="sib-form-message-panel__text sib-form-message-panel__text--center">
-                      <svg viewBox="0 0 512 512" className="sib-icon sib-notification__icon" style={{ width: '20px', height: '20px' }}>
+                      <svg viewBox="0 0 512 512" className="sib-icon sib-notification__icon" style={{ width: '20px', height: '20px', marginRight: '8px' }}>
                         <path d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-11.49 120h22.979c6.823 0 12.274 5.682 11.99 12.5l-7 168c-.268 6.428-5.556 11.5-11.99 11.5h-8.979c-6.433 0-11.722-5.073-11.99-11.5l-7-168c-.283-6.818 5.167-12.5 11.99-12.5zM256 340c-15.464 0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28z" />
                       </svg>
                       <span className="sib-form-message-panel__inner-text">Nous n'avons pas pu confirmer votre inscription.</span>
                     </div>
                   </div>
-                  <div></div>
-                  <div id="success-message" className="sib-form-message-panel" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#085229', backgroundColor: '#e7faf0', borderRadius: '3px', borderColor: '#13ce66', maxWidth: '540px', display: 'none' }}>
+                  <div id="success-message" className="sib-form-message-panel" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#085229', backgroundColor: '#e7faf0', borderRadius: '3px', borderColor: '#13ce66', maxWidth: '540px', display: 'none', margin: '0 auto 16px' }}>
                     <div className="sib-form-message-panel__text sib-form-message-panel__text--center">
-                      <svg viewBox="0 0 512 512" className="sib-icon sib-notification__icon" style={{ width: '20px', height: '20px' }}>
+                      <svg viewBox="0 0 512 512" className="sib-icon sib-notification__icon" style={{ width: '20px', height: '20px', marginRight: '8px' }}>
                         <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664 0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705 4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667 12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451 8.52c4.668 4.705 4.637 12.303-.068 16.97z" />
                       </svg>
                       <span className="sib-form-message-panel__inner-text">Votre inscription est confirmée.</span>
                     </div>
                   </div>
-                  <div></div>
-                  <div id="sib-container" className="sib-container--large sib-container--vertical" style={{ textAlign: 'center', backgroundColor: 'transparent', maxWidth: '540px', borderRadius: '3px', borderWidth: '0px', direction: 'ltr', margin: '0 auto' }}>
+                  <div id="sib-container" className="sib-container--large sib-container--vertical" style={{ textAlign: 'center', backgroundColor: 'transparent', maxWidth: '540px', margin: '0 auto', border: 'none' }}>
                     <form id="sib-form" method="POST" action="https://1608b43e.sibforms.com/serve/MUIFAGWyCrBBt_5Mc_fF8uA_7aIEkVMMaZy_FoVWHsjnEyUhS9ymjEpY4IuAEvyh49_hMSdbEAAiurB4eBH6nMNbmwqo6ozjwRCkHIMs_OTkUnIll_DUND-PqCECRZy1lB2p3bA3YbHZt93ZW1r5srnm9kSXhn1GOl9jLDiQeKGp7dNDN0S3cN_FkCvq8dcVgFIX29JCSEHz42mH7A==" data-type="subscription">
                       <div style={{ padding: '8px 0' }}>
-                        <div className="sib-form-block" style={{ fontSize: '32px', textAlign: 'center', fontWeight: '700', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: 'transparent' }}>
+                        <div className="sib-form-block" style={{ fontSize: '32px', textAlign: 'center', fontWeight: '700', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: 'transparent', marginBottom: '8px' }}>
                           <p>💡 Recevez mes prochains articles</p>
                         </div>
                       </div>
                       <div style={{ padding: '8px 0' }}>
-                        <div className="sib-form-block" style={{ fontSize: '16px', textAlign: 'center', fontFamily: 'Helvetica, sans-serif', color: '#9CA3AF', backgroundColor: 'transparent' }}>
+                        <div className="sib-form-block" style={{ fontSize: '16px', textAlign: 'center', fontFamily: 'Helvetica, sans-serif', color: '#9CA3AF', backgroundColor: 'transparent', marginBottom: '16px' }}>
                           <div className="sib-text-form-block">
                             <p>Une analyse approfondie chaque semaine sur le dev, l'IA et l'entrepreneuriat</p>
                           </div>
@@ -602,32 +621,37 @@ export default function BlogPage() {
                         <div className="sib-input sib-form-block">
                           <div className="form__entry entry_block">
                             <div className="form__label-row">
-                              <label className="entry__label" style={{ fontWeight: '700', textAlign: 'left', fontSize: '16px', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF' }} htmlFor="EMAIL" data-required="*">Entrez votre EMAIL</label>
+                              <label className="entry__label" style={{ fontWeight: '700', textAlign: 'left', fontSize: '16px', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', display: 'block', marginBottom: '8px' }} htmlFor="EMAIL">Entrez votre EMAIL</label>
                               <div className="entry__field">
-                                <input className="input" type="text" id="EMAIL" name="EMAIL" autoComplete="off" placeholder="jean@email.com" data-required="true" required style={{ width: '100%', padding: '12px', backgroundColor: '#0A0F1C', border: '1px solid #1F2937', borderRadius: '8px', color: '#FFFFFF' }} />
+                                <input 
+                                  className="input" 
+                                  type="email" 
+                                  id="EMAIL" 
+                                  name="EMAIL" 
+                                  autoComplete="off" 
+                                  placeholder="jean@email.com" 
+                                  data-required="true" 
+                                  required 
+                                  style={{ width: '100%', padding: '16px', backgroundColor: '#0A0F1C', border: '1px solid #1F2937', borderRadius: '8px', color: '#FFFFFF', fontSize: '16px' }} 
+                                />
                               </div>
                             </div>
-                            <label className="entry__error entry__error--primary" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#661d1d', backgroundColor: '#ffeded', borderRadius: '3px', borderColor: '#ff4949', display: 'none' }}></label>
-                            <label className="entry__specification" style={{ fontSize: '12px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#9CA3AF', marginTop: '4px', display: 'block' }}>
+                            <label className="entry__error entry__error--primary" style={{ fontSize: '14px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#661d1d', display: 'none' }}></label>
+                            <label className="entry__specification" style={{ fontSize: '12px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#9CA3AF', marginTop: '8px', display: 'block' }}>
                               Veuillez entrer une adresse email valide pour ne rien manquer
                             </label>
                           </div>
                         </div>
                       </div>
                       <div style={{ padding: '8px 0' }}>
-                        <div className="sib-captcha sib-form-block">
-                          <div className="form__entry entry_block">
-                            <div className="form__label-row">
-                              <div className="g-recaptcha sib-visible-recaptcha" id="sib-captcha" data-sitekey="6Le70IYsAAAAAIkANpmO3O8neMo3vTbubo0Vd-qq" data-callback="handleCaptchaResponse" style={{ direction: 'ltr' }}></div>
-                            </div>
-                            <label className="entry__error entry__error--primary" style={{ fontSize: '16px', textAlign: 'left', fontFamily: 'Helvetica, sans-serif', color: '#661d1d', backgroundColor: '#ffeded', borderRadius: '3px', borderColor: '#ff4949', display: 'none' }}></label>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ padding: '8px 0' }}>
                         <div className="sib-form-block" style={{ textAlign: 'center' }}>
-                          <button className="sib-form-block__button sib-form-block__button-with-loader" style={{ fontSize: '16px', fontWeight: '700', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: '#3B82F6', borderRadius: '8px', borderWidth: '0px', padding: '16px 32px', width: '100%', cursor: 'pointer' }} form="sib-form" type="submit">
-                            <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ display: 'none', width: '20px', height: '20px', marginRight: '8px' }}>
+                          <button 
+                            className="sib-form-block__button sib-form-block__button-with-loader" 
+                            style={{ fontSize: '16px', fontWeight: '700', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: '#3B82F6', borderRadius: '8px', borderWidth: '0px', padding: '16px 32px', width: '100%', cursor: 'pointer', marginTop: '16px' }} 
+                            form="sib-form" 
+                            type="submit"
+                          >
+                            <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ display: 'none', width: '20px', height: '20px', marginRight: '8px', verticalAlign: 'middle' }}>
                               <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
                             </svg>
                             S'abonner
