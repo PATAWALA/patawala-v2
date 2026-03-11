@@ -344,7 +344,7 @@ export default function Navigation() {
                 {/* Bouton menu mobile */}
                 <button
                   ref={menuButtonRef}
-                  className="lg:hidden relative w-9 h-9 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
+                  className="lg:hidden relative w-10 h-10 rounded-full bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-[#1F2937] flex items-center justify-center hover:from-blue-500/20 hover:to-cyan-500/20 transition-colors"
                   onClick={() => setIsOpen(!isOpen)}
                   aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
                   aria-expanded={isOpen}
@@ -357,10 +357,10 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu - TEXTES PLUS GRANDS */}
             {isOpen && (
               <div className="lg:hidden mt-4 rounded-2xl bg-[#141B2B] border border-[#1F2937] overflow-hidden animate-slideDown">
-                <div className="p-3 space-y-1">
+                <div className="p-4 space-y-2">
                   {navItems.map((item, index) => {
                     const itemLabel = t(`navItems.${item.key}`, 'navigation');
                     const isActive = isLinkActive(item);
@@ -370,20 +370,20 @@ export default function Navigation() {
                     return (
                       <div key={item.key}>
                         {item.submenu ? (
-                          <div className="space-y-1">
+                          <div className="space-y-2">
                             <a
                               ref={isFirst ? firstMenuItemRef : undefined}
                               href={item.href}
                               onClick={(e) => handleNavigation(e, item.href)}
-                              className="flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base text-blue-400 bg-blue-500/10 border border-blue-500/20"
+                              className="flex items-center justify-between px-5 py-4 rounded-xl font-semibold text-lg text-blue-400 bg-blue-500/10 border border-blue-500/20"
                             >
                               <span>
                                 {itemLabel}
                               </span>
-                              <ChevronDown className="w-4 h-4 rotate-180 text-blue-400" />
+                              <ChevronDown className="w-5 h-5 rotate-180 text-blue-400" />
                             </a>
                             
-                            <div className="pl-4 space-y-1 border-l-2 border-blue-500/30 ml-4">
+                            <div className="pl-4 space-y-2 border-l-2 border-blue-500/30 ml-4">
                               {item.submenu.map((subItem) => {
                                 const Icon = subItem.icon;
                                 const subItemLabel = t(`servicesSubmenu.${subItem.key}`, 'navigation');
@@ -393,9 +393,9 @@ export default function Navigation() {
                                     key={subItem.key}
                                     href={subItem.href}
                                     onClick={(e) => handleNavigation(e, subItem.href)}
-                                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-base text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
+                                    className="flex items-center gap-3 px-5 py-4 rounded-xl text-lg text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
                                   >
-                                    <Icon className="w-4 h-4" />
+                                    <Icon className="w-5 h-5" />
                                     <span className="font-medium">
                                       {subItemLabel}
                                     </span>
@@ -423,7 +423,7 @@ export default function Navigation() {
                               }
                               setIsOpen(false);
                             }}
-                            className={`flex items-center justify-between px-4 py-3.5 rounded-xl font-medium text-base transition-colors ${
+                            className={`flex items-center justify-between px-5 py-4 rounded-xl font-semibold text-lg transition-colors ${
                               isActive
                                 ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
                                 : item.key === 'contact'
@@ -431,7 +431,7 @@ export default function Navigation() {
                                   : 'text-gray-300 hover:bg-blue-500/10 hover:text-blue-400'
                             }`}
                           >
-                            <span className={`${item.key === 'contact' ? 'mx-auto font-semibold' : ''}`}>
+                            <span className={`${item.key === 'contact' ? 'mx-auto font-bold' : ''}`}>
                               {itemLabel}
                             </span>
                           </a>
