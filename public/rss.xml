@@ -4,81 +4,81 @@
     <title>Le Blog d'Abdoulaye Patawala</title>
     <link>https://https://patawala-v2-nry6.vercel.app</link>
     <description>Articles sur le développement web, mobile, IA et entrepreneuriat</description>
-    <atom:link href="https://https://patawala-v2-nry6.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://patawala-v2-nry6.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
     <language>fr</language>
-    <lastBuildDate>Tue, 10 Mar 2026 16:49:26 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 11 Mar 2026 15:37:36 GMT</lastBuildDate>
     
     <item>
       <title>Architecture technique 2025-2026 : Comment choisir la bonne stack pour votre projet web</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/architecture-technique-2025-2026-comment-choisir-la-bonne-stack-pour-votre-projet-web</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/architecture-technique-2025-2026-comment-choisir-la-bonne-stack-pour-votre-projet-web</link>
       <description>Next.js 15, React 19, Remix, Astro ou WordPress ? Découvrez comment faire un choix stratégique aligné avec vos objectifs de croissance, votre budget et les réalités du marché en 2025.</description>
       <category>Développement</category>
       <guid isPermaLink="false">architecture-technique-2025-2026-comment-choisir-la-bonne-stack-pour-votre-projet-web-1</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>E-commerce en 2025 : Les secrets d&apos;un site qui convertit à l&apos;ère de l&apos;IA</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/e-commerce-en-2025-les-secrets-dun-site-qui-convertit-a-lere-de-lia</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/e-commerce-en-2025-les-secrets-dun-site-qui-convertit-a-lere-de-lia</link>
       <description>Analyse approfondie d&apos;un site e-commerce qui a augmenté ses conversions de 187% grâce à l&apos;optimisation UX, l&apos;IA personnalisée et les nouvelles attentes des consommateurs.</description>
       <category>E-commerce</category>
       <guid isPermaLink="false">e-commerce-en-2025-les-secrets-dun-site-qui-convertit-a-lere-de-lia-2</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Mobile-first 2025 : Pourquoi votre site doit être pensé pour une expérience immersive</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/mobile-first-2025-pourquoi-votre-site-doit-etre-pense-pour-une-experience-immersive</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/mobile-first-2025-pourquoi-votre-site-doit-etre-pense-pour-une-experience-immersive</link>
       <description>Avec 72% du trafic web mondial venant du mobile en 2025, l&apos;approche responsive ne suffit plus. Découvrez l&apos;approche &apos;mobile-immersive&apos;.</description>
       <category>Mobile</category>
       <guid isPermaLink="false">mobile-first-2025-pourquoi-votre-site-doit-etre-pense-pour-une-experience-immersive-3</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Design UI/UX 2025 : Au-delà de l&apos;esthétique, l&apos;expérience émotionnelle</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/design-uiux-2025-au-dela-de-lesthetique-lexperience-emotionnelle</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/design-uiux-2025-au-dela-de-lesthetique-lexperience-emotionnelle</link>
       <description>Comment le design émotionnel et les micro-interactions transforment la fidélisation client. Études de cas et données 2025.</description>
       <category>Design</category>
       <guid isPermaLink="false">design-uiux-2025-au-dela-de-lesthetique-lexperience-emotionnelle-4</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Guide complet du SEO en 2025 : S&apos;adapter à l&apos;ère de l&apos;IA et de la recherche conversationnelle</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/guide-complet-du-seo-en-2025-sadapter-a-lere-de-lia-et-de-la-recherche-conversationnelle</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/guide-complet-du-seo-en-2025-sadapter-a-lere-de-lia-et-de-la-recherche-conversationnelle</link>
       <description>Avec l&apos;essor de ChatGPT Search, Perplexity et les SGE (Search Generative Experience), le SEO a radicalement changé. Voici comment rester visible.</description>
       <category>SEO</category>
       <guid isPermaLink="false">guide-complet-du-seo-en-2025-sadapter-a-lere-de-lia-et-de-la-recherche-conversationnelle-5</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Automatisation et IA en 2025 : Créez des workflows intelligents qui libèrent votre temps</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/automatisation-et-ia-en-2025-creez-des-workflows-intelligents-qui-liberent-votre-temps</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/automatisation-et-ia-en-2025-creez-des-workflows-intelligents-qui-liberent-votre-temps</link>
       <description>Découvrez comment combiner IA, no-code et automatisation pour créer des processus métier qui fonctionnent 24h/24 sans intervention humaine.</description>
       <category>Productivité</category>
       <guid isPermaLink="false">automatisation-et-ia-en-2025-creez-des-workflows-intelligents-qui-liberent-votre-temps-6</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Tendances web design 2025-2026 : Ce qui marquera les années à venir</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/tendances-web-design-2025-2026-ce-qui-marquera-les-annees-a-venir</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/tendances-web-design-2025-2026-ce-qui-marquera-les-annees-a-venir</link>
       <description>Analyse des tendances émergentes : design génératif, 3D légère, typographie variable, et l&apos;impact de l&apos;IA sur la création.</description>
       <category>Design</category>
       <guid isPermaLink="false">tendances-web-design-2025-2026-ce-qui-marquera-les-annees-a-venir-7</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Sécurité web 2025 : Les 10 erreurs critiques qui mettent votre site en danger</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/securite-web-2025-les-10-erreurs-critiques-qui-mettent-votre-site-en-danger</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/securite-web-2025-les-10-erreurs-critiques-qui-mettent-votre-site-en-danger</link>
       <description>Avec l&apos;augmentation des cyberattaques de 78% en 2 ans, protégez votre site et vos utilisateurs en évitant ces failles de sécurité courantes.</description>
       <category>Sécurité</category>
       <guid isPermaLink="false">securite-web-2025-les-10-erreurs-critiques-qui-mettent-votre-site-en-danger-8</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
     <item>
       <title>Lancer son MVP en 2025 : La méthode Lean augmentée par l&apos;IA</title>
-      <link>https://https://patawala-v2-nry6.vercel.app/blog/lancer-son-mvp-en-2025-la-methode-lean-augmentee-par-lia</link>
+      <link>https://patawala-v2-nry6.vercel.app/blog/lancer-son-mvp-en-2025-la-methode-lean-augmentee-par-lia</link>
       <description>Comment passer de l&apos;idée au produit minimum viable en moins de 30 jours en utilisant les outils no-code et l&apos;IA générative.</description>
       <category>Startup</category>
       <guid isPermaLink="false">lancer-son-mvp-en-2025-la-methode-lean-augmentee-par-lia-9</guid>
-      <pubDate>Tue, 10 Mar 2026 16:49:26 GMT</pubDate>
+      <pubDate>Wed, 11 Mar 2026 15:37:36 GMT</pubDate>
     </item>
   </channel>
 </rss>
