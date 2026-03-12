@@ -23,11 +23,11 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     
     try {
-      // NE CHARGE QUE LES FICHIERS NÉCESSAIRES
       if (lang === 'fr') {
         const [common, navigation, hero, about, testimonials, value, tech, contact, 
                blog, articles, articlesData, services, servicesData, projetsPage, 
-               projetsData, projectModal, booking, realisations, footer, widget] = await Promise.all([
+               projetsData, projectModal, booking, realisations, footer, widget, 
+               notFound, merci] = await Promise.all([
           import('@/app/assets/locales/fr/common.json'),
           import('@/app/assets/locales/fr/navigation.json'),
           import('@/app/assets/locales/fr/hero.json'),
@@ -47,7 +47,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           import('@/app/assets/locales/fr/booking.json'),
           import('@/app/assets/locales/fr/realisations.json'),
           import('@/app/assets/locales/fr/footer.json'),
-          import('@/app/assets/locales/fr/widget.json')
+          import('@/app/assets/locales/fr/widget.json'),
+          import('@/app/assets/locales/fr/not-found.json'),
+          import('@/app/assets/locales/fr/merci.json')
         ]);
 
         setTranslations({
@@ -70,13 +72,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           booking: booking.default,
           realisations: realisations.default,
           footer: footer.default,
-          widget: widget.default
+          widget: widget.default,
+          'not-found': notFound.default,
+          merci: merci.default
         });
       } else {
-        // Version anglaise (similaire)
+        // Version anglaise
         const [common, navigation, hero, about, testimonials, value, tech, contact,
                blog, articles, articlesData, services, servicesData, projetsPage,
-               projetsData, projectModal, booking, realisations, footer, widget] = await Promise.all([
+               projetsData, projectModal, booking, realisations, footer, widget,
+               notFound, merci] = await Promise.all([
           import('@/app/assets/locales/en/common.json'),
           import('@/app/assets/locales/en/navigation.json'),
           import('@/app/assets/locales/en/hero.json'),
@@ -96,7 +101,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           import('@/app/assets/locales/en/booking.json'),
           import('@/app/assets/locales/en/realisations.json'),
           import('@/app/assets/locales/en/footer.json'),
-          import('@/app/assets/locales/en/widget.json')
+          import('@/app/assets/locales/en/widget.json'),
+          import('@/app/assets/locales/en/not-found.json'),
+          import('@/app/assets/locales/en/merci.json')
         ]);
 
         setTranslations({
@@ -119,7 +126,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
           booking: booking.default,
           realisations: realisations.default,
           footer: footer.default,
-          widget: widget.default
+          widget: widget.default,
+          'not-found': notFound.default,
+          merci: merci.default
         });
       }
     } catch (error) {

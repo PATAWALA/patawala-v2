@@ -3,9 +3,19 @@
 import { Home, ArrowLeft, Search, Frown, AlertCircle, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 export default function NotFound() {
+  const { t, isLoading } = useTranslation();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isReady, setIsReady] = useState(false);
+
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   // Mouse position - GARDÉ car c'est interactif et léger
   useEffect(() => {
@@ -33,6 +43,60 @@ export default function NotFound() {
   const handleGoBack = useCallback(() => {
     if (typeof window !== 'undefined') window.history.back();
   }, []);
+
+  // TRADUCTIONS SIMPLES
+  const translations = {
+    title: t('title', 'not-found') || 'Oups ! Page introuvable',
+    message: t('message', 'not-found') || "La page que vous cherchez n'existe pas ou a été déplacée.",
+    suggestionsTitle: t('suggestions.title', 'not-found') || 'Que faire maintenant ?',
+    homeTitle: t('suggestions.home.title', 'not-found') || "Page d'accueil",
+    homeDesc: t('suggestions.home.description', 'not-found') || "Retourner à l'accueil",
+    projectsTitle: t('suggestions.projects.title', 'not-found') || 'Mes projets',
+    projectsDesc: t('suggestions.projects.description', 'not-found') || 'Découvrir mes réalisations',
+    contactTitle: t('suggestions.contact.title', 'not-found') || 'Me contacter',
+    contactDesc: t('suggestions.contact.description', 'not-found') || 'Discuter de votre projet',
+    backButton: t('backButton', 'not-found') || 'Retour à la page précédente',
+  };
+
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]" />
+        
+        <div className="relative z-10 max-w-3xl w-full">
+          {/* 404 skeleton */}
+          <div className="relative mb-8 flex justify-center">
+            <div className="flex items-center justify-center gap-2 sm:gap-4">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
+            </div>
+          </div>
+
+          {/* Message skeleton */}
+          <div className="text-center mb-8">
+            <div className="w-64 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto mb-6 animate-pulse" />
+            <div className="w-12 h-12 bg-gray-800/50 rounded-full mx-auto animate-pulse" />
+          </div>
+
+          {/* Suggestions skeleton */}
+          <div className="bg-[#141B2B]/50 rounded-2xl p-6 mb-8 border border-gray-800/50">
+            <div className="w-48 h-6 bg-gray-800/50 rounded-lg mb-4 animate-pulse" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-20 bg-gray-800/50 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Back button skeleton */}
+          <div className="w-48 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
@@ -81,10 +145,10 @@ export default function NotFound() {
 
         {/* Message principal */}
         <div className="text-center mb-8 animate-fadeIn" style={{ animationDelay: '0.3s' }}>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">Oups ! Page introuvable</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">{translations.title}</h1>
           <div className="flex items-center justify-center gap-2 text-gray-300 mb-6">
             <AlertCircle size={20} className="text-blue-400" />
-            <p className="text-lg sm:text-xl">La page que vous cherchez n'existe pas ou a été déplacée.</p>
+            <p className="text-lg sm:text-xl">{translations.message}</p>
           </div>
           <div className="inline-block mb-8 animate-wobble">
             <Frown size={48} className="text-blue-400/50" />
@@ -95,7 +159,7 @@ export default function NotFound() {
         <div className="bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-8 border border-[#1F2937] shadow-xl animate-fadeIn" style={{ animationDelay: '0.4s' }}>
           <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4 flex items-center gap-2">
             <Compass size={24} className="text-blue-400" />
-            Que faire maintenant ?
+            {translations.suggestionsTitle}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/" passHref>
@@ -104,8 +168,8 @@ export default function NotFound() {
                   <Home size={20} className="text-white" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">Page d'accueil</span>
-                  <p className="text-xs text-gray-400">Retourner à l'accueil</p>
+                  <span className="font-semibold text-white">{translations.homeTitle}</span>
+                  <p className="text-xs text-gray-400">{translations.homeDesc}</p>
                 </div>
               </div>
             </Link>
@@ -115,8 +179,8 @@ export default function NotFound() {
                   <Compass size={20} className="text-white" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">Mes projets</span>
-                  <p className="text-xs text-gray-400">Découvrir mes réalisations</p>
+                  <span className="font-semibold text-white">{translations.projectsTitle}</span>
+                  <p className="text-xs text-gray-400">{translations.projectsDesc}</p>
                 </div>
               </div>
             </Link>
@@ -126,8 +190,8 @@ export default function NotFound() {
                   <Search size={20} className="text-white" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">Me contacter</span>
-                  <p className="text-xs text-gray-400">Discuter de votre projet</p>
+                  <span className="font-semibold text-white">{translations.contactTitle}</span>
+                  <p className="text-xs text-gray-400">{translations.contactDesc}</p>
                 </div>
               </div>
             </Link>
@@ -141,7 +205,7 @@ export default function NotFound() {
             className="inline-flex items-center gap-2 text-blue-400 hover:text-cyan-400 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span>Retour à la page précédente</span>
+            <span>{translations.backButton}</span>
           </button>
         </div>
 

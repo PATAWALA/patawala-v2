@@ -1,323 +1,307 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
-import Link from 'next/link';
+import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
-import { projets } from '@/app/projets/data/projets';
-import ProjectModal from '@/app/components/ui/ProjectModal';
-import type { Project } from '@/app/projets/data/projets';
+import profileImage from '../../assets/images/horo1.png';
+import profile2Image from '../../assets/images/profile2.webp';
+import profile4Image from '../../assets/images/profile4.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Points lumineux fixes (déterministes)
-const LIGHT_POINTS = [
-  { left: '15%', top: '20%' },
-  { left: '75%', top: '60%' },
-  { left: '45%', top: '80%' },
-  { left: '85%', top: '30%' },
-];
-
-const ProjetsPage = memo(function ProjetsPage() {
+const HeroSection = memo(function HeroSection() {
   const { t, language, isLoading } = useTranslation();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
+  const [displayText, setDisplayText] = useState('');
+  const [stringIndex, setStringIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  
+  // Réf pour éviter les doubles appels
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const pauseTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  // Récupération des chaînes
+  const typedStrings = t('typed.strings', 'hero') || [];
+  
+  // Version de secours pour le chargement
+  const fallbackStrings = language === 'fr' 
+    ? ['votre succès digital.', 'un e-commerce sans limite.', "l'application de vos idées.", 'votre outil métier sur-mesure.', 'une expérience utilisateur unique.']
+    : ['your digital success.', 'a high-performance e-commerce.', 'the app of your ideas.', 'your custom business tool.', 'a unique user experience.'];
 
-  // Attendre que les traductions soient chargées
+  const stringsToUse = typedStrings.length > 0 ? typedStrings : fallbackStrings;
+
+  // Attendre que les traductions soient chargées - UNE SEULE FOIS
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && stringsToUse.length > 0 && !isReady) {
       setIsReady(true);
+      // Initialiser avec la première phrase complète
+      setDisplayText(stringsToUse[0]);
+      setCharIndex(stringsToUse[0].length);
+      setStringIndex(0);
+      setIsDeleting(false);
+      
+      // Programmer le début de l'effacement après 4 secondes
+      pauseTimeoutRef.current = setTimeout(() => {
+        setIsDeleting(true);
+      }, 4000);
     }
-  }, [isLoading]);
-
-  // Charger les projets traduits
-  useEffect(() => {
-    if (!isReady) return;
     
-    try {
-      const projectsData = t('projects', 'projets-data');
-      if (Array.isArray(projectsData)) {
-        setTranslatedProjects(projectsData);
+    return () => {
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+  }, [isLoading, stringsToUse, isReady]);
+
+  // TYPING EFFECT - CORRIGÉ
+  useEffect(() => {
+    if (!isReady || stringsToUse.length === 0) return;
+
+    const currentString = stringsToUse[stringIndex];
+    if (!currentString) return;
+
+    // Nettoyer le timeout précédent
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      if (isDeleting) {
+        // PHASE D'EFFACEMENT - MÊME VITESSE QUE L'ÉCRITURE
+        if (charIndex > 0) {
+          // Effacer un caractère (lent)
+          const newCharIndex = charIndex - 1;
+          setCharIndex(newCharIndex);
+          setDisplayText(currentString.substring(0, newCharIndex));
+        } else {
+          // Passer à la phrase suivante
+          const nextIndex = (stringIndex + 1) % stringsToUse.length;
+          setStringIndex(nextIndex);
+          setIsDeleting(false);
+          // Commencer la nouvelle phrase
+          setCharIndex(1);
+          setDisplayText(stringsToUse[nextIndex].charAt(0));
+        }
       } else {
-        setTranslatedProjects(projets);
+        // PHASE D'ÉCRITURE - LENTE
+        if (charIndex < currentString.length) {
+          // Ajouter un caractère (lent)
+          const newCharIndex = charIndex + 1;
+          setCharIndex(newCharIndex);
+          setDisplayText(currentString.substring(0, newCharIndex));
+        } else {
+          // Pause de 4 secondes quand la phrase est finie
+          if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+          pauseTimeoutRef.current = setTimeout(() => {
+            setIsDeleting(true);
+          }, 2000);
+        }
       }
-    } catch (error) {
-      console.error('Erreur chargement projets traduits:', error);
-      setTranslatedProjects(projets);
-    }
-  }, [t, language, isReady]);
+    }, 180); // MÊME VITESSE POUR ÉCRITURE ET EFFACEMENT (180ms)
 
-  const openModal = useCallback((project: Project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-    document.body.style.overflow = 'hidden';
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [charIndex, isDeleting, stringIndex, stringsToUse, isReady]);
+
+  // Nettoyage final
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
   }, []);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-    document.body.style.overflow = 'unset';
-    setTimeout(() => setSelectedProject(null), 300);
+  const scrollToContact = useCallback(() => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
-  // Gestion du clavier pour les cartes
-  const handleCardKeyDown = useCallback((e: React.KeyboardEvent, project: Project) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openModal(project);
-    }
-  }, [openModal]);
-
-  // Fonction pour vérifier si l'image est valide
-  const hasValidImage = useCallback((image: any): boolean => {
-    return !!image && typeof image !== 'string';
+  const scrollToProjets = useCallback(() => {
+    document.getElementById('projets')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
-  // Fonction pour trouver le projet traduit correspondant
-  const getTranslatedProject = useCallback((originalProject: Project) => {
-    return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
-  }, [translatedProjects]);
+  const avatarImages = [
+    { src: profile2Image, alt: t('altImages.avatar', 'hero') || 'Client' },
+    { src: profile4Image, alt: t('altImages.avatar', 'hero') || 'Client' },
+  ];
 
-  // SKELETON LOADER
-  if (isLoading || !isReady) {
+  // Afficher un skeleton si en chargement
+  if (isLoading && !isReady) {
     return (
-      <main className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden">
-        {/* Fond */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          {/* En-tête skeleton */}
-          <div className="text-center mb-16">
-            <div className="w-32 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
-            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
-          </div>
-
-          {/* Grille skeleton */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-[#141B2B]/50 rounded-2xl overflow-hidden border border-gray-800/50">
-                <div className="h-48 bg-gray-800/50 animate-pulse" />
-                <div className="p-6">
-                  <div className="w-3/4 h-6 bg-gray-800/50 rounded mb-3 animate-pulse" />
-                  <div className="w-full h-4 bg-gray-800/50 rounded mb-2 animate-pulse" />
-                  <div className="w-2/3 h-4 bg-gray-800/50 rounded mb-4 animate-pulse" />
-                  <div className="flex gap-2 mb-4">
-                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
-                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
-                  </div>
-                  <div className="w-24 h-4 bg-gray-800/50 rounded mx-auto animate-pulse" />
-                </div>
+      <section className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-[#0B1120]">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-700 rounded w-48 mx-auto mb-8"></div>
+            <div className="flex flex-col lg:flex-row gap-10">
+              <div className="flex-1 space-y-6">
+                <div className="h-12 bg-gray-700 rounded w-3/4 mx-auto lg:mx-0"></div>
+                <div className="h-12 bg-gray-700 rounded w-full"></div>
+                <div className="h-24 bg-gray-700 rounded w-full"></div>
+                <div className="h-16 bg-gray-700 rounded w-64"></div>
               </div>
-            ))}
+              <div className="flex-1">
+                <div className="w-full max-w-[400px] aspect-square bg-gray-700 rounded-2xl mx-auto"></div>
+              </div>
+            </div>
           </div>
-
-          {/* Bouton skeleton */}
-          <div className="flex justify-center">
-            <div className="w-48 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
-          </div>
-
-          {/* Note footer skeleton */}
-          <div className="w-64 h-4 bg-gray-800/50 rounded mx-auto mt-8 animate-pulse" />
         </div>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main
-      className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden"
-      aria-labelledby="page-title"
+    <section
+      id="hero"
+      className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12 font-sans"
+      aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
     >
-      {/* FOND ULTRA-OPTIMISÉ */}
+      {/* FOND - IDENTIQUE */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-50"
           style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
           }}
           aria-hidden="true"
         />
-
-        {/* Cercles flous */}
-        <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-
-        {/* Points lumineux */}
-        {LIGHT_POINTS.map((point, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
-            style={{ left: point.left, top: point.top }}
-            aria-hidden="true"
-          />
-        ))}
+        <div
+          className="absolute inset-0 opacity-50"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
+          }}
+          aria-hidden="true"
+        />
+        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
+        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* En-tête */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
+      <div className="container mx-auto px-4 sm:px-4 md:px-6 relative z-10 py-8 sm:py-6 md:py-8 lg:py-12">
+        {/* Badge principal */}
+        <div className="w-full hidden md:flex justify-center mb-6 md:mb-8">
+          <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
-            <span className="text-sm font-medium text-blue-400">{t('badge', 'projets-page')}</span>
-          </div>
-
-          <h1
-            id="page-title"
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
-          >
-            {t('title', 'projets-page')}{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              {t('titleHighlight', 'projets-page')}
+            <span className="text-sm md:text-sm font-semibold whitespace-nowrap">
+              {t('badge', 'hero')}
             </span>
-          </h1>
-
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            {t('subtitle', 'projets-page')}
-          </p>
+          </div>
         </div>
 
-        {/* Grille des projets */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16 auto-rows-fr">
-          {projets.map((projet, index) => {
-            const Icon = projet.icon;
-            const showImage = hasValidImage(projet.image);
-            const translatedProjet = getTranslatedProject(projet);
-            const isInProgress = !showImage;
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
+          {/* TEXTE À GAUCHE */}
+          <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
+            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold mb-5 md:mb-5 leading-tight px-1 sm:px-2 text-white">
+              <span>
+                {t('title', 'hero')}
+              </span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-3 md:mt-2 font-black min-h-[4rem] sm:min-h-[4rem]">
+                {/* Version mobile */}
+                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
+                  {t('mobilePhrase', 'hero')}
+                </span>
+                {/* Version desktop */}
+                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline">
+                  {displayText}
+                  <span className="animate-pulse ml-1">|</span>
+                </span>
+              </span>
+            </h1>
 
-            return (
-              <div
-                key={projet.id}
-                onClick={() => openModal(projet)}
-                onKeyDown={(e) => handleCardKeyDown(e, projet)}
-                role="button"
-                tabIndex={0}
-                className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full hover:-translate-y-1"
-                aria-label={`Voir les détails du projet ${translatedProjet.title}`}
-              >
-                {/* Image ou placeholder avec icône */}
-                <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
-                  {showImage ? (
+            <div className="space-y-3 md:space-y-3 mb-4 md:mb-4 px-2 sm:px-3 md:px-4 lg:px-0">
+              <p className="text-lg md:text-lg lg:text-xl text-white font-bold leading-relaxed">
+                {t('subtitle', 'hero')}
+              </p>
+            </div>
+
+            {/* AVATARS */}
+            <div className="flex flex-row items-center justify-center lg:justify-start gap-1 md:gap-1 mb-8 md:mb-8 px-2 sm:px-3 lg:px-0">
+              <div className="flex items-center -space-x-5 sm:-space-x-6">
+                {avatarImages.map((avatar, index) => (
+                  <div
+                    key={index}
+                    className="relative w-8 h-8 sm:w-7 sm:h-7 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
+                    style={{ zIndex: 2 - index }}
+                  >
                     <Image
-                      src={projet.image}
-                      alt={translatedProjet.title}
+                      src={avatar.src}
+                      alt={avatar.alt}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading={index < 3 ? 'eager' : 'lazy'}
-                      priority={index < 3}
-                      quality={70}
+                      className="object-cover scale-150"
+                      sizes="32px"
+                      loading="lazy"
+                      placeholder="blur"
                     />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-20 h-20 bg-[#0A0F1C] rounded-2xl shadow-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-[#1F2937]">
-                        <Icon size={40} className="text-blue-400" aria-hidden="true" />
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Badge catégorie */}
-                  <div className="absolute top-4 right-4 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20">
-                    {translatedProjet.category}
                   </div>
+                ))}
+              </div>
 
-                  {/* Badge "En cours" pour les projets sans image */}
-                  {isInProgress && (
-                    <div className="absolute top-4 left-4 bg-amber-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white border border-amber-400/30 shadow-lg">
-                      {t('badge.inProgress', 'projets-page') || 'En cours'}
-                    </div>
-                  )}
+              <div className="flex flex-col items-start">
+                <div className="flex items-center gap-0">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={12}
+                      className="fill-orange-400 text-orange-400"
+                      aria-hidden="true"
+                    />
+                  ))}
                 </div>
-
-                {/* Contenu */}
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors mb-3">
-                    {translatedProjet.title}
-                  </h3>
-
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2 flex-1">
-                    {translatedProjet.description}
-                  </p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {translatedProjet.tags.slice(0, 3).map((tag: string) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {translatedProjet.tags.length > 3 && (
-                      <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                        {t('card.tags.more', 'projets-page')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Bouton En savoir plus */}
-                  <div className="flex justify-center w-full mt-auto pt-4">
-                    <span
-                      className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group-hover:text-blue-300 transition-colors cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openModal(projet);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.stopPropagation();
-                          openModal(projet);
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`En savoir plus sur ${translatedProjet.title}`}
-                    >
-                      <span>{t('card.learnMore', 'projets-page')}</span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                    </span>
-                  </div>
+                <div className="flex items-center gap-0.5">
+                  <span className="text-xs md:text-base font-bold text-white">30+</span>
+                  <span className="text-[10px] md:text-sm text-gray-400 whitespace-nowrap">
+                    {t('socialProof.entrepreneurs', 'hero')}
+                  </span>
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
 
-        {/* BOUTON UNIQUE - LANCER MON PROJET */}
-        <div className="flex justify-center items-center max-w-2xl mx-auto">
-          <Link href="/#contact" className="w-full sm:w-auto" passHref>
-            <button
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98]"
-              aria-label={t('buttons.discuss', 'projets-page')}
-            >
-              <MessageSquare size={20} aria-hidden="true" />
-              <span>{t('buttons.discuss', 'projets-page')}</span>
-              <ArrowRight size={20} aria-hidden="true" />
-            </button>
-          </Link>
-        </div>
+            {/* BOUTONS */}
+            <div className="flex flex-col sm:flex-row gap-4 md:gap-4 justify-center lg:justify-start px-4 sm:px-3 lg:px-0">
+              <button
+                onClick={scrollToContact}
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 md:px-7 lg:px-8 py-4 md:py-3.5 rounded-xl font-bold text-lg md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-auto min-h-[56px]"
+                aria-label={t('buttons.project', 'hero')}
+              >
+                <span>{t('buttons.project', 'hero')}</span>
+                <ArrowRight size={20} className="sm:w-4 sm:h-4" aria-hidden="true" />
+              </button>
 
-        {/* Note de bas de page */}
-        <p className="text-center text-xs text-gray-500 mt-8">
-          {t('footer.note', 'projets-page')}
-        </p>
+              <button
+                onClick={scrollToProjets}
+                className="bg-transparent text-white px-6 md:px-7 lg:px-8 py-4 md:py-3.5 rounded-xl font-semibold text-lg md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 w-auto min-h-[56px]"
+                aria-label={t('buttons.portfolio', 'hero')}
+              >
+                <span>{t('buttons.portfolio', 'hero')}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* IMAGE */}
+          <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
+            <div className="relative w-full max-w-[400px] md:max-w-sm lg:max-w-md">
+              <div className="absolute -inset-6 rounded-full border-2 border-blue-500/30" aria-hidden="true" />
+              <div className="absolute -inset-10 rounded-full border border-cyan-500/20" aria-hidden="true" />
+              <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-blue-500/5 to-cyan-500/5 blur-md" aria-hidden="true" />
+              
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
+                <div className="aspect-square relative">
+                  <Image
+                    src={profileImage}
+                    alt={t('altImages.profile', 'hero') || "Abdoulaye Patawala"}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 400px, 384px"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
+                    quality={90}
+                    placeholder="blur"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Modal des détails du projet */}
-      <ProjectModal
-        project={selectedProject}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-      />
-    </main>
+    </section>
   );
 });
 
-ProjetsPage.displayName = 'ProjetsPage';
+HeroSection.displayName = 'HeroSection';
 
-export default ProjetsPage;
+export default HeroSection;

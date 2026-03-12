@@ -6,30 +6,7 @@ import ServiceCard from './ServiceCard';
 import { servicesByCategory, allServices, filterCategories, CategoryType } from './data/servicesData';
 import Link from 'next/link';
 import { useServiceContext } from './context/ServiceContext';
-import { useLanguage } from '../context/LanguageContext';
-
-// IMPORT DES DEUX FICHIERS JSON
-import frServicesData from '@/app/assets/locales/fr/services-data.json';
-import enServicesData from '@/app/assets/locales/en/services-data.json';
-import frServices from '@/app/assets/locales/fr/services.json';
-import enServices from '@/app/assets/locales/en/services.json';
-
-// Types pour les traductions
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-
-interface FaqTranslations {
-  title: string;
-  subtitle: string;
-  items: FaqItem[];
-}
-
-interface CtaTranslations {
-  title: string;
-  button: string;
-}
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 const ServicesPage = memo(function ServicesPage() {
   const {
@@ -39,102 +16,62 @@ const ServicesPage = memo(function ServicesPage() {
     setIsNavigatingFromNav
   } = useServiceContext();
 
-  const { language } = useLanguage();
+  const { t, isLoading } = useTranslation();
   const isInitialLoad = useRef(true);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Refs pour le défilement des filtres uniquement
+  
+  // Refs pour le défilement des filtres
   const filterScrollRef = useRef<HTMLDivElement>(null);
-
-  // États pour les flèches des filtres
   const [showFilterLeftArrow, setShowFilterLeftArrow] = useState(false);
   const [showFilterRightArrow, setShowFilterRightArrow] = useState(true);
 
-  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
-  const lightPoints = useRef(
-    [...Array(2)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`
-    }))
-  ).current;
+  // Points lumineux fixes
+  const lightPoints = [
+    { left: '15%', top: '20%' },
+    { left: '75%', top: '60%' },
+    { left: '45%', top: '80%' },
+    { left: '85%', top: '30%' },
+  ];
 
-  // CHARGEMENT DIRECT DES DONNÉES SELON LA LANGUE
-  const servicesData = language === 'fr' ? frServicesData : enServicesData;
-  const services = language === 'fr' ? frServices : enServices;
-
-  // ========== TRADUCTIONS DE BASE (depuis services-data.json) ==========
+  // TRADUCTIONS SIMPLES
   const translations = {
-    badge: servicesData?.badge || 'Solutions sur mesure',
-    title: servicesData?.title || 'Solutions digitales',
-    titleHighlight: servicesData?.titleHighlight || 'adaptées à vos besoins',
-    subtitle: servicesData?.subtitle || 'Sites web, applications, design ou conseil — Je vous accompagne de l\'idée à la réalisation.',
-    disclaimer: servicesData?.disclaimer || '* Les prix sont donnés à titre indicatif. Chaque projet reçoit un devis personnalisé.'
+    badge: t('badge', 'services') || 'Solutions sur mesure',
+    title: t('title', 'services') || 'Solutions digitales',
+    titleHighlight: t('titleHighlight', 'services') || 'adaptées à vos besoins',
+    subtitle: t('subtitle', 'services') || "Sites web, applications, design ou conseil — Je vous accompagne de l'idée à la réalisation.",
+    disclaimer: t('disclaimer', 'services') || '* Chaque projet est unique et fait l\'objet d\'un devis personnalisé.',
+    
+    // Filtres
+    filterAll: t('filters.all', 'services') || 'Tous',
+    filterWeb: t('filters.web', 'services') || 'Sites web',
+    filterMobile: t('filters.mobile', 'services') || 'Applications',
+    filterDesign: t('filters.design', 'services') || 'Design & UX',
+    filterConsulting: t('filters.consulting', 'services') || 'Conseil & Stratégie',
+    
+    // Descriptions
+    descAll: t('filters.description.all', 'services') || 'Découvrez tous mes services pour votre présence digitale',
+    descWeb: t('filters.description.web', 'services') || 'Sites vitrine aux applications web complexes, performants et évolutifs',
+    descMobile: t('filters.description.mobile', 'services') || 'Applications natives et hybrides pour iOS et Android',
+    descDesign: t('filters.description.design', 'services') || 'Interfaces intuitives et expériences utilisateur mémorables',
+    descConsulting: t('filters.description.consulting', 'services') || 'Conseil technique et stratégique pour vos projets digitaux',
+    
+    // FAQ
+    faqTitle: t('faq.title', 'services') || 'Questions fréquentes',
+    faqSubtitle: t('faq.subtitle', 'services') || 'Pour vous éclairer sur ma façon de travailler',
+    
+    // CTA
+    ctaTitle: t('cta.title', 'services') || 'Vous ne trouvez pas ce que vous cherchez ?',
+    ctaButton: t('cta.button', 'services') || 'Discuter de mon projet',
   };
 
-  // ========== FILTRES (depuis services-data.json) ==========
-  const filters = servicesData?.filters || {
-    all: 'Tous',
-    web: 'Sites web',
-    mobile: 'Applications',
-    design: 'Design & UX',
-    consulting: 'Conseil & Stratégie',
-    ecommerce: 'E-commerce',
-    maintenance: 'Maintenance',
-    description: {
-      all: "Découvrez tous mes services pour votre présence digitale",
-      web: "Des sites vitrines aux applications web complexes, performants et évolutifs",
-      mobile: "Applications natives et hybrides pour iOS et Android",
-      design: "Interfaces intuitives et expériences utilisateur mémorables",
-      consulting: "Conseil technique et stratégique pour vos projets digitaux",
-      ecommerce: "Boutiques en ligne optimisées pour la conversion",
-      maintenance: "Suivi, mises à jour et support technique continu"
-    }
-  };
-
-  // ========== FAQ (depuis services.json) ==========
-  const faq: FaqTranslations = services?.faq || {
-    title: 'Questions fréquentes',
-    subtitle: 'Pour vous éclairer sur ma façon de travailler',
-    items: [
-      {
-        "question": "Quelle est la durée moyenne d'un projet ?",
-        "answer": "Chaque projet avance à son rythme. Comptez 1 à 2 semaines pour un site vitrine, 3 à 6 semaines pour un e-commerce, et 2 à 4 mois pour une application sur mesure. L'essentiel ? Un résultat qui vous ressemble vraiment, sans compromis sur la qualité."
-      },
-      {
-        "question": "Et si je ne suis pas satisfait du résultat ?",
-        "answer": "Votre satisfaction est ma seule ligne d'arrivée. Si un détail ne vous convient pas, je l'améliore sans limite jusqu'à ce que le résultat dépasse vos attentes. C'est pour ça que mes partenaires sont si enthousiastes sur mon travail."
-      },
-      {
-        "question": "Assurez-vous un suivi après la livraison ?",
-        "answer": "Absolument. Un mois de support est inclus pour vous accompagner après le lancement. Et si besoin, des formules de maintenance sont disponibles pour assurer la pérennité de votre projet."
-      },
-      {
-        "question": "Puis-je apporter des modifications en cours de projet ?",
-        "answer": "Bien sûr ! Nous travaillons par étapes avec des points de validation réguliers. Votre projet évolue avec vos idées, et je m'adapte pour qu'il reste parfaitement aligné avec votre vision."
-      },
-      {
-        "question": "Combien coûtent vos services ?",
-        "answer": "Chaque projet est unique. Je réalise un devis personnalisé après avoir compris vos besoins, vos objectifs et le périmètre. Cela garantit une solution parfaitement adaptée à votre vision et à votre budget."
-      },
-      {
-        "question": "Comment se déroule le premier échange ?",
-        "answer": "Gratuit et sans engagement, il dure environ 30 minutes. C'est le moment idéal pour discuter de vos objectifs, de vos idées, et voir ensemble si notre collaboration a du sens."
-      }
-    ]
-  };
-
-  // ========== CTA (depuis services.json) ==========
-  const cta: CtaTranslations = services?.cta || {
-    title: 'Vous ne trouvez pas ce que vous cherchez ?',
-    button: 'Discuter de mon projet'
-  };
-
-  // Supprimer les logs de débogage en production
-  // console.log('🌍 Langue:', language);
+  // FAQ items
+  const faqItems = [
+    { question: t('faq.items.0.question', 'services'), answer: t('faq.items.0.answer', 'services') },
+    { question: t('faq.items.1.question', 'services'), answer: t('faq.items.1.answer', 'services') },
+    { question: t('faq.items.2.question', 'services'), answer: t('faq.items.2.answer', 'services') },
+    { question: t('faq.items.3.question', 'services'), answer: t('faq.items.3.answer', 'services') },
+    { question: t('faq.items.4.question', 'services'), answer: t('faq.items.4.answer', 'services') },
+    { question: t('faq.items.5.question', 'services'), answer: t('faq.items.5.answer', 'services') }
+  ];
 
   // Gestion du défilement des filtres
   const checkFilterScroll = useCallback(() => {
@@ -147,8 +84,6 @@ const ServicesPage = memo(function ServicesPage() {
 
   // Écouter les changements d'URL hash
   useEffect(() => {
-    if (!isMounted) return;
-    
     const handleHashChange = () => {
       const hash = window.location.hash.substring(1);
       if (hash && filterCategories.some(cat => cat.id === hash)) {
@@ -164,12 +99,10 @@ const ServicesPage = memo(function ServicesPage() {
     }
 
     return () => window.removeEventListener('hashchange', handleHashChange);
-  }, [setActiveCategory, isMounted]);
+  }, [setActiveCategory]);
 
   // Gérer la navigation depuis le menu
   useEffect(() => {
-    if (!isMounted) return;
-    
     if (isNavigatingFromNav && !isInitialLoad.current) {
       window.history.replaceState(null, '', `/services#${activeCategory}`);
       setTimeout(() => setIsNavigatingFromNav(false), 100);
@@ -187,12 +120,11 @@ const ServicesPage = memo(function ServicesPage() {
     if (isInitialLoad.current) {
       isInitialLoad.current = false;
     }
-  }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav, isMounted]);
+  }, [activeCategory, isNavigatingFromNav, setIsNavigatingFromNav]);
 
   // Setup des écouteurs de scroll pour les filtres
   useEffect(() => {
     const filterContainer = filterScrollRef.current;
-
     if (filterContainer) {
       filterContainer.addEventListener('scroll', checkFilterScroll);
       setTimeout(checkFilterScroll, 100);
@@ -210,7 +142,6 @@ const ServicesPage = memo(function ServicesPage() {
     }
   }, [checkFilterScroll]);
 
-  // Fonction de scroll pour les filtres
   const scrollFilters = useCallback((direction: 'left' | 'right') => {
     if (filterScrollRef.current) {
       const scrollAmount = 200;
@@ -230,23 +161,78 @@ const ServicesPage = memo(function ServicesPage() {
   }, [isNavigatingFromNav, setActiveCategory]);
 
   // Déterminer les services à afficher
-  const getActiveServices = useCallback(() => {
-    if (activeCategory === 'all') {
-      return allServices;
-    }
-    return servicesByCategory[activeCategory as Exclude<CategoryType, 'all'>] || [];
-  }, [activeCategory]);
+  const activeServices = activeCategory === 'all' ? allServices : servicesByCategory[activeCategory as Exclude<CategoryType, 'all'>] || [];
 
-  const activeServices = getActiveServices();
+  // Récupérer le label du filtre
+  const getFilterLabel = (categoryId: string) => {
+    switch(categoryId) {
+      case 'all': return translations.filterAll;
+      case 'web': return translations.filterWeb;
+      case 'mobile': return translations.filterMobile;
+      case 'design': return translations.filterDesign;
+      case 'consulting': return translations.filterConsulting;
+      default: return filterCategories.find(c => c.id === categoryId)?.label || '';
+    }
+  };
+
+  // Récupérer la description
+  const getDescription = () => {
+    switch(activeCategory) {
+      case 'all': return translations.descAll;
+      case 'web': return translations.descWeb;
+      case 'mobile': return translations.descMobile;
+      case 'design': return translations.descDesign;
+      case 'consulting': return translations.descConsulting;
+      default: return '';
+    }
+  };
+
+  // SKELETON LOADER
+  if (isLoading) {
+    return (
+      <main className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Hero skeleton */}
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
+            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Filtres skeleton */}
+          <div className="mb-8">
+            <div className="flex justify-center">
+              <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div key={i} className="w-24 h-10 bg-gray-700/50 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Grille skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-[#141B2B]/50 rounded-xl h-64 animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main
       className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="services-title"
     >
-      {/* FOND ULTRA-OPTIMISÉ */}
+      {/* FOND */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes répétitives - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -255,11 +241,9 @@ const ServicesPage = memo(function ServicesPage() {
           aria-hidden="true"
         />
 
-        {/* Cercles flous - 2 SEULEMENT (au lieu de 3) */}
         <div className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux - 2 SEULEMENT */}
         {lightPoints.map((point, i) => (
           <div
             key={i}
@@ -295,7 +279,6 @@ const ServicesPage = memo(function ServicesPage() {
         {/* Section Filtres avec flèches */}
         <div className="mb-8 lg:mb-12">
           <div className="relative lg:hidden">
-            {/* Flèche gauche filtres */}
             {showFilterLeftArrow && (
               <button
                 onClick={() => scrollFilters('left')}
@@ -308,7 +291,6 @@ const ServicesPage = memo(function ServicesPage() {
               </button>
             )}
 
-            {/* Flèche droite filtres */}
             {showFilterRightArrow && (
               <button
                 onClick={() => scrollFilters('right')}
@@ -321,7 +303,6 @@ const ServicesPage = memo(function ServicesPage() {
               </button>
             )}
 
-            {/* Conteneur des filtres */}
             <div
               ref={filterScrollRef}
               className="overflow-x-auto pb-4 scrollbar-hide scroll-smooth"
@@ -336,25 +317,20 @@ const ServicesPage = memo(function ServicesPage() {
                   const Icon = category.icon;
                   const isActive = activeCategory === category.id;
 
-                  const getGradientColor = () => {
-                    if (category.id === 'web') return 'from-violet-500 to-purple-500';
-                    return category.color;
-                  };
-
                   return (
                     <button
                       key={category.id}
                       onClick={() => handleCategoryChange(category.id)}
                       className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
                         ${isActive
-                          ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg`
+                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
                           : 'bg-[#141B2B] text-gray-400 hover:text-white'
                         }`}
                       aria-label={`Filtrer par ${category.label}`}
                       aria-pressed={isActive}
                     >
                       <Icon size={16} aria-hidden="true" />
-                      {filters?.[category.id] || category.label}
+                      {getFilterLabel(category.id)}
                     </button>
                   );
                 })}
@@ -369,42 +345,36 @@ const ServicesPage = memo(function ServicesPage() {
                 const Icon = category.icon;
                 const isActive = activeCategory === category.id;
 
-                const getGradientColor = () => {
-                  if (category.id === 'web') return 'from-violet-500 to-purple-500';
-                  return category.color;
-                };
-
                 return (
                   <button
                     key={category.id}
                     onClick={() => handleCategoryChange(category.id)}
                     className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all
                       ${isActive
-                        ? `bg-gradient-to-r ${getGradientColor()} text-white shadow-lg`
+                        ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
                         : 'text-gray-400 hover:text-white hover:bg-[#1E2638]'
                       }`}
                     aria-label={`Filtrer par ${category.label}`}
                     aria-pressed={isActive}
                   >
                     <Icon size={18} aria-hidden="true" />
-                    {filters?.[category.id] || category.label}
+                    {getFilterLabel(category.id)}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Description de la catégorie - AVEC ANIMATION CSS LÉGÈRE */}
+          {/* Description de la catégorie */}
           <p
             key={activeCategory}
             className="text-center text-gray-400 mt-4 max-w-2xl mx-auto animate-fadeIn"
           >
-            {filters?.description?.[activeCategory] ||
-             filterCategories.find(c => c.id === activeCategory)?.description}
+            {getDescription()}
           </p>
         </div>
 
-        {/* Grille des cartes - AVEC ANIMATION CSS ULTRA LÉGÈRE */}
+        {/* Grille des cartes */}
         <div>
           <div 
             key={activeCategory}
@@ -420,33 +390,35 @@ const ServicesPage = memo(function ServicesPage() {
           </div>
         </div>
 
-        {/* SECTION FAQ - OPTIMISÉE */}
+        {/* SECTION FAQ */}
         <div className="mt-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              {faq.title}
+              {translations.faqTitle}
             </h2>
             <p className="text-gray-400">
-              {faq.subtitle}
+              {translations.faqSubtitle}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {faq.items.map((item, index) => (
-              <div
-                key={index}
-                className="bg-[#141B2B] p-6 rounded-xl shadow-md border border-[#1F2937] hover:shadow-lg transition-shadow"
-                role="article"
-                aria-labelledby={`faq-q-${index}`}
-              >
-                <div className="flex items-start gap-3">
-                  <HelpCircle size={20} className="text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                  <div>
-                    <h3 id={`faq-q-${index}`} className="font-bold text-white mb-2">{item.question}</h3>
-                    <p className="text-sm text-gray-400">{item.answer}</p>
+            {faqItems.map((item, index) => (
+              item.question && item.answer && (
+                <div
+                  key={index}
+                  className="bg-[#141B2B] p-6 rounded-xl shadow-md border border-[#1F2937] hover:shadow-lg transition-shadow"
+                  role="article"
+                  aria-labelledby={`faq-q-${index}`}
+                >
+                  <div className="flex items-start gap-3">
+                    <HelpCircle size={20} className="text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                    <div>
+                      <h3 id={`faq-q-${index}`} className="font-bold text-white mb-2">{item.question}</h3>
+                      <p className="text-sm text-gray-400">{item.answer}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )
             ))}
           </div>
         </div>
@@ -454,16 +426,16 @@ const ServicesPage = memo(function ServicesPage() {
         {/* CTA final */}
         <div className="text-center mt-16">
           <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
-            {cta.title}
+            {translations.ctaTitle}
           </h3>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/#contact" passHref>
               <button
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0 active:scale-[0.98]"
-                aria-label={cta.button}
+                aria-label={translations.ctaButton}
               >
-                <span>{cta.button}</span>
+                <span>{translations.ctaButton}</span>
                 <ArrowRight size={20} aria-hidden="true" />
               </button>
             </Link>

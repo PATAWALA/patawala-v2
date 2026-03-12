@@ -23,11 +23,19 @@ const languages: Language[] = [
 
 export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const { language, setLanguage } = useLanguage();
-  const { t } = useTranslation();
+  const { t, isLoading } = useTranslation();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
+
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,12 +53,28 @@ export default function LanguageSwitcher() {
     setIsOpen(false);
   };
 
+  // TRADUCTION SIMPLE
+  const ariaLabel = t('languageSwitcher.ariaLabel', 'navigation') || 'Changer de langue';
+
+  // SKELETON LOADER
+  if (!isReady) {
+    return (
+      <div className="relative">
+        <div className="bg-gradient-to-r from-blue-500/50 to-cyan-500/50 text-white/50 px-3 py-2 rounded-xl text-sm flex items-center gap-2 w-[100px] h-[38px] animate-pulse">
+          <div className="w-5 h-5 bg-white/20 rounded-sm" />
+          <div className="w-10 h-4 bg-white/20 rounded hidden lg:block" />
+          <ChevronDown size={14} className="opacity-30" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-2 rounded-xl font-semibold text-sm flex items-center gap-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 whitespace-nowrap active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C]"
-        aria-label={t('languageSwitcher.ariaLabel', 'navigation')}
+        className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-2 rounded-xl font-semibold text-sm flex items-center gap-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 whitespace-nowrap active:scale-95"
+        aria-label={ariaLabel}
         aria-expanded={isOpen}
       >
         <div className="relative w-5 h-5 rounded-sm overflow-hidden">

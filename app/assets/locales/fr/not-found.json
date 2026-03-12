@@ -1,0 +1,20 @@
+{
+  "title": "Oups ! Page introuvable",
+  "message": "La page que vous cherchez n'existe pas ou a été déplacée.",
+  "suggestions": {
+    "title": "Que faire maintenant ?",
+    "home": {
+      "title": "Page d'accueil",
+      "description": "Retourner à l'accueil"
+    },
+    "projects": {
+      "title": "Mes projets",
+      "description": "Découvrir mes réalisations"
+    },
+    "contact": {
+      "title": "Me contacter",
+      "description": "Discuter de votre projet"
+    }
+  },
+  "backButton": "Retour à la page précédente"
+}

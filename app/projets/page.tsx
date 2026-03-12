@@ -9,7 +9,7 @@ import ProjectModal from '@/app/components/ui/ProjectModal';
 import type { Project } from '@/app/projets/data/projets';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Points lumineux fixes (déterministes) pour éviter les différences serveur/client
+// Points lumineux fixes (déterministes)
 const LIGHT_POINTS = [
   { left: '15%', top: '20%' },
   { left: '75%', top: '60%' },
@@ -18,19 +18,22 @@ const LIGHT_POINTS = [
 ];
 
 const ProjetsPage = memo(function ProjetsPage() {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
+  // Attendre que les traductions soient chargées
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   // Charger les projets traduits
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isReady) return;
     
     try {
       const projectsData = t('projects', 'projets-data');
@@ -43,7 +46,7 @@ const ProjetsPage = memo(function ProjetsPage() {
       console.error('Erreur chargement projets traduits:', error);
       setTranslatedProjects(projets);
     }
-  }, [t, language, isMounted]);
+  }, [t, language, isReady]);
 
   const openModal = useCallback((project: Project) => {
     setSelectedProject(project);
@@ -65,15 +68,64 @@ const ProjetsPage = memo(function ProjetsPage() {
     }
   }, [openModal]);
 
-  // Fonction pour vérifier si l'image est valide - SIMPLIFIÉE
+  // Fonction pour vérifier si l'image est valide
   const hasValidImage = useCallback((image: any): boolean => {
     return !!image && typeof image !== 'string';
   }, []);
 
-  // Fonction pour trouver le projet traduit correspondant - MÉMOÏSÉE
+  // Fonction pour trouver le projet traduit correspondant
   const getTranslatedProject = useCallback((originalProject: Project) => {
     return translatedProjects.find((p: any) => p.id === originalProject.id) || originalProject;
   }, [translatedProjects]);
+
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <main className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden">
+        {/* Fond */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          {/* En-tête skeleton */}
+          <div className="text-center mb-16">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
+            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Grille skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-[#141B2B]/50 rounded-2xl overflow-hidden border border-gray-800/50">
+                <div className="h-48 bg-gray-800/50 animate-pulse" />
+                <div className="p-6">
+                  <div className="w-3/4 h-6 bg-gray-800/50 rounded mb-3 animate-pulse" />
+                  <div className="w-full h-4 bg-gray-800/50 rounded mb-2 animate-pulse" />
+                  <div className="w-2/3 h-4 bg-gray-800/50 rounded mb-4 animate-pulse" />
+                  <div className="flex gap-2 mb-4">
+                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                  </div>
+                  <div className="w-24 h-4 bg-gray-800/50 rounded mx-auto animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bouton skeleton */}
+          <div className="flex justify-center">
+            <div className="w-48 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+          </div>
+
+          {/* Note footer skeleton */}
+          <div className="w-64 h-4 bg-gray-800/50 rounded mx-auto mt-8 animate-pulse" />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main
@@ -82,7 +134,7 @@ const ProjetsPage = memo(function ProjetsPage() {
     >
       {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
+        {/* Lignes subtiles */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -91,11 +143,11 @@ const ProjetsPage = memo(function ProjetsPage() {
           aria-hidden="true"
         />
 
-        {/* Cercles flous - 2 SEULEMENT */}
+        {/* Cercles flous */}
         <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux - fixes */}
+        {/* Points lumineux */}
         {LIGHT_POINTS.map((point, i) => (
           <div
             key={i}
@@ -129,13 +181,13 @@ const ProjetsPage = memo(function ProjetsPage() {
           </p>
         </div>
 
-        {/* Grille des projets - OPTIMISÉE */}
+        {/* Grille des projets */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16 auto-rows-fr">
           {projets.map((projet, index) => {
             const Icon = projet.icon;
             const showImage = hasValidImage(projet.image);
             const translatedProjet = getTranslatedProject(projet);
-            const isInProgress = !showImage; // Les projets sans image sont considérés "en cours"
+            const isInProgress = !showImage;
 
             return (
               <div
@@ -147,7 +199,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                 className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full hover:-translate-y-1"
                 aria-label={`Voir les détails du projet ${translatedProjet.title}`}
               >
-                {/* Image ou placeholder avec icône - OPTIMISÉ */}
+                {/* Image ou placeholder avec icône */}
                 <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
                   {showImage ? (
                     <Image
@@ -176,12 +228,12 @@ const ProjetsPage = memo(function ProjetsPage() {
                   {/* Badge "En cours" pour les projets sans image */}
                   {isInProgress && (
                     <div className="absolute top-4 left-4 bg-amber-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white border border-amber-400/30 shadow-lg">
-                      En cours
+                      {t('badge.inProgress', 'projets-page') || 'En cours'}
                     </div>
                   )}
                 </div>
 
-                {/* Contenu - OPTIMISÉ */}
+                {/* Contenu */}
                 <div className="p-6 flex flex-col flex-1">
                   <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors mb-3">
                     {translatedProjet.title}
@@ -191,7 +243,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                     {translatedProjet.description}
                   </p>
 
-                  {/* Tags - OPTIMISÉS */}
+                  {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-5">
                     {translatedProjet.tags.slice(0, 3).map((tag: string) => (
                       <span
@@ -208,7 +260,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                     )}
                   </div>
 
-                  {/* Bouton En savoir plus - OPTIMISÉ */}
+                  {/* Bouton En savoir plus */}
                   <div className="flex justify-center w-full mt-auto pt-4">
                     <span
                       className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group-hover:text-blue-300 transition-colors cursor-pointer"

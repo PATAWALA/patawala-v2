@@ -15,13 +15,28 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
   const [isSending, setIsSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   
-  const { getComponentTranslation, tWithParams } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   
-  // Fonction de traduction sécurisée pour le widget
-  const t = useCallback((key: string): string => {
-    return getComponentTranslation('WhatsAppWidget', key);
-  }, [getComponentTranslation]);
+  // Traductions simplifiées
+  const translations = {
+    buttonAriaLabel: t('button.ariaLabel', 'widget') || 'Ouvrir le chat WhatsApp',
+    buttonTitle: t('button.title', 'widget') || 'WhatsApp',
+    headerTitle: t('header.title', 'widget') || 'WhatsApp',
+    headerSubtitle: t('header.subtitle', 'widget') || 'Généralement de réponse rapide',
+    headerCloseAriaLabel: t('header.closeAriaLabel', 'widget') || 'Fermer',
+    bodyWelcomeMessage: t('body.welcomeMessage', 'widget') || '👋 Bonjour ! Comment puis-je vous aider ?',
+    bodyMessageLabel: t('body.messageLabel', 'widget') || 'Votre message',
+    bodyMessagePlaceholder: t('body.messagePlaceholder', 'widget') || 'Écrivez votre message ici...',
+    bodyMessageAriaLabel: t('body.messageAriaLabel', 'widget') || 'Message',
+    bodyCharacterCount: t('body.characterCount', 'widget') || '{count} caractères',
+    successMessage: t('success.message', 'widget') || 'Message prêt ! Redirection vers WhatsApp...',
+    buttonStatesSending: t('buttonStates.sending', 'widget') || 'Envoi...',
+    buttonStatesSuccess: t('buttonStates.success', 'widget') || 'Message envoyé !',
+    buttonStatesSend: t('buttonStates.send', 'widget') || 'Envoyer',
+    footerNote: t('footer.note', 'widget') || 'Gratuit - Réponse rapide garantie',
+  };
   
   // Refs
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -29,7 +44,14 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
   const widgetRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // Détection mobile - OPTIMISÉE
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
+
+  // Détection mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 640);
@@ -79,7 +101,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen, isMobile]);
 
-  // Handlers - MÉMOÏSÉS
+  // Handlers
   const handleClose = useCallback(() => {
     setIsOpen(false);
     setMessage('');
@@ -97,7 +119,6 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     
     setIsSending(true);
     
-    // Utilisation de requestAnimationFrame pour optimiser
     requestAnimationFrame(() => {
       const encodedMessage = encodeURIComponent(trimmedMessage);
       const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`;
@@ -141,22 +162,27 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
     setMessage(e.target.value.slice(0, MAX_MESSAGE_LENGTH));
   }, []);
 
+  // Si les traductions ne sont pas encore chargées, ne rien afficher
+  if (!isReady) {
+    return null;
+  }
+
   return (
     <>
-      {/* Bouton flottant - AVEC CSS AU LIEU DE FRAMER MOTION */}
+      {/* Bouton flottant */}
       {!isOpen && (
         <button
           ref={buttonRef}
           onClick={handleOpen}
           className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-gradient-to-r from-green-500 to-green-600 text-white p-3 sm:p-4 rounded-full shadow-2xl z-40 hover:from-green-600 hover:to-green-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] animate-scaleIn"
-          aria-label={t('button.ariaLabel')}
-          title={t('button.title')}
+          aria-label={translations.buttonAriaLabel}
+          title={translations.buttonTitle}
         >
           <MessageCircle size={20} className="sm:w-6 sm:h-6" />
         </button>
       )}
 
-      {/* Widget WhatsApp - AVEC CSS AU LIEU DE FRAMER MOTION */}
+      {/* Widget WhatsApp */}
       {isOpen && (
         <div
           ref={widgetRef}
@@ -168,7 +194,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
             }
           `}
           role="dialog"
-          aria-label={t('header.title')}
+          aria-label={translations.headerTitle}
           aria-modal="true"
         >
           {/* Header */}
@@ -181,17 +207,17 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                 <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-400 rounded-full border-2 border-white"></div>
               </div>
               <div className="min-w-0">
-                <h3 className="font-bold text-sm sm:text-base truncate">{t('header.title')}</h3>
+                <h3 className="font-bold text-sm sm:text-base truncate">{translations.headerTitle}</h3>
                 <p className="text-[10px] sm:text-xs opacity-90 flex items-center gap-1">
                   <Sparkles size={10} className="sm:w-3 sm:h-3" />
-                  <span className="truncate">{t('header.subtitle')}</span>
+                  <span className="truncate">{translations.headerSubtitle}</span>
                 </p>
               </div>
             </div>
             <button 
               onClick={handleCloseWithScroll}
               className="p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-colors flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-white/50"
-              aria-label={t('header.closeAriaLabel')}
+              aria-label={translations.headerCloseAriaLabel}
             >
               <X size={18} className="sm:w-5 sm:h-5" />
             </button>
@@ -211,14 +237,14 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
               {/* Message de bienvenue */}
               <div className="p-3 bg-[#141B2B] rounded-xl border border-[#1F2937]">
                 <p className="text-sm text-gray-300">
-                  {t('body.welcomeMessage')}
+                  {translations.bodyWelcomeMessage}
                 </p>
               </div>
 
               {/* Champ de message */}
               <div>
                 <label htmlFor="whatsapp-message" className="block text-sm font-medium text-gray-400 mb-2">
-                  {t('body.messageLabel')}
+                  {translations.bodyMessageLabel}
                 </label>
                 <textarea
                   ref={inputRef}
@@ -226,11 +252,11 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                   value={message}
                   onChange={handleMessageChange}
                   onKeyDown={handleKeyDown}
-                  placeholder={t('body.messagePlaceholder')}
+                  placeholder={translations.bodyMessagePlaceholder}
                   rows={isMobile ? 5 : 4}
                   maxLength={MAX_MESSAGE_LENGTH}
                   className="w-full bg-[#141B2B] border border-[#1F2937] rounded-xl px-4 py-3 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500 transition-all text-white placeholder-gray-500 resize-none"
-                  aria-label={t('body.messageAriaLabel')}
+                  aria-label={translations.bodyMessageAriaLabel}
                   disabled={showSuccess}
                   autoComplete="off"
                   autoCorrect="off"
@@ -239,7 +265,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                 />
                 <div className="flex justify-end mt-1">
                   <span className="text-xs text-gray-500">
-                    {tWithParams('body.characterCount', { count: message.length })}
+                    {translations.bodyCharacterCount.replace('{count}', String(message.length))}
                   </span>
                 </div>
               </div>
@@ -251,7 +277,7 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                     <span className="text-green-400 text-xs">✓</span>
                   </div>
                   <p className="text-xs text-green-400">
-                    {t('success.message')}
+                    {translations.successMessage}
                   </p>
                 </div>
               )}
@@ -265,24 +291,24 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
                 {isSending ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>{t('buttonStates.sending')}</span>
+                    <span>{translations.buttonStatesSending}</span>
                   </>
                 ) : showSuccess ? (
                   <>
                     <span>✓</span>
-                    <span>{t('buttonStates.success')}</span>
+                    <span>{translations.buttonStatesSuccess}</span>
                   </>
                 ) : (
                   <>
                     <Send size={16} />
-                    <span>{t('buttonStates.send')}</span>
+                    <span>{translations.buttonStatesSend}</span>
                   </>
                 )}
               </button>
 
               {/* Note d'information */}
               <p className="text-[10px] text-gray-500 text-center">
-                {t('footer.note')}
+                {translations.footerNote}
               </p>
             </form>
           </div>

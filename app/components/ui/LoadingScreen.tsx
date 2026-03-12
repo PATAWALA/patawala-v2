@@ -36,10 +36,10 @@ export default function LoadingScreen() {
       aria-label="Chargement"
     >
       <div className="relative animate-slideUp">
-        <span className="text-5xl sm:text-6xl font-black text-[#FF9800] tracking-[-0.05em]">
+        <span className="text-3xl sm:text-4xl font-black text-[#FF9800] tracking-[-0.05em]">
           Patawala
         </span>
-        <div className="h-2 bg-[#FF9800] rounded-full mt-2 animate-growWidth" />
+        <div className="h-1 bg-[#FF9800] rounded-full mt-2 animate-growWidth" />
       </div>
       <span className="sr-only">Chargement Patawala...</span>
 
@@ -83,7 +83,7 @@ export default function LoadingScreen() {
 
         .animate-growWidth {
           animation: growWidth 0.5s ease-out 0.1s forwards;
-          width: 0; /* initial width */
+          width: 0;
         }
       `}</style>
     </div>

@@ -25,7 +25,9 @@ const componentToSection: Record<string, string> = {
   'BlogPage': 'blog',
   'ServicesData': 'services-data',
   'ProjetsData': 'projets-data',
-  'WhatsAppWidget': 'widget'
+  'WhatsAppWidget': 'widget',
+  'NotFound': 'not-found',
+  'MerciPage': 'merci'  // AJOUT POUR LA PAGE MERCI
 };
 
 export function useTranslation() {

@@ -1,0 +1,20 @@
+{
+  "title": "Oops! Page not found",
+  "message": "The page you're looking for doesn't exist or has been moved.",
+  "suggestions": {
+    "title": "What to do now?",
+    "home": {
+      "title": "Home page",
+      "description": "Back to homepage"
+    },
+    "projects": {
+      "title": "My projects",
+      "description": "Discover my work"
+    },
+    "contact": {
+      "title": "Contact me",
+      "description": "Discuss your project"
+    }
+  },
+  "backButton": "Go back to previous page"
+}

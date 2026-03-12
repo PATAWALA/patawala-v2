@@ -3,7 +3,7 @@
 import { 
   Calendar, Clock, ArrowRight, 
   Sparkles, BookOpen, Search,
-  ChevronLeft, ChevronRight, Filter, X
+  ChevronLeft, ChevronRight, Filter, X, Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useMemo, useCallback } from 'react';
@@ -28,6 +28,7 @@ export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false); // État pour le bouton d'abonnement
   const articlesPerPage = 6;
 
   // Attendre que les traductions soient chargées
@@ -167,6 +168,16 @@ export default function BlogPage() {
 
   const handlePageSelect = useCallback((page: number) => {
     setCurrentPage(page);
+  }, []);
+
+  // Handler pour le bouton d'abonnement
+  const handleSubscribe = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsSubscribing(true);
+    // Le formulaire Brevo va gérer la soumission normalement
+    // On laisse le temps au loader de s'afficher
+    setTimeout(() => {
+      setIsSubscribing(false);
+    }, 2000);
   }, []);
 
   // SKELETON LOADER
@@ -663,7 +674,7 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Formulaire Brevo */}
+          {/* Formulaire Brevo avec loader sur le bouton */}
           <div className="relative max-w-2xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
             <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-20"></div>
             <div className="relative p-4 sm:p-5 md:p-6 bg-[#141B2B]/90 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-[#1F2937] shadow-lg overflow-hidden">
@@ -732,15 +743,26 @@ export default function BlogPage() {
                       <div style={{ padding: '4px 0' }}>
                         <div className="sib-form-block" style={{ textAlign: 'center' }}>
                           <button 
-                            className="sib-form-block__button sib-form-block__button-with-loader" 
+                            className="sib-form-block__button sib-form-block__button-with-loader flex items-center justify-center gap-2" 
                             style={{ fontSize: '14px', fontWeight: '600', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: '#3B82F6', borderRadius: '8px', borderWidth: '0px', padding: '12px 24px', width: '100%', cursor: 'pointer', marginTop: '8px' }} 
                             form="sib-form" 
                             type="submit"
+                            onClick={handleSubscribe}
+                            disabled={isSubscribing}
                           >
-                            <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ display: 'none', width: '16px', height: '16px', marginRight: '6px', verticalAlign: 'middle' }}>
-                              <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
-                            </svg>
-                            {language === 'fr' ? 'S\'abonner' : 'Subscribe'}
+                            {isSubscribing ? (
+                              <>
+                                <Loader2 size={16} className="animate-spin" />
+                                <span>{language === 'fr' ? 'Inscription...' : 'Subscribing...'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ width: '16px', height: '16px', marginRight: '6px', display: 'none' }}>
+                                  <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
+                                </svg>
+                                {language === 'fr' ? 'S\'abonner' : 'Subscribe'}
+                              </>
+                            )}
                           </button>
                         </div>
                       </div>

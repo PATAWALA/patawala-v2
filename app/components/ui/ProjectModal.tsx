@@ -28,12 +28,20 @@ interface TranslatedProject {
 }
 
 export default function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   const [translatedProject, setTranslatedProject] = useState<TranslatedProject | null>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   // Charger les données traduites du projet
   useEffect(() => {
-    if (project) {
+    if (project && isReady) {
       try {
         const projectsData = t('projects', 'projets-data');
         if (Array.isArray(projectsData)) {
@@ -55,6 +63,20 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
               features: project.fonctionnalites || []
             });
           }
+        } else {
+          setTranslatedProject({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            category: project.category,
+            tags: project.tags,
+            client: project.client || '',
+            duration: project.duree || '',
+            objective: project.objectif || '',
+            challenge: project.challenge || '',
+            solution: project.solution || '',
+            features: project.fonctionnalites || []
+          });
         }
       } catch (error) {
         console.error('Erreur chargement projet traduit:', error);
@@ -73,7 +95,18 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
         });
       }
     }
-  }, [project, t, language]);
+  }, [project, t, language, isReady]);
+
+  // TRADUCTIONS SIMPLES
+  const translations = {
+    category: t('category', 'project-modal') || 'Catégorie',
+    close: t('close', 'project-modal') || 'Fermer',
+    sectionsObjective: t('sections.objective', 'project-modal') || 'Objectif',
+    sectionsChallenge: t('sections.challenge', 'project-modal') || 'Défi',
+    sectionsSolution: t('sections.solution', 'project-modal') || 'Solution',
+    sectionsFeatures: t('sections.features', 'project-modal') || 'Fonctionnalités clés',
+    buttonsDiscuss: t('buttons.discuss', 'project-modal') || 'Discuter de ce projet',
+  };
 
   // Bloquer le défilement du body quand le modal est ouvert
   useEffect(() => {
@@ -87,7 +120,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     };
   }, [isOpen]);
 
-  if (!project || !translatedProject) return null;
+  if (!project || !translatedProject || !isReady) return null;
 
   // Fonction pour vérifier si l'image est valide
   const hasValidImage = (image: any): boolean => {
@@ -146,14 +179,14 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
           {/* Badge catégorie */}
           <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-white border border-white/20">
-            {t('category', 'project-modal')} : {translatedProject.category}
+            {translations.category} : {translatedProject.category}
           </div>
 
           {/* Bouton fermer */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors border border-white/20 z-10"
-            aria-label={t('close', 'project-modal')}
+            aria-label={translations.close}
           >
             <X size={20} />
           </button>
@@ -194,7 +227,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {t('sections.objective', 'project-modal')}
+                      {translations.sectionsObjective}
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
                       {translatedProject.objective}
@@ -213,7 +246,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {t('sections.challenge', 'project-modal')}
+                      {translations.sectionsChallenge}
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
                       {translatedProject.challenge}
@@ -232,7 +265,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {t('sections.solution', 'project-modal')}
+                      {translations.sectionsSolution}
                     </h3>
                     <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
                       {translatedProject.solution}
@@ -247,7 +280,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
               <div className="bg-[#141B2B] rounded-xl p-5 border border-[#1F2937] animate-slideIn" style={{ animationDelay: '0.4s' }}>
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2">
                   <Sparkles size={18} className="text-blue-400" />
-                  {t('sections.features', 'project-modal')}
+                  {translations.sectionsFeatures}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {translatedProject.features.map((feature, index) => (
@@ -265,10 +298,10 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           <div className="flex justify-center mt-8 pt-6 border-t border-[#1F2937]">
             <button
               onClick={handleContactRedirect}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 sm:px-6 sm:py-3 rounded-xl font-semibold flex items-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98]"
-              aria-label={t('buttons.discuss', 'project-modal')}
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 sm:px-6 sm:py-3 rounded-xl font-semibold flex items-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] group"
+              aria-label={translations.buttonsDiscuss}
             >
-              <span>{t('buttons.discuss', 'project-modal')}</span>
+              <span>{translations.buttonsDiscuss}</span>
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </button>
           </div>
