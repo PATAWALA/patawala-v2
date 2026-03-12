@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "analyze": "cross-env ANALYZE=true next build",
     "build": "npm run generate-rss && next build",
     "generate-rss": "node scripts/generate-rss.js",
     "clean-isloading": "node scripts/remove-isloading.cjs",

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect, useCallback, ReactNode } from 'react';
 
 type Language = 'fr' | 'en';
 
@@ -8,133 +8,136 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string, section?: string) => string | undefined;
+  isLoading: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Imports statiques (nécessaires pour le chargement synchrone)
-import frCommon from '@/app/assets/locales/fr/common.json';
-import frNavigation from '@/app/assets/locales/fr/navigation.json';
-import frHero from '@/app/assets/locales/fr/hero.json';
-import frAbout from '@/app/assets/locales/fr/about.json';
-import frTestimonials from '@/app/assets/locales/fr/testimonials.json';
-import frValue from '@/app/assets/locales/fr/value.json';
-import frTech from '@/app/assets/locales/fr/tech.json';
-import frContact from '@/app/assets/locales/fr/contact.json';
-import frBlog from '@/app/assets/locales/fr/blog.json';
-import frArticles from '@/app/assets/locales/fr/articles.json';
-import frArticlesData from '@/app/assets/locales/fr/articles-details.json';
-import frServices from '@/app/assets/locales/fr/services.json';
-import frServicesData from '@/app/assets/locales/fr/services-data.json';
-import frProjetsPage from '@/app/assets/locales/fr/projets-page.json';
-import frProjetsData from '@/app/assets/locales/fr/projets-data.json';
-import frProjectModal from '@/app/assets/locales/fr/project-modal.json';
-import frBooking from '@/app/assets/locales/fr/booking.json';
-import frRealisations from '@/app/assets/locales/fr/realisations.json';
-import frFooter from '@/app/assets/locales/fr/footer.json';
-import frWidget from '@/app/assets/locales/fr/widget.json';
-
-import enCommon from '@/app/assets/locales/en/common.json';
-import enNavigation from '@/app/assets/locales/en/navigation.json';
-import enHero from '@/app/assets/locales/en/hero.json';
-import enAbout from '@/app/assets/locales/en/about.json';
-import enTestimonials from '@/app/assets/locales/en/testimonials.json';
-import enValue from '@/app/assets/locales/en/value.json';
-import enTech from '@/app/assets/locales/en/tech.json';
-import enContact from '@/app/assets/locales/en/contact.json';
-import enBlog from '@/app/assets/locales/en/blog.json';
-import enArticles from '@/app/assets/locales/en/articles.json';
-import enArticlesData from '@/app/assets/locales/en/articles-details.json';
-import enServices from '@/app/assets/locales/en/services.json';
-import enServicesData from '@/app/assets/locales/en/services-data.json';
-import enProjetsPage from '@/app/assets/locales/en/projets-page.json';
-import enProjetsData from '@/app/assets/locales/en/projets-data.json';
-import enProjectModal from '@/app/assets/locales/en/project-modal.json';
-import enBooking from '@/app/assets/locales/en/booking.json';
-import enRealisations from '@/app/assets/locales/en/realisations.json';
-import enFooter from '@/app/assets/locales/en/footer.json';
-import enWidget from '@/app/assets/locales/en/widget.json';
-
-type TranslationsType = {
-  common: any;
-  navigation: any;
-  hero: any;
-  about: any;
-  testimonials: any;
-  value: any;
-  tech: any;
-  contact: any;
-  blog: any;
-  articles: any;
-  articlesData: any;
-  services: any;
-  'services-data': any;
-  'projets-page': any;
-  'projets-data': any;
-  'project-modal': any;
-  booking: any;
-  realisations: any;
-  footer: any;
-  widget: any;
-};
-
-const translations: Record<Language, TranslationsType> = {
-  fr: {
-    common: frCommon,
-    navigation: frNavigation,
-    hero: frHero,
-    about: frAbout,
-    testimonials: frTestimonials,
-    value: frValue,
-    tech: frTech,
-    contact: frContact,
-    blog: frBlog,
-    articles: frArticles,
-    articlesData: frArticlesData,
-    services: frServices,
-    'services-data': frServicesData,
-    'projets-page': frProjetsPage,
-    'projets-data': frProjetsData,
-    'project-modal': frProjectModal,
-    booking: frBooking,
-    realisations: frRealisations,
-    footer: frFooter,
-    widget: frWidget,
-  },
-  en: {
-    common: enCommon,
-    navigation: enNavigation,
-    hero: enHero,
-    about: enAbout,
-    testimonials: enTestimonials,
-    value: enValue,
-    tech: enTech,
-    contact: enContact,
-    blog: enBlog,
-    articles: enArticles,
-    articlesData: enArticlesData,
-    services: enServices,
-    'services-data': enServicesData,
-    'projets-page': enProjetsPage,
-    'projets-data': enProjetsData,
-    'project-modal': enProjectModal,
-    booking: enBooking,
-    realisations: enRealisations,
-    footer: enFooter,
-    widget: enWidget,
-  },
-};
-
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('fr');
-  const [currentTranslations, setCurrentTranslations] = useState<TranslationsType>(translations.fr);
+  const [translations, setTranslations] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Chargement dynamique - PERFORMANT
+  const loadTranslations = useCallback(async (lang: Language) => {
+    setIsLoading(true);
+    
+    try {
+      // NE CHARGE QUE LES FICHIERS NÉCESSAIRES
+      if (lang === 'fr') {
+        const [common, navigation, hero, about, testimonials, value, tech, contact, 
+               blog, articles, articlesData, services, servicesData, projetsPage, 
+               projetsData, projectModal, booking, realisations, footer, widget] = await Promise.all([
+          import('@/app/assets/locales/fr/common.json'),
+          import('@/app/assets/locales/fr/navigation.json'),
+          import('@/app/assets/locales/fr/hero.json'),
+          import('@/app/assets/locales/fr/about.json'),
+          import('@/app/assets/locales/fr/testimonials.json'),
+          import('@/app/assets/locales/fr/value.json'),
+          import('@/app/assets/locales/fr/tech.json'),
+          import('@/app/assets/locales/fr/contact.json'),
+          import('@/app/assets/locales/fr/blog.json'),
+          import('@/app/assets/locales/fr/articles.json'),
+          import('@/app/assets/locales/fr/articles-details.json'),
+          import('@/app/assets/locales/fr/services.json'),
+          import('@/app/assets/locales/fr/services-data.json'),
+          import('@/app/assets/locales/fr/projets-page.json'),
+          import('@/app/assets/locales/fr/projets-data.json'),
+          import('@/app/assets/locales/fr/project-modal.json'),
+          import('@/app/assets/locales/fr/booking.json'),
+          import('@/app/assets/locales/fr/realisations.json'),
+          import('@/app/assets/locales/fr/footer.json'),
+          import('@/app/assets/locales/fr/widget.json')
+        ]);
+
+        setTranslations({
+          common: common.default,
+          navigation: navigation.default,
+          hero: hero.default,
+          about: about.default,
+          testimonials: testimonials.default,
+          value: value.default,
+          tech: tech.default,
+          contact: contact.default,
+          blog: blog.default,
+          articles: articles.default,
+          articlesData: articlesData.default,
+          services: services.default,
+          'services-data': servicesData.default,
+          'projets-page': projetsPage.default,
+          'projets-data': projetsData.default,
+          'project-modal': projectModal.default,
+          booking: booking.default,
+          realisations: realisations.default,
+          footer: footer.default,
+          widget: widget.default
+        });
+      } else {
+        // Version anglaise (similaire)
+        const [common, navigation, hero, about, testimonials, value, tech, contact,
+               blog, articles, articlesData, services, servicesData, projetsPage,
+               projetsData, projectModal, booking, realisations, footer, widget] = await Promise.all([
+          import('@/app/assets/locales/en/common.json'),
+          import('@/app/assets/locales/en/navigation.json'),
+          import('@/app/assets/locales/en/hero.json'),
+          import('@/app/assets/locales/en/about.json'),
+          import('@/app/assets/locales/en/testimonials.json'),
+          import('@/app/assets/locales/en/value.json'),
+          import('@/app/assets/locales/en/tech.json'),
+          import('@/app/assets/locales/en/contact.json'),
+          import('@/app/assets/locales/en/blog.json'),
+          import('@/app/assets/locales/en/articles.json'),
+          import('@/app/assets/locales/en/articles-details.json'),
+          import('@/app/assets/locales/en/services.json'),
+          import('@/app/assets/locales/en/services-data.json'),
+          import('@/app/assets/locales/en/projets-page.json'),
+          import('@/app/assets/locales/en/projets-data.json'),
+          import('@/app/assets/locales/en/project-modal.json'),
+          import('@/app/assets/locales/en/booking.json'),
+          import('@/app/assets/locales/en/realisations.json'),
+          import('@/app/assets/locales/en/footer.json'),
+          import('@/app/assets/locales/en/widget.json')
+        ]);
+
+        setTranslations({
+          common: common.default,
+          navigation: navigation.default,
+          hero: hero.default,
+          about: about.default,
+          testimonials: testimonials.default,
+          value: value.default,
+          tech: tech.default,
+          contact: contact.default,
+          blog: blog.default,
+          articles: articles.default,
+          articlesData: articlesData.default,
+          services: services.default,
+          'services-data': servicesData.default,
+          'projets-page': projetsPage.default,
+          'projets-data': projetsData.default,
+          'project-modal': projectModal.default,
+          booking: booking.default,
+          realisations: realisations.default,
+          footer: footer.default,
+          widget: widget.default
+        });
+      }
+    } catch (error) {
+      console.error('Erreur chargement traductions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    setCurrentTranslations(translations[language]);
-  }, [language]);
+    loadTranslations(language);
+  }, [language, loadTranslations]);
 
+  // Fonction t - EXACTEMENT la même interface qu'avant
   const t = (key: string, section: string = 'common'): string | undefined => {
-    const sectionData = currentTranslations[section as keyof TranslationsType];
+    if (!translations) return undefined;
+
+    const sectionData = translations[section];
     if (!sectionData) return undefined;
 
     if (!key) return sectionData;
@@ -154,7 +157,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, isLoading }}>
       {children}
     </LanguageContext.Provider>
   );

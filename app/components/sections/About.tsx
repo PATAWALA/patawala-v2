@@ -5,7 +5,7 @@ import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, S
 import Image from 'next/image';
 import profileImage from '../../assets/images/about1.png';
 import dynamic from 'next/dynamic';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 // Interface pour typer les données
 interface VisionCard {
@@ -43,26 +43,60 @@ const DEFAULT_VISION_CARDS: VisionCard[] = [
 ];
 
 const AboutSection = memo(function AboutSection() {
-  const { t } = useLanguage();
+  const { t, isLoading } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [visionCards, setVisionCards] = useState<VisionCard[]>(DEFAULT_VISION_CARDS);
+  const [isReady, setIsReady] = useState(false);
+
+  // Icônes pour les cartes
+  const cardIcons = [Lightbulb, Handshake, Sparkles, MessagesSquare];
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Récupérer les cartes de vision
+  // Attendre que les traductions soient chargées
   useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
+
+  // Récupérer les cartes de vision - CORRIGÉ
+  useEffect(() => {
+    if (!isReady) return;
+    
     try {
+      // Typer explicitement le retour de t()
       const visionData = t('vision', 'about') as unknown as VisionData;
-      if (visionData && typeof visionData === 'object' && 'cards' in visionData && Array.isArray(visionData.cards) && visionData.cards.length > 0) {
-        setVisionCards(visionData.cards);
+      
+      // Vérification plus robuste
+      if (visionData && 
+          typeof visionData === 'object' && 
+          visionData !== null && 
+          'cards' in visionData && 
+          Array.isArray(visionData.cards) && 
+          visionData.cards.length > 0) {
+        
+        // Vérifier que chaque carte a la bonne structure
+        const validCards = visionData.cards.filter(card => 
+          card && 
+          typeof card === 'object' &&
+          'title' in card && 
+          'description' in card &&
+          typeof card.title === 'string' &&
+          typeof card.description === 'string'
+        );
+        
+        if (validCards.length > 0) {
+          setVisionCards(validCards);
+        }
       }
     } catch (error) {
       console.error('Erreur lors du chargement des cartes:', error);
     }
-  }, [t]);
+  }, [t, isReady]);
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -83,8 +117,68 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(false);
   }, []);
 
-  // Icônes pour les cartes
-  const cardIcons = [Lightbulb, Handshake, Sparkles, MessagesSquare];
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <section className="min-h-screen relative overflow-hidden flex items-center py-12 sm:py-16 md:py-20 bg-[#0A0F1C] font-sans">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" />
+        </div>
+        
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            {/* Badge skeleton */}
+            <div className="w-full flex justify-center mb-8">
+              <div className="w-48 h-10 bg-gray-800/50 rounded-full animate-pulse" />
+            </div>
+
+            {/* Titre skeleton */}
+            <div className="text-center mb-12">
+              <div className="w-64 h-12 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+              <div className="w-96 max-w-full h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+              <div className="w-full max-w-3xl h-20 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+            </div>
+
+            {/* Cartes skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-[#141B2B]/50 rounded-2xl p-6 border border-gray-800/50">
+                  <div className="flex justify-between mb-5">
+                    <div className="w-12 h-12 bg-gray-800/50 rounded-lg animate-pulse" />
+                    <div className="w-8 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+                  </div>
+                  <div className="w-3/4 h-6 bg-gray-800/50 rounded-lg mb-4 animate-pulse" />
+                  <div className="w-full h-16 bg-gray-800/50 rounded-lg animate-pulse" />
+                </div>
+              ))}
+            </div>
+
+            {/* Badge whoami skeleton */}
+            <div className="flex justify-center mb-8">
+              <div className="w-40 h-12 bg-gray-800/50 rounded-full animate-pulse" />
+            </div>
+
+            {/* Image et bio skeleton */}
+            <div className="flex flex-col lg:flex-row gap-10 items-center">
+              <div className="flex-1 flex justify-center">
+                <div className="w-full max-w-[400px] aspect-square bg-gray-800/50 rounded-2xl animate-pulse" />
+              </div>
+              <div className="flex-1 space-y-4">
+                <div className="w-48 h-10 bg-gray-800/50 rounded-lg mx-auto lg:mx-0 animate-pulse" />
+                <div className="w-64 h-8 bg-gray-800/50 rounded-lg mx-auto lg:mx-0 animate-pulse" />
+                <div className="w-full h-24 bg-gray-800/50 rounded-lg animate-pulse" />
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full sm:w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+                  <div className="w-full sm:w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -126,7 +220,7 @@ const AboutSection = memo(function AboutSection() {
               </div>
             </div>
 
-            {/* Titre et sous-titre - PLUS GRAND SUR MOBILE */}
+            {/* Titre et sous-titre */}
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
                 <span>
@@ -144,7 +238,7 @@ const AboutSection = memo(function AboutSection() {
               <div className="w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-8 md:mt-8 rounded-full" />
             </div>
 
-            {/* CARTES MA VISION - PLUS AÉRÉES SUR MOBILE */}
+            {/* CARTES MA VISION */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 mb-16 md:mb-20">
               {visionCards.map((card: VisionCard, index: number) => {
                 const Icon = cardIcons[index] || MessagesSquare;
@@ -187,9 +281,9 @@ const AboutSection = memo(function AboutSection() {
               </div>
             </div>
 
-            {/* Section image et bio - COLONNE SUR MOBILE */}
+            {/* Section image et bio */}
             <div className="flex flex-col lg:flex-row gap-10 md:gap-12 lg:gap-16 items-center">
-              {/* Image à gauche - AGRANDIE SANS CERCLE SUR MOBILE */}
+              {/* Image à gauche */}
               <div className="flex-1 flex justify-center lg:justify-end w-full">
                 <div className="relative w-full max-w-[400px] md:max-w-sm lg:max-w-md aspect-square">
                   
@@ -214,24 +308,24 @@ const AboutSection = memo(function AboutSection() {
                     </div>
                   </div>
 
-                  {/* Photo - SANS CERCLE, COINS ARRONDIS SIMPLES */}
+                  {/* Photo */}
                   <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
                     <Image
                       src={profileImage}
-                      alt="Abdoulaye Patawala - Développeur Full Stack"
+                      alt={t('profile.name', 'about') || "Abdoulaye Patawala - Développeur Full Stack"}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 400px, 384px"
                       priority
-                      fetchPriority="high"
-                      quality={90}
+                      quality={95}
                       placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                     />
                   </div>
                 </div>
               </div>
 
-              {/* BIO à droite - TEXTE PLUS GRAND SUR MOBILE */}
+              {/* BIO à droite */}
               <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-4 lg:px-0">
                 <h3 className="text-3xl md:text-4xl font-black mb-4 text-white tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
@@ -250,7 +344,7 @@ const AboutSection = memo(function AboutSection() {
                   </p>
                 </div>
 
-                {/* BOUTONS - PLUS GRANDS, PLUS ESPACÉS SUR MOBILE */}
+                {/* BOUTONS */}
                 <div className="flex flex-col sm:flex-row gap-4 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
@@ -279,7 +373,9 @@ const AboutSection = memo(function AboutSection() {
         </div>
       </section>
 
-      <BookingModal isOpen={isBookingOpen} onClose={handleCloseBooking} />
+      {isMounted && (
+        <BookingModal isOpen={isBookingOpen} onClose={handleCloseBooking} />
+      )}
     </>
   );
 });

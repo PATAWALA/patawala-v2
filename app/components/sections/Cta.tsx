@@ -7,7 +7,7 @@ import {
   Instagram, Linkedin, Twitter, Github, Facebook
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 // Import dynamique de BookingModal (chargé uniquement à l'ouverture)
 const BookingModal = dynamic(() => import('../ui/BookingModal'), { ssr: false });
@@ -21,40 +21,82 @@ interface ContactInfo {
   location: string;
 }
 
+// Données par défaut pour les contacts
+const DEFAULT_CONTACT_INFO_FR: ContactInfo = {
+  whatsapp: ['22962278090', '+229 62 27 80 90'],
+  calls: ['22962278090', '+229 62 27 80 90'],
+  emergency: ['22946495875', '+229 46 49 58 75'],
+  email: 'patawalaabdoulaye2003@gmail.com',
+  location: 'Cotonou, Bénin'
+};
+
+const DEFAULT_CONTACT_INFO_EN: ContactInfo = {
+  whatsapp: ['22962278090', '+229 62 27 80 90'],
+  calls: ['22962278090', '+229 62 27 80 90'],
+  emergency: ['22946495875', '+229 46 49 58 75'],
+  email: 'patawalaabdoulaye2003@gmail.com',
+  location: 'Cotonou, Benin'
+};
+
+// Social links - STATIQUES
+const SOCIAL_LINKS = [
+  { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '@patawala' },
+  { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: '@patawala' },
+  { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/abdoulaye-patawala-84b138381/', color: 'hover:bg-blue-600/20', username: 'Abdoulaye P.' },
+  { name: 'Twitter', icon: Twitter, url: 'https://x.com/AbdoulayeP79682', color: 'hover:bg-blue-400/20', username: '@AbdoulayeP' },
+  { name: 'GitHub', icon: Github, url: 'https://github.com/PATAWALA', color: 'hover:bg-gray-500/20', username: 'PATAWALA' },
+  { name: 'Facebook', icon: Facebook, url: 'https://web.facebook.com/Patawala', color: 'hover:bg-blue-700/20', username: 'Patawala' },
+];
+
 const CTASection = memo(function CTASection() {
-  const { t } = useLanguage();
+  const { t, language, isLoading } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>(DEFAULT_CONTACT_INFO_FR);
+  const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Points lumineux statiques - RÉDUITS À 2 SEULEMENT
+  // Points lumineux statiques
   const lightPoints = [
     { left: '15%', top: '25%' },
     { left: '75%', top: '60%' }
   ];
 
-  // Récupération des informations de contact - MÉMOÏSÉES
-  const contactInfo: ContactInfo = {
-    whatsapp: [
-      '22962278090',
-      t('contactInfo.whatsapp', 'contact') || '+229 62 27 80 90'
-    ],
-    calls: [
-      '22962278090',
-      t('contactInfo.calls', 'contact') || '+229 62 27 80 90'
-    ],
-    emergency: [
-      '22946495875',
-      t('contactInfo.emergency', 'contact') || '+229 46 49 58 75'
-    ],
-    email: t('contactInfo.email', 'contact') || 'patawalaabdoulaye2003@gmail.com',
-    location: t('contactInfo.location', 'contact') || 'Cotonou, Benin'
-  };
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
+
+  // Récupération des informations de contact
+  useEffect(() => {
+    if (!isReady) return;
+
+    try {
+      const defaultInfo = language === 'fr' ? DEFAULT_CONTACT_INFO_FR : DEFAULT_CONTACT_INFO_EN;
+      
+      setContactInfo({
+        whatsapp: [
+          '22962278090',
+          t('contactInfo.whatsapp', 'contact') || defaultInfo.whatsapp[1]
+        ],
+        calls: [
+          '22962278090',
+          t('contactInfo.calls', 'contact') || defaultInfo.calls[1]
+        ],
+        emergency: [
+          '22946495875',
+          t('contactInfo.emergency', 'contact') || defaultInfo.emergency[1]
+        ],
+        email: t('contactInfo.email', 'contact') || defaultInfo.email,
+        location: t('contactInfo.location', 'contact') || defaultInfo.location
+      });
+    } catch (error) {
+      console.error('Erreur chargement contact info:', error);
+      setContactInfo(language === 'fr' ? DEFAULT_CONTACT_INFO_FR : DEFAULT_CONTACT_INFO_EN);
+    }
+  }, [t, language, isReady]);
 
   const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
@@ -77,21 +119,72 @@ const CTASection = memo(function CTASection() {
     }, 2000);
   }, []);
 
-  // Social links - STATIQUES
-  const socialLinks = [
-    { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '+229 62 27 80 90' },
-    { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: '@patawala' },
-    { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/abdoulaye-patawala-84b138381/', color: 'hover:bg-blue-600/20', username: 'Abdoulaye P.' },
-    { name: 'Twitter', icon: Twitter, url: 'https://x.com/AbdoulayeP79682', color: 'hover:bg-blue-400/20', username: '@AbdoulayeP' },
-    { name: 'GitHub', icon: Github, url: 'https://github.com/PATAWALA', color: 'hover:bg-gray-500/20', username: 'PATAWALA' },
-    { name: 'Facebook', icon: Facebook, url: 'https://web.facebook.com/Patawala', color: 'hover:bg-blue-700/20', username: 'Patawala' },
-  ];
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center mb-12">
+            {/* Badge skeleton */}
+            <div className="w-full flex justify-center mb-6">
+              <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+            </div>
+
+            {/* Titre skeleton */}
+            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto mb-6 animate-pulse" />
+            <div className="w-96 h-4 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Contact Cards skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+            {[1, 2].map((i) => (
+              <div key={i} className="bg-[#141B2B]/50 rounded-xl border border-gray-800/50 p-6">
+                <div className="w-32 h-6 bg-gray-800/50 rounded mb-4 animate-pulse" />
+                <div className="space-y-3">
+                  {[1, 2, 3].map((j) => (
+                    <div key={j} className="flex flex-col sm:flex-row gap-2 p-3 bg-gray-800/30 rounded-lg">
+                      <div className="flex items-center gap-3 flex-1">
+                        <div className="w-8 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+                        <div className="flex-1">
+                          <div className="w-16 h-3 bg-gray-800/50 rounded mb-2 animate-pulse" />
+                          <div className="w-24 h-4 bg-gray-800/50 rounded animate-pulse" />
+                        </div>
+                      </div>
+                      <div className="flex gap-2 w-full sm:w-auto">
+                        <div className="flex-1 sm:w-16 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
+                        <div className="flex-1 sm:w-16 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA Buttons skeleton */}
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="flex justify-center gap-4 mb-6">
+              <div className="w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+              <div className="w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+            </div>
+            <div className="w-48 h-12 bg-gray-800/50 rounded-xl mx-auto animate-pulse" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
       <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden" aria-labelledby="contact-title">
 
-        {/* Alert de copie - SIMPLE */}
+        {/* Alert de copie */}
         {showCopyAlert && (
           <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
             <CheckCircle size={18} aria-hidden="true" />
@@ -99,9 +192,8 @@ const CTASection = memo(function CTASection() {
           </div>
         )}
 
-        {/* FOND ULTRA-OPTIMISÉ */}
+        {/* FOND */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes répétitives - UNE SEULE COUCHE, OPACITÉ RÉDUITE */}
           <div
             className="absolute inset-0 opacity-10"
             style={{
@@ -110,11 +202,9 @@ const CTASection = memo(function CTASection() {
             aria-hidden="true"
           />
 
-          {/* Cercles flous - 2 SEULEMENT */}
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-          {/* Points lumineux - 2 SEULEMENT */}
           {lightPoints.map((point, i) => (
             <div
               key={i}
@@ -150,7 +240,7 @@ const CTASection = memo(function CTASection() {
             </p>
           </div>
 
-          {/* Contact Cards - OPTIMISÉES */}
+          {/* Contact Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
             {/* Direct Contact Card */}
             <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
@@ -162,8 +252,6 @@ const CTASection = memo(function CTASection() {
               </h3>
 
               <div className="space-y-3">
-                {/* WhatsApp retiré */}
-
                 {/* Appels */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -183,7 +271,7 @@ const CTASection = memo(function CTASection() {
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold text-center tracking-tight"
                       aria-label={`Appeler ${contactInfo.calls[1]}`}
                     >
-                      Appeler
+                      {t('buttons.call', 'contact') || 'Appeler'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.calls[0], contactInfo.calls[1])}
@@ -191,7 +279,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier ${contactInfo.calls[1]}`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact')}
+                        {t('buttons.copy', 'contact') || 'Copier'}
                       </span>
                     </button>
                   </div>
@@ -216,7 +304,7 @@ const CTASection = memo(function CTASection() {
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-bold text-center tracking-tight"
                       aria-label={`Appeler urgence ${contactInfo.emergency[1]}`}
                     >
-                      Appeler
+                      {t('buttons.call', 'contact') || 'Appeler'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.emergency[0], contactInfo.emergency[1])}
@@ -224,7 +312,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier ${contactInfo.emergency[1]}`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact')}
+                        {t('buttons.copy', 'contact') || 'Copier'}
                       </span>
                     </button>
                   </div>
@@ -270,7 +358,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier l'adresse email`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact')}
+                        {t('buttons.copy', 'contact') || 'Copier'}
                       </span>
                     </button>
                   </div>
@@ -292,7 +380,7 @@ const CTASection = memo(function CTASection() {
             </div>
           </div>
 
-          {/* CTA Buttons - AVANT SOCIAL LINKS */}
+          {/* CTA Buttons */}
           <div className="max-w-2xl mx-auto text-center mb-12">
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
@@ -368,7 +456,7 @@ const CTASection = memo(function CTASection() {
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {socialLinks.map((social, index) => (
+              {SOCIAL_LINKS.map((social, index) => (
                 <a
                   key={index}
                   href={social.url}

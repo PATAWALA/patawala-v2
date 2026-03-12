@@ -6,54 +6,107 @@ import Image from 'next/image';
 import profileImage from '../../assets/images/horo1.png';
 import profile2Image from '../../assets/images/profile2.webp';
 import profile4Image from '../../assets/images/profile4.webp';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 const HeroSection = memo(function HeroSection() {
-  const { t, language } = useLanguage();
+  const { t, language, isLoading } = useTranslation();
   const [displayText, setDisplayText] = useState('');
   const [stringIndex, setStringIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  
+  // Réf pour éviter les doubles appels
+  const timeoutRef = useRef<NodeJS.Timeout>();
+  const pauseTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  // Récupération des chaînes
   const typedStrings = t('typed.strings', 'hero') || [];
+  
+  // Version de secours pour le chargement
+  const fallbackStrings = language === 'fr' 
+    ? ['votre succès digital.', 'un e-commerce sans limite.', "l'application de vos idées.", 'votre outil métier sur-mesure.', 'une expérience utilisateur unique.']
+    : ['your digital success.', 'a high-performance e-commerce.', 'the app of your ideas.', 'your custom business tool.', 'a unique user experience.'];
 
-  // TYPING EFFECT - LENT ET SANS RÉPÉTITION
+  const stringsToUse = typedStrings.length > 0 ? typedStrings : fallbackStrings;
+
+  // Attendre que les traductions soient chargées - UNE SEULE FOIS
   useEffect(() => {
-    if (typedStrings.length === 0) return;
-
-    const currentString = typedStrings[stringIndex] || '';
+    if (!isLoading && stringsToUse.length > 0 && !isReady) {
+      setIsReady(true);
+      // Initialiser avec la première phrase complète
+      setDisplayText(stringsToUse[0]);
+      setCharIndex(stringsToUse[0].length);
+      setStringIndex(0);
+      setIsDeleting(false);
+      
+      // Programmer le début de l'effacement après 4 secondes
+      pauseTimeoutRef.current = setTimeout(() => {
+        setIsDeleting(true);
+      }, 4000);
+    }
     
-    const timeout = setTimeout(() => {
+    return () => {
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+  }, [isLoading, stringsToUse, isReady]);
+
+  // TYPING EFFECT - CORRIGÉ
+  useEffect(() => {
+    if (!isReady || stringsToUse.length === 0) return;
+
+    const currentString = stringsToUse[stringIndex];
+    if (!currentString) return;
+
+    // Nettoyer le timeout précédent
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
       if (isDeleting) {
-        // EFFACEMENT
+        // PHASE D'EFFACEMENT - MÊME VITESSE QUE L'ÉCRITURE
         if (charIndex > 0) {
-          setCharIndex(charIndex - 1);
-          setDisplayText(currentString.substring(0, charIndex - 1));
+          // Effacer un caractère (lent)
+          const newCharIndex = charIndex - 1;
+          setCharIndex(newCharIndex);
+          setDisplayText(currentString.substring(0, newCharIndex));
         } else {
+          // Passer à la phrase suivante
+          const nextIndex = (stringIndex + 1) % stringsToUse.length;
+          setStringIndex(nextIndex);
           setIsDeleting(false);
-          setStringIndex((stringIndex + 1) % typedStrings.length);
+          // Commencer la nouvelle phrase
+          setCharIndex(1);
+          setDisplayText(stringsToUse[nextIndex].charAt(0));
         }
       } else {
-        // ÉCRITURE
+        // PHASE D'ÉCRITURE - LENTE
         if (charIndex < currentString.length) {
-          setCharIndex(charIndex + 1);
-          setDisplayText(currentString.substring(0, charIndex + 1));
+          // Ajouter un caractère (lent)
+          const newCharIndex = charIndex + 1;
+          setCharIndex(newCharIndex);
+          setDisplayText(currentString.substring(0, newCharIndex));
         } else {
           // Pause de 4 secondes quand la phrase est finie
-          setTimeout(() => setIsDeleting(true), 4000);
+          if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+          pauseTimeoutRef.current = setTimeout(() => {
+            setIsDeleting(true);
+          }, 4000);
         }
       }
-    }, isDeleting ? 60 : 180);
+    }, 180); // MÊME VITESSE POUR ÉCRITURE ET EFFACEMENT (180ms)
 
-    return () => clearTimeout(timeout);
-  }, [charIndex, isDeleting, stringIndex, typedStrings]);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [charIndex, isDeleting, stringIndex, stringsToUse, isReady]);
 
-  // Initialisation du premier affichage
+  // Nettoyage final
   useEffect(() => {
-    if (typedStrings.length > 0) {
-      setDisplayText('');
-      setCharIndex(0);
-    }
-  }, [typedStrings]);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+  }, []);
 
   const scrollToContact = useCallback(() => {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -68,13 +121,37 @@ const HeroSection = memo(function HeroSection() {
     { src: profile4Image, alt: t('altImages.avatar', 'hero') || 'Client' },
   ];
 
+  // Afficher un skeleton si en chargement
+  if (isLoading && !isReady) {
+    return (
+      <section className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-[#0B1120]">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-700 rounded w-48 mx-auto mb-8"></div>
+            <div className="flex flex-col lg:flex-row gap-10">
+              <div className="flex-1 space-y-6">
+                <div className="h-12 bg-gray-700 rounded w-3/4 mx-auto lg:mx-0"></div>
+                <div className="h-12 bg-gray-700 rounded w-full"></div>
+                <div className="h-24 bg-gray-700 rounded w-full"></div>
+                <div className="h-16 bg-gray-700 rounded w-64"></div>
+              </div>
+              <div className="flex-1">
+                <div className="w-full max-w-[400px] aspect-square bg-gray-700 rounded-2xl mx-auto"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="hero"
       className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12 font-sans"
       aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
     >
-      {/* FOND */}
+      {/* FOND - IDENTIQUE */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div
           className="absolute inset-0 opacity-50"
@@ -117,7 +194,7 @@ const HeroSection = memo(function HeroSection() {
                 <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
                   {t('mobilePhrase', 'hero')}
                 </span>
-                {/* Version desktop - CORRIGÉ : plus de || typedStrings[0] */}
+                {/* Version desktop */}
                 <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline">
                   {displayText}
                   <span className="animate-pulse ml-1">|</span>
@@ -222,7 +299,7 @@ const HeroSection = memo(function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 });
 
 HeroSection.displayName = 'HeroSection';

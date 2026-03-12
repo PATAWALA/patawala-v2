@@ -3,39 +3,32 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
+import { usePathname, useRouter } from 'next/navigation';
 
-// Type simplifié pour éviter les erreurs
-type NavItem = {
-  readonly key: string;
-  readonly href: string;
-  readonly section?: string;
-};
-
-// Configuration memoized pour éviter les re-rendus
-const NAV_ITEMS: readonly NavItem[] = [
-  { key: 'home', href: '/', section: 'hero' },
-  { key: 'services', href: '/services' },
-  { key: 'about', href: '/#about', section: 'about' },
-  { key: 'projects', href: '/#projets', section: 'projets' },
-  { key: 'blog', href: '/blog' },
-  { key: 'contact', href: '/#contact', section: 'contact' }
+// Configuration des items de navigation - STATIQUE
+const NAV_ITEMS = [
+  { key: 'home', href: '/', label: 'Accueil' },
+  { key: 'services', href: '/services', label: 'Services' },
+  { key: 'about', href: '/#about', label: 'À propos' },
+  { key: 'projects', href: '/#projets', label: 'Projets' },
+  { key: 'blog', href: '/blog', label: 'Blog' },
+  { key: 'contact', href: '/#contact', label: 'Contact' }
 ] as const;
 
 export default function Navigation() {
-  const { t } = useLanguage();
+  const { t, language, isLoading } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('hero');
+  const [activeSection, setActiveSection] = useState<string>('');
   const pathname = usePathname();
+  const router = useRouter();
   
   // Refs
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections
+  // Détection des sections pour la page d'accueil
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
@@ -63,7 +56,7 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Fermeture au clic outside
+  // Fermeture du menu mobile au clic outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -84,135 +77,204 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  const isLinkActive = useCallback((item: NavItem) => {
+  // Gestion du scroll vers une section
+  const scrollToSection = useCallback((sectionId: string) => {
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+          top: elementPosition - offset,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  }, []);
+
+  // Navigation vers une ancre
+  const handleAnchorClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+    
+    const sectionId = href.replace('/#', '');
+    
     if (pathname === '/') {
-      if (item.section) return activeSection === item.section;
-      if (item.key === 'home') return activeSection === 'hero';
+      // Déjà sur la page d'accueil
+      scrollToSection(sectionId);
+      setActiveSection(sectionId);
+      window.history.pushState(null, '', href);
+    } else {
+      // Navigation depuis une autre page
+      router.push('/');
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 300);
     }
-    return pathname === item.href;
+  }, [pathname, router, scrollToSection]);
+
+  // Navigation vers une page (SERVICES, BLOG, etc.) - CORRIGÉ
+  const handlePageClick = useCallback((href: string) => {
+    setIsOpen(false);
+    router.push(href);
+  }, [router]);
+
+  // Déterminer si un lien est actif
+  const isLinkActive = useCallback((href: string) => {
+    if (pathname === '/') {
+      if (href === '/') return activeSection === 'hero';
+      if (href.includes('#')) {
+        const sectionId = href.replace('/#', '');
+        return activeSection === sectionId;
+      }
+    }
+    return pathname === href;
   }, [pathname, activeSection]);
 
-  // Gestion du clic sur les ancres
-  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.includes('#') && pathname === '/') {
-      e.preventDefault();
-      const targetId = href.replace('/#', '');
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        window.history.pushState(null, '', href);
-        setActiveSection(targetId);
-      }
-      setIsOpen(false);
-    }
-    // Pour les autres liens, Link gère la navigation
-  };
-
-  const navItems = NAV_ITEMS;
-
-  return (
-    <>
-      <nav
-        className="fixed w-full z-50 top-0 lg:top-4 font-sans"
-        ref={menuRef}
-        aria-label="Navigation principale"
-      >
+  // SKELETON LOADER
+  if (isLoading) {
+    return (
+      <nav className="fixed w-full z-50 top-0 lg:top-4 font-sans">
         <div className="lg:container lg:mx-auto lg:px-6">
-          {/* Sur mobile: fond collé, sur desktop: container avec bords arrondis */}
           <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
-              {/* Logo avec Link */}
-              <Link 
-                href="/"
-                className="flex items-center font-bold group"
-                aria-label={t('logo', 'navigation')}
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
-                  <span className="hidden sm:inline">Abdoulaye Patawala</span>
-                  <span className="sm:hidden">Patawala</span>
-                </span>
-              </Link>
+              <div className="h-8 w-48 bg-gray-800/50 rounded animate-pulse" />
+              <div className="hidden lg:flex items-center gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="h-4 w-16 bg-gray-800/50 rounded animate-pulse" />
+                ))}
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-16 bg-gray-800/50 rounded-full animate-pulse" />
+                <div className="h-8 w-8 bg-gray-800/50 rounded-full animate-pulse lg:hidden" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
-              {/* Desktop Navigation - Sans sous-menus */}
-              <div className="hidden lg:flex items-center justify-center flex-1">
-                <div className="flex items-center gap-6">
-                  {navItems.map((item) => {
-                    const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
-                    const isActive = isLinkActive(item);
-                    
+  return (
+    <nav
+      ref={menuRef}
+      className="fixed w-full z-50 top-0 lg:top-4 font-sans"
+      aria-label="Navigation principale"
+    >
+      <div className="lg:container lg:mx-auto lg:px-6">
+        <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <Link
+              href="/"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center font-bold group"
+              aria-label={t('logo', 'navigation')}
+            >
+              <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
+                <span className="hidden sm:inline">Abdoulaye Patawala</span>
+                <span className="sm:hidden">Patawala</span>
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center justify-center flex-1">
+              <div className="flex items-center gap-6">
+                {NAV_ITEMS.map((item) => {
+                  const isActive = isLinkActive(item.href);
+                  
+                  // Pour les ancres (about, projects, contact)
+                  if (item.href.includes('#')) {
                     return (
-                      <Link
+                      <a
                         key={item.key}
                         href={item.href}
-                        onClick={(e) => handleAnchorClick(e as any, item.href)}
-                        className={`text-sm font-medium transition-colors ${
+                        onClick={(e) => handleAnchorClick(e, item.href)}
+                        className={`text-sm font-medium transition-colors cursor-pointer ${
                           isActive
                             ? 'text-blue-400'
                             : 'text-gray-300 hover:text-blue-400'
                         }`}
                       >
-                        {itemLabel}
-                      </Link>
+                        {t(`navItems.${item.key}`, 'navigation') || item.label}
+                      </a>
                     );
-                  })}
-                </div>
-              </div>
-
-              {/* Language Switcher et Menu Mobile */}
-              <div className="flex items-center gap-2">
-                <LanguageSwitcher />
-                
-                {/* BOUTON HAMBURGER - SIMPLE SANS FOND */}
-                <button
-                  ref={menuButtonRef}
-                  className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
-                  onClick={() => setIsOpen(!isOpen)}
-                  aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
-                >
-                  {isOpen ? 
-                    <X className="w-6 h-6" /> : 
-                    <Menu className="w-6 h-6" />
                   }
-                </button>
+                  
+                  // Pour les pages (services, blog, home) - UTILISATION DE LINK
+                  return (
+                    <Link
+                      key={item.key}
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-sm font-medium transition-colors ${
+                        isActive
+                          ? 'text-blue-400'
+                          : 'text-gray-300 hover:text-blue-400'
+                      }`}
+                    >
+                      {t(`navItems.${item.key}`, 'navigation') || item.label}
+                    </Link>
+                  );
+                })}
               </div>
+            </div>
+
+            {/* Language Switcher et Menu Mobile */}
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              
+              {/* Bouton Hamburger */}
+              <button
+                className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              >
+                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* MOBILE MENU - Version floue avec gros liens blancs ET CROIX */}
-        {isOpen && (
-          <div className="lg:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 bg-[#0A0F1C]/95 backdrop-blur-xl z-40 overflow-y-auto">
-            {/* Bouton de fermeture X en haut à droite */}
-            <button
-              onClick={() => setIsOpen(false)}
-              className="absolute top-6 right-6 p-2 text-white/70 hover:text-blue-400 transition-colors z-50"
-              aria-label="Fermer le menu"
-            >
-              <X className="w-8 h-8" />
-            </button>
+      {/* MOBILE MENU */}
+      {isOpen && (
+        <div className="lg:hidden fixed inset-0 top-0 bg-[#0A0F1C]/95 backdrop-blur-xl z-40 overflow-y-auto">
+          {/* Bouton de fermeture */}
+          <button
+            onClick={() => setIsOpen(false)}
+            className="absolute top-6 right-6 p-2 text-white/70 hover:text-blue-400 transition-colors z-50"
+            aria-label="Fermer le menu"
+          >
+            <X className="w-8 h-8" />
+          </button>
 
-            <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
-              {navItems.map((item) => {
-                const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
-                const isActive = isLinkActive(item);
-                
+          <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
+            {NAV_ITEMS.map((item) => {
+              const isActive = isLinkActive(item.href);
+              
+              // Ancres en mobile
+              if (item.href.includes('#')) {
                 return (
-                  <Link
+                  <a
                     key={item.key}
                     href={item.href}
                     onClick={(e) => {
-                      if (item.href.includes('#') && pathname === '/') {
-                        e.preventDefault();
-                        const targetId = item.href.replace('/#', '');
-                        const element = document.getElementById(targetId);
-                        if (element) {
-                          element.scrollIntoView({ behavior: 'smooth' });
-                          window.history.pushState(null, '', item.href);
-                          setActiveSection(targetId);
-                        }
-                      }
+                      e.preventDefault();
                       setIsOpen(false);
+                      
+                      if (pathname === '/') {
+                        const sectionId = item.href.replace('/#', '');
+                        scrollToSection(sectionId);
+                        setActiveSection(sectionId);
+                        window.history.pushState(null, '', item.href);
+                      } else {
+                        router.push('/');
+                        setTimeout(() => {
+                          const sectionId = item.href.replace('/#', '');
+                          scrollToSection(sectionId);
+                        }, 300);
+                      }
                     }}
                     className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                       isActive
@@ -220,16 +282,30 @@ export default function Navigation() {
                         : 'text-white/90 hover:text-blue-400'
                     }`}
                   >
-                    {itemLabel}
-                  </Link>
+                    {t(`navItems.${item.key}`, 'navigation') || item.label}
+                  </a>
                 );
-              })}
-            </div>
+              }
+              
+              // Pages en mobile (services, blog, home) - UTILISATION DE LINK
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
+                    isActive
+                      ? 'text-blue-400'
+                      : 'text-white/90 hover:text-blue-400'
+                  }`}
+                >
+                  {t(`navItems.${item.key}`, 'navigation') || item.label}
+                </Link>
+              );
+            })}
           </div>
-        )}
-      </nav>
-      
-      <div id="main-content" tabIndex={-1} className="outline-none" />
-    </>
+        </div>
+      )}
+    </nav>
   );
 }

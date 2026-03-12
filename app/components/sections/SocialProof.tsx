@@ -2,7 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
 // Points lumineux fixes (déterministes)
 const LIGHT_POINTS = [
@@ -29,78 +29,137 @@ interface ProjectType {
   cta: string;
 }
 
+// Données par défaut pour les témoignages
+const DEFAULT_TESTIMONIALS_FR = [
+  {
+    name: "Jean Kouassi",
+    content: "Abdoulaye a su comprendre rapidement nos besoins et nous a proposé une solution technique parfaitement adaptée à notre startup. Son accompagnement a été crucial dans notre développement.",
+    country: "Côte d'Ivoire"
+  },
+  {
+    name: "Marie Dubois",
+    content: "Un vrai partenaire technique ! Il ne se contente pas de développer, il apporte des idées et des conseils qui font la différence. Je recommande vivement.",
+    country: "France"
+  }
+];
+
+const DEFAULT_TESTIMONIALS_EN = [
+  {
+    name: "John Smith",
+    content: "Abdoulaye quickly understood our needs and proposed a technical solution perfectly adapted to our startup. His support was crucial in our development.",
+    country: "USA"
+  },
+  {
+    name: "Sarah Johnson",
+    content: "A true technical partner! He doesn't just develop, he brings ideas and advice that make a difference. I highly recommend.",
+    country: "UK"
+  }
+];
+
 const SocialProof = memo(function SocialProof() {
-  const { t, language } = useLanguage();
+  const { t, language, isLoading } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const animationRef = useRef<number>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
+  // Attendre que les traductions soient chargées
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   // Charger les témoignages
   useEffect(() => {
-    try {
-      const testimonialsData = t('testimonials', 'testimonials');
-      if (Array.isArray(testimonialsData)) {
-        const enrichedTestimonials = testimonialsData.map((testimonial: any, index: number) => {
-          const gradients = [
-            'from-blue-500 to-cyan-500',
-            'from-emerald-500 to-teal-500',
-            'from-amber-500 to-orange-500',
-            'from-green-500 to-emerald-500',
-            'from-indigo-500 to-purple-500',
-            'from-pink-500 to-rose-500',
-            'from-violet-500 to-purple-500',
-            'from-red-500 to-pink-500'
-          ];
-          
-          const nameParts = testimonial.name.split(' ');
-          const initials = nameParts.map((part: string) => part[0]).join('').substring(0, 2).toUpperCase();
-          
-          const flags: {[key: string]: string} = {
-            'Côte d\'Ivoire': '🇨🇮',
-            'France': '🇫🇷',
-            'Congo': '🇨🇬',
-            'Cameroun': '🇨🇲',
-            'Bénin': '🇧🇯',
-            'Togo': '🇹🇬',
-            'Sénégal': '🇸🇳',
-            'Belgique': '🇧🇪'
-          };
+    if (!isReady) return;
 
-          return {
-            ...testimonial,
-            rating: 5,
-            initials,
-            gradient: gradients[index % gradients.length],
-            flag: flags[testimonial.country] || '🌍'
-          };
-        });
-        setTestimonials(enrichedTestimonials);
+    try {
+      // Récupérer les témoignages avec typage explicite
+      const testimonialsData = t('testimonials', 'testimonials');
+      
+      let testimonialsArray = [];
+      
+      if (Array.isArray(testimonialsData) && testimonialsData.length > 0) {
+        testimonialsArray = testimonialsData;
+      } else {
+        // Fallback par langue
+        testimonialsArray = language === 'fr' ? DEFAULT_TESTIMONIALS_FR : DEFAULT_TESTIMONIALS_EN;
       }
+
+      const enrichedTestimonials = testimonialsArray.map((testimonial: any, index: number) => {
+        const gradients = [
+          'from-blue-500 to-cyan-500',
+          'from-emerald-500 to-teal-500',
+          'from-amber-500 to-orange-500',
+          'from-green-500 to-emerald-500',
+          'from-indigo-500 to-purple-500',
+          'from-pink-500 to-rose-500',
+          'from-violet-500 to-purple-500',
+          'from-red-500 to-pink-500'
+        ];
+        
+        const name = testimonial.name || '';
+        const nameParts = name.split(' ');
+        const initials = nameParts.length > 1 
+          ? (nameParts[0][0] + nameParts[nameParts.length-1][0]).toUpperCase()
+          : name.substring(0, 2).toUpperCase();
+        
+        const flags: {[key: string]: string} = {
+          "Côte d'Ivoire": '🇨🇮',
+          'France': '🇫🇷',
+          'Congo': '🇨🇬',
+          'Cameroun': '🇨🇲',
+          'Bénin': '🇧🇯',
+          'Togo': '🇹🇬',
+          'Sénégal': '🇸🇳',
+          'Belgique': '🇧🇪',
+          'USA': '🇺🇸',
+          'UK': '🇬🇧'
+        };
+
+        return {
+          name: testimonial.name || '',
+          content: testimonial.content || '',
+          country: testimonial.country || '',
+          rating: 5,
+          initials,
+          gradient: gradients[index % gradients.length],
+          flag: flags[testimonial.country] || '🌍'
+        };
+      });
+      
+      setTestimonials(enrichedTestimonials);
     } catch (error) {
       console.error('Erreur chargement témoignages:', error);
+      // Fallback en cas d'erreur
+      const fallback = language === 'fr' ? DEFAULT_TESTIMONIALS_FR : DEFAULT_TESTIMONIALS_EN;
+      const enriched = fallback.map((t, i) => ({
+        ...t,
+        rating: 5,
+        initials: t.name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase(),
+        gradient: ['from-blue-500 to-cyan-500', 'from-emerald-500 to-teal-500'][i % 2],
+        flag: i === 0 ? '🇨🇮' : '🇫🇷'
+      }));
+      setTestimonials(enriched);
     }
-  }, [t, language]);
+  }, [t, language, isReady]);
 
-  // Types de projets
+  // Types de projets avec fallback
   const projectTypes: ProjectType[] = [
     {
       icon: Building2,
-      title: t('projectTypes.startup.title', 'testimonials') || 'Startups & Scale-ups',
-      description: t('projectTypes.startup.description', 'testimonials') || 'Développement de MVPs et solutions évolutives',
-      cta: t('projectTypes.startup.cta', 'testimonials') || 'Discuter de startup'
+      title: t('projectTypes.startup.title', 'testimonials') || (language === 'fr' ? 'Startups & Scale-ups' : 'Startups & Scale-ups'),
+      description: t('projectTypes.startup.description', 'testimonials') || (language === 'fr' ? 'Développement de MVPs et solutions évolutives' : 'MVP development and scalable solutions'),
+      cta: t('projectTypes.startup.cta', 'testimonials') || (language === 'fr' ? 'Discuter de startup' : 'Discuss startup')
     },
     {
       icon: Users,
-      title: t('projectTypes.sme.title', 'testimonials') || 'PME & Grands Comptes',
-      description: t('projectTypes.sme.description', 'testimonials') || 'Accompagnement sur mesure pour votre transformation digitale',
-      cta: t('projectTypes.sme.cta', 'testimonials') || 'Discuter de mon projet'
+      title: t('projectTypes.sme.title', 'testimonials') || (language === 'fr' ? 'PME & Grands Comptes' : 'SME & Large Companies'),
+      description: t('projectTypes.sme.description', 'testimonials') || (language === 'fr' ? 'Accompagnement sur mesure pour votre transformation digitale' : 'Tailored support for your digital transformation'),
+      cta: t('projectTypes.sme.cta', 'testimonials') || (language === 'fr' ? 'Discuter de mon projet' : 'Discuss my project')
     }
   ];
 
@@ -113,7 +172,7 @@ const SocialProof = memo(function SocialProof() {
 
   // Animation de défilement horizontal
   useEffect(() => {
-    if (testimonials.length === 0 || !scrollRef.current || !isMounted) return;
+    if (testimonials.length === 0 || !scrollRef.current || !isReady) return;
     
     let rafId: number;
     let lastTimestamp = 0;
@@ -155,7 +214,7 @@ const SocialProof = memo(function SocialProof() {
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [testimonials.length, isMounted]);
+  }, [testimonials.length, isReady]);
 
   const checkScrollButtons = useCallback(() => {
     if (scrollRef.current) {
@@ -182,6 +241,68 @@ const SocialProof = memo(function SocialProof() {
     window.addEventListener('resize', checkScrollButtons, { passive: true });
     return () => window.removeEventListener('resize', checkScrollButtons);
   }, [checkScrollButtons]);
+
+  // SKELETON LOADER
+  if (isLoading || !isReady || testimonials.length === 0) {
+    return (
+      <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          {/* En-tête skeleton */}
+          <div className="text-center mb-12 md:mb-16">
+            <div className="w-48 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
+            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Carrousel skeleton */}
+          <div className="flex gap-4 md:gap-6 justify-center mb-16">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B]/50 rounded-xl p-5 border border-gray-800/50">
+                <div className="w-8 h-8 bg-gray-800/50 rounded-full mb-3 animate-pulse" />
+                <div className="flex gap-1 mb-3">
+                  {[1, 2, 3, 4, 5].map((j) => (
+                    <div key={j} className="w-3 h-3 bg-gray-800/50 rounded-full animate-pulse" />
+                  ))}
+                </div>
+                <div className="w-full h-16 bg-gray-800/50 rounded-lg mb-4 animate-pulse" />
+                <div className="flex items-center gap-3 pt-3 border-t border-gray-800/50">
+                  <div className="w-10 h-10 bg-gray-800/50 rounded-full animate-pulse" />
+                  <div className="flex-1">
+                    <div className="w-24 h-4 bg-gray-800/50 rounded mb-2 animate-pulse" />
+                    <div className="w-16 h-3 bg-gray-800/50 rounded animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Projets skeleton */}
+          <div className="max-w-4xl mx-auto">
+            <div className="w-64 h-8 bg-gray-800/50 rounded-lg mx-auto mb-8 animate-pulse" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {[1, 2].map((i) => (
+                <div key={i} className="bg-[#141B2B]/50 rounded-xl p-5 border border-gray-800/50">
+                  <div className="flex gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+                    <div className="flex-1">
+                      <div className="w-32 h-5 bg-gray-800/50 rounded mb-2 animate-pulse" />
+                      <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
+                    </div>
+                  </div>
+                  <div className="w-full h-8 bg-gray-800/50 rounded-lg animate-pulse" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
@@ -347,7 +468,7 @@ const SocialProof = memo(function SocialProof() {
                     <span className="text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight">
                       {type.cta}
                     </span>
-                    <div className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200">
+                    <div className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200 group-hover:bg-blue-500/20">
                       <ArrowRight size={16} className="text-blue-400" />
                     </div>
                   </button>

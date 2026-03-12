@@ -5,9 +5,9 @@ import Image from 'next/image';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { projets, Project } from '../../projets/data/projets';
 import ProjectModal from '../../components/ui/ProjectModal';
-import { useLanguage } from '@/app/context/LanguageContext';
+import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Points lumineux fixes (déterministes) pour éviter les différences serveur/client
+// Points lumineux fixes (déterministes)
 const LIGHT_POINTS = [
   { left: '15%', top: '20%' },
   { left: '75%', top: '60%' },
@@ -16,19 +16,22 @@ const LIGHT_POINTS = [
 ];
 
 export default function RealisationsSection() {
-  const { t, language } = useLanguage();
+  const { t, language, isLoading } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
+  // Attendre que les traductions soient chargées
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   // Charger les projets traduits
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isReady) return;
     
     try {
       const projectsData = t('projects', 'projets-data');
@@ -37,7 +40,7 @@ export default function RealisationsSection() {
       console.error('Erreur chargement projets traduits:', error);
       setTranslatedProjects(projets);
     }
-  }, [t, language, isMounted]);
+  }, [t, language, isReady]);
 
   // Mémoïsation de la correspondance projet original ↔ traduit
   const projectMap = useMemo(() => {
@@ -72,10 +75,59 @@ export default function RealisationsSection() {
     return !!image && typeof image !== 'string';
   }, []);
 
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <section className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          {/* Badge skeleton */}
+          <div className="w-full flex justify-center mb-8">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+          </div>
+
+          {/* Titre skeleton */}
+          <div className="text-center mb-12">
+            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Grille skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-[#141B2B]/50 rounded-2xl border border-gray-800/50 overflow-hidden">
+                <div className="h-48 bg-gray-800/50 animate-pulse" />
+                <div className="p-6">
+                  <div className="w-3/4 h-6 bg-gray-800/50 rounded mb-3 animate-pulse" />
+                  <div className="w-full h-4 bg-gray-800/50 rounded mb-2 animate-pulse" />
+                  <div className="w-2/3 h-4 bg-gray-800/50 rounded mb-4 animate-pulse" />
+                  <div className="flex gap-2 mb-4">
+                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                    <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                  </div>
+                  <div className="w-24 h-4 bg-gray-800/50 rounded mx-auto animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bouton skeleton */}
+          <div className="text-center">
+            <div className="w-48 h-12 bg-gray-800/50 rounded-xl mx-auto animate-pulse" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <>
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
-        {/* FOND AMÉLIORÉ - DOUBLE COUCHE VISIBLE COMME DANS HERO/ABOUT */}
+        {/* FOND */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
           {/* Lignes horizontales bleues */}
           <div

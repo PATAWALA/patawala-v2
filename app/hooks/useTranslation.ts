@@ -1,4 +1,5 @@
 'use client';
+
 import { useLanguage } from '@/app/context/LanguageContext';
 
 // Mapping des composants vers leurs sections de traduction
@@ -28,7 +29,7 @@ const componentToSection: Record<string, string> = {
 };
 
 export function useTranslation() {
-  const { t: contextT, language } = useLanguage();
+  const { t: contextT, language, isLoading } = useLanguage();
   
   // Fonction de traduction principale - retourne toujours une string
   const t = (key: string, forcedSection?: string): string => {
@@ -59,5 +60,5 @@ export function useTranslation() {
     return text;
   };
 
-  return { t, language, getComponentTranslation, tWithParams };
+  return { t, language, isLoading, getComponentTranslation, tWithParams };
 }
