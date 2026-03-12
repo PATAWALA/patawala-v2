@@ -79,7 +79,33 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Handlers desktop
+  // Navigation
+  const handleNavigation = useCallback((href: string) => {
+    setIsOpen(false);
+    setHoveredItem(null);
+    window.location.href = href;
+  }, []);
+
+  const handleAnchorClick = useCallback((e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    
+    if (pathname === '/') {
+      const targetId = href.replace('/#', '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+        window.history.pushState(null, '', href);
+        setActiveSection(targetId);
+      }
+    } else {
+      window.location.href = href;
+    }
+    
+    setIsOpen(false);
+    setHoveredItem(null);
+  }, [pathname]);
+
+  // Handlers
   const handleArrowMouseEnter = useCallback((itemLabel: string) => {
     if (menuTimeoutRef.current) clearTimeout(menuTimeoutRef.current);
     setHoveredItem(itemLabel);
@@ -124,26 +150,6 @@ export default function Navigation() {
 
   const navItems = NAV_ITEMS;
 
-  // Fonction pour gérer les ancres sur mobile (sans bloquer les liens normaux)
-  const handleMobileAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    // Seulement pour les ancres sur la page d'accueil
-    if (href.includes('#') && pathname === '/') {
-      e.preventDefault();
-      const targetId = href.replace('/#', '');
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-        window.history.pushState(null, '', href);
-        setActiveSection(targetId);
-      }
-      setIsOpen(false);
-    } else {
-      // Pour tous les autres liens, on laisse le navigateur gérer
-      setIsOpen(false);
-      // Pas de preventDefault, le navigateur suit le lien normalement
-    }
-  };
-
   return (
     <>
       <nav
@@ -152,11 +158,16 @@ export default function Navigation() {
         aria-label="Navigation principale"
       >
         <div className="lg:container lg:mx-auto lg:px-6">
+          {/* Sur mobile: fond collé, sur desktop: container avec bords arrondis */}
           <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
             <div className="flex justify-between items-center">
               {/* Logo */}
               <a 
                 href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/';
+                }}
                 className="flex items-center font-bold group"
                 aria-label={t('logo', 'navigation')}
               >
@@ -166,9 +177,9 @@ export default function Navigation() {
                 </span>
               </a>
 
-              {/* Desktop Navigation - ORIGINAL AVEC SOUS-MENUS */}
+              {/* Desktop Navigation - CENTRÉE AVEC FLEX-1 */}
               <div className="hidden lg:flex items-center justify-center flex-1">
-                <ul className="flex items-center gap-2">
+                <div className="flex items-center gap-6">
                   {navItems.map((item) => {
                     const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
                     const isActive = isLinkActive(item);
@@ -177,7 +188,7 @@ export default function Navigation() {
                       const isServicesHovered = hoveredItem === itemLabel;
                       
                       return (
-                        <li 
+                        <div 
                           key={item.key} 
                           className="relative"
                           onMouseLeave={handleServicesMouseLeave}
@@ -185,28 +196,29 @@ export default function Navigation() {
                           <div className="flex items-center">
                             <a
                               href={item.href}
-                              className={`px-5 py-2 rounded-l-full font-medium text-base transition-colors ${
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleNavigation(item.href);
+                              }}
+                              className={`px-4 py-2 rounded-l-full text-sm font-medium transition-colors ${
                                 pathname === '/services'
                                   ? 'text-blue-400 bg-blue-500/10'
-                                  : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                                  : 'text-gray-300 hover:text-blue-400'
                               }`}
                             >
-                              <span>
-                                {itemLabel}
-                              </span>
+                              {itemLabel}
                             </a>
                             
                             <button
                               onMouseEnter={() => handleArrowMouseEnter(itemLabel)}
-                              className={`px-2 py-2 rounded-r-full font-medium text-base transition-colors border-l border-[#1F2937] ${
+                              className={`px-2 py-2 rounded-r-full text-sm font-medium transition-colors border-l border-[#1F2937] ${
                                 isServicesHovered || pathname === '/services'
                                   ? 'text-blue-400 bg-blue-500/10' 
-                                  : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
+                                  : 'text-gray-300 hover:text-blue-400'
                               }`}
-                              aria-label={`Sous-menu ${itemLabel}`}
                             >
                               <ChevronDown 
-                                size={16} 
+                                size={14} 
                                 className={`transition-transform duration-200 ${
                                   isServicesHovered ? 'rotate-180' : ''
                                 }`} 
@@ -216,9 +228,8 @@ export default function Navigation() {
 
                           {isServicesHovered && (
                             <div
-                              className="absolute top-full left-0 mt-2 w-64 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50 animate-fadeIn"
+                              className="absolute top-full left-0 mt-2 w-48 bg-[#141B2B] rounded-xl shadow-2xl border border-[#1F2937] py-1 z-50"
                               onMouseEnter={handleSubmenuMouseEnter}
-                              onMouseLeave={handleServicesMouseLeave}
                             >
                               {item.submenu.map((subItem) => {
                                 const Icon = subItem.icon;
@@ -228,46 +239,59 @@ export default function Navigation() {
                                   <a
                                     key={subItem.key}
                                     href={subItem.href}
-                                    className="flex items-center gap-3 px-4 py-2.5 text-base text-gray-300 hover:bg-blue-500/10 hover:text-blue-400 transition-colors"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleNavigation(subItem.href);
+                                    }}
+                                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/10 hover:text-blue-400"
                                   >
-                                    <Icon className="w-5 h-5 text-gray-400" />
-                                    <span className="font-medium">
-                                      {subItemLabel}
-                                    </span>
+                                    <Icon size={16} className="text-gray-400" />
+                                    <span>{subItemLabel}</span>
                                   </a>
                                 );
                               })}
                             </div>
                           )}
-                        </li>
+                        </div>
                       );
                     }
                     
                     return (
-                      <li key={item.key} className="relative">
-                        <a
-                          href={item.href}
-                          className={`px-5 py-2 rounded-full font-medium text-base transition-colors ${
-                            isActive
-                              ? 'text-blue-400 bg-blue-500/10'
-                              : 'text-gray-300 hover:text-blue-400 hover:bg-blue-500/10'
-                          }`}
-                        >
-                          <span>
-                            {itemLabel}
-                          </span>
-                        </a>
-                      </li>
+                      <a
+                        key={item.key}
+                        href={item.href}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (item.href.includes('#') && pathname === '/') {
+                            const targetId = item.href.replace('/#', '');
+                            const element = document.getElementById(targetId);
+                            if (element) {
+                              element.scrollIntoView({ behavior: 'smooth' });
+                              window.history.pushState(null, '', item.href);
+                              setActiveSection(targetId);
+                            }
+                          } else {
+                            window.location.href = item.href;
+                          }
+                        }}
+                        className={`text-sm font-medium transition-colors ${
+                          isActive
+                            ? 'text-blue-400'
+                            : 'text-gray-300 hover:text-blue-400'
+                        }`}
+                      >
+                        {itemLabel}
+                      </a>
                     );
                   })}
-                </ul>
+                </div>
               </div>
 
               {/* Language Switcher et Menu Mobile */}
               <div className="flex items-center gap-2">
                 <LanguageSwitcher />
                 
-                {/* HAMBURGER - TON STYLE (SANS FOND) */}
+                {/* BOUTON HAMBURGER - SIMPLE SANS FOND */}
                 <button
                   ref={menuButtonRef}
                   className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
@@ -283,53 +307,59 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-      </nav>
 
-      {/* MOBILE MENU - NAVIGATION SIMPLE QUI MARCHE */}
-      {isOpen && (
-        <div className="fixed inset-0 top-[57px] left-0 right-0 bottom-0 bg-[#0A0F1C] z-40 overflow-y-auto lg:hidden">
-          <div className="flex flex-col items-center justify-start py-8 px-4 min-h-screen">
-            {navItems.map((item) => {
-              const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
-              const isActive = isLinkActive(item);
-              
-              return (
-                <a
-                  key={item.key}
-                  href={item.href}
-                  onClick={(e) => handleMobileAnchorClick(e, item.href)}
-                  className={`w-full text-center py-5 text-xl font-bold transition-colors border-b border-[#1F2937]/50 last:border-0 ${
-                    isActive
-                      ? 'text-blue-400'
-                      : 'text-white hover:text-blue-400'
-                  }`}
-                >
-                  {itemLabel}
-                </a>
-              );
-            })}
+        {/* MOBILE MENU - Version floue avec gros liens blancs ET CROIX DE FERMETURE */}
+        {isOpen && (
+          <div className="lg:hidden fixed inset-0 top-0 left-0 right-0 bottom-0 bg-[#0A0F1C]/95 backdrop-blur-xl z-40 overflow-y-auto">
+            {/* Bouton de fermeture X en haut à droite */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 p-2 text-white/70 hover:text-blue-400 transition-colors z-50"
+              aria-label="Fermer le menu"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
+              {navItems.map((item) => {
+                const itemLabel = t(`navItems.${item.key}`, 'navigation') || item.key;
+                const isActive = isLinkActive(item);
+                
+                return (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (item.href.includes('#') && pathname === '/') {
+                        const targetId = item.href.replace('/#', '');
+                        const element = document.getElementById(targetId);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth' });
+                          window.history.pushState(null, '', item.href);
+                          setActiveSection(targetId);
+                        }
+                      } else {
+                        window.location.href = item.href;
+                      }
+                      setIsOpen(false);
+                    }}
+                    className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
+                      isActive
+                        ? 'text-blue-400'
+                        : 'text-white/90 hover:text-blue-400'
+                    }`}
+                  >
+                    {itemLabel}
+                  </a>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </nav>
       
       <div id="main-content" tabIndex={-1} className="outline-none" />
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fadeIn {
-          animation: fadeIn 0.2s ease-out;
-        }
-      `}</style>
     </>
   );
 }
