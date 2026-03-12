@@ -7,7 +7,7 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 
 const Footer = memo(function Footer() {
   const currentYear = new Date().getFullYear();
-  const { t } = useTranslation();
+  const { t, isLoading } = useTranslation();
 
   // Données statiques - MÉMOÏSÉES
   const quickLinks = useMemo(() => [
@@ -42,18 +42,96 @@ const Footer = memo(function Footer() {
     window.location.href = href;
   }, []);
 
+  // SKELETON LOADER
+  if (isLoading) {
+    return (
+      <footer className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+            {/* Colonne marque skeleton */}
+            <div className="md:col-span-2 lg:col-span-4 space-y-6">
+              <div className="space-y-2">
+                <div className="w-48 h-8 bg-gray-800/50 rounded animate-pulse" />
+                <div className="w-32 h-4 bg-gray-800/50 rounded animate-pulse" />
+              </div>
+              <div className="w-full h-16 bg-gray-800/50 rounded animate-pulse" />
+              <div className="flex gap-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-20 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                ))}
+              </div>
+            </div>
+
+            {/* Liens rapides skeleton */}
+            <div className="md:col-span-1 lg:col-span-2">
+              <div className="w-24 h-6 bg-gray-800/50 rounded mb-6 animate-pulse" />
+              <div className="space-y-4">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-20 h-4 bg-gray-800/50 rounded animate-pulse" />
+                ))}
+              </div>
+            </div>
+
+            {/* Légal skeleton */}
+            <div className="md:col-span-1 lg:col-span-2">
+              <div className="w-20 h-6 bg-gray-800/50 rounded mb-6 animate-pulse" />
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-24 h-4 bg-gray-800/50 rounded animate-pulse" />
+                ))}
+              </div>
+            </div>
+
+            {/* Contact skeleton */}
+            <div className="md:col-span-2 lg:col-span-4 space-y-6">
+              <div className="w-20 h-6 bg-gray-800/50 rounded mb-6 animate-pulse" />
+              <div className="w-full h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+              <div className="flex gap-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="w-10 h-10 bg-gray-800/50 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Séparateur skeleton */}
+          <div className="relative my-12">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-800"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <div className="px-4 bg-[#0A0F1C]">
+                <div className="w-4 h-4 bg-red-400/50 rounded-full animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright skeleton */}
+          <div className="flex justify-center">
+            <div className="w-64 h-4 bg-gray-800/50 rounded animate-pulse" />
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer
       className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden"
-      aria-label={t('label', 'footer') || 'Pied de page'} // CORRECTION ICI
+      aria-label={t('label', 'footer') || 'Pied de page'}
     >
-      {/* Éléments décoratifs - UNIQUEMENT LES CERCLES */}
+      {/* Éléments décoratifs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Cercles flous - 2 SEULEMENT */}
+        {/* Cercles flous */}
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Grille de fond - OPACITÉ RÉDUITE */}
+        {/* Grille de fond */}
         <div
           className="absolute inset-0 opacity-50"
           style={{
@@ -62,8 +140,6 @@ const Footer = memo(function Footer() {
           }}
           aria-hidden="true"
         />
-        
-        {/* PLUS DE POINTS LUMINEUX - SUPPRIMÉS */}
       </div>
 
       {/* Ligne de séparation lumineuse */}
@@ -85,7 +161,7 @@ const Footer = memo(function Footer() {
               {t('description', 'footer')}
             </p>
 
-            {/* Badges - OPTIMISÉS */}
+            {/* Badges */}
             <div className="flex flex-wrap gap-3">
               {badges.map((badge) => {
                 const Icon = badge.icon;

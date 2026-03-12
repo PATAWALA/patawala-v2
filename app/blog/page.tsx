@@ -22,14 +22,22 @@ const LIGHT_POINTS = [
 ];
 
 export default function BlogPage() {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const articlesPerPage = 6;
 
-  // Traduction des catégories - CORRIGÉ
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
+
+  // Traduction des catégories
   const { categories, allCategory, categoryList } = useMemo(() => {
     // Récupérer les catégories depuis la traduction
     const categoriesRaw = t('filters.categories', 'blog');
@@ -46,24 +54,30 @@ export default function BlogPage() {
     return {
       categories: [allCategory, ...categoryValues],
       allCategory,
-      categoryList: categoryValues // Liste des catégories sans "Tous"
+      categoryList: categoryValues
     };
-  }, [t, language]);
+  }, [t, language, isReady]);
 
   // Initialisation de la catégorie
   useEffect(() => {
-    setSelectedCategory(allCategory);
-  }, [allCategory]);
+    if (isReady) {
+      setSelectedCategory(allCategory);
+    }
+  }, [allCategory, isReady]);
 
   // Réinitialisation
   useEffect(() => {
-    setSearchQuery("");
-    setCurrentPage(1);
-  }, [language]);
+    if (isReady) {
+      setSearchQuery("");
+      setCurrentPage(1);
+    }
+  }, [language, isReady]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, searchQuery]);
+    if (isReady) {
+      setCurrentPage(1);
+    }
+  }, [selectedCategory, searchQuery, isReady]);
 
   const effectiveCategory = useMemo(() => 
     categories.includes(selectedCategory) ? selectedCategory : allCategory,
@@ -72,6 +86,8 @@ export default function BlogPage() {
 
   // Traduction des articles
   const translatedArticles = useMemo(() => {
+    if (!isReady) return [];
+    
     return baseArticles.map(article => {
       const key = `article${article.id}`;
       
@@ -88,10 +104,12 @@ export default function BlogPage() {
         tags: Array.isArray(translatedTags) ? translatedTags : article.tags,
       };
     });
-  }, [t, language]);
+  }, [t, language, isReady]);
 
   // Filtrage
   const filteredArticles = useMemo(() => {
+    if (!isReady) return [];
+    
     return translatedArticles.filter(article => {
       const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
       const matchesCategory = effectiveCategory === allCategory || article.category === effectiveCategory;
@@ -100,7 +118,7 @@ export default function BlogPage() {
                            tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [translatedArticles, effectiveCategory, allCategory, searchQuery]);
+  }, [translatedArticles, effectiveCategory, allCategory, searchQuery, isReady]);
 
   // Articles à la une
   const featuredArticles = useMemo(() => 
@@ -110,18 +128,20 @@ export default function BlogPage() {
 
   // Pagination
   const { currentArticles, totalPages } = useMemo(() => {
+    if (!isReady) return { currentArticles: [], totalPages: 0 };
+    
     const indexOfLastArticle = currentPage * articlesPerPage;
     const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
     return {
       currentArticles: filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle),
       totalPages: Math.ceil(filteredArticles.length / articlesPerPage)
     };
-  }, [filteredArticles, currentPage]);
+  }, [filteredArticles, currentPage, isReady]);
 
   const moreTagsTemplate = useMemo(() => {
     const moreTagsRaw = t('featured.tags.more', 'blog');
     return typeof moreTagsRaw === 'string' ? moreTagsRaw : '+{{count}}';
-  }, [t]);
+  }, [t, isReady]);
 
   // Handlers
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,6 +168,66 @@ export default function BlogPage() {
   const handlePageSelect = useCallback((page: number) => {
     setCurrentPage(page);
   }, []);
+
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
+        {/* Fond identique mais plus sombre */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
+          {/* En-tête skeleton */}
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-xl mx-auto mb-4 animate-pulse" />
+            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Barre de recherche skeleton */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="w-full h-14 bg-gray-800/50 rounded-xl animate-pulse" />
+          </div>
+
+          {/* Filtres skeleton */}
+          <div className="flex justify-center mb-10">
+            <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="w-20 h-8 bg-gray-700/50 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Articles à la une skeleton */}
+          <div className="mb-12">
+            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mb-6 animate-pulse" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {[1, 2].map((i) => (
+                <div key={i} className="bg-gray-800/50 rounded-2xl h-64 animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Grille d'articles skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-gray-800/50 rounded-xl h-48 animate-pulse" />
+            ))}
+          </div>
+
+          {/* Pagination skeleton */}
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -292,7 +372,7 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Filtres catégories - CORRIGÉ */}
+          {/* Filtres catégories */}
           <div className="mb-10 sm:mb-12 md:mb-16">
             {/* Version mobile */}
             <div className="lg:hidden mb-3 px-2">
@@ -583,7 +663,7 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Formulaire Brevo - AVEC TRADUCTION */}
+          {/* Formulaire Brevo */}
           <div className="relative max-w-2xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
             <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-20"></div>
             <div className="relative p-4 sm:p-5 md:p-6 bg-[#141B2B]/90 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-[#1F2937] shadow-lg overflow-hidden">

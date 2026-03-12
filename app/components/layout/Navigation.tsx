@@ -92,32 +92,30 @@ export default function Navigation() {
     }, 100);
   }, []);
 
-  // Navigation vers une ancre
-  const handleAnchorClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+  // Navigation forcée - SOLUTION
+  const handleNavigation = useCallback((href: string) => {
     setIsOpen(false);
     
-    const sectionId = href.replace('/#', '');
-    
-    if (pathname === '/') {
-      // Déjà sur la page d'accueil
+    // Pour les ancres sur la page d'accueil
+    if (href.includes('#') && pathname === '/') {
+      const sectionId = href.replace('/#', '');
       scrollToSection(sectionId);
       setActiveSection(sectionId);
       window.history.pushState(null, '', href);
-    } else {
-      // Navigation depuis une autre page
-      router.push('/');
+    } 
+    // Pour les ancres depuis une autre page
+    else if (href.includes('#')) {
+      window.location.href = '/';
       setTimeout(() => {
+        const sectionId = href.replace('/#', '');
         scrollToSection(sectionId);
       }, 300);
     }
-  }, [pathname, router, scrollToSection]);
-
-  // Navigation vers une page (SERVICES, BLOG, etc.) - CORRIGÉ
-  const handlePageClick = useCallback((href: string) => {
-    setIsOpen(false);
-    router.push(href);
-  }, [router]);
+    // Pour les pages normales (services, blog, home) - FORCER LE RECHARGEMENT
+    else {
+      window.location.href = href;
+    }
+  }, [pathname, scrollToSection]);
 
   // Déterminer si un lien est actif
   const isLinkActive = useCallback((href: string) => {
@@ -165,9 +163,12 @@ export default function Navigation() {
         <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
           <div className="flex justify-between items-center">
             {/* Logo */}
-            <Link
+            <a
               href="/"
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/';
+              }}
               className="flex items-center font-bold group"
               aria-label={t('logo', 'navigation')}
             >
@@ -175,7 +176,7 @@ export default function Navigation() {
                 <span className="hidden sm:inline">Abdoulaye Patawala</span>
                 <span className="sm:hidden">Patawala</span>
               </span>
-            </Link>
+            </a>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center justify-center flex-1">
@@ -183,38 +184,22 @@ export default function Navigation() {
                 {NAV_ITEMS.map((item) => {
                   const isActive = isLinkActive(item.href);
                   
-                  // Pour les ancres (about, projects, contact)
-                  if (item.href.includes('#')) {
-                    return (
-                      <a
-                        key={item.key}
-                        href={item.href}
-                        onClick={(e) => handleAnchorClick(e, item.href)}
-                        className={`text-sm font-medium transition-colors cursor-pointer ${
-                          isActive
-                            ? 'text-blue-400'
-                            : 'text-gray-300 hover:text-blue-400'
-                        }`}
-                      >
-                        {t(`navItems.${item.key}`, 'navigation') || item.label}
-                      </a>
-                    );
-                  }
-                  
-                  // Pour les pages (services, blog, home) - UTILISATION DE LINK
                   return (
-                    <Link
+                    <a
                       key={item.key}
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`text-sm font-medium transition-colors ${
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleNavigation(item.href);
+                      }}
+                      className={`text-sm font-medium transition-colors cursor-pointer ${
                         isActive
                           ? 'text-blue-400'
                           : 'text-gray-300 hover:text-blue-400'
                       }`}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
-                    </Link>
+                    </a>
                   );
                 })}
               </div>
@@ -253,46 +238,14 @@ export default function Navigation() {
             {NAV_ITEMS.map((item) => {
               const isActive = isLinkActive(item.href);
               
-              // Ancres en mobile
-              if (item.href.includes('#')) {
-                return (
-                  <a
-                    key={item.key}
-                    href={item.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setIsOpen(false);
-                      
-                      if (pathname === '/') {
-                        const sectionId = item.href.replace('/#', '');
-                        scrollToSection(sectionId);
-                        setActiveSection(sectionId);
-                        window.history.pushState(null, '', item.href);
-                      } else {
-                        router.push('/');
-                        setTimeout(() => {
-                          const sectionId = item.href.replace('/#', '');
-                          scrollToSection(sectionId);
-                        }, 300);
-                      }
-                    }}
-                    className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
-                      isActive
-                        ? 'text-blue-400'
-                        : 'text-white/90 hover:text-blue-400'
-                    }`}
-                  >
-                    {t(`navItems.${item.key}`, 'navigation') || item.label}
-                  </a>
-                );
-              }
-              
-              // Pages en mobile (services, blog, home) - UTILISATION DE LINK
               return (
-                <Link
+                <a
                   key={item.key}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavigation(item.href);
+                  }}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                     isActive
                       ? 'text-blue-400'
@@ -300,7 +253,7 @@ export default function Navigation() {
                   }`}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}
-                </Link>
+                </a>
               );
             })}
           </div>
