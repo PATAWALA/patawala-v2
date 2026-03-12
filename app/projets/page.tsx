@@ -135,6 +135,7 @@ const ProjetsPage = memo(function ProjetsPage() {
             const Icon = projet.icon;
             const showImage = hasValidImage(projet.image);
             const translatedProjet = getTranslatedProject(projet);
+            const isInProgress = !showImage; // Les projets sans image sont considérés "en cours"
 
             return (
               <div
@@ -171,6 +172,13 @@ const ProjetsPage = memo(function ProjetsPage() {
                   <div className="absolute top-4 right-4 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-blue-400 border border-blue-500/20">
                     {translatedProjet.category}
                   </div>
+
+                  {/* Badge "En cours" pour les projets sans image */}
+                  {isInProgress && (
+                    <div className="absolute top-4 left-4 bg-amber-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white border border-amber-400/30 shadow-lg">
+                      En cours
+                    </div>
+                  )}
                 </div>
 
                 {/* Contenu - OPTIMISÉ */}

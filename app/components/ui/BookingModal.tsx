@@ -59,7 +59,7 @@ const COUNTRIES = [
   { code: 'TN', name: 'Tunisie', dialCode: '+216' },
 ] as const;
 
-const WHATSAPP_NUMBER = '22946495875';
+const WHATSAPP_NUMBER = '22962278090';
 
 export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const { t, language } = useLanguage();

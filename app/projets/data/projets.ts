@@ -24,6 +24,7 @@ export interface Project {
   solution?: string;    // Optionnel
   fonctionnalites?: string[];
   challenge?: string;   // Optionnel
+  status?: string;      // Nouveau champ pour le statut (optionnel)
 }
 
 export const projets: Project[] = [
@@ -37,7 +38,6 @@ export const projets: Project[] = [
     category: 'E-commerce',
     lien: '/projets/1',
     client: 'Collectif de créateurs africains',
-    // Pas de date - on ne l'affichera pas
     duree: '3 mois',
     objectif: 'Créer une plateforme e-commerce qui permet aux créateurs africains de vendre leurs produits à l\'international tout en proposant des moyens de paiement locaux (Mobile Money, Orange Money, etc.).',
     challenge: 'Intégrer plusieurs passerelles de paiement locales tout en maintenant une expérience utilisateur fluide et sécurisée.',
@@ -61,7 +61,6 @@ export const projets: Project[] = [
     category: 'Mobile',
     lien: '/projets/2',
     client: 'Startup de livraison de repas',
-    // Pas de date
     duree: '4 mois',
     objectif: 'Développer une application mobile de livraison de repas permettant aux utilisateurs de commander dans les restaurants locaux et de suivre leur commande en temps réel.',
     challenge: 'Optimiser le suivi en temps réel des livreurs tout en préservant l\'autonomie de la batterie.',
@@ -85,7 +84,6 @@ export const projets: Project[] = [
     category: 'SaaS',
     lien: '/projets/3',
     client: 'PME du secteur retail',
-    // Pas de date
     duree: '5 mois',
     objectif: 'Centraliser la gestion des opérations quotidiennes (facturation, stocks, relation client) dans une interface unique et intuitive.',
     challenge: 'Créer une interface simple mais puissante capable de gérer des données complexes en temps réel.',
@@ -109,7 +107,6 @@ export const projets: Project[] = [
     category: 'Web',
     lien: '/projets/4',
     client: 'Agence immobilière',
-    // Pas de date
     duree: '2 mois',
     objectif: 'Créer un site vitrine moderne pour présenter les biens immobiliers avec intégration de visites virtuelles et formulaire de contact.',
     challenge: 'Intégrer des visites virtuelles 360° sans compromettre les performances du site.',
@@ -133,7 +130,6 @@ export const projets: Project[] = [
     category: 'Mobile',
     lien: '/projets/5',
     client: 'Coach sportif indépendant',
-    // Pas de date
     duree: '1 mois',
     objectif: 'Permettre aux coachs de créer des programmes personnalisés et aux utilisateurs de suivre leurs séances et progrès.',
     challenge: 'Créer une expérience fluide hors-ligne avec synchronisation automatique.',
@@ -157,7 +153,6 @@ export const projets: Project[] = [
     category: 'Web',
     lien: '/projets/6',
     client: 'Organisme de formation',
-    // Pas de date
     duree: '2 mois',
     objectif: 'Créer une plateforme d\'apprentissage en ligne avec gestion des cours, quiz automatiques et génération de certificats.',
     challenge: 'Gérer des milliers d\'utilisateurs simultanés avec des contenus multimédias lourds.',
@@ -181,7 +176,6 @@ export const projets: Project[] = [
     category: 'Web',
     lien: '/projets/7',
     client: 'Solidarité+',
-    // Pas de date
     duree: '2.5 mois',
     objectif: 'Créer une plateforme de donation en ligne permettant de lancer des campagnes de crowdfunding et de suivre les dons en temps réel.',
     challenge: 'Mettre en place un système de dons récurrents et ponctuels avec une expérience utilisateur fluide et sécurisée.',
@@ -193,7 +187,8 @@ export const projets: Project[] = [
       'Témoignages et remerciements',
       'Certificats de don',
       'Dashboard administrateur'
-    ]
+    ],
+    status: 'En cours' // Ajout du statut pour les projets sans image
   },
   {
     id: 8,
@@ -205,7 +200,6 @@ export const projets: Project[] = [
     category: 'Mobile',
     lien: '/projets/8',
     client: 'MediCare',
-    // Pas de date
     duree: '1 mois',
     objectif: 'Développer une application web et mobile permettant aux patients de suivre leur traitement médical avec des rappels et de partager leurs données avec leurs médecins de façon sécurisée.',
     challenge: 'Garantir la sécurité des données médicales tout en offrant une expérience utilisateur simple et intuitive.',
@@ -229,7 +223,6 @@ export const projets: Project[] = [
     category: 'SaaS',
     lien: '/projets/9',
     client: 'LogiTech',
-    // Pas de date
     duree: '2 mois',
     objectif: 'Créer un ERP sur mesure pour gérer l\'ensemble des opérations logistiques : flotte de véhicules, commandes clients, tournées de livraison et reporting.',
     challenge: 'Coordonner les données en temps réel entre les livreurs, les gestionnaires de flotte et les clients.',
@@ -241,7 +234,8 @@ export const projets: Project[] = [
       'Gestion des stocks d\'entrepôt',
       'Reporting et analytics',
       'Interface pour livreurs (mobile)'
-    ]
+    ],
+    status: 'En cours' // Ajout du statut pour les projets sans image
   },
   {
     id: 10,
@@ -253,7 +247,6 @@ export const projets: Project[] = [
     category: 'E-commerce',
     lien: '/projets/10',
     client: 'Artisans du Monde',
-    // Pas de date
     duree: '1 mois',
     objectif: 'Lancer une marketplace permettant aux artisans locaux de vendre leurs créations en ligne avec une commission équitable et des outils de gestion simples.',
     challenge: 'Créer un système multi-vendeurs avec gestion des commissions, des stocks et des paiements séparés.',
@@ -265,6 +258,7 @@ export const projets: Project[] = [
       'Gestion des commandes et livraisons',
       'Dashboard vendeur avec statistiques',
       'Système de notation et avis'
-    ]
+    ],
+    status: 'En cours' 
   }
 ];

@@ -5,7 +5,7 @@ import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 // Constantes hors du composant
-const PHONE_NUMBER = '22946495875';
+const PHONE_NUMBER = '22962278090';
 const SUCCESS_DELAY = 2000;
 const MAX_MESSAGE_LENGTH = 1000;
 

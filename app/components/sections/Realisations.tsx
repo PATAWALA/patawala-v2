@@ -243,25 +243,6 @@ export default function RealisationsSection() {
               </div>
             </a>
           </div>
-
-          {/* Stats */}
-          <div className="flex justify-center mt-16">
-            <div className="flex flex-wrap justify-center gap-6 px-0 py-0 sm:px-8 sm:py-5 sm:bg-[#141B2B] sm:rounded-2xl sm:border sm:border-[#1F2937]">
-              <div className="flex flex-col items-center">
-                <span className="text-2xl font-black text-blue-400 tracking-tight">11+</span>
-                <span className="text-xs text-gray-300 font-medium">
-                  {t('stats.projects', 'realisations')}
-                </span>
-              </div>
-              <div className="w-px h-8 bg-gray-700 hidden sm:block" aria-hidden="true" />
-              <div className="flex flex-col items-center">
-                <span className="text-2xl font-black text-blue-400 tracking-tight">4.9</span>
-                <span className="text-xs text-gray-300 font-medium">
-                  {t('stats.rating', 'realisations')}
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
