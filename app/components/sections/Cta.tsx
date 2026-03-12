@@ -271,7 +271,7 @@ const CTASection = memo(function CTASection() {
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold text-center tracking-tight"
                       aria-label={`Appeler ${contactInfo.calls[1]}`}
                     >
-                      {t('buttons.call', 'contact') || 'Appeler'}
+                      {language === 'fr' ? 'Appeler' : 'Call'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.calls[0], contactInfo.calls[1])}
@@ -279,7 +279,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier ${contactInfo.calls[1]}`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact') || 'Copier'}
+                        {t('buttons.copy', 'contact')}
                       </span>
                     </button>
                   </div>
@@ -304,7 +304,7 @@ const CTASection = memo(function CTASection() {
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-bold text-center tracking-tight"
                       aria-label={`Appeler urgence ${contactInfo.emergency[1]}`}
                     >
-                      {t('buttons.call', 'contact') || 'Appeler'}
+                      {language === 'fr' ? 'Appeler' : 'Call'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.emergency[0], contactInfo.emergency[1])}
@@ -312,7 +312,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier ${contactInfo.emergency[1]}`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact') || 'Copier'}
+                        {t('buttons.copy', 'contact')}
                       </span>
                     </button>
                   </div>
@@ -358,7 +358,7 @@ const CTASection = memo(function CTASection() {
                       aria-label={`Copier l'adresse email`}
                     >
                       <span>
-                        {t('buttons.copy', 'contact') || 'Copier'}
+                        {t('buttons.copy', 'contact')}
                       </span>
                     </button>
                   </div>

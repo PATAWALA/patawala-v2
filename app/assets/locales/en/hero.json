@@ -1,17 +1,17 @@
 {
   "badge": "Specialized in web & mobile development",
-  "title": "Building",
+  "title": "Let's build",
   "typed": {
     "strings": [
       "your digital success.",
-      "a high-performance e-commerce.",
-      "the app that brings your ideas to life.", 
+      "a limitless e-commerce.",
+      "the app of your ideas.",
       "your custom business tool.",
       "a unique user experience."
     ]
   },
   "mobilePhrase": "your digital vision",
-  "subtitle": "From showcase sites to complex applications, I handle your digital projects from A to Z.",
+  "subtitle": "From showcase sites to complex applications, I bring your digital projects to life from idea to launch.",
   "socialProof": {
     "stars": "30+ satisfied entrepreneurs",
     "entrepreneurs": "Positive reviews"
@@ -21,11 +21,11 @@
     "portfolio": "See my work"
   },
   "badges": {
-    "multisupport": "Multi-device",
+    "multisupport": "Multi-support",
     "available": "Available"
   },
   "altImages": {
-    "avatar": "Happy client",
+    "avatar": "Satisfied client",
     "profile": "Abdoulaye Patawala - Web & mobile developer"
   }
 }
