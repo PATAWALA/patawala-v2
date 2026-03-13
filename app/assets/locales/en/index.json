@@ -1,0 +1,1316 @@
+{
+  "common": {
+    "brand": "Abdoulaye Patawala",
+    "role": "Full-Stack Developer",
+    "logo": "Patawala",
+    "buttons": {
+      "readMore": "Read more",
+      "close": "Close",
+      "back": "Back",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "send": "Send",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "next": "Next",
+      "loading": "Loading..."
+    },
+    "form": {
+      "required": "Required",
+      "optional": "Optional",
+      "submit": "Submit",
+      "success": "Success!",
+      "error": "Error"
+    },
+    "availability": {
+      "available": "Available",
+      "busy": "Busy",
+      "slots": "slots"
+    },
+    "language": {
+      "french": "Français",
+      "english": "English",
+      "change": "Change language",
+      "current": "Current language"
+    }
+  },
+
+  "navigation": {
+    "logo": "Patawala",
+    "navItems": {
+      "home": "Home",
+      "services": "Services",
+      "about": "About",
+      "projects": "Projects",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "servicesSubmenu": {
+      "web": "Web Development",
+      "mobile": "Mobile Apps",
+      "design": "UI/UX Design",
+      "consulting": "Tech Consulting"
+    },
+    "languageSwitcher": {
+      "ariaLabel": "Change language",
+      "french": "Français",
+      "english": "English"
+    },
+    "mobileMenu": {
+      "ariaLabel": "Menu"
+    },
+    "guideButton": {
+      "text": "Guide",
+      "ariaLabel": "Free guide"
+    },
+    "navbar": {
+      "home": "Home",
+      "services": "Services",
+      "about": "About",
+      "projects": "Projects",
+      "blog": "Blog",
+      "contact": "Contact",
+      "menu": "Menu",
+      "close": "Close",
+      "back": "Back"
+    },
+    "navbartop": {
+      "home": "Home",
+      "projects": "Projects",
+      "services": "Services",
+      "blog": "Blog",
+      "about": "About",
+      "contact": "Contact"
+    }
+  },
+
+  "hero": {
+    "badge": "Specialized in web & mobile development",
+    "title": "Building",
+    "typed": {
+      "strings": [
+        "your digital success.",
+        "a high-performance e-commerce.",
+        "the app that brings your ideas to life.",
+        "your custom business tool.",
+        "a unique user experience."
+      ]
+    },
+    "mobilePhrase": "your digital vision",
+    "subtitle": "From showcase sites to complex applications, I handle your digital projects from A to Z.",
+    "socialProof": {
+      "stars": "30+ satisfied entrepreneurs",
+      "entrepreneurs": "Positive reviews"
+    },
+    "buttons": {
+      "project": "Start my project",
+      "portfolio": "See my work"
+    },
+    "badges": {
+      "multisupport": "Multi-device",
+      "available": "Available"
+    },
+    "altImages": {
+      "avatar": "Happy client",
+      "profile": "Abdoulaye Patawala - Web & mobile developer"
+    }
+  },
+
+  "about": {
+    "badge": "Trusted Tech Partner",
+    "title": "I transform your ambitions",
+    "subtitle": "into high-performance digital assets",
+    "description": "My vision is based on a pragmatic approach: understanding your goals and real needs before any technical choice. A method that unfolds in four pillars.",
+    "whoami": "Who am I?",
+    "vision": {
+      "cards": [
+        {
+          "title": "Tech Consulting & Strategy",
+          "description": "Technology choices adapted to your budget and goals, for a risk-free launch with no hidden costs."
+        },
+        {
+          "title": "Long-term Partnership",
+          "description": "Tailored CTO support: I secure your technical choices and evolve your tools with your growth."
+        },
+        {
+          "title": "Innovation & Performance",
+          "description": "AI and modern architectures to automate your processes, boost your sales, and stand out."
+        },
+        {
+          "title": "Transparent Co-creation",
+          "description": "Your vision guided by my expertise: a fluid collaboration for robust and sustainable tools."
+        }
+      ]
+    },
+    "profile": {
+      "name": "Abdoulaye Patawala",
+      "role": "Full Stack Developer",
+      "missionText": "My role: to be the technical partner of your growth. From strategic platforms to complex ecosystems, I build robust, scalable tools designed to last.",
+      "badges": {
+        "webMobile": "Web & Mobile",
+        "available": "Available"
+      }
+    },
+    "buttons": {
+      "talk": "Contact me",
+      "services": "My offers"
+    }
+  },
+
+  "testimonials": {
+    "badge": "Successful projects",
+    "title": "They trust me",
+    "titleHighlight": "to build their solutions",
+    "subtitle": "Discover the feedback from those who chose a true technical partnership.",
+    "testimonials": [
+      {
+        "name": "John Smith",
+        "content": "My website is starting to bear fruit. Thank you for this support.",
+        "country": "USA"
+      },
+      {
+        "name": "Sarah Johnson",
+        "content": "Finally a site that reflects me. Lively, modern, effective.",
+        "country": "UK"
+      },
+      {
+        "name": "Michael Brown",
+        "content": "Impeccable service, delivered result. I recommend.",
+        "country": "Canada"
+      },
+      {
+        "name": "Emma Wilson",
+        "content": "A true partner who listens. Satisfied with the work done.",
+        "country": "Australia"
+      },
+      {
+        "name": "David Lee",
+        "content": "Polished site, attentive team. A great collaboration.",
+        "country": "Singapore"
+      },
+      {
+        "name": "Lisa Chen",
+        "content": "Fast, professional, attentive. Thank you for everything.",
+        "country": "China"
+      },
+      {
+        "name": "Robert Garcia",
+        "content": "Blind trust. Pleasant and efficient work.",
+        "country": "Spain"
+      },
+      {
+        "name": "Patricia Martin",
+        "content": "A site that finally reflects me. Thank you for your patience and attention.",
+        "country": "France"
+      }
+    ],
+    "autoScroll": {
+      "playing": "Auto-scrolling",
+      "paused": "Auto-scroll paused"
+    },
+    "projectTypes": {
+      "title": "Tailored support",
+      "startup": {
+        "title": "Startups & Scale-ups",
+        "description": "MVP development and solutions designed to scale",
+        "cta": "Discuss startup"
+      },
+      "sme": {
+        "title": "SMEs & Large companies",
+        "description": "Personalized support for your digital transformation",
+        "cta": "Discuss your needs"
+      }
+    }
+  },
+
+  "value": {
+    "badge": "Why work with me?",
+    "title": "A results-oriented",
+    "titleHighlight": "approach",
+    "subtitle": "Every project is designed to meet your objectives, with a focus on quality and performance.",
+    "benefits": [
+      {
+        "title": "Conversion optimization",
+        "description": "Interfaces designed to naturally guide your visitors toward the desired action.",
+        "features": [
+          "Optimized conversion rate",
+          "Smooth customer journey",
+          "Performance-oriented design"
+        ]
+      },
+      {
+        "title": "Reliability and security",
+        "description": "Robust infrastructure and secure development practices.",
+        "features": [
+          "Enhanced security",
+          "Automatic backups",
+          "Preventive maintenance"
+        ]
+      },
+      {
+        "title": "User experience",
+        "description": "Intuitive interfaces accessible on all devices.",
+        "features": [
+          "Simplified navigation",
+          "Perfect mobile adaptation",
+          "Enhanced accessibility"
+        ]
+      },
+      {
+        "title": "Technical performance",
+        "description": "Optimized sites for the best browsing experience.",
+        "features": [
+          "Reduced load times",
+          "Optimized natural referencing",
+          "Smooth user experience"
+        ]
+      }
+    ],
+    "cta": {
+      "discuss": "Discuss my project",
+      "services": "See my services"
+    },
+    "guarantees": {
+      "quote": "Free quote",
+      "response": "Response within 24h",
+      "commitment": "No obligation"
+    }
+  },
+
+  "tech": {
+    "badge": "Technical expertise",
+    "title": "Technologies",
+    "titleHighlight": "serving your ambitions",
+    "subtitle": "A rigorous selection of technologies, guided by the real needs of each project. Technology serves your vision, not the other way around.",
+    "techStack": [
+      {
+        "name": "Next.js / React",
+        "level": "Expert",
+        "desc": "Ultra-fast modern sites and complex web applications",
+        "expertise": [
+          "High-performance showcase sites",
+          "SaaS applications",
+          "Custom e-commerce"
+        ]
+      },
+      {
+        "name": "WordPress",
+        "level": "Expert",
+        "desc": "Easy-to-manage sites, blogs, shops and showcases",
+        "expertise": [
+          "Custom themes",
+          "WooCommerce",
+          "Performance optimization"
+        ]
+      },
+      {
+        "name": "Odoo / ERP",
+        "level": "Advanced",
+        "desc": "Business management, CRM, invoicing, inventory",
+        "expertise": [
+          "Custom modules",
+          "Automation",
+          "Integration"
+        ]
+      },
+      {
+        "name": "Systeme.io",
+        "level": "Intermediate",
+        "desc": "Marketing automation, sales funnels, all-in-one platform",
+        "expertise": [
+          "Sales funnels",
+          "Email marketing",
+          "Membership sites"
+        ]
+      },
+      {
+        "name": "Infrastructure & DevOps",
+        "level": "Advanced",
+        "desc": "Deployment, hosting, worry-free scaling",
+        "expertise": [
+          "Vercel / Netlify",
+          "AWS",
+          "CI/CD"
+        ]
+      },
+      {
+        "name": "Security & Performance",
+        "level": "Advanced",
+        "desc": "Secure and fast sites, your visitors will love them",
+        "expertise": [
+          "Enhanced security",
+          "Optimization",
+          "Monitoring"
+        ]
+      }
+    ],
+    "note": "Each project has its own requirements. My role is to choose the right tools to precisely meet your objectives, without ever sacrificing quality or maintainability.",
+    "cta": "Discuss my project",
+    "levelLabels": {
+      "expert": "Expert",
+      "advanced": "Advanced",
+      "intermediate": "Intermediate"
+    },
+    "mastery": "Mastery"
+  },
+
+  "contact": {
+    "badge": "Availability & Contact",
+    "title": "Let's discuss your project",
+    "titleHighlight": "I'm here to listen",
+    "subtitle": "A complex project or a simple question? Choose the channel that suits you best.",
+    "contactCards": {
+      "direct": {
+        "title": "Direct lines",
+        "calls": "Calls & SMS",
+        "emergency": "Project emergency"
+      },
+      "info": {
+        "title": "Info & Email",
+        "email": "Email",
+        "location": "Location"
+      }
+    },
+    "social": {
+      "title": "My other channels"
+    },
+    "guarantees": {
+      "firstExchange": "First exchange free",
+      "free30min": "30 min advice",
+      "noCommitment": "No commitment"
+    },
+    "buttons": {
+      "whatsapp": "WhatsApp direct",
+      "schedule": "Schedule a call",
+      "copy": "Copy"
+    },
+    "availability": {
+      "thisWeek": "This week:",
+      "slots": "slots available"
+    },
+    "contactInfo": {
+      "whatsapp": "+229 62 27 80 90",
+      "calls": "+229 62 27 80 90",
+      "emergency": "+229 46 49 58 75",
+      "email": "patawalaabdoulaye2003@gmail.com",
+      "location": "Cotonou, Benin"
+    }
+  },
+
+  "blog": {
+    "badge": "My blog",
+    "title": "Articles and",
+    "titleHighlight": "resources",
+    "subtitle": "Tips, tutorials and feedback on web development, design and digital entrepreneurship.",
+    "search": {
+      "placeholder": "Search for an article, a topic...",
+      "clear": "Clear"
+    },
+    "filters": {
+      "title": "Filter by category",
+      "all": "All",
+      "categories": {
+        "development": "Development",
+        "ecommerce": "E-commerce",
+        "mobile": "Mobile",
+        "design": "Design",
+        "seo": "SEO",
+        "security": "Security",
+        "startup": "Startup",
+        "productivity": "Productivity"
+      }
+    },
+    "featured": {
+      "title": "Featured articles",
+      "readMore": "Read",
+      "tags": {
+        "more": "+{{count}}"
+      }
+    },
+    "article": {
+      "publishedAt": "Published on",
+      "readTime": "{{time}} min read",
+      "by": "By",
+      "category": "Category",
+      "tags": "Tags",
+      "share": "Share",
+      "views": "views",
+      "likes": "likes",
+      "comments": "comments"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{current}} of {{total}}"
+    },
+    "newsletter": {
+      "title": "Don't miss any article",
+      "subtitle": "Receive new articles directly in your inbox",
+      "emailPlaceholder": "Your email",
+      "button": "Subscribe",
+      "footer": "📚 1 email per week. Easy unsubscribe."
+    },
+    "noResults": "No articles found for your search",
+    "tryAdjusting": "Try adjusting your filters or search"
+  },
+
+  "articles": {
+    "article1": {
+      "title": "Technical Architecture 2026: How to Choose the Stack That Prepares Your Company for Tomorrow's Challenges",
+      "excerpt": "Next.js 16, React 20, Remix, Astro or headless architectures? Discover how to make a strategic choice aligned with your growth objectives and the technological shifts of 2026.",
+      "category": "Development",
+      "tags": ["Next.js 16", "React 20", "Headless architecture", "Performance", "Scalability"],
+      "content": "..."
+    },
+    "article2": {
+      "title": "E-commerce in 2026: The Secrets of Sites That Convert in the Age of Generative AI",
+      "excerpt": "In-depth analysis of e-commerce strategies that generate conversion rates beyond standards, thanks to AI hyper-personalization and new consumer expectations.",
+      "category": "E-commerce",
+      "tags": ["Conversion", "UX", "Generative AI", "Personalization", "E-commerce 2026"],
+      "content": "..."
+    },
+    "article3": {
+      "title": "Mobile-first 2026: Why Your Site Must Be Designed for an Immersive Native Experience",
+      "excerpt": "With 78% of global web traffic coming from mobile in 2026, the traditional responsive approach is no longer enough. Discover the 'mobile-immersive' approach that transforms user experience.",
+      "category": "Mobile",
+      "tags": ["Mobile-first", "Mobile-immersive", "Mobile UX", "PWA", "Responsive 2026"],
+      "content": "..."
+    },
+    "article4": {
+      "title": "UI/UX Design 2026: Beyond Aesthetics, the Emotional Experience Augmented by AI",
+      "excerpt": "How emotional design, intelligent micro-interactions and generative AI are transforming the user-brand relationship. Case studies and 2026 data.",
+      "category": "Design",
+      "tags": ["UI", "UX", "Emotional design", "Micro-interactions", "Generative AI", "Accessibility"],
+      "content": "..."
+    },
+    "article5": {
+      "title": "Complete Guide to SEO in 2026: Adapting to the Age of Generative Search and AI Agents",
+      "excerpt": "With the generalization of ChatGPT Search, Perplexity, Google SGE and the emergence of autonomous AI agents, SEO has radically changed. Strategies to stay visible in 2026.",
+      "category": "SEO",
+      "tags": ["SEO 2026", "Generative AI", "Search Generative Experience", "AI Agents", "Core Web Vitals"],
+      "content": "..."
+    },
+    "article6": {
+      "title": "Automation and AI in 2026: Create Intelligent Workflows with Autonomous Agents",
+      "excerpt": "Discover how to combine AI agents, advanced automation and no-code systems to create business processes that run 24/7 and continuously improve.",
+      "category": "Productivity",
+      "tags": ["Automation", "AI Agents", "No-code", "Workflows", "Productivity 2026"],
+      "content": "..."
+    },
+    "article7": {
+      "title": "Web Design Trends 2026-2027: What Will Mark the Coming Years",
+      "excerpt": "Analysis of emerging trends: generative design, immersive 3D, variable typography, AI interface agents, and the impact of generative AI on creation.",
+      "category": "Design",
+      "tags": ["Design trends", "2026", "2027", "AI design", "3D web", "Predictive UX"],
+      "content": "..."
+    },
+    "article8": {
+      "title": "Web Security 2026: The 12 Critical Errors That Expose Your Site to New Threats",
+      "excerpt": "With cyberattacks up 95% in 3 years and the emergence of threats specifically targeting AI systems, protect your site and users by avoiding these flaws.",
+      "category": "Security",
+      "tags": ["Web security", "Cybersecurity 2026", "AI threats", "Protection", "Zero trust"],
+      "content": "..."
+    },
+    "article9": {
+      "title": "Launch Your MVP in 2026: The Lean Method Augmented by AI Agents",
+      "excerpt": "How to go from idea to minimum viable product in less than 21 days using no-code tools, generative AI and autonomous development agents.",
+      "category": "Startup",
+      "tags": ["MVP", "Lean startup", "No-code", "AI Agents", "Entrepreneurship 2026"],
+      "content": "..."
+    }
+  },
+
+  "articlesData": {
+    "article1": {
+      "title": "Technical Architecture 2025-2026: How to Choose the Right Stack for Your Web Project",
+      "excerpt": "Next.js 15, React 19, Remix, Astro or WordPress? Discover how to make a strategic choice aligned with your growth objectives, budget and market realities in 2025.",
+      "category": "Development",
+      "tags": ["Next.js 15", "React 19", "WordPress", "Architecture", "Performance"]
+    },
+    "article2": {
+      "title": "E-commerce in 2025: The Secrets of a Site That Converts in the Age of AI",
+      "excerpt": "In-depth analysis of an e-commerce site that increased conversions by 187% thanks to UX optimization, personalized AI and new consumer expectations.",
+      "category": "E-commerce",
+      "tags": ["Conversion", "UX", "AI", "Personalization", "E-commerce 2025"]
+    },
+    "article3": {
+      "title": "Mobile-first 2025: Why Your Site Must Be Designed for an Immersive Experience",
+      "excerpt": "With 72% of global web traffic coming from mobile in 2025, the responsive approach is no longer enough. Discover the 'mobile-immersive' approach.",
+      "category": "Mobile",
+      "tags": ["Mobile-first", "Mobile-immersive", "Mobile UX", "Responsive 2025"]
+    },
+    "article4": {
+      "title": "UI/UX Design 2025: Beyond Aesthetics, the Emotional Experience",
+      "excerpt": "How emotional design and micro-interactions transform customer loyalty. Case studies and 2025 data.",
+      "category": "Design",
+      "tags": ["UI", "UX", "Emotional design", "Micro-interactions", "Accessibility"]
+    },
+    "article5": {
+      "title": "Complete Guide to SEO in 2025: Adapting to the Age of AI and Conversational Search",
+      "excerpt": "With the rise of ChatGPT Search, Perplexity and SGE (Search Generative Experience), SEO has radically changed. Here's how to stay visible.",
+      "category": "SEO",
+      "tags": ["SEO 2025", "AI", "Search Generative Experience", "Core Web Vitals", "Referencing"]
+    },
+    "article6": {
+      "title": "Automation and AI in 2025: Create Intelligent Workflows That Free Up Your Time",
+      "excerpt": "Discover how to combine AI, no-code and automation to create business processes that run 24/7 without human intervention.",
+      "category": "Productivity",
+      "tags": ["Automation", "AI", "No-code", "Workflows", "Productivity 2025"]
+    },
+    "article7": {
+      "title": "Web Design Trends 2025-2026: What Will Mark the Coming Years",
+      "excerpt": "Analysis of emerging trends: generative design, lightweight 3D, variable typography, and the impact of AI on creation.",
+      "category": "Design",
+      "tags": ["Design trends", "2025", "2026", "AI design", "3D web"]
+    },
+    "article8": {
+      "title": "Web Security 2025: The 10 Critical Errors That Put Your Site at Risk",
+      "excerpt": "With cyberattacks up 78% in 2 years, protect your site and users by avoiding these common security flaws.",
+      "category": "Security",
+      "tags": ["Web security", "Cybersecurity 2025", "Protection", "Best practices"]
+    },
+    "article9": {
+      "title": "Launch Your MVP in 2025: The Lean Method Augmented by AI",
+      "excerpt": "How to go from idea to minimum viable product in less than 30 days using no-code tools and generative AI.",
+      "category": "Startup",
+      "tags": ["MVP", "Lean startup", "No-code", "AI", "Entrepreneurship 2025"]
+    }
+  },
+
+  "services": {
+    "badge": "Custom solutions",
+    "title": "Digital solutions",
+    "titleHighlight": "adapted to your needs",
+    "subtitle": "Websites, applications, design or consulting — I support you from idea to realization.",
+    "filters": {
+      "all": "All",
+      "web": "Web development",
+      "mobile": "Mobile apps",
+      "design": "Design & identity",
+      "consulting": "Consulting & audit",
+      "description": {
+        "all": "All my services for your digital presence",
+        "web": "Showcase sites, e-commerce and web applications, performant and scalable",
+        "mobile": "Native and hybrid apps for iOS, Android and tablets",
+        "design": "Visual identity, mockups and redesign for a professional image",
+        "consulting": "Digital strategy, technical audit and personalized support"
+      }
+    },
+    "card": {
+      "popular": "Popular",
+      "from": "From",
+      "hourly": "/h",
+      "features": {
+        "more": "+{{count}} additional features"
+      },
+      "cta": "Learn more"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "To clarify how I work",
+      "items": [
+        {
+          "question": "What is the average duration of a project?",
+          "answer": "Each project progresses at its own pace. Allow 1 to 2 weeks for a showcase site, 3 to 6 weeks for an e-commerce site, and 2 to 4 months for a custom application. The essential thing? A result that truly reflects you, without compromising on quality."
+        },
+        {
+          "question": "What if I'm not satisfied with the result?",
+          "answer": "Your satisfaction is my only finish line. If a detail doesn't suit you, I'll improve it without limit until the result exceeds your expectations. That's why my partners are so enthusiastic about my work."
+        },
+        {
+          "question": "Do you provide follow-up after delivery?",
+          "answer": "Absolutely. One month of support is included to accompany you after launch. And if needed, maintenance plans are available to ensure the longevity of your project."
+        },
+        {
+          "question": "Can I make changes during the project?",
+          "answer": "Of course! We work in stages with regular validation points. Your project evolves with your ideas, and I adapt so that it remains perfectly aligned with your vision."
+        },
+        {
+          "question": "How much do your services cost?",
+          "answer": "Each project is unique. I provide a personalized quote after understanding your needs, objectives and scope. This guarantees a solution perfectly adapted to your vision and budget."
+        },
+        {
+          "question": "How does the first exchange work?",
+          "answer": "Free and with no obligation, it lasts about 30 minutes. It's the ideal time to discuss your goals, your ideas, and see together if our collaboration makes sense."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Can't find what you're looking for?",
+      "button": "Discuss my project"
+    },
+    "disclaimer": "* Each project is unique and receives a personalized quote."
+  },
+
+  "servicesData": {
+    "badge": "Custom solutions",
+    "title": "Digital solutions",
+    "titleHighlight": "adapted to your needs",
+    "subtitle": "Websites, applications, design or consulting — I support you from idea to realization.",
+    "filters": {
+      "all": "All",
+      "web": "Websites",
+      "mobile": "Applications",
+      "design": "Design & UX",
+      "consulting": "Consulting & Strategy",
+      "ecommerce": "E-commerce",
+      "maintenance": "Maintenance",
+      "description": {
+        "all": "Discover all my services for your digital presence",
+        "web": "Showcase sites to complex web applications, performant and scalable",
+        "mobile": "Native and hybrid apps for iOS and Android",
+        "design": "Intuitive interfaces and memorable user experiences",
+        "consulting": "Technical and strategic consulting for your digital projects",
+        "ecommerce": "Online stores optimized for conversion",
+        "maintenance": "Monitoring, updates and ongoing technical support"
+      }
+    },
+    "card": {
+      "popular": "Popular",
+      "features": {
+        "more": "+{{count}} additional features"
+      }
+    },
+    "services": {
+      "site-vitrine": {
+        "title": "Showcase website",
+        "shortDesc": "Present your business with a professional website",
+        "description": "An elegant and functional site to present your company, services and achievements.",
+        "ctaText": "Create my site",
+        "features": [
+          "Custom design",
+          "Mobile optimized",
+          "Unlimited pages",
+          "Contact form",
+          "Photo gallery",
+          "Easy updates"
+        ]
+      },
+      "site-ecommerce": {
+        "title": "E-commerce website",
+        "shortDesc": "Sell your products online simply",
+        "description": "A complete online store to sell your products and manage your orders with ease.",
+        "ctaText": "Launch my store",
+        "features": [
+          "Product catalog",
+          "Shopping cart",
+          "Secure payments",
+          "Inventory management",
+          "Customer orders",
+          "Dashboard"
+        ]
+      },
+      "application-web": {
+        "title": "Web application",
+        "shortDesc": "Online tools adapted to your needs",
+        "description": "A custom web application to automate your processes and manage your activity.",
+        "ctaText": "Develop my app",
+        "features": [
+          "Member area",
+          "Data management",
+          "Admin interface",
+          "Notifications",
+          "Dashboards",
+          "Data export"
+        ]
+      },
+      "plateforme-sur-mesure": {
+        "title": "Custom platform",
+        "shortDesc": "A unique solution for your specific activity",
+        "description": "A fully personalized platform to meet complex and specific needs.",
+        "ctaText": "Discuss my project",
+        "features": [
+          "Custom features",
+          "Scalable architecture",
+          "Advanced security",
+          "Maintenance included",
+          "Team training",
+          "Priority support"
+        ]
+      },
+      "app-ios-android": {
+        "title": "iOS & Android app",
+        "shortDesc": "An app for all your users",
+        "description": "A native or hybrid application available on iPhone and Android.",
+        "ctaText": "Create my app",
+        "features": [
+          "iOS/Android compatible",
+          "Mobile design",
+          "Push notifications",
+          "Offline mode",
+          "Automatic updates",
+          "Usage statistics"
+        ]
+      },
+      "app-reservation": {
+        "title": "Booking app",
+        "shortDesc": "Take your appointments easily",
+        "description": "An application to manage your reservations, appointments and schedule.",
+        "ctaText": "Manage my bookings",
+        "features": [
+          "Appointment booking",
+          "Synchronized calendar",
+          "Automatic reminders",
+          "Online payment",
+          "Cancellation management",
+          "Pro dashboard"
+        ]
+      },
+      "app-entreprise": {
+        "title": "Business app",
+        "shortDesc": "All your business tools in your pocket",
+        "description": "A private application for your teams: communication, tasks, documents.",
+        "ctaText": "Equip my team",
+        "features": [
+          "Secure private space",
+          "Team messaging",
+          "Document sharing",
+          "Task management",
+          "Notifications",
+          "Offline mode"
+        ]
+      },
+      "identite-visuelle": {
+        "title": "Visual identity",
+        "shortDesc": "A strong and consistent image",
+        "description": "Create a visual identity that reflects you: logo, colors, typography.",
+        "ctaText": "Create my identity",
+        "features": [
+          "Logo creation",
+          "Graphic charter",
+          "Color palette",
+          "Typography choices",
+          "Business cards",
+          "Social media kit"
+        ]
+      },
+      "maquettes-site": {
+        "title": "Website mockups",
+        "shortDesc": "Visualize your site before development",
+        "description": "Clear mockups to see the final result and validate the ergonomics.",
+        "ctaText": "Visualize my site",
+        "features": [
+          "Functional zoning",
+          "Page-by-page design",
+          "Mobile version included",
+          "Clickable prototypes",
+          "Unlimited modifications",
+          "Files ready for dev"
+        ]
+      },
+      "redesign": {
+        "title": "Design redesign",
+        "shortDesc": "Give your site a facelift",
+        "description": "Modernize the appearance of your existing site for more professionalism.",
+        "ctaText": "Modernize my site",
+        "features": [
+          "Current design analysis",
+          "Modernization proposal",
+          "Ergonomics improvement",
+          "Visual harmonization",
+          "Mobile adaptation",
+          "Conversion optimization"
+        ]
+      },
+      "audit-site": {
+        "title": "Site audit",
+        "shortDesc": "Identify areas for improvement",
+        "description": "A complete analysis of your site to improve performance and visibility.",
+        "ctaText": "Audit my site",
+        "features": [
+          "Performance analysis",
+          "Complete SEO audit",
+          "Security check",
+          "Mobile compatibility",
+          "Detailed report",
+          "Recommendations"
+        ]
+      },
+      "accompagnement": {
+        "title": "Strategic support",
+        "shortDesc": "An expert by your side",
+        "description": "Advice and support to define your digital strategy and priorities.",
+        "ctaText": "Get supported",
+        "features": [
+          "Needs analysis",
+          "Priority definition",
+          "Technology choices",
+          "Action plan",
+          "Monthly follow-up",
+          "Adjustments"
+        ]
+      },
+      "formation": {
+        "title": "Training",
+        "shortDesc": "Level up your skills",
+        "description": "Personalized training to master the tools and technologies adapted to your needs.",
+        "ctaText": "Train me",
+        "features": [
+          "Custom program",
+          "Practical exercises",
+          "Course materials",
+          "Post-training follow-up",
+          "Small groups",
+          "Certificate"
+        ]
+      }
+    }
+  },
+
+  "projetsPage": {
+    "badge": "Projects",
+    "title": "Some projects",
+    "titleHighlight": "I've supported",
+    "subtitle": "A selection of sites and applications designed to meet specific needs.",
+    "card": {
+      "learnMore": "Learn more",
+      "tags": {
+        "more": "+{{count}}"
+      }
+    },
+    "buttons": {
+      "viewAll": "See all projects",
+      "backToHome": "Back to home",
+      "discuss": "Discuss my project"
+    },
+    "footer": {
+      "note": "* Each project is unique and involved close collaboration with the client"
+    },
+    "altImage": "Project image {{title}}"
+  },
+
+  "projetsData": {
+    "badge": "Achievements",
+    "title": "Projects",
+    "titleHighlight": "supported",
+    "subtitle": "A selection of websites and applications designed to meet various needs, from MVP to large-scale projects.",
+    "card": {
+      "learnMore": "Learn more",
+      "tags": {
+        "more": "+{{count}}"
+      }
+    },
+    "buttons": {
+      "backToHome": "Back to home",
+      "discuss": "Discuss my project"
+    },
+    "footer": {
+      "note": "* Each project is unique and involved close collaboration with the client"
+    },
+    "altImage": "Project image {{title}}",
+    "projects": [
+      {
+        "id": 1,
+        "title": "African Fashion E-commerce",
+        "description": "Online sales platform for African creators with local payments",
+        "category": "E-commerce",
+        "tags": ["Next.js", "Stripe", "Tailwind"],
+        "duration": "3 months",
+        "objective": "Create an e-commerce platform that allows African creators to sell their products internationally while offering local payment methods (Mobile Money, Orange Money, etc.).",
+        "challenge": "Integrate multiple local payment gateways while maintaining a smooth and secure user experience.",
+        "solution": "Development of a custom solution with Next.js for the frontend and integration of multiple payment gateways adapted to the African market. Intuitive interface for creators and smooth shopping experience for customers.",
+        "features": [
+          "Product catalog with advanced filters",
+          "Persistent shopping cart",
+          "Multiple payments (card, Mobile Money)",
+          "Seller dashboard with statistics",
+          "Order and delivery management",
+          "Customer space with history"
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Delivery App",
+        "description": "Food delivery app with real-time tracking",
+        "category": "Mobile",
+        "tags": ["React Native", "Node.js", "MongoDB"],
+        "duration": "4 months",
+        "objective": "Develop a mobile food delivery application allowing users to order from local restaurants and track their order in real time.",
+        "challenge": "Optimize real-time tracking of delivery personnel while preserving battery life.",
+        "solution": "Cross-platform application with React Native, REST API with Node.js and MongoDB database. Integration of mapping for delivery tracking and push notification system.",
+        "features": [
+          "Restaurant geolocation",
+          "Order placement",
+          "Real-time delivery tracking",
+          "Online payment",
+          "Rating system",
+          "Push notifications"
+        ]
+      },
+      {
+        "id": 3,
+        "title": "SME Management Dashboard",
+        "description": "Complete management tool for SMEs (invoices, inventory, clients)",
+        "category": "SaaS",
+        "tags": ["Vue.js", "Laravel", "MySQL"],
+        "duration": "5 months",
+        "objective": "Centralize daily operations management (invoicing, inventory, customer relations) in a single, intuitive interface.",
+        "challenge": "Create a simple yet powerful interface capable of handling complex data in real time.",
+        "solution": "Progressive web application with Vue.js for the user interface and Laravel for the backend API. MySQL database optimized for complex reporting queries.",
+        "features": [
+          "Invoice and quote management",
+          "Real-time inventory tracking",
+          "Integrated CRM",
+          "Customizable dashboards",
+          "Report export",
+          "Multi-user management"
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Real Estate Showcase Site",
+        "description": "Site for real estate agency with virtual tours",
+        "category": "Web",
+        "tags": ["WordPress", "Elementor", "Maps API"],
+        "duration": "2 months",
+        "objective": "Create a modern showcase site to present real estate properties with integrated virtual tours and contact form.",
+        "challenge": "Integrate 360° virtual tours without compromising site performance.",
+        "solution": "WordPress site with Elementor for an attractive visual interface. Integration of Google Maps API for property location and virtual tour plugin.",
+        "features": [
+          "Property catalog with filters",
+          "360° virtual tours",
+          "Contact form",
+          "Map location",
+          "Real estate blog",
+          "Agent space"
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Fitness App",
+        "description": "Sports coaching app with performance tracking",
+        "category": "Mobile",
+        "tags": ["Next.js", "Firebase", "GraphQL"],
+        "duration": "1 month",
+        "objective": "Allow coaches to create personalized programs and users to track their sessions and progress.",
+        "challenge": "Create a smooth offline experience with automatic synchronization.",
+        "solution": "Web application, Firebase for authentication and real-time data, GraphQL for optimized queries.",
+        "features": [
+          "Personalized programs",
+          "Session tracking",
+          "Progress statistics",
+          "Exercise videos",
+          "Chat with coach",
+          "Reminder notifications"
+        ]
+      },
+      {
+        "id": 6,
+        "title": "E-learning Platform",
+        "description": "Online course platform with quizzes and certifications",
+        "category": "Web",
+        "tags": ["React", "Django", "PostgreSQL"],
+        "duration": "2 months",
+        "objective": "Create an online learning platform with course management, automatic quizzes and certificate generation.",
+        "challenge": "Handle thousands of simultaneous users with heavy multimedia content.",
+        "solution": "React frontend with Redux for state management, Django REST framework backend, PostgreSQL database. Interactive quiz system and automatic PDF generation for certificates.",
+        "features": [
+          "Course catalog",
+          "Integrated video player",
+          "Interactive quizzes",
+          "Downloadable certificates",
+          "Progress tracking",
+          "Learner and trainer space"
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Charity Association Site",
+        "description": "Donation site with crowdfunding campaign and real-time donation tracking.",
+        "category": "Web",
+        "tags": ["Next.js", "Stripe", "Tailwind", "Prisma"],
+        "duration": "2.5 months",
+        "objective": "Create an online donation platform allowing crowdfunding campaigns and real-time donation tracking.",
+        "challenge": "Set up a system for recurring and one-time donations with a smooth and secure user experience.",
+        "solution": "Development with Next.js for frontend and API, Stripe integration for payments, and Prisma for data management. Intuitive interface with real-time campaign tracking.",
+        "features": [
+          "Campaign creation and management",
+          "One-time and recurring donations",
+          "Real-time collection tracking",
+          "Testimonials and acknowledgments",
+          "Donation certificates",
+          "Admin dashboard"
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Health App",
+        "description": "Medical tracking app with medication reminders and secure data sharing.",
+        "category": "Mobile",
+        "tags": ["React Native", "Next.js", "Node.js", "MongoDB", "JWT"],
+        "duration": "1 month",
+        "objective": "Develop a web and mobile application allowing patients to track their medical treatment with reminders and securely share their data with their doctors.",
+        "challenge": "Ensure the security of medical data while offering a simple and intuitive user experience.",
+        "solution": "React Native application with JWT authentication, Node.js backend and MongoDB. Encryption of sensitive data and push notification system for reminders.",
+        "features": [
+          "Secure patient profile",
+          "Personalized medication reminders",
+          "Digital health record",
+          "Data sharing with doctors",
+          "Treatment history",
+          "Push notifications"
+        ]
+      },
+      {
+        "id": 9,
+        "title": "ERP for Logistics",
+        "description": "Logistics management system with fleet tracking, order management and reporting.",
+        "category": "SaaS",
+        "tags": ["Vue.js", "Laravel", "MySQL", "WebSockets"],
+        "duration": "2 months",
+        "objective": "Create a custom ERP to manage all logistics operations: vehicle fleet, customer orders, delivery routes and reporting.",
+        "challenge": "Coordinate real-time data between delivery personnel, fleet managers and customers.",
+        "solution": "Web application with Vue.js for the interface, Laravel for the API and WebSockets for real-time updates. Customizable dashboards and advanced reporting system.",
+        "features": [
+          "Real-time fleet management",
+          "Route planning",
+          "Order tracking",
+          "Warehouse inventory management",
+          "Reporting and analytics",
+          "Interface for delivery personnel (mobile)"
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Craft Marketplace",
+        "description": "Marketplace for local artisans with seller management and secure payments.",
+        "category": "E-commerce",
+        "tags": ["Next.js", "Stripe", "PostgreSQL", "Redis"],
+        "duration": "1 month",
+        "objective": "Launch a marketplace allowing local artisans to sell their creations online with fair commission and simple management tools.",
+        "challenge": "Create a multi-vendor system with commission management, inventory and separate payments.",
+        "solution": "Development with Next.js for frontend and API, Stripe Connect for multi-vendor payments, PostgreSQL for data and Redis for cache. Intuitive seller dashboard and product moderation system.",
+        "features": [
+          "Store registration and management",
+          "Product catalog with advanced search",
+          "Secure payments (Stripe Connect)",
+          "Order and delivery management",
+          "Seller dashboard with statistics",
+          "Rating and review system"
+        ]
+      }
+    ]
+  },
+
+  "projectModal": {
+    "close": "Close",
+    "category": "Category",
+    "sections": {
+      "objective": "Objective",
+      "challenge": "Challenge overcome",
+      "solution": "Solution provided",
+      "features": "Key features"
+    },
+    "buttons": {
+      "discuss": "Discuss a similar project"
+    },
+    "altImage": "Project image {{title}}"
+  },
+
+  "booking": {
+    "badge": "30 minutes free",
+    "title": {
+      "step1": "Book your discovery call",
+      "step2": "Finalize your booking"
+    },
+    "subtitle": {
+      "step1": "Choose the date that suits you",
+      "step2": "Leave your contact details"
+    },
+    "infoMessage": {
+      "title": "Schedule our meeting according to your availability.",
+      "instruction": "First choose your date, then indicate the time that suits you.",
+      "confirmation": "I will personally confirm your slot upon receipt of your request."
+    },
+    "calendar": {
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "weekDays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "selectDate": "Select {{date}}"
+    },
+    "timeSelection": {
+      "label": "Indicate the appointment time:",
+      "placeholder": "Ex: 2:30 PM, 5 PM, 8 PM, 09:45...",
+      "examples": ["2 PM", "3:30 PM", "5:45 PM", "8 PM", "9:15 PM"],
+      "continue": "Continue",
+      "confirmDate": "Date selected!",
+      "confirmDateMessage": "Now, indicate the time that suits you",
+      "noDateMessage": "Choose a date in the calendar"
+    },
+    "summary": {
+      "title": "Summary of your appointment:"
+    },
+    "contactMethod": {
+      "label": "How would you like to be contacted?",
+      "whatsapp": "WhatsApp",
+      "email": "Email",
+      "whatsappDescription": "Free - Your request will be sent directly via WhatsApp",
+      "emailDescription": "Free - I will reply by email"
+    },
+    "form": {
+      "name": {
+        "label": "Your first name / name",
+        "placeholder": "Ex: John Doe",
+        "error": "Please enter your name"
+      },
+      "email": {
+        "label": "Your email",
+        "placeholder": "example@email.com",
+        "error": "Valid email required"
+      },
+      "phone": {
+        "label": "WhatsApp number",
+        "placeholder": "XX XX XX XX",
+        "error": "Please enter your number"
+      },
+      "message": {
+        "label": "Tell me about your project (optional)",
+        "placeholder": "Website, mobile app, custom tool... Tell me everything!"
+      }
+    },
+    "confirmationMessage": {
+      "whatsapp": "By clicking \"Confirm\", you will be redirected to WhatsApp. Free and no obligation.",
+      "email": "By clicking \"Confirm\", I will reply by email. Free and no obligation."
+    },
+    "buttons": {
+      "back": "Back",
+      "confirm": "Confirm",
+      "confirmed": "Appointment confirmed!",
+      "close": "Close"
+    },
+    "countries": {
+      "FR": "France",
+      "BE": "Belgium",
+      "CH": "Switzerland",
+      "LU": "Luxembourg",
+      "MC": "Monaco",
+      "CA": "Canada",
+      "CI": "Ivory Coast",
+      "SN": "Senegal",
+      "CM": "Cameroon",
+      "BF": "Burkina Faso",
+      "BJ": "Benin",
+      "TG": "Togo",
+      "ML": "Mali",
+      "NE": "Niger",
+      "GN": "Guinea",
+      "US": "United States",
+      "GB": "United Kingdom",
+      "DE": "Germany",
+      "IT": "Italy",
+      "ES": "Spain",
+      "PT": "Portugal",
+      "NL": "Netherlands",
+      "MA": "Morocco",
+      "DZ": "Algeria",
+      "TN": "Tunisia"
+    }
+  },
+
+  "realisations": {
+    "badge": "Achievements",
+    "title": "Projects",
+    "titleHighlight": "supported",
+    "subtitle": "A selection of websites and applications designed to meet various needs, from MVP to large-scale projects.",
+    "card": {
+      "learnMore": "Learn more",
+      "tags": {
+        "more": "+{{count}}"
+      }
+    },
+    "buttons": {
+      "viewAll": "See all projects",
+      "backToHome": "Back to home",
+      "discuss": "Discuss my project"
+    },
+    "footer": {
+      "note": "* Each project is unique and involved close collaboration with the client"
+    },
+    "altImage": "Project image {{title}}",
+    "stats": {
+      "projects": "Projects delivered",
+      "rating": "Average rating"
+    },
+    "categories": {
+      "ecommerce": "E-commerce",
+      "mobile": "Mobile",
+      "saas": "SaaS",
+      "web": "Web"
+    }
+  },
+
+  "footer": {
+    "role": "Full-Stack Developer",
+    "description": "Full-stack developer specialized in creating high-performance web applications and memorable user experiences.",
+    "badge": {
+      "available": "Available",
+      "opensource": "Open Source",
+      "remote": "Remote"
+    },
+    "quickLinks": "Quick links",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+
+  "widget": {
+    "button": {
+      "ariaLabel": "Open WhatsApp chat",
+      "title": "Contact via WhatsApp"
+    },
+    "header": {
+      "title": "WhatsApp Direct",
+      "subtitle": "Response within 24h",
+      "closeAriaLabel": "Close"
+    },
+    "body": {
+      "welcomeMessage": "👋 Send me a message directly on WhatsApp. I'll get back to you as soon as possible.",
+      "messageLabel": "Your message",
+      "messagePlaceholder": "Hello, I'd like to discuss my project...",
+      "messageAriaLabel": "Your message",
+      "characterCount": "{count}/1000"
+    },
+    "success": {
+      "message": "Message ready! WhatsApp will open."
+    },
+    "buttonStates": {
+      "sending": "Preparing...",
+      "success": "Ready!",
+      "send": "Send"
+    },
+    "footer": {
+      "note": "By clicking \"Send\", you will be redirected to WhatsApp. No data is stored."
+    }
+  },
+
+  "notFound": {
+    "title": "Oops! Page not found",
+    "message": "The page you're looking for doesn't exist or has been moved.",
+    "suggestions": {
+      "title": "What to do now?",
+      "home": {
+        "title": "Homepage",
+        "description": "Return to homepage"
+      },
+      "projects": {
+        "title": "My projects",
+        "description": "Discover my work"
+      },
+      "contact": {
+        "title": "Contact me",
+        "description": "Discuss your project"
+      }
+    },
+    "backButton": "Back to previous page"
+  },
+
+  "merci": {
+    "title": "Thank you!",
+    "confirmation": "Your newsletter subscription has been successfully recorded.",
+    "message": "You will now receive an email for each new article published on the blog.",
+    "backButton": "Back to home",
+    "footer": "If you don't receive our emails, please check your spam folder."
+  }
+}
