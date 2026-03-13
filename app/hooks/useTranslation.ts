@@ -27,40 +27,77 @@ const componentToSection: Record<string, string> = {
   'ProjetsData': 'projets-data',
   'WhatsAppWidget': 'widget',
   'NotFound': 'not-found',
-  'MerciPage': 'merci'  // AJOUT POUR LA PAGE MERCI
+  'MerciPage': 'merci'
 };
 
 export function useTranslation() {
   const { t: contextT, language, isLoading } = useLanguage();
   
-  // Fonction de traduction principale - retourne toujours une string
-  const t = (key: string, forcedSection?: string): string => {
+  /**
+   * Fonction de traduction principale
+   * @param key - Clé de traduction (ex: "hero.title" ou "typed.strings")
+   * @param forcedSection - Section forcée (optionnel)
+   * @returns La traduction (string, objet ou tableau)
+   */
+  const t = (key: string, forcedSection?: string): any => {
     const result = forcedSection 
       ? contextT(key, forcedSection)
       : contextT(key, 'common');
     
-    // Si le résultat est undefined, retourner la clé comme fallback
+    // Retourne la clé comme fallback si pas de traduction
     return result ?? key;
   };
 
-  // Fonction pour obtenir la traduction basée sur le composant
+  /**
+   * Raccourci pour récupérer un tableau de strings
+   * @param key - Clé du tableau (ex: "typed.strings")
+   * @param forcedSection - Section forcée (optionnel)
+   * @returns Tableau de strings ou tableau vide
+   */
+  const tArray = (key: string, forcedSection?: string): string[] => {
+    const result = t(key, forcedSection);
+    return Array.isArray(result) ? result : [];
+  };
+
+  /**
+   * Traduction spécifique à un composant
+   * @param componentName - Nom du composant
+   * @param key - Clé de traduction
+   * @returns La traduction ou la clé
+   */
   const getComponentTranslation = (componentName: string, key: string): string => {
     const section = componentToSection[componentName] || 'common';
     const result = contextT(key, section);
     return result ?? key;
   };
 
-  // Fonction pour obtenir une traduction avec paramètres (ex: {count})
+  /**
+   * Traduction avec paramètres (interpolation)
+   * @param key - Clé de traduction
+   * @param params - Paramètres à injecter (ex: { count: 5 })
+   * @param forcedSection - Section forcée (optionnel)
+   * @returns La traduction avec les paramètres injectés
+   */
   const tWithParams = (key: string, params: Record<string, string | number>, forcedSection?: string): string => {
     let text = t(key, forcedSection);
     
+    // Si le texte est la clé, retourner directement
+    if (text === key) return key;
+    
     // Remplacer les paramètres dans le texte
     Object.entries(params).forEach(([param, value]) => {
-      text = text.replace(new RegExp(`{${param}}`, 'g'), String(value));
+      text = text.replace(new RegExp(`{{?${param}}?}`, 'g'), String(value));
     });
     
     return text;
   };
 
-  return { t, language, isLoading, getComponentTranslation, tWithParams };
+  return { 
+    t, 
+    tArray,
+    language, 
+    isLoading, 
+    getComponentTranslation, 
+    tWithParams 
+  };
 }

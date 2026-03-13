@@ -20,23 +20,35 @@ interface ArticlePageProps {
 }
 
 export default function ArticlePage({ params }: ArticlePageProps) {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   const baseArticle = getArticleBySlug(params.slug);
   const [fontSize, setFontSize] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
 
   if (!baseArticle) {
     notFound();
   }
 
-  // Appliquer les traductions à l'article - MÉMOÏSÉ
+  // Appliquer les traductions à l'article - CORRIGÉ
   const article = useMemo(() => {
+    if (!isReady) return baseArticle;
+    
     const key = `article${baseArticle.id}`;
-    const translatedTitle = t(`${key}.title`, 'articlesData');
-    const translatedExcerpt = t(`${key}.excerpt`, 'articlesData');
-    const translatedCategory = t(`${key}.category`, 'articlesData');
-    const translatedTags = t(`${key}.tags`, 'articlesData');
-    const translatedContent = t(`${key}.content`, 'articlesData');
+    
+    // Récupérer depuis 'articles' pour le contenu complet
+    const translatedTitle = t(`${key}.title`, 'articles');
+    const translatedExcerpt = t(`${key}.excerpt`, 'articles');
+    const translatedCategory = t(`${key}.category`, 'articles');
+    const translatedTags = t(`${key}.tags`, 'articles');
+    const translatedContent = t(`${key}.content`, 'articles');
 
     return {
       ...baseArticle,
@@ -46,26 +58,28 @@ export default function ArticlePage({ params }: ArticlePageProps) {
       tags: Array.isArray(translatedTags) ? translatedTags : baseArticle.tags,
       content: typeof translatedContent === 'string' ? translatedContent : baseArticle.content,
     };
-  }, [baseArticle, t, language]);
+  }, [baseArticle, t, language, isReady]);
 
-  // Articles similaires traduits - MÉMOÏSÉ
+  // Articles similaires traduits - CORRIGÉ (utilise 'articles' pour les titres)
   const baseRelated = useMemo(() => 
     getRelatedArticles(article.id, article.category, 3),
     [article.id, article.category]
   );
   
   const relatedArticles = useMemo(() => {
+    if (!isReady) return baseRelated;
+    
     return baseRelated.map(related => {
       const key = `article${related.id}`;
-      const translatedTitle = t(`${key}.title`, 'articlesData');
+      const translatedTitle = t(`${key}.title`, 'articles');
       return {
         ...related,
         title: typeof translatedTitle === 'string' ? translatedTitle : related.title,
       };
     });
-  }, [baseRelated, t, language]);
+  }, [baseRelated, t, language, isReady]);
 
-  // Handlers - MÉMOÏSÉS
+  // Handlers
   const increaseFont = useCallback(() => {
     setFontSize(prev => Math.min(prev + 10, 200));
   }, []);
@@ -98,7 +112,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   const whatsappLink = 'https://wa.me/22962278090';
 
-  // Labels traduits - MÉMOÏSÉS
+  // Labels traduits
   const labels = useMemo(() => ({
     backToBlog: t('backToBlog', 'blog') || 'Retour au blog',
     whatsappMessage: t('whatsappMessage', 'blog') || 'Envoyer un message WhatsApp',
@@ -109,13 +123,78 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     fullscreen: t('fullscreen', 'blog') || 'Lecture plein écran',
     relatedArticles: t('relatedArticles', 'blog') || 'Articles similaires',
     readMore: t('readMore', 'blog') || 'Lire'
-  }), [t]);
+  }), [t, isReady]);
+
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
+          {/* Bouton retour skeleton */}
+          <div className="mb-4 sm:mb-6 md:mb-8">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
+          </div>
+
+          {/* Image skeleton */}
+          <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10 bg-gray-800/50 animate-pulse" />
+
+          {/* En-tête skeleton */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8">
+            <div className="flex-1 space-y-4">
+              <div className="w-32 h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-3/4 h-8 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-2/3 h-6 bg-gray-800/50 rounded animate-pulse" />
+              <div className="flex gap-2">
+                <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+                <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
+              </div>
+            </div>
+            <div className="lg:w-80 xl:w-96">
+              <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/50 rounded-xl">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700/50 rounded-full animate-pulse" />
+                  <div className="space-y-2">
+                    <div className="w-24 h-4 bg-gray-700/50 rounded animate-pulse" />
+                    <div className="w-16 h-3 bg-gray-700/50 rounded animate-pulse" />
+                  </div>
+                </div>
+                <div className="w-16 h-8 bg-gray-700/50 rounded-lg animate-pulse" />
+              </div>
+            </div>
+          </div>
+
+          {/* Barre d'outils skeleton */}
+          <div className="flex justify-end gap-2 mb-4 sm:mb-6">
+            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+          </div>
+
+          {/* Contenu skeleton */}
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-800/50">
+            <div className="space-y-4">
+              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-3/4 h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-5/6 h-4 bg-gray-800/50 rounded animate-pulse" />
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
       {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles - une seule couche, opacité réduite */}
+        {/* Lignes subtiles */}
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: `repeating-linear-gradient(90deg, 
             rgba(59,130,246,0.05) 0px, 
@@ -124,7 +203,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             transparent 60px)`
         }}></div>
         
-        {/* Cercles flous - 2 SEULEMENT */}
+        {/* Cercles flous */}
         <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
       </div>
@@ -143,7 +222,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         </div>
       </div>
 
-      {/* Image pleine largeur - OPTIMISÉE */}
+      {/* Image pleine largeur */}
       <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10">
         <Image
           src={article.image}
@@ -152,7 +231,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           className="object-cover"
           priority
           sizes="100vw"
-          quality={75} // Réduit de 80 à 75
+          quality={75}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent"></div>
         <div className="absolute top-2 sm:top-3 md:top-4 left-3 sm:left-4 md:left-6 lg:left-8">
@@ -269,7 +348,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           />
         </div>
 
-        {/* Styles tableaux - OPTIMISÉS */}
+        {/* Styles tableaux */}
         <style jsx>{`
           .article-content-area table {
             width: 100%;

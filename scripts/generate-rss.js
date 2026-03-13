@@ -6,11 +6,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Chemin vers vos fichiers JSON de traduction
-const FR_ARTICLES_PATH = path.join(__dirname, '../app/assets/locales/fr/articles-details.json');
-const EN_ARTICLES_PATH = path.join(__dirname, '../app/assets/locales/en/articles-details.json');
+const FR_ARTICLES_PATH = path.join(__dirname, '../app/assets/locales/fr/index.json');
+const EN_ARTICLES_PATH = path.join(__dirname, '../app/assets/locales/en/index.json');
 
 // Fonction pour transformer un titre en slug
 function slugify(text) {
+  if (!text) return '';
   return text
     .toString()
     .toLowerCase()
@@ -38,7 +39,7 @@ function escapeXml(unsafe) {
   });
 }
 
-// Vérifier si les fichiers existent
+// Vérifier si le fichier existe
 if (!fs.existsSync(FR_ARTICLES_PATH)) {
   console.error(`❌ Fichier introuvable : ${FR_ARTICLES_PATH}`);
   process.exit(1);
@@ -54,12 +55,20 @@ try {
   process.exit(1);
 }
 
-let articlesData;
+let fullData;
 try {
-  articlesData = JSON.parse(rawData);
+  fullData = JSON.parse(rawData);
 } catch (err) {
   console.error('❌ Erreur de parsing JSON');
   console.error(err);
+  process.exit(1);
+}
+
+// Récupérer les articles depuis la section "articles"
+const articlesData = fullData.articles;
+
+if (!articlesData) {
+  console.error('❌ Section "articles" introuvable dans le fichier JSON');
   process.exit(1);
 }
 
@@ -81,7 +90,7 @@ let rssItems = '';
 articlesArray.forEach(article => {
   const title = escapeXml(article.title);
   const slug = slugify(article.title);
-  const link = `https://patawala-v2-nry6.vercel.app/blog/${slug}`; // Remplacez par votre domaine
+  const link = `https://patawala-v2-nry6.vercel.app/blog/${slug}`;
   const description = escapeXml(article.excerpt);
   const category = escapeXml(article.category);
 
@@ -100,7 +109,7 @@ const rssFeed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Le Blog d'Abdoulaye Patawala</title>
-    <link>https://https://patawala-v2-nry6.vercel.app</link>
+    <link>https://patawala-v2-nry6.vercel.app</link>
     <description>Articles sur le développement web, mobile, IA et entrepreneuriat</description>
     <atom:link href="https://patawala-v2-nry6.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
     <language>fr</language>

@@ -29,12 +29,12 @@ export default function RealisationsSection() {
     }
   }, [isLoading]);
 
-  // Charger les projets traduits
+  // Charger les projets traduits depuis projetsData.projects
   useEffect(() => {
     if (!isReady) return;
     
     try {
-      const projectsData = t('projects', 'projets-data');
+      const projectsData = t('projects', 'projetsData');
       setTranslatedProjects(Array.isArray(projectsData) ? projectsData : projets);
     } catch (error) {
       console.error('Erreur chargement projets traduits:', error);
@@ -260,7 +260,7 @@ export default function RealisationsSection() {
                       ))}
                       {translated.tags && translated.tags.length > 3 && (
                         <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-300 text-xs font-medium rounded-full border border-[#1F2937]">
-                          +{translated.tags.length - 3}
+                          {t('card.tags.more', 'realisations')?.replace('{{count}}', String(translated.tags.length - 3)) || `+${translated.tags.length - 3}`}
                         </span>
                       )}
                     </div>

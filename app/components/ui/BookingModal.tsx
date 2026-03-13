@@ -477,7 +477,12 @@ Message: ${formData.message || 'No message'}`;
     });
   }, [language]);
 
-  if (!isOpen || !mounted || !isReady) return null;
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return null; // Ne rien afficher pendant le chargement
+  }
+
+  if (!isOpen || !mounted) return null;
 
   return createPortal(
     <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center px-0 sm:px-4">

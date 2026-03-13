@@ -21,28 +21,34 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
     router.push('/#contact');
   }, [router]);
 
-  // Récupérer les traductions de manière simple
+  // Récupérer les traductions du service depuis servicesData.services
   const translatedService = useMemo(() => {
-    // Essayer de récupérer le service traduit
-    const translated = t(`services.${service.id}`, 'services-data');
+    // La bonne clé est "servicesData.services.${service.id}"
+    const translated = t(`services.${service.id}`, 'servicesData');
     
-    // Si on a une traduction, l'utiliser, sinon garder l'original
+    // Si on a une traduction valide, l'utiliser
     if (translated && typeof translated === 'object') {
-      return translated as any;
+      return translated;
     }
-    return service;
-  }, [t, service, language]);
+    return null;
+  }, [t, service.id, language]);
 
-  // Labels de la carte
+  // Labels de la carte depuis servicesData.card
   const cardLabels = useMemo(() => {
     return {
-      popular: t('card.popular', 'services-data') || (language === 'fr' ? 'Populaire' : 'Popular'),
-      more: t('card.features.more', 'services-data') || (language === 'fr' ? '+{{count}} autres' : '+{{count}} more')
+      popular: t('card.popular', 'servicesData') || (language === 'fr' ? 'Populaire' : 'Popular'),
+      more: t('card.features.more', 'servicesData') || (language === 'fr' ? '+{{count}} autres' : '+{{count}} more')
     };
   }, [t, language]);
 
+  // Utiliser les traductions si disponibles, sinon les valeurs par défaut du service
+  const title = translatedService?.title || service.title;
+  const shortDesc = translatedService?.shortDesc || service.shortDesc;
+  const description = translatedService?.description || service.description;
+  const ctaText = translatedService?.ctaText || service.ctaText;
+  const features = translatedService?.features || service.features || [];
+
   // Features à afficher
-  const features = translatedService.features || service.features || [];
   const visibleFeatures = features.slice(0, 3);
   const moreCount = features.length > 3 ? features.length - 3 : 0;
 
@@ -75,15 +81,15 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
         </div>
 
         <h3 id={cardTitleId} className="text-2xl sm:text-xl font-bold text-white mb-3 sm:mb-2 group-hover:text-cyan-400 transition-colors duration-300 tracking-tight">
-          {translatedService.title || service.title}
+          {title}
         </h3>
 
         <p className="text-gray-400 text-base sm:text-sm mb-4 sm:mb-4 leading-relaxed">
-          {translatedService.shortDesc || service.shortDesc}
+          {shortDesc}
         </p>
 
         <p className="text-base sm:text-sm text-gray-500 border-t border-[#1F2937] pt-4 sm:pt-4 leading-relaxed">
-          {translatedService.description || service.description}
+          {description}
         </p>
       </div>
 
@@ -105,9 +111,9 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
         <button
           onClick={goToContact}
           className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-5 sm:py-3 px-4 rounded-xl flex items-center justify-center gap-2 sm:gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98] min-h-[60px] sm:min-h-[44px]"
-          aria-label={translatedService.ctaText || service.ctaText}
+          aria-label={ctaText}
         >
-          <span className="text-base sm:text-sm font-semibold">{translatedService.ctaText || service.ctaText}</span>
+          <span className="text-base sm:text-sm font-semibold">{ctaText}</span>
           <ArrowRight size={20} className="sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
         </button>
       </div>

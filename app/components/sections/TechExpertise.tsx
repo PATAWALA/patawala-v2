@@ -159,8 +159,8 @@ const TechExpertise = memo(function TechExpertise() {
 
   // Déterminer le niveau et le pourcentage
   const getTechLevel = useCallback((tech: TechItem) => {
-    const isExpert = tech.level === 'Expert' || tech.level === 'Expert' || tech.level === 'Expert';
-    const isAdvanced = tech.level === 'Avancé' || tech.level === 'Advanced' || tech.level === 'Advanced';
+    const isExpert = tech.level === 'Expert' || tech.level === 'Expert' || tech.level === 'Avancé';
+    const isAdvanced = tech.level === 'Avancé' || tech.level === 'Advanced';
     
     return {
       isExpert,

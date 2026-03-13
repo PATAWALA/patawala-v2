@@ -1,16 +1,15 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
-import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
-import { usePathname, useRouter } from 'next/navigation';
 
-// Configuration des items de navigation - STATIQUE
 const NAV_ITEMS = [
   { key: 'home', href: '/', label: 'Accueil' },
   { key: 'services', href: '/services', label: 'Services' },
+  { key: 'expertise', href: '/#techexpertise', label: 'Expertise' },
   { key: 'about', href: '/#about', label: 'À propos' },
   { key: 'projects', href: '/#projets', label: 'Projets' },
   { key: 'blog', href: '/blog', label: 'Blog' },
@@ -18,24 +17,22 @@ const NAV_ITEMS = [
 ] as const;
 
 export default function Navigation() {
-  const { t, language, isLoading } = useTranslation();
+  const { t, isLoading } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('');
+  const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
-  const router = useRouter();
   
-  // Refs
   const menuRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections pour la page d'accueil
+  // Détection des sections sur la page d'accueil
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
       return;
     }
 
-    const sections = ['hero', 'about', 'projets', 'contact'];
+    const sections = ['hero', 'techexpertise', 'about', 'projets', 'contact'];
     
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -45,7 +42,7 @@ export default function Navigation() {
           }
         });
       },
-      { threshold: 0.3, rootMargin: '-80px 0px -80px 0px' }
+      { threshold: 0.3, rootMargin: '-80px 0px' }
     );
 
     sections.forEach((section) => {
@@ -56,7 +53,7 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Fermeture du menu mobile au clic outside
+  // Fermeture du menu mobile
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -77,48 +74,35 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  // Gestion du scroll vers une section
-  const scrollToSection = useCallback((sectionId: string) => {
+  // Scroll vers une section
+  const scrollToSection = (sectionId: string) => {
     setTimeout(() => {
       const element = document.getElementById(sectionId);
       if (element) {
         const offset = 80;
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({
-          top: elementPosition - offset,
-          behavior: 'smooth'
-        });
+        const y = element.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }
     }, 100);
-  }, []);
+  };
 
-  // Navigation forcée - SOLUTION
-  const handleNavigation = useCallback((href: string) => {
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
     setIsOpen(false);
     
-    // Pour les ancres sur la page d'accueil
-    if (href.includes('#') && pathname === '/') {
-      const sectionId = href.replace('/#', '');
+    const sectionId = href.replace('/#', '');
+    
+    if (pathname === '/') {
       scrollToSection(sectionId);
       setActiveSection(sectionId);
-      window.history.pushState(null, '', href);
-    } 
-    // Pour les ancres depuis une autre page
-    else if (href.includes('#')) {
+    } else {
       window.location.href = '/';
-      setTimeout(() => {
-        const sectionId = href.replace('/#', '');
-        scrollToSection(sectionId);
-      }, 300);
+      setTimeout(() => scrollToSection(sectionId), 300);
     }
-    // Pour les pages normales (services, blog, home) - FORCER LE RECHARGEMENT
-    else {
-      window.location.href = href;
-    }
-  }, [pathname, scrollToSection]);
+  };
 
   // Déterminer si un lien est actif
-  const isLinkActive = useCallback((href: string) => {
+  const isLinkActive = (href: string) => {
     if (pathname === '/') {
       if (href === '/') return activeSection === 'hero';
       if (href.includes('#')) {
@@ -127,9 +111,8 @@ export default function Navigation() {
       }
     }
     return pathname === href;
-  }, [pathname, activeSection]);
+  };
 
-  // SKELETON LOADER
   if (isLoading) {
     return (
       <nav className="fixed w-full z-50 top-0 lg:top-4 font-sans">
@@ -138,7 +121,7 @@ export default function Navigation() {
             <div className="flex justify-between items-center">
               <div className="h-8 w-48 bg-gray-800/50 rounded animate-pulse" />
               <div className="hidden lg:flex items-center gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
+                {[1, 2, 3, 4, 5, 6, 7].map((i) => (
                   <div key={i} className="h-4 w-16 bg-gray-800/50 rounded animate-pulse" />
                 ))}
               </div>
@@ -157,45 +140,58 @@ export default function Navigation() {
     <nav
       ref={menuRef}
       className="fixed w-full z-50 top-0 lg:top-4 font-sans"
-      aria-label="Navigation principale"
     >
       <div className="lg:container lg:mx-auto lg:px-6">
         <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/';
-              }}
-              className="flex items-center font-bold group"
-              aria-label={t('logo', 'navigation')}
-            >
-              <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
-                <span className="hidden sm:inline">Abdoulaye Patawala</span>
-                <span className="sm:hidden">Patawala</span>
-              </span>
-            </a>
+          {/* Structure flex pour un contrôle total */}
+          <div className="flex items-center justify-between">
+            {/* Logo à gauche */}
+            <div className="flex items-center">
+              <a 
+                href="/" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/';
+                }}
+                className="flex items-center font-bold group py-1"
+              >
+                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
+                  <span className="hidden sm:inline">Abdoulaye Patawala</span>
+                  <span className="sm:hidden">Patawala</span>
+                </span>
+              </a>
+            </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center justify-center flex-1">
+            {/* Liens Desktop - Centrés */}
+            <div className="hidden lg:flex flex-1 justify-center">
               <div className="flex items-center gap-6">
                 {NAV_ITEMS.map((item) => {
-                  const isActive = isLinkActive(item.href);
+                  const active = isLinkActive(item.href);
                   
+                  if (item.href.includes('#')) {
+                    return (
+                      <a
+                        key={item.key}
+                        href={item.href}
+                        onClick={(e) => handleAnchorClick(e, item.href)}
+                        className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
+                          active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
+                        }`}
+                      >
+                        {t(`navItems.${item.key}`, 'navigation') || item.label}
+                      </a>
+                    );
+                  }
                   return (
                     <a
                       key={item.key}
                       href={item.href}
                       onClick={(e) => {
                         e.preventDefault();
-                        handleNavigation(item.href);
+                        window.location.href = item.href;
                       }}
-                      className={`text-sm font-medium transition-colors cursor-pointer ${
-                        isActive
-                          ? 'text-blue-400'
-                          : 'text-gray-300 hover:text-blue-400'
+                      className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
+                        active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
                       }`}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
@@ -205,11 +201,9 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Language Switcher et Menu Mobile */}
+            {/* Language Switcher et Hamburger à droite */}
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
-              
-              {/* Bouton Hamburger */}
               <button
                 className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
                 onClick={() => setIsOpen(!isOpen)}
@@ -218,38 +212,55 @@ export default function Navigation() {
                 {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
+
+            {/* Espace vide à droite pour équilibrer sur desktop (invisible sur mobile) */}
+            <div className="hidden lg:block w-[140px]" />
           </div>
         </div>
       </div>
 
-      {/* MOBILE MENU - Fond blanc très flou, liens blancs, actifs en bleu cyan */}
+      {/* Mobile Menu - OVERLAY COMPLET */}
       {isOpen && (
         <div className="lg:hidden fixed inset-0 top-0 bg-white/20 backdrop-blur-2xl z-40 overflow-y-auto">
-          {/* Bouton de fermeture */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-6 right-6 p-2 text-white hover:text-cyan-400 transition-colors z-50"
+            className="absolute top-6 right-6 p-2 text-white hover:text-cyan-400 transition-colors"
             aria-label="Fermer le menu"
           >
             <X className="w-8 h-8" />
           </button>
-
           <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
             {NAV_ITEMS.map((item) => {
-              const isActive = isLinkActive(item.href);
+              const active = isLinkActive(item.href);
               
+              if (item.href.includes('#')) {
+                return (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    onClick={(e) => {
+                      handleAnchorClick(e, item.href);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
+                      active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
+                    }`}
+                  >
+                    {t(`navItems.${item.key}`, 'navigation') || item.label}
+                  </a>
+                );
+              }
               return (
                 <a
                   key={item.key}
                   href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleNavigation(item.href);
+                    setIsOpen(false);
+                    window.location.href = item.href;
                   }}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
-                    isActive
-                      ? 'text-cyan-400'
-                      : 'text-white hover:text-cyan-400'
+                    active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                   }`}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}

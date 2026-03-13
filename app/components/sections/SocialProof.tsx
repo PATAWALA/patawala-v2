@@ -40,6 +40,36 @@ const DEFAULT_TESTIMONIALS_FR = [
     name: "Marie Dubois",
     content: "Un vrai partenaire technique ! Il ne se contente pas de développer, il apporte des idées et des conseils qui font la différence. Je recommande vivement.",
     country: "France"
+  },
+  {
+    name: "César Dossou",
+    content: "Service irréprochable, résultat livré. Je recommande.",
+    country: "Congo"
+  },
+  {
+    name: "Maurice Acoumba",
+    content: "Un vrai partenaire à l'écoute. Satisfait du travail accompli.",
+    country: "Cameroun"
+  },
+  {
+    name: "Jean Edikou",
+    content: "Site soigné, équipe à l'écoute. Une belle collaboration.",
+    country: "Bénin"
+  },
+  {
+    name: "Chimène Koumai",
+    content: "Rapide, professionnel, à l'écoute. Merci pour tout.",
+    country: "Togo"
+  },
+  {
+    name: "Gérard Agatou'n",
+    content: "Une confiance aveugle. Un travail agréable et efficace.",
+    country: "Sénégal"
+  },
+  {
+    name: "Camille Benerd",
+    content: "Un site qui me ressemble enfin. Merci pour ta patience et ton attention.",
+    country: "Belgique"
   }
 ];
 
@@ -53,6 +83,36 @@ const DEFAULT_TESTIMONIALS_EN = [
     name: "Sarah Johnson",
     content: "A true technical partner! He doesn't just develop, he brings ideas and advice that make a difference. I highly recommend.",
     country: "UK"
+  },
+  {
+    name: "Michael Brown",
+    content: "Impeccable service, delivered result. I recommend.",
+    country: "Canada"
+  },
+  {
+    name: "Emma Wilson",
+    content: "A true partner who listens. Satisfied with the work done.",
+    country: "Australia"
+  },
+  {
+    name: "David Lee",
+    content: "Polished site, attentive team. A great collaboration.",
+    country: "Singapore"
+  },
+  {
+    name: "Lisa Chen",
+    content: "Fast, professional, attentive. Thank you for everything.",
+    country: "China"
+  },
+  {
+    name: "Robert Garcia",
+    content: "Blind trust. Pleasant and efficient work.",
+    country: "Spain"
+  },
+  {
+    name: "Patricia Martin",
+    content: "A site that finally reflects me. Thank you for your patience and attention.",
+    country: "France"
   }
 ];
 
@@ -64,6 +124,36 @@ const SocialProof = memo(function SocialProof() {
   const animationRef = useRef<number>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isReady, setIsReady] = useState(false);
+
+  // Dictionnaire des drapeaux (défini en dehors des blocs)
+  const flags: {[key: string]: string} = {
+    "Côte d'Ivoire": '🇨🇮',
+    'France': '🇫🇷',
+    'Congo': '🇨🇬',
+    'Cameroun': '🇨🇲',
+    'Bénin': '🇧🇯',
+    'Togo': '🇹🇬',
+    'Sénégal': '🇸🇳',
+    'Belgique': '🇧🇪',
+    'USA': '🇺🇸',
+    'UK': '🇬🇧',
+    'Canada': '🇨🇦',
+    'Australia': '🇦🇺',
+    'Singapore': '🇸🇬',
+    'China': '🇨🇳',
+    'Spain': '🇪🇸'
+  };
+
+  const gradients = [
+    'from-blue-500 to-cyan-500',
+    'from-emerald-500 to-teal-500',
+    'from-amber-500 to-orange-500',
+    'from-green-500 to-emerald-500',
+    'from-indigo-500 to-purple-500',
+    'from-pink-500 to-rose-500',
+    'from-violet-500 to-purple-500',
+    'from-red-500 to-pink-500'
+  ];
 
   // Attendre que les traductions soient chargées
   useEffect(() => {
@@ -77,7 +167,7 @@ const SocialProof = memo(function SocialProof() {
     if (!isReady) return;
 
     try {
-      // Récupérer les témoignages avec typage explicite
+      // Récupérer les témoignages
       const testimonialsData = t('testimonials', 'testimonials');
       
       let testimonialsArray = [];
@@ -90,35 +180,11 @@ const SocialProof = memo(function SocialProof() {
       }
 
       const enrichedTestimonials = testimonialsArray.map((testimonial: any, index: number) => {
-        const gradients = [
-          'from-blue-500 to-cyan-500',
-          'from-emerald-500 to-teal-500',
-          'from-amber-500 to-orange-500',
-          'from-green-500 to-emerald-500',
-          'from-indigo-500 to-purple-500',
-          'from-pink-500 to-rose-500',
-          'from-violet-500 to-purple-500',
-          'from-red-500 to-pink-500'
-        ];
-        
         const name = testimonial.name || '';
         const nameParts = name.split(' ');
         const initials = nameParts.length > 1 
           ? (nameParts[0][0] + nameParts[nameParts.length-1][0]).toUpperCase()
           : name.substring(0, 2).toUpperCase();
-        
-        const flags: {[key: string]: string} = {
-          "Côte d'Ivoire": '🇨🇮',
-          'France': '🇫🇷',
-          'Congo': '🇨🇬',
-          'Cameroun': '🇨🇲',
-          'Bénin': '🇧🇯',
-          'Togo': '🇹🇬',
-          'Sénégal': '🇸🇳',
-          'Belgique': '🇧🇪',
-          'USA': '🇺🇸',
-          'UK': '🇬🇧'
-        };
 
         return {
           name: testimonial.name || '',
@@ -140,8 +206,8 @@ const SocialProof = memo(function SocialProof() {
         ...t,
         rating: 5,
         initials: t.name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase(),
-        gradient: ['from-blue-500 to-cyan-500', 'from-emerald-500 to-teal-500'][i % 2],
-        flag: i === 0 ? '🇨🇮' : '🇫🇷'
+        gradient: gradients[i % gradients.length],
+        flag: flags[t.country] || '🌍'
       }));
       setTestimonials(enriched);
     }

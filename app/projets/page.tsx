@@ -31,13 +31,13 @@ const ProjetsPage = memo(function ProjetsPage() {
     }
   }, [isLoading]);
 
-  // Charger les projets traduits
+  // Charger les projets traduits depuis projetsData.projects
   useEffect(() => {
     if (!isReady) return;
     
     try {
-      const projectsData = t('projects', 'projets-data');
-      if (Array.isArray(projectsData)) {
+      const projectsData = t('projects', 'projetsData');
+      if (Array.isArray(projectsData) && projectsData.length > 0) {
         setTranslatedProjects(projectsData);
       } else {
         setTranslatedProjects(projets);
@@ -82,21 +82,18 @@ const ProjetsPage = memo(function ProjetsPage() {
   if (isLoading || !isReady) {
     return (
       <main className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden">
-        {/* Fond */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
           <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          {/* En-tête skeleton */}
           <div className="text-center mb-16">
             <div className="w-32 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
             <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
             <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
           </div>
 
-          {/* Grille skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-16">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-[#141B2B]/50 rounded-2xl overflow-hidden border border-gray-800/50">
@@ -115,12 +112,10 @@ const ProjetsPage = memo(function ProjetsPage() {
             ))}
           </div>
 
-          {/* Bouton skeleton */}
           <div className="flex justify-center">
             <div className="w-48 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
           </div>
 
-          {/* Note footer skeleton */}
           <div className="w-64 h-4 bg-gray-800/50 rounded mx-auto mt-8 animate-pulse" />
         </div>
       </main>
@@ -134,7 +129,6 @@ const ProjetsPage = memo(function ProjetsPage() {
     >
       {/* FOND ULTRA-OPTIMISÉ */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -143,11 +137,9 @@ const ProjetsPage = memo(function ProjetsPage() {
           aria-hidden="true"
         />
 
-        {/* Cercles flous */}
         <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
         <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
 
-        {/* Points lumineux */}
         {LIGHT_POINTS.map((point, i) => (
           <div
             key={i}
@@ -163,21 +155,21 @@ const ProjetsPage = memo(function ProjetsPage() {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
             <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
-            <span className="text-sm font-medium text-blue-400">{t('badge', 'projets-page')}</span>
+            <span className="text-sm font-medium text-blue-400">{t('badge', 'projetsPage')}</span>
           </div>
 
           <h1
             id="page-title"
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
           >
-            {t('title', 'projets-page')}{' '}
+            {t('title', 'projetsPage')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              {t('titleHighlight', 'projets-page')}
+              {t('titleHighlight', 'projetsPage')}
             </span>
           </h1>
 
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            {t('subtitle', 'projets-page')}
+            {t('subtitle', 'projetsPage')}
           </p>
         </div>
 
@@ -228,7 +220,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                   {/* Badge "En cours" pour les projets sans image */}
                   {isInProgress && (
                     <div className="absolute top-4 left-4 bg-amber-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-white border border-amber-400/30 shadow-lg">
-                      {t('badge.inProgress', 'projets-page') || 'En cours'}
+                      {t('progress.inProgress', 'projetsPage') || 'En cours'}
                     </div>
                   )}
                 </div>
@@ -255,7 +247,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                     ))}
                     {translatedProjet.tags.length > 3 && (
                       <span className="px-2.5 py-1 bg-[#0A0F1C] text-gray-400 text-xs font-medium rounded-full border border-[#1F2937]">
-                        {t('card.tags.more', 'projets-page')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
+                        {t('card.tags.more', 'projetsPage')?.replace('{{count}}', String(translatedProjet.tags.length - 3)) || `+${translatedProjet.tags.length - 3}`}
                       </span>
                     )}
                   </div>
@@ -278,7 +270,7 @@ const ProjetsPage = memo(function ProjetsPage() {
                       tabIndex={0}
                       aria-label={`En savoir plus sur ${translatedProjet.title}`}
                     >
-                      <span>{t('card.learnMore', 'projets-page')}</span>
+                      <span>{t('card.learnMore', 'projetsPage')}</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                     </span>
                   </div>
@@ -293,10 +285,10 @@ const ProjetsPage = memo(function ProjetsPage() {
           <Link href="/#contact" className="w-full sm:w-auto" passHref>
             <button
               className="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center justify-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 mx-auto focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98]"
-              aria-label={t('buttons.discuss', 'projets-page')}
+              aria-label={t('buttons.discuss', 'projetsPage')}
             >
               <MessageSquare size={20} aria-hidden="true" />
-              <span>{t('buttons.discuss', 'projets-page')}</span>
+              <span>{t('buttons.discuss', 'projetsPage')}</span>
               <ArrowRight size={20} aria-hidden="true" />
             </button>
           </Link>
@@ -304,7 +296,7 @@ const ProjetsPage = memo(function ProjetsPage() {
 
         {/* Note de bas de page */}
         <p className="text-center text-xs text-gray-500 mt-8">
-          {t('footer.note', 'projets-page')}
+          {t('footer.note', 'projetsPage')}
         </p>
       </div>
 

@@ -3,12 +3,13 @@
 import { 
   Calendar, Clock, ArrowRight, 
   Sparkles, BookOpen, Search,
-  ChevronLeft, ChevronRight, Filter, X
+  ChevronLeft, ChevronRight, Filter, X, Loader2
 } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
 import Script from 'next/script';
+import { useRouter } from 'next/navigation';
 import { articles as baseArticles } from './data/articles';
 import profileImage from '../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -22,14 +23,24 @@ const LIGHT_POINTS = [
 ];
 
 export default function BlogPage() {
-  const { t, language } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState('');
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false);
   const articlesPerPage = 6;
 
-  // Traduction des catégories - CORRIGÉ
+  // Attendre que les traductions soient chargées
+  useEffect(() => {
+    if (!isLoading) {
+      setIsReady(true);
+    }
+  }, [isLoading]);
+
+  // Traduction des catégories
   const { categories, allCategory, categoryList } = useMemo(() => {
     // Récupérer les catégories depuis la traduction
     const categoriesRaw = t('filters.categories', 'blog');
@@ -46,24 +57,30 @@ export default function BlogPage() {
     return {
       categories: [allCategory, ...categoryValues],
       allCategory,
-      categoryList: categoryValues // Liste des catégories sans "Tous"
+      categoryList: categoryValues
     };
-  }, [t, language]);
+  }, [t, language, isReady]);
 
   // Initialisation de la catégorie
   useEffect(() => {
-    setSelectedCategory(allCategory);
-  }, [allCategory]);
+    if (isReady) {
+      setSelectedCategory(allCategory);
+    }
+  }, [allCategory, isReady]);
 
   // Réinitialisation
   useEffect(() => {
-    setSearchQuery("");
-    setCurrentPage(1);
-  }, [language]);
+    if (isReady) {
+      setSearchQuery("");
+      setCurrentPage(1);
+    }
+  }, [language, isReady]);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, searchQuery]);
+    if (isReady) {
+      setCurrentPage(1);
+    }
+  }, [selectedCategory, searchQuery, isReady]);
 
   const effectiveCategory = useMemo(() => 
     categories.includes(selectedCategory) ? selectedCategory : allCategory,
@@ -72,6 +89,8 @@ export default function BlogPage() {
 
   // Traduction des articles
   const translatedArticles = useMemo(() => {
+    if (!isReady) return [];
+    
     return baseArticles.map(article => {
       const key = `article${article.id}`;
       
@@ -88,10 +107,12 @@ export default function BlogPage() {
         tags: Array.isArray(translatedTags) ? translatedTags : article.tags,
       };
     });
-  }, [t, language]);
+  }, [t, language, isReady]);
 
   // Filtrage
   const filteredArticles = useMemo(() => {
+    if (!isReady) return [];
+    
     return translatedArticles.filter(article => {
       const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
       const matchesCategory = effectiveCategory === allCategory || article.category === effectiveCategory;
@@ -100,7 +121,7 @@ export default function BlogPage() {
                            tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [translatedArticles, effectiveCategory, allCategory, searchQuery]);
+  }, [translatedArticles, effectiveCategory, allCategory, searchQuery, isReady]);
 
   // Articles à la une
   const featuredArticles = useMemo(() => 
@@ -110,18 +131,20 @@ export default function BlogPage() {
 
   // Pagination
   const { currentArticles, totalPages } = useMemo(() => {
+    if (!isReady) return { currentArticles: [], totalPages: 0 };
+    
     const indexOfLastArticle = currentPage * articlesPerPage;
     const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
     return {
       currentArticles: filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle),
       totalPages: Math.ceil(filteredArticles.length / articlesPerPage)
     };
-  }, [filteredArticles, currentPage]);
+  }, [filteredArticles, currentPage, isReady]);
 
   const moreTagsTemplate = useMemo(() => {
     const moreTagsRaw = t('featured.tags.more', 'blog');
     return typeof moreTagsRaw === 'string' ? moreTagsRaw : '+{{count}}';
-  }, [t]);
+  }, [t, isReady]);
 
   // Handlers
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,6 +171,98 @@ export default function BlogPage() {
   const handlePageSelect = useCallback((page: number) => {
     setCurrentPage(page);
   }, []);
+
+  // Fonction pour gérer la soumission du formulaire
+  const handleFormSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubscribing(true);
+    
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors' // Important pour Brevo
+      });
+      
+      // Rediriger vers la page de remerciement
+      setTimeout(() => {
+        router.push('/merci');
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      // Rediriger quand même
+      setTimeout(() => {
+        router.push('/merci');
+      }, 1000);
+    } finally {
+      setTimeout(() => {
+        setIsSubscribing(false);
+      }, 2000);
+    }
+  }, [router]);
+
+  // SKELETON LOADER
+  if (isLoading || !isReady) {
+    return (
+      <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
+          <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
+          {/* En-tête skeleton */}
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
+            <div className="w-32 h-8 bg-gray-800/50 rounded-xl mx-auto mb-4 animate-pulse" />
+            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          </div>
+
+          {/* Barre de recherche skeleton */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="w-full h-14 bg-gray-800/50 rounded-xl animate-pulse" />
+          </div>
+
+          {/* Filtres skeleton */}
+          <div className="flex justify-center mb-10">
+            <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="w-20 h-8 bg-gray-700/50 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Articles à la une skeleton */}
+          <div className="mb-12">
+            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mb-6 animate-pulse" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {[1, 2].map((i) => (
+                <div key={i} className="bg-gray-800/50 rounded-2xl h-64 animate-pulse" />
+              ))}
+            </div>
+          </div>
+
+          {/* Grille d'articles skeleton */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-gray-800/50 rounded-xl h-48 animate-pulse" />
+            ))}
+          </div>
+
+          {/* Pagination skeleton */}
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -292,7 +407,7 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Filtres catégories - CORRIGÉ */}
+          {/* Filtres catégories */}
           <div className="mb-10 sm:mb-12 md:mb-16">
             {/* Version mobile */}
             <div className="lg:hidden mb-3 px-2">
@@ -583,7 +698,7 @@ export default function BlogPage() {
             </div>
           )}
 
-          {/* Formulaire Brevo - AVEC TRADUCTION */}
+          {/* Formulaire Brevo */}
           <div className="relative max-w-2xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
             <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-20"></div>
             <div className="relative p-4 sm:p-5 md:p-6 bg-[#141B2B]/90 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-[#1F2937] shadow-lg overflow-hidden">
@@ -610,7 +725,13 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <div id="sib-container" className="sib-container--large sib-container--vertical" style={{ textAlign: 'center', backgroundColor: 'transparent', maxWidth: '540px', margin: '0 auto', border: 'none' }}>
-                    <form id="sib-form" method="POST" action="https://1608b43e.sibforms.com/serve/MUIFAGWyCrBBt_5Mc_fF8uA_7aIEkVMMaZy_FoVWHsjnEyUhS9ymjEpY4IuAEvyh49_hMSdbEAAiurB4eBH6nMNbmwqo6ozjwRCkHIMs_OTkUnIll_DUND-PqCECRZy1lB2p3bA3YbHZt93ZW1r5srnm9kSXhn1GOl9jLDiQeKGp7dNDN0S3cN_FkCvq8dcVgFIX29JCSEHz42mH7A==" data-type="subscription">
+                    <form 
+                      id="sib-form" 
+                      method="POST" 
+                      action="https://1608b43e.sibforms.com/serve/MUIFAGWyCrBBt_5Mc_fF8uA_7aIEkVMMaZy_FoVWHsjnEyUhS9ymjEpY4IuAEvyh49_hMSdbEAAiurB4eBH6nMNbmwqo6ozjwRCkHIMs_OTkUnIll_DUND-PqCECRZy1lB2p3bA3YbHZt93ZW1r5srnm9kSXhn1GOl9jLDiQeKGp7dNDN0S3cN_FkCvq8dcVgFIX29JCSEHz42mH7A==" 
+                      data-type="subscription"
+                      onSubmit={handleFormSubmit}
+                    >
                       <div style={{ padding: '4px 0' }}>
                         <div className="sib-form-block" style={{ fontSize: '24px', textAlign: 'center', fontWeight: '700', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: 'transparent', marginBottom: '4px' }}>
                           <p>{language === 'fr' ? '💡 Recevez mes prochains articles' : '💡 Get my latest articles'}</p>
@@ -652,15 +773,24 @@ export default function BlogPage() {
                       <div style={{ padding: '4px 0' }}>
                         <div className="sib-form-block" style={{ textAlign: 'center' }}>
                           <button 
-                            className="sib-form-block__button sib-form-block__button-with-loader" 
+                            className="sib-form-block__button sib-form-block__button-with-loader flex items-center justify-center gap-2" 
                             style={{ fontSize: '14px', fontWeight: '600', fontFamily: 'Helvetica, sans-serif', color: '#FFFFFF', backgroundColor: '#3B82F6', borderRadius: '8px', borderWidth: '0px', padding: '12px 24px', width: '100%', cursor: 'pointer', marginTop: '8px' }} 
-                            form="sib-form" 
                             type="submit"
+                            disabled={isSubscribing}
                           >
-                            <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ display: 'none', width: '16px', height: '16px', marginRight: '6px', verticalAlign: 'middle' }}>
-                              <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
-                            </svg>
-                            {language === 'fr' ? 'S\'abonner' : 'Subscribe'}
+                            {isSubscribing ? (
+                              <>
+                                <Loader2 size={16} className="animate-spin" />
+                                <span>{language === 'fr' ? 'Inscription...' : 'Subscribing...'}</span>
+                              </>
+                            ) : (
+                              <>
+                                <svg className="icon clickable__icon progress-indicator__icon sib-hide-loader-icon" viewBox="0 0 512 512" style={{ width: '16px', height: '16px', marginRight: '6px', display: 'none' }}>
+                                  <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
+                                </svg>
+                                {language === 'fr' ? 'S\'abonner' : 'Subscribe'}
+                              </>
+                            )}
                           </button>
                         </div>
                       </div>

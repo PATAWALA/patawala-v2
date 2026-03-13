@@ -46,16 +46,16 @@ export default function NotFound() {
 
   // TRADUCTIONS SIMPLES
   const translations = {
-    title: t('title', 'not-found') || 'Oups ! Page introuvable',
-    message: t('message', 'not-found') || "La page que vous cherchez n'existe pas ou a été déplacée.",
-    suggestionsTitle: t('suggestions.title', 'not-found') || 'Que faire maintenant ?',
-    homeTitle: t('suggestions.home.title', 'not-found') || "Page d'accueil",
-    homeDesc: t('suggestions.home.description', 'not-found') || "Retourner à l'accueil",
-    projectsTitle: t('suggestions.projects.title', 'not-found') || 'Mes projets',
-    projectsDesc: t('suggestions.projects.description', 'not-found') || 'Découvrir mes réalisations',
-    contactTitle: t('suggestions.contact.title', 'not-found') || 'Me contacter',
-    contactDesc: t('suggestions.contact.description', 'not-found') || 'Discuter de votre projet',
-    backButton: t('backButton', 'not-found') || 'Retour à la page précédente',
+    title: t('title', 'notFound') || 'Oups ! Page introuvable',
+    message: t('message', 'notFound') || "La page que vous cherchez n'existe pas ou a été déplacée.",
+    suggestionsTitle: t('suggestions.title', 'notFound') || 'Que faire maintenant ?',
+    homeTitle: t('suggestions.home.title', 'notFound') || "Page d'accueil",
+    homeDesc: t('suggestions.home.description', 'notFound') || "Retourner à l'accueil",
+    projectsTitle: t('suggestions.projects.title', 'notFound') || 'Mes projets',
+    projectsDesc: t('suggestions.projects.description', 'notFound') || 'Découvrir mes réalisations',
+    contactTitle: t('suggestions.contact.title', 'notFound') || 'Me contacter',
+    contactDesc: t('suggestions.contact.description', 'notFound') || 'Discuter de votre projet',
+    backButton: t('backButton', 'notFound') || 'Retour à la page précédente',
   };
 
   // SKELETON LOADER

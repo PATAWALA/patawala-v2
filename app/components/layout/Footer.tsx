@@ -18,7 +18,7 @@ const Footer = memo(function Footer() {
   ], []);
 
   const legalLinks = useMemo(() => [
-    { href: '/mentions-legales', key: 'legal' },
+    { href: '/mentions-legales', key: 'privacy' },
     { href: '/confidentialite', key: 'privacy' },
     { href: '/cgu', key: 'terms' },
   ], []);
@@ -123,7 +123,7 @@ const Footer = memo(function Footer() {
   return (
     <footer
       className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden"
-      aria-label={t('label', 'footer') || 'Pied de page'}
+      aria-label="Pied de page"
     >
       {/* Éléments décoratifs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -191,10 +191,10 @@ const Footer = memo(function Footer() {
                     href={link.href}
                     onClick={(e) => handleNavigation(e, link.href)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                    aria-label={`${t(`navbar.${link.key}`, 'common')} - aller à la page`}
+                    aria-label={`${t(`navbar.${link.key}`, 'navigation')} - aller à la page`}
                   >
                     <span className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-                    {t(`navbar.${link.key}`, 'common')}
+                    {t(`navbar.${link.key}`, 'navigation')}
                   </a>
                 </li>
               ))}
@@ -214,10 +214,10 @@ const Footer = memo(function Footer() {
                     href={link.href}
                     onClick={(e) => handleNavigation(e, link.href)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                    aria-label={`${t(`${link.key}`, 'footer')} - lire les conditions`}
+                    aria-label={`${t(link.key, 'footer')} - lire les conditions`}
                   >
                     <span className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-                    {t(`${link.key}`, 'footer')}
+                    {t(link.key, 'footer')}
                   </a>
                 </li>
               ))}

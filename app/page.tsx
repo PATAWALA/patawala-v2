@@ -33,12 +33,7 @@ export default function Home() {
       <section id="projets">
         <RealisationsSection />
       </section>
-
-      {/* Section Blog - pas encore active */}
-      <section id="blog">
-        {/* La section blog sera ajoutée plus tard si besoin */}
-      </section>
-
+      
       {/* Section Contact - active Contact */}
       <section id="contact">
         <CTASection />

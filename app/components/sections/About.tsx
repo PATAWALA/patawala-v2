@@ -13,16 +13,12 @@ interface VisionCard {
   description: string;
 }
 
-interface VisionData {
-  cards: VisionCard[];
-}
-
 const BookingModal = dynamic(() => import('../ui/BookingModal'), {
   ssr: false,
   loading: () => null,
 });
 
-// Données par défaut
+// Données par défaut pour les cartes de vision
 const DEFAULT_VISION_CARDS: VisionCard[] = [
   {
     "title": "Conseil & Stratégie Tech",
@@ -42,8 +38,28 @@ const DEFAULT_VISION_CARDS: VisionCard[] = [
   }
 ];
 
+// Données par défaut pour les cartes de vision en anglais
+const DEFAULT_VISION_CARDS_EN: VisionCard[] = [
+  {
+    "title": "Tech Consulting & Strategy",
+    "description": "Technology choices adapted to your budget and goals, for a risk-free launch with no hidden costs."
+  },
+  {
+    "title": "Long-term Partnership",
+    "description": "Tailored CTO support: I secure your technical choices and evolve your tools with your growth."
+  },
+  {
+    "title": "Innovation & Performance",
+    "description": "AI and modern architectures to automate your processes, boost your sales, and stand out."
+  },
+  {
+    "title": "Transparent Co-creation",
+    "description": "Your vision guided by my expertise: a fluid collaboration for robust and sustainable tools."
+  }
+];
+
 const AboutSection = memo(function AboutSection() {
-  const { t, isLoading } = useTranslation();
+  const { t, language, isLoading } = useTranslation();
   const [isMounted, setIsMounted] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [visionCards, setVisionCards] = useState<VisionCard[]>(DEFAULT_VISION_CARDS);
@@ -63,15 +79,15 @@ const AboutSection = memo(function AboutSection() {
     }
   }, [isLoading]);
 
-  // Récupérer les cartes de vision - CORRIGÉ
+  // Récupérer les cartes de vision - SIMPLIFIÉ
   useEffect(() => {
     if (!isReady) return;
     
     try {
-      // Typer explicitement le retour de t()
-      const visionData = t('vision', 'about') as unknown as VisionData;
+      // Récupérer directement l'objet vision
+      const visionData = t('vision', 'about');
       
-      // Vérification plus robuste
+      // Vérifier que c'est un objet avec des cartes
       if (visionData && 
           typeof visionData === 'object' && 
           visionData !== null && 
@@ -79,8 +95,8 @@ const AboutSection = memo(function AboutSection() {
           Array.isArray(visionData.cards) && 
           visionData.cards.length > 0) {
         
-        // Vérifier que chaque carte a la bonne structure
-        const validCards = visionData.cards.filter(card => 
+        // Filtrer les cartes valides
+        const validCards = visionData.cards.filter((card: any) => 
           card && 
           typeof card === 'object' &&
           'title' in card && 
@@ -91,12 +107,20 @@ const AboutSection = memo(function AboutSection() {
         
         if (validCards.length > 0) {
           setVisionCards(validCards);
+        } else {
+          // Fallback selon la langue
+          setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
         }
+      } else {
+        // Fallback selon la langue
+        setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des cartes:', error);
+      // Fallback selon la langue
+      setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
     }
-  }, [t, isReady]);
+  }, [t, language, isReady]);
 
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -353,7 +377,7 @@ const AboutSection = memo(function AboutSection() {
                     aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={18} className="md:w-5 md:h-5" aria-hidden="true" />
-                    <span className="truncate">
+                    <span>
                       {t('buttons.talk', 'about')}
                     </span>
                   </button>
@@ -363,7 +387,7 @@ const AboutSection = memo(function AboutSection() {
                     className="bg-transparent text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-sm md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >
-                    <span className="truncate">
+                    <span>
                       {t('buttons.services', 'about')}
                     </span>
                   </button>

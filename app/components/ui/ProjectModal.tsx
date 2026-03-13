@@ -43,41 +43,31 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   useEffect(() => {
     if (project && isReady) {
       try {
-        const projectsData = t('projects', 'projets-data');
-        if (Array.isArray(projectsData)) {
+        // Récupérer les projets depuis projetsData.projects
+        const projectsData = t('projects', 'projetsData');
+        
+        if (Array.isArray(projectsData) && projectsData.length > 0) {
           const foundProject = projectsData.find((p: any) => p.id === project.id);
           if (foundProject) {
             setTranslatedProject(foundProject);
-          } else {
-            setTranslatedProject({
-              id: project.id,
-              title: project.title,
-              description: project.description,
-              category: project.category,
-              tags: project.tags,
-              client: project.client || '',
-              duration: project.duree || '',
-              objective: project.objectif || '',
-              challenge: project.challenge || '',
-              solution: project.solution || '',
-              features: project.fonctionnalites || []
-            });
+            return;
           }
-        } else {
-          setTranslatedProject({
-            id: project.id,
-            title: project.title,
-            description: project.description,
-            category: project.category,
-            tags: project.tags,
-            client: project.client || '',
-            duration: project.duree || '',
-            objective: project.objectif || '',
-            challenge: project.challenge || '',
-            solution: project.solution || '',
-            features: project.fonctionnalites || []
-          });
         }
+        
+        // Fallback vers les données originales
+        setTranslatedProject({
+          id: project.id,
+          title: project.title,
+          description: project.description,
+          category: project.category,
+          tags: project.tags,
+          client: project.client || '',
+          duration: project.duree || '',
+          objective: project.objectif || '',
+          challenge: project.challenge || '',
+          solution: project.solution || '',
+          features: project.fonctionnalites || []
+        });
       } catch (error) {
         console.error('Erreur chargement projet traduit:', error);
         setTranslatedProject({
@@ -99,13 +89,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
   // TRADUCTIONS SIMPLES
   const translations = {
-    category: t('category', 'project-modal') || 'Catégorie',
-    close: t('close', 'project-modal') || 'Fermer',
-    sectionsObjective: t('sections.objective', 'project-modal') || 'Objectif',
-    sectionsChallenge: t('sections.challenge', 'project-modal') || 'Défi',
-    sectionsSolution: t('sections.solution', 'project-modal') || 'Solution',
-    sectionsFeatures: t('sections.features', 'project-modal') || 'Fonctionnalités clés',
-    buttonsDiscuss: t('buttons.discuss', 'project-modal') || 'Discuter de ce projet',
+    category: t('category', 'projectModal') || 'Catégorie',
+    close: t('close', 'projectModal') || 'Fermer',
+    sectionsObjective: t('sections.objective', 'projectModal') || 'Objectif',
+    sectionsChallenge: t('sections.challenge', 'projectModal') || 'Défi relevé',
+    sectionsSolution: t('sections.solution', 'projectModal') || 'Solution apportée',
+    sectionsFeatures: t('sections.features', 'projectModal') || 'Fonctionnalités clés',
+    buttonsDiscuss: t('buttons.discuss', 'projectModal') || 'Discuter d\'un projet similaire',
   };
 
   // Bloquer le défilement du body quand le modal est ouvert

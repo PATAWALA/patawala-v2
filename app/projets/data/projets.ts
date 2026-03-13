@@ -28,6 +28,75 @@ export interface Project {
 }
 
 export const projets: Project[] = [
+    {
+    id: 8,
+    title: 'Application Santé',
+    description: 'Application de suivi médical avec rappels de médicaments et partage de données sécurisé.',
+    image: santéeImage,
+    tags: ['React Native','Next.js', 'Node.js', 'MongoDB', 'JWT'],
+    icon: Activity,
+    category: 'Mobile',
+    lien: '/projets/8',
+    client: 'MediCare',
+    duree: '1 mois',
+    objectif: 'Développer une application web et mobile permettant aux patients de suivre leur traitement médical avec des rappels et de partager leurs données avec leurs médecins de façon sécurisée.',
+    challenge: 'Garantir la sécurité des données médicales tout en offrant une expérience utilisateur simple et intuitive.',
+    solution: 'Application React Native avec authentification JWT, backend Node.js et MongoDB. Chiffrement des données sensibles et système de notifications push pour les rappels.',
+    fonctionnalites: [
+      'Profil patient sécurisé',
+      'Rappels de médicaments personnalisés',
+      'Carnet de santé numérique',
+      'Partage de données avec les médecins',
+      'Historique des traitements',
+      'Notifications push'
+    ]
+  },
+  {
+    id: 4,
+    title: 'Site Vitrine Immobilier',
+    description: 'Site pour agence immobilière avec visites virtuelles',
+    image: imobilierImage,
+    tags: ['WordPress', 'Elementor', 'Maps API'],
+    icon: Globe,
+    category: 'Web',
+    lien: '/projets/4',
+    client: 'Agence immobilière',
+    duree: '2 mois',
+    objectif: 'Créer un site vitrine moderne pour présenter les biens immobiliers avec intégration de visites virtuelles et formulaire de contact.',
+    challenge: 'Intégrer des visites virtuelles 360° sans compromettre les performances du site.',
+    solution: 'Site WordPress avec Elementor pour une interface visuelle attrayante. Intégration de l\'API Google Maps pour la localisation des biens et plugin de visites virtuelles.',
+    fonctionnalites: [
+      'Catalogue de biens avec filtres',
+      'Visites virtuelles 360°',
+      'Formulaire de contact',
+      'Localisation sur carte',
+      'Blog immobilier',
+      'Espace agent'
+    ]
+  },
+  {
+    id: 5,
+    title: 'App Fitness',
+    description: 'Application de coaching sportif avec suivi des performances',
+    image: fitnessImage,
+    tags: ['Next.js', 'Firebase', 'GraphQL'],
+    icon: Users,
+    category: 'Mobile',
+    lien: '/projets/5',
+    client: 'Coach sportif indépendant',
+    duree: '1 mois',
+    objectif: 'Permettre aux coachs de créer des programmes personnalisés et aux utilisateurs de suivre leurs séances et progrès.',
+    challenge: 'Créer une expérience fluide hors-ligne avec synchronisation automatique.',
+    solution: 'Application web , Firebase pour l\'authentification et les données en temps réel, GraphQL pour les requêtes optimisées.',
+    fonctionnalites: [
+      'Programmes personnalisés',
+      'Suivi des séances',
+      'Statistiques de progression',
+      'Vidéos d\'exercices',
+      'Chat avec le coach',
+      'Notifications de rappel'
+    ]
+  },
   {
     id: 1,
     title: 'E-commerce Mode Africaine',
@@ -98,52 +167,6 @@ export const projets: Project[] = [
     ]
   },
   {
-    id: 4,
-    title: 'Site Vitrine Immobilier',
-    description: 'Site pour agence immobilière avec visites virtuelles',
-    image: imobilierImage,
-    tags: ['WordPress', 'Elementor', 'Maps API'],
-    icon: Globe,
-    category: 'Web',
-    lien: '/projets/4',
-    client: 'Agence immobilière',
-    duree: '2 mois',
-    objectif: 'Créer un site vitrine moderne pour présenter les biens immobiliers avec intégration de visites virtuelles et formulaire de contact.',
-    challenge: 'Intégrer des visites virtuelles 360° sans compromettre les performances du site.',
-    solution: 'Site WordPress avec Elementor pour une interface visuelle attrayante. Intégration de l\'API Google Maps pour la localisation des biens et plugin de visites virtuelles.',
-    fonctionnalites: [
-      'Catalogue de biens avec filtres',
-      'Visites virtuelles 360°',
-      'Formulaire de contact',
-      'Localisation sur carte',
-      'Blog immobilier',
-      'Espace agent'
-    ]
-  },
-  {
-    id: 5,
-    title: 'App Fitness',
-    description: 'Application de coaching sportif avec suivi des performances',
-    image: fitnessImage,
-    tags: ['Next.js', 'Firebase', 'GraphQL'],
-    icon: Users,
-    category: 'Mobile',
-    lien: '/projets/5',
-    client: 'Coach sportif indépendant',
-    duree: '1 mois',
-    objectif: 'Permettre aux coachs de créer des programmes personnalisés et aux utilisateurs de suivre leurs séances et progrès.',
-    challenge: 'Créer une expérience fluide hors-ligne avec synchronisation automatique.',
-    solution: 'Application web , Firebase pour l\'authentification et les données en temps réel, GraphQL pour les requêtes optimisées.',
-    fonctionnalites: [
-      'Programmes personnalisés',
-      'Suivi des séances',
-      'Statistiques de progression',
-      'Vidéos d\'exercices',
-      'Chat avec le coach',
-      'Notifications de rappel'
-    ]
-  },
-  {
     id: 6,
     title: 'Plateforme E-learning',
     description: 'Plateforme de cours en ligne avec quiz et certifications',
@@ -189,29 +212,6 @@ export const projets: Project[] = [
       'Dashboard administrateur'
     ],
     status: 'En cours' // Ajout du statut pour les projets sans image
-  },
-  {
-    id: 8,
-    title: 'Application Santé',
-    description: 'Application de suivi médical avec rappels de médicaments et partage de données sécurisé.',
-    image: santéeImage,
-    tags: ['React Native','Next.js', 'Node.js', 'MongoDB', 'JWT'],
-    icon: Activity,
-    category: 'Mobile',
-    lien: '/projets/8',
-    client: 'MediCare',
-    duree: '1 mois',
-    objectif: 'Développer une application web et mobile permettant aux patients de suivre leur traitement médical avec des rappels et de partager leurs données avec leurs médecins de façon sécurisée.',
-    challenge: 'Garantir la sécurité des données médicales tout en offrant une expérience utilisateur simple et intuitive.',
-    solution: 'Application React Native avec authentification JWT, backend Node.js et MongoDB. Chiffrement des données sensibles et système de notifications push pour les rappels.',
-    fonctionnalites: [
-      'Profil patient sécurisé',
-      'Rappels de médicaments personnalisés',
-      'Carnet de santé numérique',
-      'Partage de données avec les médecins',
-      'Historique des traitements',
-      'Notifications push'
-    ]
   },
   {
     id: 9,

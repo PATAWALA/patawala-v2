@@ -9,7 +9,7 @@ import profile4Image from '../../assets/images/profile4.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 const HeroSection = memo(function HeroSection() {
-  const { t, language, isLoading } = useTranslation();
+  const { t, tArray, language, isLoading } = useTranslation();
   const [displayText, setDisplayText] = useState('');
   const [stringIndex, setStringIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -20,8 +20,8 @@ const HeroSection = memo(function HeroSection() {
   const timeoutRef = useRef<NodeJS.Timeout>();
   const pauseTimeoutRef = useRef<NodeJS.Timeout>();
   
-  // Récupération des chaînes
-  const typedStrings = t('typed.strings', 'hero') || [];
+  // Récupération des chaînes avec tArray
+  const typedStrings = tArray('typed.strings', 'hero');
   
   // Version de secours pour le chargement
   const fallbackStrings = language === 'fr' 
@@ -30,17 +30,15 @@ const HeroSection = memo(function HeroSection() {
 
   const stringsToUse = typedStrings.length > 0 ? typedStrings : fallbackStrings;
 
-  // Attendre que les traductions soient chargées - UNE SEULE FOIS
+  // Attendre que les traductions soient chargées
   useEffect(() => {
     if (!isLoading && stringsToUse.length > 0 && !isReady) {
       setIsReady(true);
-      // Initialiser avec la première phrase complète
       setDisplayText(stringsToUse[0]);
       setCharIndex(stringsToUse[0].length);
       setStringIndex(0);
       setIsDeleting(false);
       
-      // Programmer le début de l'effacement après 4 secondes
       pauseTimeoutRef.current = setTimeout(() => {
         setIsDeleting(true);
       }, 4000);
@@ -51,49 +49,41 @@ const HeroSection = memo(function HeroSection() {
     };
   }, [isLoading, stringsToUse, isReady]);
 
-  // TYPING EFFECT - CORRIGÉ
+  // TYPING EFFECT
   useEffect(() => {
     if (!isReady || stringsToUse.length === 0) return;
 
     const currentString = stringsToUse[stringIndex];
     if (!currentString) return;
 
-    // Nettoyer le timeout précédent
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {
       if (isDeleting) {
-        // PHASE D'EFFACEMENT - MÊME VITESSE QUE L'ÉCRITURE
         if (charIndex > 0) {
-          // Effacer un caractère (lent)
           const newCharIndex = charIndex - 1;
           setCharIndex(newCharIndex);
           setDisplayText(currentString.substring(0, newCharIndex));
         } else {
-          // Passer à la phrase suivante
           const nextIndex = (stringIndex + 1) % stringsToUse.length;
           setStringIndex(nextIndex);
           setIsDeleting(false);
-          // Commencer la nouvelle phrase
           setCharIndex(1);
           setDisplayText(stringsToUse[nextIndex].charAt(0));
         }
       } else {
-        // PHASE D'ÉCRITURE - LENTE
         if (charIndex < currentString.length) {
-          // Ajouter un caractère (lent)
           const newCharIndex = charIndex + 1;
           setCharIndex(newCharIndex);
           setDisplayText(currentString.substring(0, newCharIndex));
         } else {
-          // Pause de 4 secondes quand la phrase est finie
           if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
           pauseTimeoutRef.current = setTimeout(() => {
             setIsDeleting(true);
           }, 2000);
         }
       }
-    }, 180); // MÊME VITESSE POUR ÉCRITURE ET EFFACEMENT (180ms)
+    }, 180);
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -121,7 +111,7 @@ const HeroSection = memo(function HeroSection() {
     { src: profile4Image, alt: t('altImages.avatar', 'hero') || 'Client' },
   ];
 
-  // Afficher un skeleton si en chargement
+  // SKELETON LOADER
   if (isLoading && !isReady) {
     return (
       <section className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-[#0B1120]">
@@ -151,7 +141,7 @@ const HeroSection = memo(function HeroSection() {
       className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12 font-sans"
       aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
     >
-      {/* FOND - IDENTIQUE */}
+      {/* FOND */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div
           className="absolute inset-0 opacity-50"
@@ -259,7 +249,7 @@ const HeroSection = memo(function HeroSection() {
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-bold text-xs md:text-lg flex items-center justify-center gap-1 md:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
                 aria-label={t('buttons.project', 'hero')}
               >
-                <span className="text-white">{t('buttons.project', 'hero')}</span>
+                <span>{t('buttons.project', 'hero')}</span>
                 <ArrowRight size={16} className="md:w-5 md:h-5 flex-shrink-0" aria-hidden="true" />
               </button>
 
@@ -268,7 +258,7 @@ const HeroSection = memo(function HeroSection() {
                 className="bg-transparent text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-semibold text-xs md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
                 aria-label={t('buttons.portfolio', 'hero')}
               >
-                <span className="text-white">{t('buttons.portfolio', 'hero')}</span>
+                <span>{t('buttons.portfolio', 'hero')}</span>
               </button>
             </div>
           </div>

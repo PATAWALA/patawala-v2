@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckCircle, ArrowLeft } from 'lucide-react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 

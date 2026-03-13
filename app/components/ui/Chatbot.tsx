@@ -22,20 +22,20 @@ const WhatsAppWidget = memo(function WhatsAppWidget() {
   // Traductions simplifiées
   const translations = {
     buttonAriaLabel: t('button.ariaLabel', 'widget') || 'Ouvrir le chat WhatsApp',
-    buttonTitle: t('button.title', 'widget') || 'WhatsApp',
-    headerTitle: t('header.title', 'widget') || 'WhatsApp',
-    headerSubtitle: t('header.subtitle', 'widget') || 'Généralement de réponse rapide',
+    buttonTitle: t('button.title', 'widget') || 'Contacter via WhatsApp',
+    headerTitle: t('header.title', 'widget') || 'WhatsApp Direct',
+    headerSubtitle: t('header.subtitle', 'widget') || 'Réponse sous 24h',
     headerCloseAriaLabel: t('header.closeAriaLabel', 'widget') || 'Fermer',
-    bodyWelcomeMessage: t('body.welcomeMessage', 'widget') || '👋 Bonjour ! Comment puis-je vous aider ?',
+    bodyWelcomeMessage: t('body.welcomeMessage', 'widget') || '👋 Envoyez-moi un message directement sur WhatsApp. Je vous répondrai dans les plus brefs délais.',
     bodyMessageLabel: t('body.messageLabel', 'widget') || 'Votre message',
-    bodyMessagePlaceholder: t('body.messagePlaceholder', 'widget') || 'Écrivez votre message ici...',
-    bodyMessageAriaLabel: t('body.messageAriaLabel', 'widget') || 'Message',
-    bodyCharacterCount: t('body.characterCount', 'widget') || '{count} caractères',
-    successMessage: t('success.message', 'widget') || 'Message prêt ! Redirection vers WhatsApp...',
-    buttonStatesSending: t('buttonStates.sending', 'widget') || 'Envoi...',
-    buttonStatesSuccess: t('buttonStates.success', 'widget') || 'Message envoyé !',
+    bodyMessagePlaceholder: t('body.messagePlaceholder', 'widget') || 'Bonjour, je souhaite discuter de mon projet...',
+    bodyMessageAriaLabel: t('body.messageAriaLabel', 'widget') || 'Votre message',
+    bodyCharacterCount: t('body.characterCount', 'widget') || '{count}/1000',
+    successMessage: t('success.message', 'widget') || 'Message prêt ! WhatsApp va s\'ouvrir.',
+    buttonStatesSending: t('buttonStates.sending', 'widget') || 'Préparation...',
+    buttonStatesSuccess: t('buttonStates.success', 'widget') || 'Prêt !',
     buttonStatesSend: t('buttonStates.send', 'widget') || 'Envoyer',
-    footerNote: t('footer.note', 'widget') || 'Gratuit - Réponse rapide garantie',
+    footerNote: t('footer.note', 'widget') || 'En cliquant sur "Envoyer", vous serez redirigé vers WhatsApp. Aucune donnée n\'est stockée.',
   };
   
   // Refs
