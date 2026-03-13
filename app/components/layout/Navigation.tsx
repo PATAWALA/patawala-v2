@@ -143,7 +143,7 @@ export default function Navigation() {
     >
       <div className="lg:container lg:mx-auto lg:px-6">
         <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
-          {/* Structure flex pour un contrôle total */}
+          {/* Structure avec flex pour un contrôle total */}
           <div className="flex items-center justify-between">
             {/* Logo à gauche */}
             <div className="flex items-center">
@@ -201,20 +201,38 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Language Switcher et Hamburger à droite */}
-            <div className="flex items-center gap-2">
+            {/* Language Switcher à droite (uniquement sur desktop) */}
+            <div className="hidden lg:block">
               <LanguageSwitcher />
-              <button
-                className="lg:hidden flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
-              >
-                {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
             </div>
 
-            {/* Espace vide à droite pour équilibrer sur desktop (invisible sur mobile) */}
-            <div className="hidden lg:block w-[140px]" />
+            {/* Version mobile : Logo à gauche, Hamburger à droite */}
+            <div className="flex lg:hidden items-center justify-between w-full">
+              <div className="flex items-center">
+                <a 
+                  href="/" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = '/';
+                  }}
+                  className="flex items-center font-bold group py-1"
+                >
+                  <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
+                    <span className="sm:hidden">Patawala</span>
+                  </span>
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <LanguageSwitcher />
+                <button
+                  className="flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
+                  onClick={() => setIsOpen(!isOpen)}
+                  aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                >
+                  {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
