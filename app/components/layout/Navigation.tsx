@@ -222,13 +222,13 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE MENU - Fond blanc transparent et flou */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 top-0 bg-[#0A0F1C]/95 backdrop-blur-xl z-40 overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 top-0 bg-white/30 backdrop-blur-xl z-40 overflow-y-auto">
           {/* Bouton de fermeture */}
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-6 right-6 p-2 text-white/70 hover:text-blue-400 transition-colors z-50"
+            className="absolute top-6 right-6 p-2 text-gray-800 hover:text-blue-600 transition-colors z-50"
             aria-label="Fermer le menu"
           >
             <X className="w-8 h-8" />
@@ -248,8 +248,8 @@ export default function Navigation() {
                   }}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                     isActive
-                      ? 'text-blue-400'
-                      : 'text-white/90 hover:text-blue-400'
+                      ? 'text-blue-600'
+                      : 'text-gray-800 hover:text-blue-600'
                   }`}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}
