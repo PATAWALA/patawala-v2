@@ -182,17 +182,17 @@ const HeroSection = memo(function HeroSection() {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-10 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-6 lg:gap-8 xl:gap-12 max-w-6xl mx-auto">
           {/* TEXTE À GAUCHE */}
-          <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1">
-            {/* TITRE - avec marge du bas ajustée */}
-            <h1 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight px-1 sm:px-2 text-white mb-2 md:mb-3">
+          <div className="flex-1 text-center lg:text-left max-w-xl order-2 lg:order-1 w-full px-2 sm:px-3">
+            {/* TITRE */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight text-white mb-1 md:mb-5">
               <span>
                 {t('title', 'hero')}
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 md:mt-1 font-black min-h-[4rem] sm:min-h-[4rem]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 md:mt-2 font-black min-h-[3.5rem] sm:min-h-[4rem]">
                 {/* Version mobile */}
-                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
+                <span className="text-xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
                   {t('mobilePhrase', 'hero')}
                 </span>
                 {/* Version desktop */}
@@ -203,20 +203,20 @@ const HeroSection = memo(function HeroSection() {
               </span>
             </h1>
 
-            {/* SUBTITLE - remonté sur mobile */}
-            <div className="space-y-3 md:space-y-3 mb-4 md:mb-4 px-2 sm:px-3 md:px-4 lg:px-0 -mt-2 md:mt-6">
-              <p className="text-base sm:text-lg md:text-lg lg:text-xl text-white font-bold leading-relaxed">
+            {/* SUBTITLE */}
+            <div className="space-y-2 md:space-y-3 mb-3 md:mb-4 px-1 sm:px-2">
+              <p className="text-sm md:text-lg lg:text-xl text-white font-bold leading-tight md:leading-relaxed">
                 {t('subtitle', 'hero')}
               </p>
             </div>
 
             {/* AVATARS */}
-            <div className="flex flex-row items-center justify-center lg:justify-start gap-1 md:gap-1 mb-6 md:mb-8 px-2 sm:px-3 lg:px-0">
-              <div className="flex items-center -space-x-4 sm:-space-x-5 md:-space-x-6">
+            <div className="flex flex-row items-center justify-center lg:justify-start gap-1 md:gap-1 mb-5 md:mb-8">
+              <div className="flex items-center -space-x-4 md:-space-x-6">
                 {avatarImages.map((avatar, index) => (
                   <div
                     key={index}
-                    className="relative w-7 h-7 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
+                    className="relative w-7 h-7 md:w-7 md:h-7 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
                     style={{ zIndex: 2 - index }}
                   >
                     <Image
@@ -224,7 +224,7 @@ const HeroSection = memo(function HeroSection() {
                       alt={avatar.alt}
                       fill
                       className="object-cover scale-150"
-                      sizes="(max-width: 640px) 28px, 32px"
+                      sizes="(max-width: 768px) 28px, 32px"
                       loading="lazy"
                       placeholder="blur"
                     />
@@ -232,67 +232,69 @@ const HeroSection = memo(function HeroSection() {
                 ))}
               </div>
 
-              <div className="flex flex-col items-start ml-1">
+              <div className="flex flex-col items-start">
                 <div className="flex items-center gap-0">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
                       size={10}
-                      className="sm:w-3 sm:h-3 fill-orange-400 text-orange-400"
+                      className="md:w-3 md:h-3 fill-orange-400 text-orange-400"
                       aria-hidden="true"
                     />
                   ))}
                 </div>
                 <div className="flex items-center gap-0.5">
-                  <span className="text-xs sm:text-sm md:text-base font-bold text-white">30+</span>
-                  <span className="text-[9px] sm:text-xs md:text-sm text-gray-400 whitespace-nowrap">
+                  <span className="text-xs md:text-base font-bold text-white">30+</span>
+                  <span className="text-[9px] md:text-sm text-gray-400 whitespace-nowrap">
                     {t('socialProof.entrepreneurs', 'hero')}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* BOUTONS - Côte à côte sur mobile avec texte responsive */}
-            <div className="flex flex-row gap-2 sm:gap-3 md:gap-4 justify-center lg:justify-start px-2 sm:px-3 lg:px-0">
+            {/* BOUTONS */}
+            <div className="flex flex-row gap-2 md:gap-4 justify-center lg:justify-start w-full">
               <button
                 onClick={scrollToContact}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 sm:px-4 md:px-7 lg:px-8 py-3 sm:py-3.5 md:py-4 rounded-xl font-bold text-xs sm:text-sm md:text-lg flex items-center justify-center gap-1 sm:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 min-w-0 whitespace-nowrap min-h-[44px] sm:min-h-[52px] md:min-h-[56px] tracking-tight"
+                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-bold text-xs md:text-lg flex items-center justify-center gap-1 md:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
                 aria-label={t('buttons.project', 'hero')}
               >
-                <span className="truncate">{t('buttons.project', 'hero')}</span>
-                <ArrowRight size={14} className="sm:w-4 sm:h-4 flex-shrink-0" aria-hidden="true" />
+                <span className="text-white">{t('buttons.project', 'hero')}</span>
+                <ArrowRight size={16} className="md:w-5 md:h-5 flex-shrink-0" aria-hidden="true" />
               </button>
 
               <button
                 onClick={scrollToProjets}
-                className="bg-transparent text-white px-3 sm:px-4 md:px-7 lg:px-8 py-3 sm:py-3.5 md:py-4 rounded-xl font-semibold text-xs sm:text-sm md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 flex-1 min-w-0 whitespace-nowrap min-h-[44px] sm:min-h-[52px] md:min-h-[56px] tracking-tight"
+                className="bg-transparent text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-semibold text-xs md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
                 aria-label={t('buttons.portfolio', 'hero')}
               >
-                <span className="truncate">{t('buttons.portfolio', 'hero')}</span>
+                <span className="text-white">{t('buttons.portfolio', 'hero')}</span>
               </button>
             </div>
           </div>
 
           {/* IMAGE */}
           <div className="flex-1 flex justify-center relative order-1 lg:order-2 w-full">
-            <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] lg:max-w-[400px] aspect-square">
-              <div className="absolute -inset-4 sm:-inset-5 md:-inset-6 rounded-full border-2 border-blue-500/30" aria-hidden="true" />
-              <div className="absolute -inset-6 sm:-inset-8 md:-inset-10 rounded-full border border-cyan-500/20" aria-hidden="true" />
-              <div className="absolute -inset-2 sm:-inset-3 md:-inset-4 rounded-full bg-gradient-to-r from-blue-500/5 to-cyan-500/5 blur-md" aria-hidden="true" />
+            <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[400px] md:max-w-sm lg:max-w-md">
+              <div className="absolute -inset-4 md:-inset-6 rounded-full border-2 border-blue-500/30" aria-hidden="true" />
+              <div className="absolute -inset-6 md:-inset-10 rounded-full border border-cyan-500/20" aria-hidden="true" />
+              <div className="absolute -inset-2 md:-inset-4 rounded-full bg-gradient-to-r from-blue-500/5 to-cyan-500/5 blur-md" aria-hidden="true" />
               
-              <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
-                <Image
-                  src={profileImage}
-                  alt={t('altImages.profile', 'hero') || "Abdoulaye Patawala"}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 360px, 400px"
-                  priority
-                  fetchPriority="high"
-                  loading="eager"
-                  quality={90}
-                  placeholder="blur"
-                />
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
+                <div className="aspect-square relative">
+                  <Image
+                    src={profileImage}
+                    alt={t('altImages.profile', 'hero') || "Abdoulaye Patawala"}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 360px) 280px, (max-width: 640px) 320px, 400px"
+                    priority
+                    fetchPriority="high"
+                    loading="eager"
+                    quality={90}
+                    placeholder="blur"
+                  />
+                </div>
               </div>
             </div>
           </div>
