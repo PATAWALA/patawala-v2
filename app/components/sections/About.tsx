@@ -101,13 +101,14 @@ const AboutSection = memo(function AboutSection() {
   const scrollToSection = useCallback((sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }, []);
 
   const handleParlerProjet = useCallback(() => {
-    setIsBookingOpen(true);
-  }, []);
+    // Naviguer vers la section contact
+    scrollToSection('contact');
+  }, [scrollToSection]);
 
   const handleVoirOffres = useCallback(() => {
     window.location.href = '/services';
@@ -344,25 +345,25 @@ const AboutSection = memo(function AboutSection() {
                   </p>
                 </div>
 
-                {/* BOUTONS */}
-                <div className="flex flex-col sm:flex-row gap-4 md:gap-4 justify-center lg:justify-start">
+                {/* BOUTONS - Côte à côte sur mobile avec texte sur une ligne */}
+                <div className="flex flex-row gap-3 md:gap-4 justify-center lg:justify-start">
                   <button
                     onClick={handleParlerProjet}
-                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 md:px-6 py-4 md:py-3 rounded-xl font-bold text-lg md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 w-full sm:w-auto min-h-[52px] tracking-tight"
+                    className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-bold text-sm md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
                     aria-label={t('buttons.talk', 'about')}
                   >
-                    <MessageSquare size={20} aria-hidden="true" />
-                    <span>
+                    <MessageSquare size={18} className="md:w-5 md:h-5" aria-hidden="true" />
+                    <span className="truncate">
                       {t('buttons.talk', 'about')}
                     </span>
                   </button>
 
                   <button
                     onClick={handleVoirOffres}
-                    className="bg-transparent text-white px-6 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-lg md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors w-full sm:w-auto min-h-[52px] tracking-tight"
+                    className="bg-transparent text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-sm md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >
-                    <span>
+                    <span className="truncate">
                       {t('buttons.services', 'about')}
                     </span>
                   </button>
