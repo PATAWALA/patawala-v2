@@ -90,52 +90,53 @@
     "title": "Bâtissons",
     "typed": {
       "strings": [
-        "votre succès digital.",
-        "un e-commerce sans limite.",
-        "l'application de vos idées.",
-        "votre outil métier sur-mesure.",
-        "une expérience utilisateur unique."
+        "votre site internet haute performance.",
+        "votre agent IA sur-mesure.",
+        "votre tunnel de vente optimisé.",
+        "vos automatisations intelligentes.",
+        "votre application métier rentable.",
+        "la stratégie digitale de votre business."
       ]
     },
-    "mobilePhrase": "votre vision numérique",
-    "subtitle": "Du site vitrine à l'application complexe, je réalise vos projets digitaux de l'idée à la mise en ligne.",
+    "mobilePhrase": "votre croissance numérique",
+    "subtitle": "Expertise en développement et automatisation pour transformer votre activité en un système performant et rentable.",
     "socialProof": {
       "stars": "30+ entrepreneurs satisfaits",
       "entrepreneurs": "Avis positifs"
     },
     "buttons": {
       "project": "Lancer mon projet",
-      "portfolio": "Découvrir mes travaux"
+      "portfolio": "Voir mes offres"
     },
     "badges": {
       "multisupport": "Multi-support",
-      "available": "Disponible"
+      "available": "Disponible pour nouveaux projets"
     },
     "altImages": {
       "avatar": "Client satisfait",
-      "profile": "Abdoulaye Patawala - Développeur web & mobile"
+      "profile": "Abdoulaye Patawala - Développeur & Expert Automatisation"
     }
   },
 
   "about": {
     "badge": "Partenaire Tech de Confiance",
     "title": "Je transforme vos ambitions",
-    "subtitle": "en actifs digitaux performants",
-    "description": "Ma vision repose sur une approche pragmatique : comprendre vos objectifs et les besoins réels avant tout choix technique. Une méthode qui se décline en quatre piliers.",
+    "subtitle": "en actifs numériques de haute performance",
+    "description": "Ma vision repose sur une approche pragmatique : comprendre vos objectifs et vos besoins réels avant tout choix technique. Une méthode qui s'articule autour de quatre piliers.",
     "whoami": "Qui suis-je ?",
     "vision": {
       "cards": [
         {
-          "title": "Conseil & Stratégie Tech",
-          "description": "Des choix technologiques adaptés à votre budget et vos objectifs, pour un lancement sans risque et sans coûts cachés."
+          "title": "Conseil Tech & Stratégie",
+          "description": "Des choix technologiques adaptés à votre budget et vos objectifs, pour un lancement sans risque ni coûts cachés."
         },
         {
           "title": "Partenariat Long Terme",
-          "description": "Un accompagnement CTO sur mesure : je sécurise vos choix techniques et fais évoluer vos outils avec votre croissance."
+          "description": "Un accompagnement CTO sur-mesure : je sécurise vos choix techniques et fais évoluer vos outils avec votre croissance."
         },
         {
           "title": "Innovation & Performance",
-          "description": "IA et architectures modernes pour automatiser vos processus, booster vos ventes et vous démarquer."
+          "description": "L'IA et les architectures modernes pour automatiser vos processus, booster vos ventes et vous démarquer."
         },
         {
           "title": "Co-création Transparente",
@@ -146,7 +147,7 @@
     "profile": {
       "name": "Abdoulaye Patawala",
       "role": "Développeur Full Stack",
-      "missionText": "Mon rôle : être le partenaire technique de votre croissance. Des plateformes stratégiques aux écosystèmes complexes, je construis des outils robustes, évolutifs et conçus pour durer.",
+      "missionText": "Mon rôle : être le partenaire technique de votre croissance. Des plateformes stratégiques aux écosystèmes complexes, je bâtis des outils robustes, scalables et conçus pour durer.",
       "badges": {
         "webMobile": "Web & Mobile",
         "available": "Disponible"
@@ -154,7 +155,7 @@
     },
     "buttons": {
       "talk": "Me contacter",
-      "services": "Mes offres"
+      "services": "Mes projets"
     }
   },
 

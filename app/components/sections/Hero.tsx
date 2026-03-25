@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import profileImage from '../../assets/images/horo1.png';
 import profile2Image from '../../assets/images/profile2.webp';
 import profile4Image from '../../assets/images/profile4.webp';
@@ -10,23 +11,47 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 
 const HeroSection = memo(function HeroSection() {
   const { t, tArray, language, isLoading } = useTranslation();
+  const router = useRouter();
   const [displayText, setDisplayText] = useState('');
   const [stringIndex, setStringIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   // Réf pour éviter les doubles appels
   const timeoutRef = useRef<NodeJS.Timeout>();
   const pauseTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  // Détection mobile pour ajuster la vitesse
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Récupération des chaînes avec tArray
   const typedStrings = tArray('typed.strings', 'hero');
   
   // Version de secours pour le chargement
   const fallbackStrings = language === 'fr' 
-    ? ['votre succès digital.', 'un e-commerce sans limite.', "l'application de vos idées.", 'votre outil métier sur-mesure.', 'une expérience utilisateur unique.']
-    : ['your digital success.', 'a high-performance e-commerce.', 'the app of your ideas.', 'your custom business tool.', 'a unique user experience.'];
+    ? [ "votre site internet haute performance.",
+        "votre agent IA sur-mesure.",
+        "votre tunnel de vente optimisé.",
+        "vos automatisations intelligentes.",
+        "votre application métier rentable.",
+        "la stratégie digitale de votre business."]
+    : [        "your high-performance website.",
+        "your custom AI agent.",
+        "your optimized sales funnel.",
+        "your smart automations.",
+        "your profitable business app.",
+        "your digital growth strategy."];
 
   const stringsToUse = typedStrings.length > 0 ? typedStrings : fallbackStrings;
 
@@ -49,7 +74,7 @@ const HeroSection = memo(function HeroSection() {
     };
   }, [isLoading, stringsToUse, isReady]);
 
-  // TYPING EFFECT
+  // TYPING EFFECT - Version optimisée pour mobile
   useEffect(() => {
     if (!isReady || stringsToUse.length === 0) return;
 
@@ -57,6 +82,9 @@ const HeroSection = memo(function HeroSection() {
     if (!currentString) return;
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    // Ajuster la vitesse selon le device (plus rapide sur mobile)
+    const typingSpeed = isMobile ? 120 : 180;
 
     timeoutRef.current = setTimeout(() => {
       if (isDeleting) {
@@ -80,15 +108,15 @@ const HeroSection = memo(function HeroSection() {
           if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
           pauseTimeoutRef.current = setTimeout(() => {
             setIsDeleting(true);
-          }, 2000);
+          }, isMobile ? 1500 : 2000);
         }
       }
-    }, 180);
+    }, typingSpeed);
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [charIndex, isDeleting, stringIndex, stringsToUse, isReady]);
+  }, [charIndex, isDeleting, stringIndex, stringsToUse, isReady, isMobile]);
 
   // Nettoyage final
   useEffect(() => {
@@ -102,8 +130,8 @@ const HeroSection = memo(function HeroSection() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
-  const scrollToProjets = useCallback(() => {
-    document.getElementById('projets')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const navigateToServices = useCallback(() => {
+    window.location.href = '/services';
   }, []);
 
   const avatarImages = [
@@ -180,13 +208,9 @@ const HeroSection = memo(function HeroSection() {
               <span>
                 {t('title', 'hero')}
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 md:mt-2 font-black min-h-[3.5rem] sm:min-h-[4rem]">
-                {/* Version mobile */}
-                <span className="text-xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 sm:hidden">
-                  {t('mobilePhrase', 'hero')}
-                </span>
-                {/* Version desktop */}
-                <span className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400 hidden sm:inline">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 md:mt-2 font-black">
+                {/* Version mobile - maintenant avec effet machine à écrire */}
+                <span className="text-xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400">
                   {displayText}
                   <span className="animate-pulse ml-1">|</span>
                 </span>
@@ -254,7 +278,7 @@ const HeroSection = memo(function HeroSection() {
               </button>
 
               <button
-                onClick={scrollToProjets}
+                onClick={navigateToServices}
                 className="bg-transparent text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-semibold text-xs md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
                 aria-label={t('buttons.portfolio', 'hero')}
               >

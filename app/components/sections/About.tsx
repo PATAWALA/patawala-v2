@@ -134,9 +134,10 @@ const AboutSection = memo(function AboutSection() {
     scrollToSection('contact');
   }, [scrollToSection]);
 
-  const handleVoirOffres = useCallback(() => {
-    window.location.href = '/services';
-  }, []);
+  const handleVoirProjets = useCallback(() => {
+    // Naviguer vers la section projets
+    scrollToSection('projets');
+  }, [scrollToSection]);
 
   const handleCloseBooking = useCallback(() => {
     setIsBookingOpen(false);
@@ -383,7 +384,7 @@ const AboutSection = memo(function AboutSection() {
                   </button>
 
                   <button
-                    onClick={handleVoirOffres}
+                    onClick={handleVoirProjets}
                     className="bg-transparent text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-sm md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
                     aria-label={t('buttons.services', 'about')}
                   >

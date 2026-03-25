@@ -87,51 +87,51 @@
 
   "hero": {
     "badge": "Specialized in web & mobile development",
-    "title": "Building",
+    "title": "Let's build",
     "typed": {
       "strings": [
-        "your digital success.",
-        "a high-performance e-commerce.",
-        "the app that brings your ideas to life.",
-        "your custom business tool.",
-        "a unique user experience."
+        "your high-performance website.",
+        "your custom AI agent.",
+        "your optimized sales funnel.",
+        "your smart automations.",
+        "your profitable business app.",
+        "your digital growth strategy."
       ]
     },
     "mobilePhrase": "your digital vision",
-    "subtitle": "From showcase sites to complex applications, I bring your digital projects to life from idea to launch.",
+    "subtitle": "From high-converting landing pages to complex automation, I transform your ideas into scalable digital solutions.",
     "socialProof": {
       "stars": "30+ satisfied entrepreneurs",
       "entrepreneurs": "Positive reviews"
     },
     "buttons": {
-      "project": "Start my project",
-      "portfolio": "See my work"
+      "project": "Launch my project",
+      "portfolio": "View my offers"
     },
     "badges": {
-      "multisupport": "Multi-device",
-      "available": "Available"
+      "multisupport": "Multi-platform",
+      "available": "Open for projects"
     },
     "altImages": {
-      "avatar": "Happy client",
-      "profile": "Abdoulaye Patawala - Web & mobile developer"
+      "avatar": "Satisfied client",
+      "profile": "Abdoulaye Patawala - Web & Automation Developer"
     }
   },
-
-  "about": {
+"about": {
     "badge": "Trusted Tech Partner",
     "title": "I transform your ambitions",
     "subtitle": "into high-performance digital assets",
-    "description": "My vision is based on a pragmatic approach: understanding your goals and real needs before any technical choice. A method that unfolds in four pillars.",
+    "description": "My vision is based on a pragmatic approach: understanding your goals and real needs before any technical choice. A methodology built on four pillars.",
     "whoami": "Who am I?",
     "vision": {
       "cards": [
         {
           "title": "Tech Consulting & Strategy",
-          "description": "Technology choices adapted to your budget and goals, for a risk-free launch with no hidden costs."
+          "description": "Technology choices tailored to your budget and goals, ensuring a risk-free launch with no hidden costs."
         },
         {
           "title": "Long-term Partnership",
-          "description": "Tailored CTO support: I secure your technical choices and evolve your tools with your growth."
+          "description": "Custom CTO support: I secure your technical choices and scale your tools alongside your growth."
         },
         {
           "title": "Innovation & Performance",
@@ -146,7 +146,7 @@
     "profile": {
       "name": "Abdoulaye Patawala",
       "role": "Full Stack Developer",
-      "missionText": "My role: to be the technical partner of your growth. From strategic platforms to complex ecosystems, I build robust, scalable tools designed to last.",
+      "missionText": "My role: to be the technical partner for your growth. From strategic platforms to complex ecosystems, I build robust, scalable tools designed to last.",
       "badges": {
         "webMobile": "Web & Mobile",
         "available": "Available"
@@ -154,7 +154,7 @@
     },
     "buttons": {
       "talk": "Contact me",
-      "services": "My offers"
+      "services": "My projects"
     }
   },
 
