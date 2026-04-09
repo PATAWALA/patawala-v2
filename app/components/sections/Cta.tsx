@@ -1,18 +1,17 @@
 'use client';
 
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import {
   Calendar, Sparkles, CheckCircle, MessageCircle, Phone,
   Mail, MapPin, Heart, Smartphone, Send, Clock,
   Instagram, Linkedin, Twitter, Github, Facebook
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Import dynamique de BookingModal (chargé uniquement à l'ouverture)
 const BookingModal = dynamic(() => import('../ui/BookingModal'), { ssr: false });
 
-// Interface pour typer les informations de contact
 interface ContactInfo {
   whatsapp: [string, string];
   calls: [string, string];
@@ -21,7 +20,6 @@ interface ContactInfo {
   location: string;
 }
 
-// Données par défaut pour les contacts
 const DEFAULT_CONTACT_INFO_FR: ContactInfo = {
   whatsapp: ['22962278090', '+229 62 27 80 90'],
   calls: ['22962278090', '+229 62 27 80 90'],
@@ -38,7 +36,6 @@ const DEFAULT_CONTACT_INFO_EN: ContactInfo = {
   location: 'Cotonou, Benin'
 };
 
-// Social links - STATIQUES
 const SOCIAL_LINKS = [
   { name: 'WhatsApp', icon: MessageCircle, url: 'https://wa.me/22962278090', color: 'hover:bg-green-500/20', username: '@patawala' },
   { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/patawalaabdoulaye1900', color: 'hover:bg-pink-500/20', username: '@patawala' },
@@ -56,58 +53,35 @@ const CTASection = memo(function CTASection() {
   const [contactInfo, setContactInfo] = useState<ContactInfo>(DEFAULT_CONTACT_INFO_FR);
   const [isReady, setIsReady] = useState(false);
 
-  // Points lumineux statiques
   const lightPoints = [
     { left: '15%', top: '25%' },
     { left: '75%', top: '60%' }
   ];
 
-  // Attendre que les traductions soient chargées
   useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
+    if (!isLoading) setIsReady(true);
   }, [isLoading]);
 
-  // Récupération des informations de contact
   useEffect(() => {
     if (!isReady) return;
-
     try {
       const defaultInfo = language === 'fr' ? DEFAULT_CONTACT_INFO_FR : DEFAULT_CONTACT_INFO_EN;
-      
       setContactInfo({
-        whatsapp: [
-          '22962278090',
-          t('contactInfo.whatsapp', 'contact') || defaultInfo.whatsapp[1]
-        ],
-        calls: [
-          '22962278090',
-          t('contactInfo.calls', 'contact') || defaultInfo.calls[1]
-        ],
-        emergency: [
-          '22946495875',
-          t('contactInfo.emergency', 'contact') || defaultInfo.emergency[1]
-        ],
+        whatsapp: ['22962278090', t('contactInfo.whatsapp', 'contact') || defaultInfo.whatsapp[1]],
+        calls: ['22962278090', t('contactInfo.calls', 'contact') || defaultInfo.calls[1]],
+        emergency: ['22946495875', t('contactInfo.emergency', 'contact') || defaultInfo.emergency[1]],
         email: t('contactInfo.email', 'contact') || defaultInfo.email,
         location: t('contactInfo.location', 'contact') || defaultInfo.location
       });
-    } catch (error) {
-      console.error('Erreur chargement contact info:', error);
+    } catch {
       setContactInfo(language === 'fr' ? DEFAULT_CONTACT_INFO_FR : DEFAULT_CONTACT_INFO_EN);
     }
   }, [t, language, isReady]);
 
   const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
-
-  const handleDirectWhatsApp = useCallback(() => {
-    window.open('https://wa.me/22962278090', '_blank');
-  }, []);
-
-  const handleWhatsAppClick = useCallback((phoneNumber: string) => {
-    window.open(`https://wa.me/${phoneNumber}`, '_blank');
-  }, []);
+  const handleDirectWhatsApp = useCallback(() => window.open('https://wa.me/22962278090', '_blank'), []);
+  const handleWhatsAppClick = useCallback((phoneNumber: string) => window.open(`https://wa.me/${phoneNumber}`, '_blank'), []);
 
   const handleCopy = useCallback((text: string, displayText: string) => {
     navigator.clipboard.writeText(text);
@@ -119,7 +93,22 @@ const CTASection = memo(function CTASection() {
     }, 2000);
   }, []);
 
-  // SKELETON LOADER
+  // Variants Framer Motion
+  const fadeInUp: any = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
+  };
+
+  const staggerContainer: any = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+  };
+
+  const cardHover: any = {
+    hover: { y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
+  };
+
+  // SKELETON LOADER (inchangé)
   if (isLoading || !isReady) {
     return (
       <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
@@ -127,21 +116,15 @@ const CTASection = memo(function CTASection() {
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
-
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            {/* Badge skeleton */}
             <div className="w-full flex justify-center mb-6">
               <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
             </div>
-
-            {/* Titre skeleton */}
             <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
             <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto mb-6 animate-pulse" />
             <div className="w-96 h-4 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
           </div>
-
-          {/* Contact Cards skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
             {[1, 2].map((i) => (
               <div key={i} className="bg-[#141B2B]/50 rounded-xl border border-gray-800/50 p-6">
@@ -166,8 +149,6 @@ const CTASection = memo(function CTASection() {
               </div>
             ))}
           </div>
-
-          {/* CTA Buttons skeleton */}
           <div className="max-w-2xl mx-auto text-center">
             <div className="flex justify-center gap-4 mb-6">
               <div className="w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
@@ -186,10 +167,15 @@ const CTASection = memo(function CTASection() {
 
         {/* Alert de copie */}
         {showCopyAlert && (
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2">
-            <CheckCircle size={18} aria-hidden="true" />
+          <motion.div
+            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <CheckCircle size={18} />
             <span className="text-sm font-bold tracking-tight">{copiedText} ✓</span>
-          </div>
+          </motion.div>
         )}
 
         {/* FOND */}
@@ -201,10 +187,18 @@ const CTASection = memo(function CTASection() {
             }}
             aria-hidden="true"
           />
-
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-
+          <motion.div
+            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            aria-hidden="true"
+          />
           {lightPoints.map((point, i) => (
             <div
               key={i}
@@ -217,38 +211,63 @@ const CTASection = memo(function CTASection() {
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center mb-12">
-            <div className="w-full flex justify-center mb-6 md:mb-8">
+            <motion.div
+              className="w-full flex justify-center mb-6 md:mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-                <Sparkles size={14} className="text-blue-400" aria-hidden="true" />
+                <Sparkles size={14} className="text-blue-400" />
                 <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
                   {t('badge', 'contact')}
                 </span>
               </div>
-            </div>
+            </motion.div>
 
-            <h2 id="contact-title" className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 px-4 text-white leading-tight tracking-tight">
-              <span>
-                {t('title', 'contact')}
-              </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 font-black tracking-tight">
-                {t('titleHighlight', 'contact')}
-              </span>
-            </h2>
-
-            <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto px-4 font-medium">
-              {t('subtitle', 'contact')}
-            </p>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              variants={staggerContainer}
+            >
+              <motion.h2
+                id="contact-title"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 px-4 text-white leading-tight tracking-tight"
+                variants={fadeInUp}
+              >
+                <span>{t('title', 'contact')}</span>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 font-black tracking-tight">
+                  {t('titleHighlight', 'contact')}
+                </span>
+              </motion.h2>
+              <motion.p
+                className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto px-4 font-medium"
+                variants={fadeInUp}
+              >
+                {t('subtitle', 'contact')}
+              </motion.p>
+            </motion.div>
           </div>
 
           {/* Contact Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={staggerContainer}
+          >
             {/* Direct Contact Card */}
-            <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
+            <motion.div
+              className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg"
+              variants={fadeInUp}
+              whileHover="hover"
+            >
               <h3 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2 tracking-tight">
-                <Phone size={18} className="text-blue-400" aria-hidden="true" />
-                <span>
-                  {t('contactCards.direct.title', 'contact')}
-                </span>
+                <Phone size={18} className="text-blue-400" />
+                <span>{t('contactCards.direct.title', 'contact')}</span>
               </h3>
 
               <div className="space-y-3">
@@ -256,12 +275,10 @@ const CTASection = memo(function CTASection() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Smartphone size={16} className="text-blue-400" aria-hidden="true" />
+                      <Smartphone size={16} className="text-blue-400" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-gray-400 font-medium">
-                        {t('contactCards.direct.calls', 'contact')}
-                      </p>
+                      <p className="text-xs text-gray-400 font-medium">{t('contactCards.direct.calls', 'contact')}</p>
                       <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.calls[1]}</p>
                     </div>
                   </div>
@@ -269,18 +286,14 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`tel:${contactInfo.calls[0]}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold text-center tracking-tight"
-                      aria-label={`Appeler ${contactInfo.calls[1]}`}
                     >
                       {language === 'fr' ? 'Appeler' : 'Call'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.calls[0], contactInfo.calls[1])}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold tracking-tight"
-                      aria-label={`Copier ${contactInfo.calls[1]}`}
                     >
-                      <span>
-                        {t('buttons.copy', 'contact')}
-                      </span>
+                      {t('buttons.copy', 'contact')}
                     </button>
                   </div>
                 </div>
@@ -289,12 +302,10 @@ const CTASection = memo(function CTASection() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-red-500/10 rounded-lg border border-red-500/20 gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Phone size={16} className="text-red-400" aria-hidden="true" />
+                      <Phone size={16} className="text-red-400" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-red-400 font-bold tracking-tight">
-                        {t('contactCards.direct.emergency', 'contact')}
-                      </p>
+                      <p className="text-xs text-red-400 font-bold tracking-tight">{t('contactCards.direct.emergency', 'contact')}</p>
                       <p className="text-sm text-white font-black truncate tracking-tight">{contactInfo.emergency[1]}</p>
                     </div>
                   </div>
@@ -302,31 +313,29 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`tel:${contactInfo.emergency[0]}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-bold text-center tracking-tight"
-                      aria-label={`Appeler urgence ${contactInfo.emergency[1]}`}
                     >
                       {language === 'fr' ? 'Appeler' : 'Call'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.emergency[0], contactInfo.emergency[1])}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-red-500/20 rounded-lg hover:bg-red-500/30 transition-colors text-xs text-red-400 font-bold tracking-tight"
-                      aria-label={`Copier ${contactInfo.emergency[1]}`}
                     >
-                      <span>
-                        {t('buttons.copy', 'contact')}
-                      </span>
+                      {t('buttons.copy', 'contact')}
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Info Card */}
-            <div className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg">
+            <motion.div
+              className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg"
+              variants={fadeInUp}
+              whileHover="hover"
+            >
               <h3 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2 tracking-tight">
-                <Mail size={18} className="text-blue-400" aria-hidden="true" />
-                <span>
-                  {t('contactCards.info.title', 'contact')}
-                </span>
+                <Mail size={18} className="text-blue-400" />
+                <span>{t('contactCards.info.title', 'contact')}</span>
               </h3>
 
               <div className="space-y-3">
@@ -334,12 +343,10 @@ const CTASection = memo(function CTASection() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Mail size={16} className="text-blue-400" aria-hidden="true" />
+                      <Mail size={16} className="text-blue-400" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-gray-400 font-medium">
-                        {t('contactCards.info.email', 'contact')}
-                      </p>
+                      <p className="text-xs text-gray-400 font-medium">{t('contactCards.info.email', 'contact')}</p>
                       <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.email}</p>
                     </div>
                   </div>
@@ -347,19 +354,15 @@ const CTASection = memo(function CTASection() {
                     <a
                       href={`mailto:${contactInfo.email}`}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors flex items-center justify-center gap-1"
-                      aria-label={`Envoyer un email à ${contactInfo.email}`}
                     >
-                      <Send size={14} className="text-blue-400" aria-hidden="true" />
+                      <Send size={14} className="text-blue-400" />
                       <span className="text-xs text-blue-400 font-bold sm:hidden tracking-tight">Email</span>
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.email, contactInfo.email)}
                       className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold tracking-tight"
-                      aria-label={`Copier l'adresse email`}
                     >
-                      <span>
-                        {t('buttons.copy', 'contact')}
-                      </span>
+                      {t('buttons.copy', 'contact')}
                     </button>
                   </div>
                 </div>
@@ -367,115 +370,113 @@ const CTASection = memo(function CTASection() {
                 {/* Localisation */}
                 <div className="flex items-center gap-3 p-3 bg-[#1F2937] rounded-lg">
                   <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin size={16} className="text-cyan-400" aria-hidden="true" />
+                    <MapPin size={16} className="text-cyan-400" />
                   </div>
                   <div className="text-left min-w-0">
-                    <p className="text-xs text-gray-400 font-medium">
-                      {t('contactCards.info.location', 'contact')}
-                    </p>
+                    <p className="text-xs text-gray-400 font-medium">{t('contactCards.info.location', 'contact')}</p>
                     <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.location}</p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* CTA Buttons */}
-          <div className="max-w-2xl mx-auto text-center mb-12">
+          <motion.div
+            className="max-w-2xl mx-auto text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
-                    {t('guarantees.firstExchange', 'contact')}
-                  </span>
+                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.firstExchange', 'contact')}</span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
-
+                <span className="text-gray-600 hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
-                    {t('guarantees.free30min', 'contact')}
-                  </span>
+                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.free30min', 'contact')}</span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline" aria-hidden="true">•</span>
-
+                <span className="text-gray-600 hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" aria-hidden="true" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">
-                    {t('guarantees.noCommitment', 'contact')}
-                  </span>
+                  <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
+                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.noCommitment', 'contact')}</span>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 px-4">
-              <button
+              <motion.button
                 onClick={handleDirectWhatsApp}
                 className="group bg-green-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:bg-green-600 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
-                aria-label="Ouvrir WhatsApp direct"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <MessageCircle size={18} className="sm:w-5 sm:h-5" aria-hidden="true" />
-                <span>
-                  {t('buttons.whatsapp', 'contact')}
-                </span>
-              </button>
+                <MessageCircle size={18} className="sm:w-5 sm:h-5" />
+                <span>{t('buttons.whatsapp', 'contact')}</span>
+              </motion.button>
 
-              <button
+              <motion.button
                 onClick={handleOpenModal}
                 className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
-                aria-label="Planifier un rendez-vous"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Calendar size={18} className="sm:w-5 sm:h-5" aria-hidden="true" />
-                <span>
-                  {t('buttons.schedule', 'contact')}
-                </span>
-              </button>
+                <Calendar size={18} className="sm:w-5 sm:h-5" />
+                <span>{t('buttons.schedule', 'contact')}</span>
+              </motion.button>
             </div>
 
             <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm sm:text-base text-gray-200 font-semibold">
-                  {t('availability.thisWeek', 'contact')}
-                </span>
+                <span className="text-sm sm:text-base text-gray-200 font-semibold">{t('availability.thisWeek', 'contact')}</span>
               </div>
               <span className="text-lg sm:text-xl font-black text-blue-400 tracking-tight">
                 2 {t('availability.slots', 'contact')}
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Social Links */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <h3 className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight">
-              <Heart size={18} className="text-blue-400" aria-hidden="true" />
-              <span>
-                {t('social.title', 'contact')}
-              </span>
-            </h3>
+          <motion.div
+            className="max-w-4xl mx-auto mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={staggerContainer}
+          >
+            <motion.h3
+              className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight"
+              variants={fadeInUp}
+            >
+              <Heart size={18} className="text-blue-400" />
+              <span>{t('social.title', 'contact')}</span>
+            </motion.h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {SOCIAL_LINKS.map((social, index) => (
-                <a
+                <motion.a
                   key={index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 group`}
-                  aria-label={`${social.name} (s'ouvre dans un nouvel onglet)`}
+                  variants={fadeInUp}
+                  whileHover={{ y: -3 }}
                 >
-                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" aria-hidden="true" />
+                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
                   <div className="flex-1 text-left overflow-hidden">
-                    <p className="text-xs text-gray-400 font-medium">
-                      {social.name}
-                    </p>
+                    <p className="text-xs text-gray-400 font-medium">{social.name}</p>
                     <p className="text-xs text-white font-bold truncate tracking-tight">{social.username}</p>
                   </div>
-                </a>
+                </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -485,5 +486,4 @@ const CTASection = memo(function CTASection() {
 });
 
 CTASection.displayName = 'CTASection';
-
 export default CTASection;

@@ -3,11 +3,11 @@
 import { ArrowRight, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { projets, Project } from '../../projets/data/projets';
 import ProjectModal from '../../components/ui/ProjectModal';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
-// Points lumineux fixes (déterministes)
 const LIGHT_POINTS = [
   { left: '15%', top: '20%' },
   { left: '75%', top: '60%' },
@@ -22,34 +22,27 @@ export default function RealisationsSection() {
   const [translatedProjects, setTranslatedProjects] = useState<any[]>([]);
   const [isReady, setIsReady] = useState(false);
 
-  // Attendre que les traductions soient chargées
   useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
+    if (!isLoading) setIsReady(true);
   }, [isLoading]);
 
-  // Charger les projets traduits depuis projetsData.projects
   useEffect(() => {
     if (!isReady) return;
-    
     try {
       const projectsData = t('projects', 'projetsData');
       setTranslatedProjects(Array.isArray(projectsData) ? projectsData : projets);
-    } catch (error) {
-      console.error('Erreur chargement projets traduits:', error);
+    } catch {
       setTranslatedProjects(projets);
     }
   }, [t, language, isReady]);
 
-  // Mémoïsation de la correspondance projet original ↔ traduit
   const projectMap = useMemo(() => {
     const map = new Map<number, any>();
     translatedProjects.forEach((p: any) => map.set(p.id, p));
     return map;
   }, [translatedProjects]);
 
-  const getTranslatedProject = useCallback((original: Project) => 
+  const getTranslatedProject = useCallback((original: Project) =>
     projectMap.get(original.id) || original, [projectMap]);
 
   const openModal = useCallback((project: Project) => {
@@ -75,7 +68,24 @@ export default function RealisationsSection() {
     return !!image && typeof image !== 'string';
   }, []);
 
-  // SKELETON LOADER
+  // Variants pour Framer Motion (avec any pour éviter les erreurs TS)
+  const fadeInUp: any = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
+  };
+
+  const staggerContainer: any = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+  };
+
+  const cardVariants: any = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    hover: { y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
+  };
+
+  // SKELETON LOADER (inchangé)
   if (isLoading || !isReady) {
     return (
       <section className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
@@ -83,20 +93,14 @@ export default function RealisationsSection() {
           <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
-
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          {/* Badge skeleton */}
           <div className="w-full flex justify-center mb-8">
             <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
           </div>
-
-          {/* Titre skeleton */}
           <div className="text-center mb-12">
             <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
             <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
           </div>
-
-          {/* Grille skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-[#141B2B]/50 rounded-2xl border border-gray-800/50 overflow-hidden">
@@ -114,8 +118,6 @@ export default function RealisationsSection() {
               </div>
             ))}
           </div>
-
-          {/* Bouton skeleton */}
           <div className="text-center">
             <div className="w-48 h-12 bg-gray-800/50 rounded-xl mx-auto animate-pulse" />
           </div>
@@ -129,7 +131,6 @@ export default function RealisationsSection() {
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
         {/* FOND */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          {/* Lignes horizontales bleues */}
           <div
             className="absolute inset-0 opacity-50"
             style={{
@@ -137,7 +138,6 @@ export default function RealisationsSection() {
             }}
             aria-hidden="true"
           />
-          {/* Lignes verticales cyan */}
           <div
             className="absolute inset-0 opacity-50"
             style={{
@@ -145,12 +145,18 @@ export default function RealisationsSection() {
             }}
             aria-hidden="true"
           />
-
-          {/* Cercles flous */}
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
-
-          {/* Points lumineux fixes */}
+          <motion.div
+            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            aria-hidden="true"
+          />
           {LIGHT_POINTS.map((point, i) => (
             <div
               key={i}
@@ -163,39 +169,61 @@ export default function RealisationsSection() {
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           {/* Badge */}
-          <div className="w-full flex justify-center mb-8">
+          <motion.div
+            className="w-full flex justify-center mb-8"
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
               <Sparkles size={16} className="text-blue-400" />
               <span className="text-sm font-bold text-blue-400 tracking-tight">
                 {t('badge', 'realisations')}
               </span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Titre */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight">
-              <span>
-                {t('title', 'realisations')}
-              </span>
+          <motion.div
+            className="text-center mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={staggerContainer}
+          >
+            <motion.h2
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 text-white tracking-tight"
+              variants={fadeInUp}
+            >
+              <span>{t('title', 'realisations')}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 font-black tracking-tight">
                 {t('titleHighlight', 'realisations')}
               </span>
-            </h2>
-            <p className="text-lg text-gray-200 max-w-2xl mx-auto font-medium">
+            </motion.h2>
+            <motion.p
+              className="text-lg text-gray-200 max-w-2xl mx-auto font-medium"
+              variants={fadeInUp}
+            >
               {t('subtitle', 'realisations')}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Grille des projets */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12 auto-rows-fr">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto mb-12 auto-rows-fr"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={staggerContainer}
+          >
             {projets.slice(0, 6).map((projet) => {
               const Icon = projet.icon;
               const showImage = hasValidImage(projet.image);
               const translated = getTranslatedProject(projet);
 
               return (
-                <div
+                <motion.div
                   key={projet.id}
                   onClick={() => openModal(projet)}
                   onKeyDown={(e) => handleCardKeyDown(e, projet)}
@@ -203,8 +231,9 @@ export default function RealisationsSection() {
                   tabIndex={0}
                   aria-label={`Voir les détails du projet ${translated.title}`}
                   className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 border border-[#1F2937] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex flex-col h-full"
+                  variants={cardVariants}
+                  whileHover="hover"
                 >
-                  {/* Image ou placeholder */}
                   <div className="relative h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 overflow-hidden flex-shrink-0">
                     {showImage ? (
                       <Image
@@ -226,29 +255,19 @@ export default function RealisationsSection() {
                         </div>
                       </>
                     )}
-
-                    {/* Badge catégorie */}
                     <div className="absolute top-3 left-3 bg-[#141B2B]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-blue-400 border border-blue-500/20 z-10 tracking-tight">
-                      <span>
-                        {translated.category}
-                      </span>
+                      {translated.category}
                     </div>
                   </div>
 
-                  {/* Contenu */}
                   <div className="p-6 flex flex-col flex-1">
                     <h3 className="text-xl font-extrabold text-white mb-2 tracking-tight">
-                      <span>
-                        {translated.title}
-                      </span>
+                      {translated.title}
                     </h3>
                     <p className="text-gray-300 text-sm mb-4 line-clamp-2 flex-1 font-medium">
-                      <span>
-                        {translated.description}
-                      </span>
+                      {translated.description}
                     </p>
 
-                    {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-5">
                       {translated.tags?.slice(0, 3).map((tag: string) => (
                         <span
@@ -265,36 +284,37 @@ export default function RealisationsSection() {
                       )}
                     </div>
 
-                    {/* Bouton En savoir plus */}
                     <div className="flex justify-center w-full mt-auto pt-4">
                       <span className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm tracking-tight">
-                        <span>
-                          {t('card.learnMore', 'realisations')}
-                        </span>
+                        {t('card.learnMore', 'realisations')}
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                       </span>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Bouton Voir tous les projets */}
-          <div className="text-center">
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <a
               href="/projets"
               className="inline-block"
               aria-label={t('buttons.viewAll', 'realisations')}
             >
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-extrabold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto tracking-tight">
-                <span>
-                  {t('buttons.viewAll', 'realisations')}
-                </span>
+                <span>{t('buttons.viewAll', 'realisations')}</span>
                 <ArrowRight size={20} />
               </div>
             </a>
-          </div>
+          </motion.div>
         </div>
       </section>
 

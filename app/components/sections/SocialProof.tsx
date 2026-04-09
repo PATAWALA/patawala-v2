@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, MapPin, Award } from 'lucide-react';
 import { useTranslation } from '@/app/hooks/useTranslation';
+import { motion } from 'framer-motion';
 
 // Points lumineux fixes (déterministes)
 const LIGHT_POINTS = [
@@ -308,6 +309,21 @@ const SocialProof = memo(function SocialProof() {
     return () => window.removeEventListener('resize', checkScrollButtons);
   }, [checkScrollButtons]);
 
+  // Animation variants (avec any pour éviter les erreurs TypeScript)
+  const fadeInUp: any = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
+  };
+
+  const staggerContainer: any = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
+  };
+
+  const cardHover: any = {
+    hover: { y: -5, boxShadow: '0 10px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
+  };
+
   // SKELETON LOADER
   if (isLoading || !isReady || testimonials.length === 0) {
     return (
@@ -387,8 +403,18 @@ const SocialProof = memo(function SocialProof() {
           aria-hidden="true"
         />
 
-        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
-        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+        <motion.div 
+          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" 
+          animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          aria-hidden="true" 
+        />
+        <motion.div 
+          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" 
+          animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          aria-hidden="true" 
+        />
 
         {LIGHT_POINTS.map((point, i) => (
           <div
@@ -402,30 +428,50 @@ const SocialProof = memo(function SocialProof() {
 
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         {/* En-tête */}
-        <div className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-            <Award size={14} className="text-blue-400" />
-            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
-              {t('badge', 'testimonials')}
-            </span>
-          </div>
+        <motion.div 
+          className="text-center mb-12 md:mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={staggerContainer}
+        >
+          <motion.div variants={fadeInUp}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
+              <Award size={14} className="text-blue-400" />
+              <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
+                {t('badge', 'testimonials')}
+              </span>
+            </div>
+          </motion.div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight">
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight"
+            variants={fadeInUp}
+          >
             <span>
               {t('title', 'testimonials')}
             </span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
               {t('titleHighlight', 'testimonials')}
             </span>
-          </h2>
+          </motion.h2>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium">
+          <motion.p 
+            className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium"
+            variants={fadeInUp}
+          >
             {t('subtitle', 'testimonials')}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         {/* Carrousel */}
-        <div className="relative max-w-7xl mx-auto mb-16 md:mb-20">
+        <motion.div 
+          className="relative max-w-7xl mx-auto mb-16 md:mb-20"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
           {/* Flèches */}
           <>
             <button
@@ -461,9 +507,11 @@ const SocialProof = memo(function SocialProof() {
             }}
           >
             {duplicatedTestimonials.map((testimonial, index) => (
-              <div
+              <motion.div
                 key={`${testimonial.name}-${index}`}
                 className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-xl transition-shadow duration-300 relative flex-shrink-0 will-change-transform"
+                whileHover={{ y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)' }}
+                transition={{ duration: 0.2 }}
               >
                 <div className="relative z-10">
                   <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" />
@@ -494,22 +542,34 @@ const SocialProof = memo(function SocialProof() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Types de projets */}
-        <div className="max-w-4xl mx-auto mb-12 md:mb-16">
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight">
+        <motion.div 
+          className="max-w-4xl mx-auto mb-12 md:mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={staggerContainer}
+        >
+          <motion.h3 
+            className="text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight"
+            variants={fadeInUp}
+          >
             {t('projectTypes.title', 'testimonials')}
-          </h3>
+          </motion.h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
-            {projectTypes.map((type) => (
-              <div
+            {projectTypes.map((type, idx) => (
+              <motion.div
                 key={type.title}
                 className="bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-md hover:shadow-xl hover:border-blue-500/30 transition-all duration-300"
+                variants={fadeInUp}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.2 }}
               >
                 <div className="flex items-start gap-3 sm:gap-4 mb-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
@@ -534,15 +594,19 @@ const SocialProof = memo(function SocialProof() {
                     <span className="text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight">
                       {type.cta}
                     </span>
-                    <div className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200 group-hover:bg-blue-500/20">
+                    <motion.div 
+                      className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200 group-hover:bg-blue-500/20"
+                      whileHover={{ x: 3 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       <ArrowRight size={16} className="text-blue-400" />
-                    </div>
+                    </motion.div>
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       <style jsx>{`
