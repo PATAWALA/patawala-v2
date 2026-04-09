@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import profileImage from '../../assets/images/about1.png';
 import dynamic from 'next/dynamic';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -143,6 +144,42 @@ const AboutSection = memo(function AboutSection() {
     setIsBookingOpen(false);
   }, []);
 
+  // Animation variants pour Framer Motion
+  const fadeInUp : any = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
+  }
+};
+
+// Correction pour staggerContainer
+const staggerContainer : any  = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2
+    }
+  }
+};
+
+  const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.5 } 
+  },
+  hover: { 
+    y: -5, 
+    boxShadow: '0 10px 30px -10px rgba(59,130,246,0.3)',
+    transition: { duration: 0.2 }
+  }
+};
+
   // SKELETON LOADER
   if (isLoading || !isReady) {
     return (
@@ -230,51 +267,89 @@ const AboutSection = memo(function AboutSection() {
             aria-hidden="true"
           />
 
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" aria-hidden="true" />
+          <motion.div 
+            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" 
+            animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            aria-hidden="true" 
+          />
+          <motion.div 
+            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" 
+            animate={{ scale: [1, 1.12, 1], opacity: [0.2, 0.4, 0.2] }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            aria-hidden="true" 
+          />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-5xl mx-auto">
             {/* Badge centré principal */}
-            <div className="w-full flex justify-center mb-8 md:mb-8">
+            <motion.div 
+              className="w-full flex justify-center mb-8 md:mb-8"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
                 <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
                 <span className="text-sm md:text-base font-semibold whitespace-nowrap tracking-tight">
                   {t('badge', 'about')}
                 </span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Titre et sous-titre */}
-            <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight">
+            <motion.div 
+              className="text-center mb-12 md:mb-16"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              <motion.h2 
+                className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight px-2 text-white tracking-tight"
+                variants={fadeInUp}
+              >
                 <span>
                   {t('title', 'about')}
                 </span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 text-2xl sm:text-2xl md:text-3xl lg:text-4xl mt-2 md:mt-2 font-extrabold tracking-tight">
                   {t('subtitle', 'about')}
                 </span>
-              </h2>
+              </motion.h2>
 
-              <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4 font-normal leading-relaxed">
+              <motion.p 
+                className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4 font-normal leading-relaxed"
+                variants={fadeInUp}
+              >
                 {t('description', 'about')}
-              </p>
+              </motion.p>
 
-              <div className="w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-8 md:mt-8 rounded-full" />
-            </div>
+              <motion.div 
+                className="w-20 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto mt-8 md:mt-8 rounded-full"
+                variants={fadeInUp}
+              />
+            </motion.div>
 
             {/* CARTES MA VISION */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 mb-16 md:mb-20">
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-6 mb-16 md:mb-20"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
               {visionCards.map((card: VisionCard, index: number) => {
                 const Icon = cardIcons[index] || MessagesSquare;
 
                 return (
-                  <div
+                  <motion.div
                     key={index}
                     className="bg-[#141B2B] rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
                     role="article"
                     aria-labelledby={`vision-title-${index}`}
+                    variants={cardVariants}
+                    whileHover="hover"
                   >
                     <div className="relative z-10">
                       <div className="flex items-center justify-between mb-5">
@@ -292,29 +367,50 @@ const AboutSection = memo(function AboutSection() {
                         {card.description}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
 
             {/* BADGE "Qui suis-je ?" */}
-            <div className="flex justify-center mb-8 md:mb-8">
+            <motion.div 
+              className="flex justify-center mb-8 md:mb-8"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 px-6 py-3 rounded-full border border-blue-500/30 backdrop-blur-sm">
                 <User size={18} className="text-blue-400" aria-hidden="true" />
                 <span className="text-base md:text-base font-bold tracking-tight">
                   {t('whoami', 'about')}
                 </span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Section image et bio */}
-            <div className="flex flex-col lg:flex-row gap-10 md:gap-12 lg:gap-16 items-center">
+            <motion.div 
+              className="flex flex-col lg:flex-row gap-10 md:gap-12 lg:gap-16 items-center"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={staggerContainer}
+            >
               {/* Image à gauche */}
-              <div className="flex-1 flex justify-center lg:justify-end w-full">
+              <motion.div 
+                className="flex-1 flex justify-center lg:justify-end w-full"
+                variants={fadeInUp}
+              >
                 <div className="relative w-full max-w-[400px] md:max-w-sm lg:max-w-md aspect-square">
                   
                   {/* Badge en haut à gauche */}
-                  <div className="absolute top-0 left-0 z-30" style={{ transform: 'translate(-5%, -5%)' }}>
+                  <motion.div 
+                    className="absolute top-0 left-0 z-30" 
+                    style={{ transform: 'translate(-5%, -5%)' }}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                  >
                     <div className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-[#1F2937]">
                       <Globe size={12} aria-hidden="true" />
                       <Smartphone size={12} aria-hidden="true" />
@@ -322,20 +418,30 @@ const AboutSection = memo(function AboutSection() {
                         {t('profile.badges.webMobile', 'about')}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
 
                   {/* Badge en bas à droite */}
-                  <div className="absolute bottom-0 right-0 z-30" style={{ transform: 'translate(5%, 5%)' }}>
+                  <motion.div 
+                    className="absolute bottom-0 right-0 z-30" 
+                    style={{ transform: 'translate(5%, 5%)' }}
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6, duration: 0.5 }}
+                  >
                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 border border-[#1F2937]">
                       <div className="w-2 h-2 bg-white rounded-full" />
                       <span className="text-xs font-bold tracking-tight whitespace-nowrap">
                         {t('profile.badges.available', 'about')}
                       </span>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Photo */}
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]">
+                  {/* Photo avec flottement */}
+                  <motion.div 
+                    className="relative w-full h-full rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                  >
                     <Image
                       src={profileImage}
                       alt={t('profile.name', 'about') || "Abdoulaye Patawala - Développeur Full Stack"}
@@ -347,12 +453,15 @@ const AboutSection = memo(function AboutSection() {
                       placeholder="blur"
                       blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                     />
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* BIO à droite */}
-              <div className="flex-1 flex flex-col text-center lg:text-left max-w-md px-4 lg:px-0">
+              <motion.div 
+                className="flex-1 flex flex-col text-center lg:text-left max-w-md px-4 lg:px-0"
+                variants={fadeInUp}
+              >
                 <h3 className="text-3xl md:text-4xl font-black mb-4 text-white tracking-tight">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
                     {t('profile.name', 'about')}
@@ -372,29 +481,33 @@ const AboutSection = memo(function AboutSection() {
 
                 {/* BOUTONS - Côte à côte sur mobile avec texte sur une ligne */}
                 <div className="flex flex-row gap-3 md:gap-4 justify-center lg:justify-start">
-                  <button
+                  <motion.button
                     onClick={handleParlerProjet}
                     className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-bold text-sm md:text-lg flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
                     aria-label={t('buttons.talk', 'about')}
                   >
                     <MessageSquare size={18} className="md:w-5 md:h-5" aria-hidden="true" />
                     <span>
                       {t('buttons.talk', 'about')}
                     </span>
-                  </button>
+                  </motion.button>
 
-                  <button
+                  <motion.button
                     onClick={handleVoirProjets}
                     className="bg-transparent text-white px-4 md:px-6 py-4 md:py-3 rounded-xl font-semibold text-sm md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-colors flex-1 sm:flex-none whitespace-nowrap min-h-[52px] tracking-tight"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
                     aria-label={t('buttons.services', 'about')}
                   >
                     <span>
                       {t('buttons.services', 'about')}
                     </span>
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
