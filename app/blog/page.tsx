@@ -8,6 +8,7 @@ import {
 import Link from 'next/link';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import Script from 'next/script';
 import { useRouter } from 'next/navigation';
 import { articles as baseArticles } from './data/articles';
@@ -35,40 +36,25 @@ export default function BlogPage() {
 
   // Attendre que les traductions soient chargées
   useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
+    if (!isLoading) setIsReady(true);
   }, [isLoading]);
 
   // Traduction des catégories
   const { categories, allCategory, categoryList } = useMemo(() => {
-    // Récupérer les catégories depuis la traduction
     const categoriesRaw = t('filters.categories', 'blog');
-    
-    // Si c'est un objet, le convertir en tableau
     let categoryValues: string[] = [];
     if (categoriesRaw && typeof categoriesRaw === 'object') {
       categoryValues = Object.values(categoriesRaw);
     }
-
     const allCategoryRaw = t('filters.all', 'blog');
     const allCategory = typeof allCategoryRaw === 'string' ? allCategoryRaw : 'Tous';
-
-    return {
-      categories: [allCategory, ...categoryValues],
-      allCategory,
-      categoryList: categoryValues
-    };
+    return { categories: [allCategory, ...categoryValues], allCategory, categoryList: categoryValues };
   }, [t, language, isReady]);
 
-  // Initialisation de la catégorie
   useEffect(() => {
-    if (isReady) {
-      setSelectedCategory(allCategory);
-    }
+    if (isReady) setSelectedCategory(allCategory);
   }, [allCategory, isReady]);
 
-  // Réinitialisation
   useEffect(() => {
     if (isReady) {
       setSearchQuery("");
@@ -77,9 +63,7 @@ export default function BlogPage() {
   }, [language, isReady]);
 
   useEffect(() => {
-    if (isReady) {
-      setCurrentPage(1);
-    }
+    if (isReady) setCurrentPage(1);
   }, [selectedCategory, searchQuery, isReady]);
 
   const effectiveCategory = useMemo(() => 
@@ -87,18 +71,14 @@ export default function BlogPage() {
     [selectedCategory, categories, allCategory]
   );
 
-  // Traduction des articles
   const translatedArticles = useMemo(() => {
     if (!isReady) return [];
-    
     return baseArticles.map(article => {
       const key = `article${article.id}`;
-      
       const translatedTitle = t(`${key}.title`, 'articlesData');
       const translatedExcerpt = t(`${key}.excerpt`, 'articlesData');
       const translatedCategory = t(`${key}.category`, 'articlesData');
       const translatedTags = t(`${key}.tags`, 'articlesData');
-
       return {
         ...article,
         title: typeof translatedTitle === 'string' ? translatedTitle : article.title,
@@ -109,10 +89,8 @@ export default function BlogPage() {
     });
   }, [t, language, isReady]);
 
-  // Filtrage
   const filteredArticles = useMemo(() => {
     if (!isReady) return [];
-    
     return translatedArticles.filter(article => {
       const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
       const matchesCategory = effectiveCategory === allCategory || article.category === effectiveCategory;
@@ -123,16 +101,13 @@ export default function BlogPage() {
     });
   }, [translatedArticles, effectiveCategory, allCategory, searchQuery, isReady]);
 
-  // Articles à la une
   const featuredArticles = useMemo(() => 
     translatedArticles.filter(a => a.featured),
     [translatedArticles]
   );
 
-  // Pagination
   const { currentArticles, totalPages } = useMemo(() => {
     if (!isReady) return { currentArticles: [], totalPages: 0 };
-    
     const indexOfLastArticle = currentPage * articlesPerPage;
     const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
     return {
@@ -151,61 +126,49 @@ export default function BlogPage() {
     setSearchQuery(e.target.value);
   }, []);
 
-  const handleClearSearch = useCallback(() => {
-    setSearchQuery("");
-  }, []);
+  const handleClearSearch = useCallback(() => setSearchQuery(""), []);
 
   const handleCategorySelect = useCallback((category: string) => {
     setSelectedCategory(category);
     setIsFilterOpen(false);
   }, []);
 
-  const handlePrevPage = useCallback(() => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
-  }, []);
+  const handlePrevPage = useCallback(() => setCurrentPage(prev => Math.max(prev - 1, 1)), []);
+  const handleNextPage = useCallback(() => setCurrentPage(prev => Math.min(prev + 1, totalPages)), [totalPages]);
+  const handlePageSelect = useCallback((page: number) => setCurrentPage(page), []);
 
-  const handleNextPage = useCallback(() => {
-    setCurrentPage(prev => Math.min(prev + 1, totalPages));
-  }, [totalPages]);
-
-  const handlePageSelect = useCallback((page: number) => {
-    setCurrentPage(page);
-  }, []);
-
-  // Fonction pour gérer la soumission du formulaire
   const handleFormSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubscribing(true);
-    
     const form = e.currentTarget;
     const formData = new FormData(form);
-    
     try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: formData,
-        mode: 'no-cors' // Important pour Brevo
-      });
-      
-      // Rediriger vers la page de remerciement
-      setTimeout(() => {
-        router.push('/merci');
-      }, 1000);
-      
+      await fetch(form.action, { method: 'POST', body: formData, mode: 'no-cors' });
+      setTimeout(() => router.push('/merci'), 1000);
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
-      // Rediriger quand même
-      setTimeout(() => {
-        router.push('/merci');
-      }, 1000);
+      setTimeout(() => router.push('/merci'), 1000);
     } finally {
-      setTimeout(() => {
-        setIsSubscribing(false);
-      }, 2000);
+      setTimeout(() => setIsSubscribing(false), 2000);
     }
   }, [router]);
 
-  // SKELETON LOADER
+  // Variants Framer Motion
+  const fadeInUp: any = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
+  };
+  const staggerContainer: any = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
+  };
+  const cardVariants: any = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    hover: { y: -5, boxShadow: '0 20px 25px -5px rgba(59,130,246,0.2), 0 10px 10px -5px rgba(6,182,212,0.1)' }
+  };
+
+  // SKELETON LOADER (inchangé)
   if (isLoading || !isReady) {
     return (
       <main className="min-h-screen pt-20 sm:pt-24 pb-16 sm:pb-20 bg-[#0A0F1C] relative overflow-hidden">
@@ -213,21 +176,15 @@ export default function BlogPage() {
           <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" />
         </div>
-
         <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
-          {/* En-tête skeleton */}
           <div className="text-center mb-8 sm:mb-12 md:mb-16">
             <div className="w-32 h-8 bg-gray-800/50 rounded-xl mx-auto mb-4 animate-pulse" />
             <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
             <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
           </div>
-
-          {/* Barre de recherche skeleton */}
           <div className="max-w-2xl mx-auto mb-8">
             <div className="w-full h-14 bg-gray-800/50 rounded-xl animate-pulse" />
           </div>
-
-          {/* Filtres skeleton */}
           <div className="flex justify-center mb-10">
             <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
               {[1, 2, 3, 4, 5].map((i) => (
@@ -235,8 +192,6 @@ export default function BlogPage() {
               ))}
             </div>
           </div>
-
-          {/* Articles à la une skeleton */}
           <div className="mb-12">
             <div className="w-48 h-8 bg-gray-800/50 rounded-lg mb-6 animate-pulse" />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -245,15 +200,11 @@ export default function BlogPage() {
               ))}
             </div>
           </div>
-
-          {/* Grille d'articles skeleton */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-10">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="bg-gray-800/50 rounded-xl h-48 animate-pulse" />
             ))}
           </div>
-
-          {/* Pagination skeleton */}
           <div className="flex justify-center gap-2">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
@@ -266,7 +217,6 @@ export default function BlogPage() {
 
   return (
     <>
-      {/* Styles pour le formulaire Brevo */}
       <style jsx global>{`
         @font-face {
           font-display: block;
@@ -308,7 +258,6 @@ export default function BlogPage() {
         }
       `}</style>
 
-      {/* Scripts Brevo */}
       <Script src="https://sibforms.com/forms/end-form/build/main.js" strategy="lazyOnload" />
       <Script id="brevo-config" strategy="lazyOnload">
         {`
@@ -346,8 +295,18 @@ export default function BlogPage() {
             }}
             aria-hidden="true"
           />
-          <div className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl" aria-hidden="true" />
-          <div className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl" aria-hidden="true" />
+          <motion.div
+            className="absolute top-40 -left-20 w-40 sm:w-80 h-40 sm:h-80 bg-blue-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            aria-hidden="true"
+          />
+          <motion.div
+            className="absolute bottom-40 -right-20 w-48 sm:w-96 h-48 sm:h-96 bg-cyan-500/20 rounded-full blur-3xl"
+            animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            aria-hidden="true"
+          />
           {LIGHT_POINTS.map((point, i) => (
             <div
               key={i}
@@ -360,29 +319,44 @@ export default function BlogPage() {
         
         <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
           {/* En-tête */}
-          <div className="text-center mb-8 sm:mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-2 px-4 sm:px-4 py-2 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm">
-              <BookOpen size={18} className="sm:w-4 sm:h-4 text-blue-400" />
-              <span className="text-base sm:text-sm font-bold text-blue-400 tracking-tight">
-                {t('badge', 'blog')}
-              </span>
-            </div>
-            
-            <h1 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 sm:mb-4 md:mb-6 px-2 text-white tracking-tight">
-              {t('title', 'blog')}
-              <br />
+          <motion.div
+            className="text-center mb-8 sm:mb-12 md:mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={staggerContainer}
+          >
+            <motion.div variants={fadeInUp}>
+              <div className="inline-flex items-center gap-2 px-4 sm:px-4 py-2 sm:py-2 bg-blue-500/10 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-blue-500/20 backdrop-blur-sm">
+                <BookOpen size={18} className="sm:w-4 sm:h-4 text-blue-400" />
+                <span className="text-base sm:text-sm font-bold text-blue-400 tracking-tight">{t('badge', 'blog')}</span>
+              </div>
+            </motion.div>
+            <motion.h1
+              className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-4 sm:mb-4 md:mb-6 px-2 text-white tracking-tight"
+              variants={fadeInUp}
+            >
+              {t('title', 'blog')}<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-black tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                 {t('titleHighlight', 'blog')}
               </span>
-            </h1>
-            
-            <p className="text-base sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium">
+            </motion.h1>
+            <motion.p
+              className="text-base sm:text-base md:text-lg text-gray-200 max-w-2xl mx-auto px-3 leading-relaxed font-medium"
+              variants={fadeInUp}
+            >
               {t('subtitle', 'blog')}
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Barre de recherche */}
-          <div className="max-w-2xl sm:max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2 sm:px-0">
+          <motion.div
+            className="max-w-2xl sm:max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-2 sm:px-0"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <div className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
               <div className="relative flex items-center">
@@ -405,10 +379,16 @@ export default function BlogPage() {
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Filtres catégories */}
-          <div className="mb-10 sm:mb-12 md:mb-16">
+          <motion.div
+            className="mb-10 sm:mb-12 md:mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+          >
             {/* Version mobile */}
             <div className="lg:hidden mb-3 px-2">
               <button
@@ -423,9 +403,14 @@ export default function BlogPage() {
                   {selectedCategory}
                 </span>
               </button>
-              
               {isFilterOpen && (
-                <div className="mt-2 p-4 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto animate-fadeIn">
+                <motion.div
+                  className="mt-2 p-4 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-xl max-h-60 overflow-y-auto"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <div className="flex flex-wrap gap-2">
                     {categories.map((category) => (
                       <button
@@ -442,15 +427,15 @@ export default function BlogPage() {
                       </button>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
 
             {/* Version desktop */}
-            <div className="hidden lg:flex justify-center">
+            <motion.div className="hidden lg:flex justify-center" variants={fadeInUp}>
               <div className="flex flex-wrap justify-center gap-2 p-2 bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl border border-[#1F2937] shadow-lg max-w-4xl">
                 {categories.map((category) => (
-                  <button
+                  <motion.button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
                     className={`px-3 md:px-4 lg:px-5 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 whitespace-nowrap tracking-tight truncate max-w-[180px] ${
@@ -458,31 +443,45 @@ export default function BlogPage() {
                         ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
                         : 'text-gray-400 hover:text-blue-400 hover:bg-[#1E2638] font-semibold'
                     }`}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
                     title={category}
                   >
                     {category}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Articles à la une */}
           {effectiveCategory === allCategory && !searchQuery && featuredArticles.length > 0 && (
-            <div className="mb-12 sm:mb-16 md:mb-20">
-              <h2 className="text-2xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight">
+            <motion.div
+              className="mb-12 sm:mb-16 md:mb-20"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={staggerContainer}
+            >
+              <motion.h2
+                className="text-2xl sm:text-2xl md:text-3xl font-extrabold mb-4 sm:mb-6 md:mb-8 flex items-center gap-2 sm:gap-3 px-2 text-white tracking-tight"
+                variants={fadeInUp}
+              >
                 <span className="w-1 h-6 sm:h-6 md:h-8 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
                 {t('featured.title', 'blog')}
                 <Sparkles size={20} className="sm:w-5 sm:h-5 text-blue-400" />
-              </h2>
+              </motion.h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                 {featuredArticles.slice(0, 2).map((article, index) => {
                   const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
                   return (
                     <Link href={`/blog/${article.slug}`} key={article.id}>
-                      <div className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1">
-                        {/* Image de couverture */}
+                      <motion.div
+                        className="group relative bg-[#141B2B] rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-xl md:hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer"
+                        variants={cardVariants}
+                        whileHover="hover"
+                      >
                         <div className="relative h-40 xs:h-48 sm:h-56 md:h-64 overflow-hidden">
                           <Image
                             src={article.image}
@@ -494,17 +493,13 @@ export default function BlogPage() {
                             quality={70}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                          
-                          {/* Badge catégorie */}
                           <div className="absolute top-2 sm:top-3 md:top-4 left-2 sm:left-3 md:left-4">
                             <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-xs sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-md tracking-tight">
                               {article.category}
                             </span>
                           </div>
                         </div>
-
                         <div className="p-4 sm:p-4 md:p-5 lg:p-6">
-                          {/* Meta */}
                           <div className="flex items-center gap-2 text-sm text-gray-400 mb-2 font-medium">
                             <Calendar size={14} className="text-blue-400" />
                             <span>{article.publishedAt}</span>
@@ -512,22 +507,15 @@ export default function BlogPage() {
                             <Clock size={14} className="text-blue-400" />
                             <span>{article.readTime}</span>
                           </div>
-
                           <h3 className="text-base sm:text-base md:text-lg lg:text-xl font-extrabold text-white mb-2 group-hover:text-blue-400 transition-colors line-clamp-2 tracking-tight">
                             {article.title}
                           </h3>
-                          
                           <p className="text-sm sm:text-sm text-gray-300 mb-3 line-clamp-2 sm:line-clamp-3 font-medium">
                             {article.excerpt}
                           </p>
-
-                          {/* Tags */}
                           <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-3 sm:mb-4">
                             {tags.slice(0, 2).map((tag: string) => (
-                              <span
-                                key={tag}
-                                className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-xs sm:text-xs font-bold rounded-full tracking-tight"
-                              >
+                              <span key={tag} className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-500/10 text-blue-400 text-xs sm:text-xs font-bold rounded-full tracking-tight">
                                 #{tag}
                               </span>
                             ))}
@@ -537,18 +525,10 @@ export default function BlogPage() {
                               </span>
                             )}
                           </div>
-
-                          {/* Auteur */}
                           <div className="flex items-center justify-between pt-2 sm:pt-3 border-t border-[#1F2937]">
                             <div className="flex items-center gap-2 sm:gap-3">
                               <div className="relative w-7 h-7 sm:w-7 md:w-8 sm:h-7 md:h-8 rounded-full overflow-hidden ring-2 ring-blue-500/20">
-                                <Image
-                                  src={profileImage}
-                                  alt={article.author.name}
-                                  fill
-                                  className="object-cover"
-                                  loading="lazy"
-                                />
+                                <Image src={profileImage} alt={article.author.name} fill className="object-cover" loading="lazy" />
                               </div>
                               <span className="text-sm sm:text-sm font-bold text-gray-200 tracking-tight">{article.author.name}</span>
                             </div>
@@ -558,23 +538,32 @@ export default function BlogPage() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </motion.div>
                     </Link>
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Grille des articles */}
           {currentArticles.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-10 sm:mb-12 md:mb-16">
-              {currentArticles.map((article, index) => {
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-10 sm:mb-12 md:mb-16"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={staggerContainer}
+            >
+              {currentArticles.map((article) => {
                 const tags: string[] = Array.isArray(article.tags) ? article.tags : [];
                 return (
                   <Link href={`/blog/${article.slug}`} key={article.id}>
-                    <div className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1">
-                      {/* Image de couverture */}
+                    <motion.div
+                      className="group relative bg-[#141B2B] rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 border border-[#1F2937] h-full cursor-pointer"
+                      variants={cardVariants}
+                      whileHover="hover"
+                    >
                       <div className="relative h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 overflow-hidden">
                         <Image
                           src={article.image}
@@ -586,17 +575,13 @@ export default function BlogPage() {
                           quality={70}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                        
-                        {/* Badge catégorie */}
                         <div className="absolute top-1 sm:top-2 left-1 sm:left-2">
                           <span className="px-1.5 sm:px-2 py-0.5 bg-[#141B2B]/90 backdrop-blur-sm rounded-full text-[10px] sm:text-xs font-bold text-blue-400 border border-blue-500/20 shadow-sm tracking-tight">
                             {article.category}
                           </span>
                         </div>
                       </div>
-
                       <div className="p-3 sm:p-3 md:p-4">
-                        {/* Date */}
                         <div className="flex items-center gap-1.5 text-xs sm:text-xs text-gray-400 mb-1.5 font-medium">
                           <Calendar size={12} className="text-blue-400" />
                           <span>{article.publishedAt}</span>
@@ -604,38 +589,21 @@ export default function BlogPage() {
                           <Clock size={12} className="text-blue-400" />
                           <span>{article.readTime}</span>
                         </div>
-
                         <h3 className="text-sm sm:text-sm md:text-base font-extrabold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors tracking-tight">
                           {article.title}
                         </h3>
-                        
-                        <p className="text-xs sm:text-xs text-gray-300 mb-2 line-clamp-2 font-medium">
-                          {article.excerpt}
-                        </p>
-
-                        {/* Tags */}
+                        <p className="text-xs sm:text-xs text-gray-300 mb-2 line-clamp-2 font-medium">{article.excerpt}</p>
                         <div className="flex flex-wrap gap-1 mb-2">
                           {tags.slice(0, 2).map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[9px] sm:text-[10px] font-bold rounded-full tracking-tight"
-                            >
+                            <span key={tag} className="px-1 py-0.5 bg-blue-500/10 text-blue-400 text-[9px] sm:text-[10px] font-bold rounded-full tracking-tight">
                               #{tag}
                             </span>
                           ))}
                         </div>
-
-                        {/* Auteur */}
                         <div className="flex items-center justify-between pt-1.5 border-t border-[#1F2937]">
                           <div className="flex items-center gap-1.5">
                             <div className="relative w-6 h-6 sm:w-6 sm:h-6 rounded-full overflow-hidden ring-1 ring-blue-500/20">
-                              <Image
-                                src={profileImage}
-                                alt={article.author.name}
-                                fill
-                                className="object-cover"
-                                loading="lazy"
-                              />
+                              <Image src={profileImage} alt={article.author.name} fill className="object-cover" loading="lazy" />
                             </div>
                             <span className="text-xs sm:text-xs font-bold text-gray-300 truncate max-w-[60px] xs:max-w-[80px] sm:max-w-[100px] tracking-tight">
                               {article.author.name}
@@ -647,11 +615,11 @@ export default function BlogPage() {
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   </Link>
                 );
               })}
-            </div>
+            </motion.div>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-300 font-semibold text-base">{t('noResults', 'blog')}</p>
@@ -661,7 +629,13 @@ export default function BlogPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-1 sm:gap-2 md:gap-3 flex-wrap px-2">
+            <motion.div
+              className="flex justify-center items-center gap-1 sm:gap-2 md:gap-3 flex-wrap px-2"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
               <button
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}
@@ -670,10 +644,9 @@ export default function BlogPage() {
               >
                 <ChevronLeft size={18} className="sm:w-4 sm:h-4" />
               </button>
-              
               <div className="flex gap-1 sm:gap-2">
                 {[...Array(totalPages)].map((_, i) => (
-                  <button
+                  <motion.button
                     key={i}
                     onClick={() => handlePageSelect(i + 1)}
                     className={`w-10 h-10 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl font-bold text-sm sm:text-sm transition-all tracking-tight ${
@@ -681,12 +654,13 @@ export default function BlogPage() {
                         ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105 sm:scale-110'
                         : 'border border-[#1F2937] hover:border-blue-500 hover:text-blue-400 hover:shadow-md bg-[#141B2B] text-gray-400'
                     }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {i + 1}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-              
               <button
                 onClick={handleNextPage}
                 disabled={currentPage === totalPages}
@@ -695,11 +669,17 @@ export default function BlogPage() {
               >
                 <ChevronRight size={18} className="sm:w-4 sm:h-4" />
               </button>
-            </div>
+            </motion.div>
           )}
 
           {/* Formulaire Brevo */}
-          <div className="relative max-w-2xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4">
+          <motion.div
+            className="relative max-w-2xl mx-auto mt-12 sm:mt-16 md:mt-20 lg:mt-24 px-2 sm:px-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <div className="absolute -inset-0.5 sm:-inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl sm:rounded-2xl blur-lg sm:blur-xl opacity-20"></div>
             <div className="relative p-4 sm:p-5 md:p-6 bg-[#141B2B]/90 backdrop-blur-xl rounded-xl sm:rounded-2xl border border-[#1F2937] shadow-lg overflow-hidden">
               <div className="absolute top-0 right-0 w-20 sm:w-40 h-20 sm:h-40 bg-blue-500/10 rounded-full blur-2xl sm:blur-3xl"></div>
@@ -807,20 +787,14 @@ export default function BlogPage() {
                 <span className="w-1 h-1 bg-cyan-400 rounded-full"></span>
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </main>
 
       <style jsx>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         .animate-fadeIn {
           animation: fadeIn 0.2s ease-out;
