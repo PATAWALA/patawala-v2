@@ -46,7 +46,7 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
   const cardTitleId = `service-${service.id}-title`;
 
   // Variants pour l'animation d'entrée
-  const cardVariants = {
+  const cardVariants : any = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
@@ -57,10 +57,6 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
         delay: delay
       }
     }
-  };
-
-  const hoverEffect = {
-    hover: { y: -6, boxShadow: '0 20px 25px -5px rgba(59,130,246,0.2), 0 10px 10px -5px rgba(6,182,212,0.1)' }
   };
 
   return (
