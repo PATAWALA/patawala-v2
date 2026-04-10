@@ -1,27 +1,22 @@
 'use client';
 
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { Github, Linkedin, Twitter, Mail, Heart, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
 import { SOCIAL_LINKS } from '../../lib/constants';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 const Footer = memo(function Footer() {
   const currentYear = new Date().getFullYear();
   const { t, isLoading } = useTranslation();
-  const router = useRouter();
-  const pathname = usePathname();
 
+  // Liens rapides simplifiés (5 liens, sans doublon)
   const quickLinks = useMemo(() => [
     { href: '/', key: 'home' },
-    { href: '/projets', key: 'projects' },
     { href: '/services', key: 'services' },
+    { href: '/projets', key: 'projects' },
     { href: '/blog', key: 'blog' },
-    { href: '/#techexpertise', key: 'expertise' },
-    { href: '/#about', key: 'about' },
-    { href: '/#projets', key: 'projects' },
     { href: '/#contact', key: 'contact' },
   ], []);
 
@@ -43,31 +38,6 @@ const Footer = memo(function Footer() {
     { key: 'remote', icon: Globe, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
   ], []);
 
-  // Gestion du scroll vers une section (utilisé pour les ancres)
-  const scrollToSection = useCallback((sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const y = element.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  }, []);
-
-  // Gestion des clics sur les ancres
-  const handleAnchorClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const sectionId = href.replace('/#', '');
-    
-    if (pathname === '/') {
-      // Déjà sur la page d'accueil : scroll direct
-      scrollToSection(sectionId);
-    } else {
-      // Navigation vers la page d'accueil puis scroll
-      router.push('/');
-      setTimeout(() => scrollToSection(sectionId), 100);
-    }
-  }, [pathname, router, scrollToSection]);
-
   // Variants Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 20 },
@@ -79,7 +49,7 @@ const Footer = memo(function Footer() {
     visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
   };
 
-  // SKELETON LOADER (inchangé)
+  // Skeleton loader (inchangé, adapté à 5 liens)
   if (isLoading) {
     return (
       <footer className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden">
@@ -104,7 +74,7 @@ const Footer = memo(function Footer() {
             <div className="md:col-span-1 lg:col-span-2">
               <div className="w-24 h-6 bg-gray-800/50 rounded mb-6 animate-pulse" />
               <div className="space-y-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                {[1, 2, 3, 4, 5].map((i) => (
                   <div key={i} className="w-20 h-4 bg-gray-800/50 rounded animate-pulse" />
                 ))}
               </div>
@@ -213,55 +183,29 @@ const Footer = memo(function Footer() {
             </div>
           </motion.div>
 
-          {/* Liens rapides */}
+          {/* Liens rapides (5 liens équilibrés, aucun scroll forcé) */}
           <motion.div className="md:col-span-1 lg:col-span-2" variants={fadeInUp}>
             <h3 className="text-lg font-semibold mb-6 relative inline-block">
               {t('quickLinks', 'footer')}
               <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full" aria-hidden="true" />
             </h3>
             <ul className="space-y-4">
-              {quickLinks.map((link) => {
-                const isAnchor = link.href.includes('#');
-                
-                if (isAnchor) {
-                  return (
-                    <li key={link.key}>
-                      <Link
-                        href={link.href}
-                        onClick={(e) => handleAnchorClick(e, link.href)}
-                        className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                        aria-label={`${t(`navbar.${link.key}`, 'navigation')} - aller à la section`}
-                        prefetch={false}
-                      >
-                        <motion.span
-                          className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                          initial={false}
-                          whileHover={{ scale: 1.5 }}
-                        />
-                        {t(`navbar.${link.key}`, 'navigation') || link.key}
-                      </Link>
-                    </li>
-                  );
-                }
-                
-                return (
-                  <li key={link.key}>
-                    <Link
-                      href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                      aria-label={`${t(`navbar.${link.key}`, 'navigation')} - aller à la page`}
-                      prefetch={true}
-                    >
-                      <motion.span
-                        className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                        initial={false}
-                        whileHover={{ scale: 1.5 }}
-                      />
-                      {t(`navbar.${link.key}`, 'navigation') || link.key}
-                    </Link>
-                  </li>
-                );
-              })}
+              {quickLinks.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
+                    prefetch={!link.href.includes('#')}
+                  >
+                    <motion.span
+                      className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                      initial={false}
+                      whileHover={{ scale: 1.5 }}
+                    />
+                    {t(`navbar.${link.key}`, 'navigation')}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
@@ -277,7 +221,6 @@ const Footer = memo(function Footer() {
                   <Link
                     href={link.href}
                     className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                    aria-label={`${t(link.key, 'footer')} - lire les conditions`}
                     prefetch={true}
                   >
                     <motion.span

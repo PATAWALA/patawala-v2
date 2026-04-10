@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
@@ -22,12 +22,11 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
-  const router = useRouter();
   
   const menuRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections sur la page d'accueil
+  // Détection des sections sur la page d'accueil (inchangée, optimisée)
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
@@ -55,7 +54,7 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Fermeture du menu mobile
+  // Fermeture du menu mobile au clic extérieur
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -76,45 +75,19 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  // Scroll vers une section (fluide, avec offset)
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80;
-      const y = element.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-      setActiveSection(sectionId);
-    }
-  };
-
-  // Gestion du clic sur un lien avec ancre
-  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const sectionId = href.replace('/#', '');
-    
-    if (pathname === '/') {
-      // Déjà sur la page d'accueil : scroll direct
-      scrollToSection(sectionId);
-      setIsOpen(false);
-    } else {
-      // Navigation vers la page d'accueil puis scroll
-      router.push('/');
-      // Attendre que la navigation soit terminée avant de scroller
-      setTimeout(() => scrollToSection(sectionId), 100);
-      setIsOpen(false);
-    }
-  };
-
-  // Déterminer si un lien est actif
+  // Déterminer si un lien est actif (inchangé)
   const isLinkActive = (href: string) => {
-    if (href === '/') return pathname === '/' && activeSection === 'hero';
-    if (href.includes('#')) {
-      const sectionId = href.replace('/#', '');
-      return pathname === '/' && activeSection === sectionId;
+    if (pathname === '/') {
+      if (href === '/') return activeSection === 'hero';
+      if (href.includes('#')) {
+        const sectionId = href.replace('/#', '');
+        return activeSection === sectionId;
+      }
     }
     return pathname === href;
   };
 
+  // Skeleton loader (inchangé)
   if (isLoading) {
     return (
       <nav className="fixed w-full z-50 top-0 lg:top-4 font-sans">
@@ -166,29 +139,15 @@ export default function Navigation() {
                 {NAV_ITEMS.map((item) => {
                   const active = isLinkActive(item.href);
                   
-                  if (item.href.includes('#')) {
-                    return (
-                      <Link
-                        key={item.key}
-                        href={item.href}
-                        onClick={(e) => handleAnchorClick(e, item.href)}
-                        className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
-                          active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
-                        }`}
-                        prefetch={false}
-                      >
-                        {t(`navItems.${item.key}`, 'navigation') || item.label}
-                      </Link>
-                    );
-                  }
                   return (
                     <Link
                       key={item.key}
                       href={item.href}
+                      onClick={() => setIsOpen(false)}
                       className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
                         active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
                       }`}
-                      prefetch={true}
+                      prefetch={!item.href.includes('#')}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
                     </Link>
@@ -245,21 +204,6 @@ export default function Navigation() {
             {NAV_ITEMS.map((item) => {
               const active = isLinkActive(item.href);
               
-              if (item.href.includes('#')) {
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    onClick={(e) => handleAnchorClick(e, item.href)}
-                    className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
-                      active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
-                    }`}
-                    prefetch={false}
-                  >
-                    {t(`navItems.${item.key}`, 'navigation') || item.label}
-                  </Link>
-                );
-              }
               return (
                 <Link
                   key={item.key}
@@ -268,7 +212,7 @@ export default function Navigation() {
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                     active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                   }`}
-                  prefetch={true}
+                  prefetch={!item.href.includes('#')}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}
                 </Link>
