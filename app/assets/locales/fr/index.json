@@ -68,6 +68,7 @@
       "home": "Accueil",
       "services": "Services",
       "about": "À propos",
+      "expertise":"Expertise",
       "projects": "Réalisations",
       "blog": "Blog",
       "contact": "Contact",
@@ -79,6 +80,7 @@
       "home": "Accueil",
       "projects": "Réalisations",
       "services": "Services",
+      "expertise":"Expertise",
       "blog": "Blog",
       "about": "À propos",
       "contact": "Contact"

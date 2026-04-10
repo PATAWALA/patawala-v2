@@ -68,6 +68,7 @@
       "home": "Home",
       "services": "Services",
       "about": "About",
+      "expertise":"Expertise",
       "projects": "Projects",
       "blog": "Blog",
       "contact": "Contact",
@@ -79,6 +80,7 @@
       "home": "Home",
       "projects": "Projects",
       "services": "Services",
+      "expertise":"Expertise",
       "blog": "Blog",
       "about": "About",
       "contact": "Contact"
