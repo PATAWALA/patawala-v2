@@ -1,9 +1,8 @@
 'use client';
 
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { Github, Linkedin, Twitter, Mail, Heart, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 import { SOCIAL_LINKS } from '../../lib/constants';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
@@ -11,13 +10,11 @@ const Footer = memo(function Footer() {
   const currentYear = new Date().getFullYear();
   const { t, isLoading } = useTranslation();
 
-  // Liens rapides simplifiés (5 liens, sans doublon)
   const quickLinks = useMemo(() => [
     { href: '/', key: 'home' },
-    { href: '/services', key: 'services' },
     { href: '/projets', key: 'projects' },
+    { href: '/services', key: 'services' },
     { href: '/blog', key: 'blog' },
-    { href: '/#contact', key: 'contact' },
   ], []);
 
   const legalLinks = useMemo(() => [
@@ -38,6 +35,11 @@ const Footer = memo(function Footer() {
     { key: 'remote', icon: Globe, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
   ], []);
 
+  const handleNavigation = useCallback((e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    window.location.href = href;
+  }, []);
+
   // Variants Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 20 },
@@ -49,10 +51,10 @@ const Footer = memo(function Footer() {
     visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
   };
 
-  // Skeleton loader (inchangé, adapté à 5 liens)
   if (isLoading) {
     return (
       <footer className="relative bg-gradient-to-b from-[#0A0F1C] to-[#030614] text-white overflow-hidden">
+        {/* Skeleton inchangé */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl" />
@@ -74,7 +76,7 @@ const Footer = memo(function Footer() {
             <div className="md:col-span-1 lg:col-span-2">
               <div className="w-24 h-6 bg-gray-800/50 rounded mb-6 animate-pulse" />
               <div className="space-y-4">
-                {[1, 2, 3, 4, 5].map((i) => (
+                {[1, 2, 3, 4].map((i) => (
                   <div key={i} className="w-20 h-4 bg-gray-800/50 rounded animate-pulse" />
                 ))}
               </div>
@@ -157,11 +159,9 @@ const Footer = memo(function Footer() {
           {/* Colonne marque */}
           <motion.div className="md:col-span-2 lg:col-span-4 space-y-6" variants={fadeInUp}>
             <div className="space-y-1">
-              <Link href="/" className="inline-block">
-                <h2 className="text-2xl sm:text-3xl font-bold italic bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
-                  {t('brand', 'common')}
-                </h2>
-              </Link>
+              <h2 className="text-2xl sm:text-3xl font-bold italic bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(59,130,246,0.7)]">
+                {t('brand', 'common')}
+              </h2>
               <p className="text-sm text-gray-500">{t('role', 'footer')}</p>
             </div>
             <p className="text-gray-400 leading-relaxed">{t('description', 'footer')}</p>
@@ -183,7 +183,7 @@ const Footer = memo(function Footer() {
             </div>
           </motion.div>
 
-          {/* Liens rapides (5 liens équilibrés, aucun scroll forcé) */}
+          {/* Liens rapides */}
           <motion.div className="md:col-span-1 lg:col-span-2" variants={fadeInUp}>
             <h3 className="text-lg font-semibold mb-6 relative inline-block">
               {t('quickLinks', 'footer')}
@@ -192,10 +192,11 @@ const Footer = memo(function Footer() {
             <ul className="space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.key}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => handleNavigation(e, link.href)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                    prefetch={!link.href.includes('#')}
+                    aria-label={`${t(`navbar.${link.key}`, 'navigation')} - aller à la page`}
                   >
                     <motion.span
                       className="w-1 h-1 bg-blue-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -203,7 +204,7 @@ const Footer = memo(function Footer() {
                       whileHover={{ scale: 1.5 }}
                     />
                     {t(`navbar.${link.key}`, 'navigation')}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -218,10 +219,11 @@ const Footer = memo(function Footer() {
             <ul className="space-y-4">
               {legalLinks.map((link) => (
                 <li key={link.key}>
-                  <Link
+                  <a
                     href={link.href}
+                    onClick={(e) => handleNavigation(e, link.href)}
                     className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] rounded"
-                    prefetch={true}
+                    aria-label={`${t(link.key, 'footer')} - lire les conditions`}
                   >
                     <motion.span
                       className="w-1 h-1 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -229,7 +231,7 @@ const Footer = memo(function Footer() {
                       whileHover={{ scale: 1.5 }}
                     />
                     {t(link.key, 'footer')}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>

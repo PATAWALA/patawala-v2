@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
@@ -26,7 +25,7 @@ export default function Navigation() {
   const menuRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections sur la page d'accueil (inchangée, optimisée)
+  // Détection des sections sur la page d'accueil
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
@@ -54,7 +53,7 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Fermeture du menu mobile au clic extérieur
+  // Fermeture du menu mobile
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -75,7 +74,34 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  // Déterminer si un lien est actif (inchangé)
+  // Scroll vers une section
+  const scrollToSection = (sectionId: string) => {
+    setTimeout(() => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 80;
+        const y = element.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsOpen(false);
+    
+    const sectionId = href.replace('/#', '');
+    
+    if (pathname === '/') {
+      scrollToSection(sectionId);
+      setActiveSection(sectionId);
+    } else {
+      window.location.href = '/';
+      setTimeout(() => scrollToSection(sectionId), 300);
+    }
+  };
+
+  // Déterminer si un lien est actif
   const isLinkActive = (href: string) => {
     if (pathname === '/') {
       if (href === '/') return activeSection === 'hero';
@@ -87,7 +113,6 @@ export default function Navigation() {
     return pathname === href;
   };
 
-  // Skeleton loader (inchangé)
   if (isLoading) {
     return (
       <nav className="fixed w-full z-50 top-0 lg:top-4 font-sans">
@@ -122,15 +147,18 @@ export default function Navigation() {
           <div className="hidden lg:grid lg:grid-cols-3 items-center">
             {/* Logo à gauche */}
             <div className="flex justify-start">
-              <Link 
+              <a 
                 href="/" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = '/';
+                }}
                 className="flex items-center font-bold group py-1"
-                prefetch={true}
               >
                 <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
                   Abdoulaye Patawala
                 </span>
-              </Link>
+              </a>
             </div>
 
             {/* Liens centrés */}
@@ -139,18 +167,34 @@ export default function Navigation() {
                 {NAV_ITEMS.map((item) => {
                   const active = isLinkActive(item.href);
                   
+                  if (item.href.includes('#')) {
+                    return (
+                      <a
+                        key={item.key}
+                        href={item.href}
+                        onClick={(e) => handleAnchorClick(e, item.href)}
+                        className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
+                          active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
+                        }`}
+                      >
+                        {t(`navItems.${item.key}`, 'navigation') || item.label}
+                      </a>
+                    );
+                  }
                   return (
-                    <Link
+                    <a
                       key={item.key}
                       href={item.href}
-                      onClick={() => setIsOpen(false)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = item.href;
+                      }}
                       className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
                         active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
                       }`}
-                      prefetch={!item.href.includes('#')}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
-                    </Link>
+                    </a>
                   );
                 })}
               </div>
@@ -165,15 +209,18 @@ export default function Navigation() {
           {/* Version Mobile */}
           <div className="flex lg:hidden items-center justify-between">
             {/* Logo à gauche */}
-            <Link 
+            <a 
               href="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/';
+              }}
               className="flex items-center font-bold group py-1"
-              prefetch={true}
             >
               <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl italic">
                 Patawala
               </span>
-            </Link>
+            </a>
 
             {/* Language Switcher et Hamburger à droite */}
             <div className="flex items-center gap-2">
@@ -204,18 +251,38 @@ export default function Navigation() {
             {NAV_ITEMS.map((item) => {
               const active = isLinkActive(item.href);
               
+              if (item.href.includes('#')) {
+                return (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    onClick={(e) => {
+                      handleAnchorClick(e, item.href);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
+                      active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
+                    }`}
+                  >
+                    {t(`navItems.${item.key}`, 'navigation') || item.label}
+                  </a>
+                );
+              }
               return (
-                <Link
+                <a
                   key={item.key}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsOpen(false);
+                    window.location.href = item.href;
+                  }}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                     active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                   }`}
-                  prefetch={!item.href.includes('#')}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}
-                </Link>
+                </a>
               );
             })}
           </div>
