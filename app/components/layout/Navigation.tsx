@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import LanguageSwitcher from '../ui/LanguageSwitcher';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
@@ -21,6 +22,7 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const pathname = usePathname();
+  const router = useRouter();
   
   const menuRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -74,41 +76,41 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  // Scroll vers une section
+  // Scroll vers une section (fluide, avec offset)
   const scrollToSection = (sectionId: string) => {
-    setTimeout(() => {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        const offset = 80;
-        const y = element.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    }, 100);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80;
+      const y = element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      setActiveSection(sectionId);
+    }
   };
 
+  // Gestion du clic sur un lien avec ancre
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    setIsOpen(false);
-    
     const sectionId = href.replace('/#', '');
     
     if (pathname === '/') {
+      // Déjà sur la page d'accueil : scroll direct
       scrollToSection(sectionId);
-      setActiveSection(sectionId);
+      setIsOpen(false);
     } else {
-      window.location.href = '/';
-      setTimeout(() => scrollToSection(sectionId), 300);
+      // Navigation vers la page d'accueil puis scroll
+      router.push('/');
+      // Attendre que la navigation soit terminée avant de scroller
+      setTimeout(() => scrollToSection(sectionId), 100);
+      setIsOpen(false);
     }
   };
 
   // Déterminer si un lien est actif
   const isLinkActive = (href: string) => {
-    if (pathname === '/') {
-      if (href === '/') return activeSection === 'hero';
-      if (href.includes('#')) {
-        const sectionId = href.replace('/#', '');
-        return activeSection === sectionId;
-      }
+    if (href === '/') return pathname === '/' && activeSection === 'hero';
+    if (href.includes('#')) {
+      const sectionId = href.replace('/#', '');
+      return pathname === '/' && activeSection === sectionId;
     }
     return pathname === href;
   };
@@ -147,18 +149,15 @@ export default function Navigation() {
           <div className="hidden lg:grid lg:grid-cols-3 items-center">
             {/* Logo à gauche */}
             <div className="flex justify-start">
-              <a 
+              <Link 
                 href="/" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = '/';
-                }}
                 className="flex items-center font-bold group py-1"
+                prefetch={true}
               >
                 <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
                   Abdoulaye Patawala
                 </span>
-              </a>
+              </Link>
             </div>
 
             {/* Liens centrés */}
@@ -169,32 +168,30 @@ export default function Navigation() {
                   
                   if (item.href.includes('#')) {
                     return (
-                      <a
+                      <Link
                         key={item.key}
                         href={item.href}
                         onClick={(e) => handleAnchorClick(e, item.href)}
                         className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
                           active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
                         }`}
+                        prefetch={false}
                       >
                         {t(`navItems.${item.key}`, 'navigation') || item.label}
-                      </a>
+                      </Link>
                     );
                   }
                   return (
-                    <a
+                    <Link
                       key={item.key}
                       href={item.href}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = item.href;
-                      }}
                       className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
                         active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
                       }`}
+                      prefetch={true}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
-                    </a>
+                    </Link>
                   );
                 })}
               </div>
@@ -209,18 +206,15 @@ export default function Navigation() {
           {/* Version Mobile */}
           <div className="flex lg:hidden items-center justify-between">
             {/* Logo à gauche */}
-            <a 
+            <Link 
               href="/" 
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = '/';
-              }}
               className="flex items-center font-bold group py-1"
+              prefetch={true}
             >
               <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl italic">
                 Patawala
               </span>
-            </a>
+            </Link>
 
             {/* Language Switcher et Hamburger à droite */}
             <div className="flex items-center gap-2">
@@ -253,36 +247,31 @@ export default function Navigation() {
               
               if (item.href.includes('#')) {
                 return (
-                  <a
+                  <Link
                     key={item.key}
                     href={item.href}
-                    onClick={(e) => {
-                      handleAnchorClick(e, item.href);
-                      setIsOpen(false);
-                    }}
+                    onClick={(e) => handleAnchorClick(e, item.href)}
                     className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                       active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                     }`}
+                    prefetch={false}
                   >
                     {t(`navItems.${item.key}`, 'navigation') || item.label}
-                  </a>
+                  </Link>
                 );
               }
               return (
-                <a
+                <Link
                   key={item.key}
                   href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsOpen(false);
-                    window.location.href = item.href;
-                  }}
+                  onClick={() => setIsOpen(false)}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
                     active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                   }`}
+                  prefetch={true}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}
-                </a>
+                </Link>
               );
             })}
           </div>
