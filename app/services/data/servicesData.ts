@@ -1,6 +1,6 @@
-import { Globe, Smartphone, ShoppingBag, Bot, Code, LayoutGrid } from 'lucide-react';
+import { Globe, Smartphone, ShoppingBag, Bot, Code,TrendingUp,LayoutGrid } from 'lucide-react';
 
-export type ServiceCategory = 'all' | 'web' | 'mobile' | 'ecommerce' | 'automatisation';
+export type ServiceCategory = 'all' | 'web' | 'mobile' | 'ecommerce' | 'automatisation'|'consulting';
 
 export interface Service {
   id: string;
@@ -237,14 +237,87 @@ export const servicesByCategory: Record<Exclude<ServiceCategory, 'all'>, Service
       icon: Bot,
       popular: false
     }
+  ],
+    consulting: [
+      {
+    id: 'audit-site',
+    title: 'Audit digital complet',
+    shortDesc: 'Analyse complète de votre écosystème digital : site, app, automatisations...',
+    description: 'Un audit approfondi de vos outils numériques pour identifier les points d\'amélioration et optimiser vos performances globales.',
+    technologies: ['Performance', 'SEO', 'Sécurité', 'UX', 'Automatisation'],
+    features: [
+      'Audit de votre site web (vitrine ou e-commerce)',
+      'Analyse de vos workflows d\'automatisation existants',
+      'Évaluation de votre application mobile ou web app',
+      'Vérification de la sécurité et conformité RGPD',
+      'Rapport détaillé avec plan d\'action priorisé',
+      'Recommandations personnalisées pour chaque outil'
+    ],
+    pricing: {
+      type: 'forfait',
+      startingAt: 150,
+      currency: '€'
+    },
+    ctaText: 'Diagnostiquer mon écosystème',
+    icon: TrendingUp,
+    popular: true
+  },
+    {
+      id: 'accompagnement',
+      title: 'Accompagnement stratégique',
+      shortDesc: 'Ne restez pas seul face à vos choix digitaux.',
+      description: 'Conseils et accompagnement pour définir votre stratégie digitale et vos priorités.',
+      technologies: ['Stratégie', 'Conseil', 'Plan d\'action'],
+      features: [
+        'On définit ensemble ce dont vous avez vraiment besoin',
+        'On priorise ce qui rapporte le plus vite',
+        'On choisit les bons outils pour votre budget',
+        'Un plan d\'action semaine par semaine',
+        'Un point mensuel pour rester sur la bonne voie',
+        'On ajuste si votre situation change'
+      ],
+      pricing: {
+        type: 'horaire',
+        startingAt: 50,
+        currency: '€/h'
+      },
+      ctaText: 'Prendre rendez-vous',
+      icon: TrendingUp,
+      popular: false
+    },
+    {
+      id: 'formation',
+      title: 'Formation',
+      shortDesc: 'Gagnez en autonomie sur vos outils.',
+      description: 'Formation personnalisée pour maîtriser les outils et technologies adaptés à vos besoins.',
+      technologies: ['Programme sur mesure', 'Pratique', 'Support'],
+      features: [
+        'Une formation taillée pour votre activité',
+        'Vous apprenez en faisant, pas en écoutant',
+        'Des fiches mémo à garder sous la main',
+        'Je réponds à vos questions après la formation',
+        'En petit comité pour que personne ne décroche',
+        'Une attestation pour votre dossier'
+      ],
+      pricing: {
+        type: 'forfait',
+        startingAt: 300,
+        currency: '€/jour'
+      },
+      ctaText: 'Voir le programme',
+      icon: TrendingUp,
+      popular: false
+    }
   ]
 };
+
 
 export const allServices = [
   ...servicesByCategory.web,
   ...servicesByCategory.mobile,
   ...servicesByCategory.ecommerce,
-  ...servicesByCategory.automatisation
+  ...servicesByCategory.automatisation,
+  ...servicesByCategory.consulting
 ];
 
 export const categories = [
@@ -275,6 +348,13 @@ export const categories = [
     icon: Bot,
     color: 'from-orange-500 to-amber-500',
     description: 'Workflows intelligents et agents conversationnels sur mesure'
+  },
+  { 
+    id: 'consulting', 
+    label: 'Conseil & Audit', 
+    icon: TrendingUp,
+    color: 'from-indigo-500 to-purple-500',
+    description: 'Stratégie digitale, audit technique et accompagnement personnalisé'
   }
 ] as const;
 

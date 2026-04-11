@@ -584,19 +584,21 @@
     "badge": "Custom solutions",
     "title": "Digital solutions",
     "titleHighlight": "adapted to your needs",
-    "subtitle": "Websites, applications, design or consulting — I support you from idea to realization.",
+    "subtitle": "Websites, apps, e-commerce, automation or consulting — I support you from idea to launch.",
     "filters": {
       "all": "All",
       "web": "Websites",
       "mobile": "Applications",
       "ecommerce": "E-commerce",
       "automatisation": "Automation & AI",
+      "consulting": "Consulting & Audit",
       "description": {
         "all": "Discover all my services for your digital presence",
         "web": "From showcase sites to complex web apps, high-performance and scalable",
         "mobile": "Native and hybrid apps for iOS and Android",
         "ecommerce": "Conversion-optimized online stores",
-        "automatisation": "Automate your business processes and deploy intelligent AI agents"
+        "automatisation": "Automate your business processes and deploy intelligent AI agents",
+        "consulting": "Digital strategy, technical audit and personalized support"
       }
     },
     "card": {
@@ -649,19 +651,21 @@
     "badge": "Tailored solutions",
     "title": "Digital solutions",
     "titleHighlight": "adapted to your needs",
-    "subtitle": "Websites, apps, e-commerce or automation — I support you from idea to launch.",
+    "subtitle": "Websites, apps, e-commerce, automation or consulting — I support you from idea to launch.",
     "filters": {
       "all": "All",
       "web": "Websites",
       "mobile": "Applications",
       "ecommerce": "E-commerce",
       "automatisation": "Automation & AI",
+      "consulting": "Consulting & Audit",
       "description": {
         "all": "Discover all my services for your digital presence",
         "web": "From showcase sites to complex web apps, high-performance and scalable",
         "mobile": "Native and hybrid apps for iOS and Android",
         "ecommerce": "Conversion-optimized online stores",
-        "automatisation": "Automate your business processes and deploy intelligent AI agents"
+        "automatisation": "Automate your business processes and deploy intelligent AI agents",
+        "consulting": "Digital strategy, technical audit and personalized support"
       }
     },
     "card": {
@@ -796,7 +800,49 @@
           "Reduce support tickets by up to 70%",
           "Human-like interaction aligned with your brand"
         ]
-      }
+      },
+      "audit-site": {
+    "title": "Complete Digital Audit",
+    "shortDesc": "Comprehensive analysis of your digital ecosystem: website, app, automations...",
+    "description": "An in-depth audit of your digital tools to identify areas for improvement and optimize overall performance.",
+    "ctaText": "Diagnose my ecosystem",
+    "features": [
+      "Audit of your website (showcase or e-commerce)",
+      "Analysis of your existing automation workflows",
+      "Evaluation of your mobile app or web app",
+      "Security and GDPR compliance check",
+      "Detailed report with prioritized action plan",
+      "Custom recommendations for each tool"
+    ]
+  },
+  "accompagnement": {
+    "title": "Strategic Support",
+    "shortDesc": "Don't face digital decisions alone.",
+    "description": "Advice and support to define your digital strategy and priorities.",
+    "ctaText": "Schedule a call",
+    "features": [
+      "We define together what you really need",
+      "We prioritize what delivers the fastest return",
+      "We choose the right tools for your budget",
+      "A week-by-week action plan",
+      "A monthly check-in to stay on track",
+      "We adjust if your situation changes"
+    ]
+  },
+  "formation": {
+    "title": "Training",
+    "shortDesc": "Gain autonomy with your tools.",
+    "description": "Personalized training to master the tools and technologies suited to your needs.",
+    "ctaText": "See the program",
+    "features": [
+      "Training tailored to your business",
+      "Learn by doing, not by listening",
+      "Cheat sheets to keep handy",
+      "I answer your questions after the training",
+      "Small groups so no one gets left behind",
+      "A certificate for your records"
+    ]
+  }
     }
   },
 

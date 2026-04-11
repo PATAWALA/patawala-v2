@@ -35,18 +35,20 @@ const ServicesPage = memo(function ServicesPage() {
     badge: t('badge', 'services') || 'Solutions sur mesure',
     title: t('title', 'services') || 'Solutions digitales',
     titleHighlight: t('titleHighlight', 'services') || 'adaptées à vos besoins',
-    subtitle: t('subtitle', 'services') || "Sites web, applications, design ou conseil — Je vous accompagne de l'idée à la réalisation.",
+    subtitle: t('subtitle', 'services') || "Sites web, applications, e-commerce, automatisation ou conseil — Je vous accompagne de l'idée à la réalisation.",
     disclaimer: t('disclaimer', 'services') || '* Chaque projet est unique et fait l\'objet d\'un devis personnalisé.',
     filterAll: t('filters.all', 'services') || 'Tous',
     filterWeb: t('filters.web', 'services') || 'Sites web',
     filterMobile: t('filters.mobile', 'services') || 'Applications',
-    filterDesign: t('filters.design', 'services') || 'Design & UX',
-    filterConsulting: t('filters.consulting', 'services') || 'Conseil & Stratégie',
+    filterEcommerce: t('filters.ecommerce', 'services') || 'E-commerce',
+    filterAutomatisation: t('filters.automatisation', 'services') || 'Automatisation & IA',
+    filterConsulting: t('filters.consulting', 'services') || 'Conseil & Audit',
     descAll: t('filters.description.all', 'services') || 'Découvrez tous mes services pour votre présence digitale',
     descWeb: t('filters.description.web', 'services') || 'Sites vitrine aux applications web complexes, performants et évolutifs',
     descMobile: t('filters.description.mobile', 'services') || 'Applications natives et hybrides pour iOS et Android',
-    descDesign: t('filters.description.design', 'services') || 'Interfaces intuitives et expériences utilisateur mémorables',
-    descConsulting: t('filters.description.consulting', 'services') || 'Conseil technique et stratégique pour vos projets digitaux',
+    descEcommerce: t('filters.description.ecommerce', 'services') || 'Boutiques en ligne optimisées pour la conversion',
+    descAutomatisation: t('filters.description.automatisation', 'services') || 'Automatisez vos processus métier et déployez des agents IA intelligents',
+    descConsulting: t('filters.description.consulting', 'services') || 'Stratégie digitale, audit technique et accompagnement personnalisé',
     faqTitle: t('faq.title', 'services') || 'Questions fréquentes',
     faqSubtitle: t('faq.subtitle', 'services') || 'Pour vous éclairer sur ma façon de travailler',
     ctaTitle: t('cta.title', 'services') || 'Vous ne trouvez pas ce que vous cherchez ?',
@@ -152,7 +154,8 @@ const ServicesPage = memo(function ServicesPage() {
       case 'all': return translations.filterAll;
       case 'web': return translations.filterWeb;
       case 'mobile': return translations.filterMobile;
-      case 'design': return translations.filterDesign;
+      case 'ecommerce': return translations.filterEcommerce;
+      case 'automatisation': return translations.filterAutomatisation;
       case 'consulting': return translations.filterConsulting;
       default: return filterCategories.find(c => c.id === categoryId)?.label || '';
     }
@@ -163,16 +166,16 @@ const ServicesPage = memo(function ServicesPage() {
       case 'all': return translations.descAll;
       case 'web': return translations.descWeb;
       case 'mobile': return translations.descMobile;
-      case 'design': return translations.descDesign;
+      case 'ecommerce': return translations.descEcommerce;
+      case 'automatisation': return translations.descAutomatisation;
       case 'consulting': return translations.descConsulting;
       default: return '';
     }
   };
 
-  // Variants Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut"  } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
   const staggerContainer: any = {
@@ -190,7 +193,6 @@ const ServicesPage = memo(function ServicesPage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
-  // SKELETON LOADER (inchangé)
   if (isLoading) {
     return (
       <main className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden">
@@ -208,7 +210,7 @@ const ServicesPage = memo(function ServicesPage() {
           <div className="mb-8">
             <div className="flex justify-center">
               <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
-                {[1, 2, 3, 4, 5].map((i) => (
+                {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div key={i} className="w-24 h-10 bg-gray-700/50 rounded-xl animate-pulse" />
                 ))}
               </div>
@@ -229,7 +231,6 @@ const ServicesPage = memo(function ServicesPage() {
       className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden"
       aria-labelledby="services-title"
     >
-      {/* FOND */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
         <div
           className="absolute inset-0 opacity-10"
@@ -261,7 +262,6 @@ const ServicesPage = memo(function ServicesPage() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="services-content">
-        {/* Hero Section */}
         <motion.div
           className="text-center max-w-3xl mx-auto mb-12"
           initial="hidden"
@@ -290,7 +290,6 @@ const ServicesPage = memo(function ServicesPage() {
           </motion.p>
         </motion.div>
 
-        {/* Section Filtres */}
         <motion.div
           className="mb-8 lg:mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -395,7 +394,6 @@ const ServicesPage = memo(function ServicesPage() {
           </motion.p>
         </motion.div>
 
-        {/* Grille des cartes */}
         <motion.div
           key={activeCategory}
           variants={gridVariants}
@@ -410,7 +408,6 @@ const ServicesPage = memo(function ServicesPage() {
           ))}
         </motion.div>
 
-        {/* SECTION FAQ */}
         <motion.div
           className="mt-20"
           initial="hidden"
@@ -447,7 +444,6 @@ const ServicesPage = memo(function ServicesPage() {
           </div>
         </motion.div>
 
-        {/* CTA final */}
         <motion.div
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}

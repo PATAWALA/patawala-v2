@@ -585,19 +585,21 @@
     "badge": "Solutions sur-mesure",
     "title": "Solutions digitales",
     "titleHighlight": "adaptées à vos besoins",
-    "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de l'idée à la réalisation.",
+    "subtitle": "Sites web, applications, e-commerce, automatisation ou conseil — Je vous accompagne de l'idée à la réalisation.",
     "filters": {
       "all": "Tous",
       "web": "Sites web",
       "mobile": "Applications",
       "ecommerce": "E-commerce",
       "automatisation": "Automatisation & IA",
+      "consulting": "Conseil & Audit",
       "description": {
         "all": "Découvrez tous mes services pour votre présence digitale",
         "web": "Sites vitrine aux applications web complexes, performants et évolutifs",
         "mobile": "Applications natives et hybrides pour iOS et Android",
         "ecommerce": "Boutiques en ligne optimisées pour la conversion",
-        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents"
+        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents",
+        "consulting": "Stratégie digitale, audit technique et accompagnement personnalisé"
       }
     },
     "card": {
@@ -662,7 +664,8 @@
         "web": "Sites vitrine aux applications web complexes, performants et évolutifs",
         "mobile": "Applications natives et hybrides pour iOS et Android",
         "ecommerce": "Boutiques en ligne optimisées pour la conversion",
-        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents"
+        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents",
+        "consulting": "Stratégie digitale, audit technique et accompagnement personnalisé"
       }
     },
     "card": {
@@ -798,6 +801,7 @@
           "Interaction humaine respectant l'identité de votre marque"
         ]
       }
+      
     }
   },
 
