@@ -88,7 +88,7 @@
   },
 
   "hero": {
-    "badge": "Specialized in web & mobile development",
+    "badge": "Full Stack & AI Automation Specialist",
     "title": "Let's build",
     "typed": {
       "strings": [
@@ -101,7 +101,7 @@
       ]
     },
     "mobilePhrase": "your digital vision",
-    "subtitle": "From a simple website to your business app, I build your project from concept to launch.",
+    "subtitle": "Building the future of your business, one profitable system at a time. Based in Benin, I bridge your ambitions with global standards of digital excellence.",
     "socialProof": {
       "stars": "30+ satisfied entrepreneurs",
       "entrepreneurs": "Positive reviews"
@@ -307,13 +307,13 @@
         ]
       },
       {
-        "name": "Odoo / ERP",
-        "level": "Advanced",
-        "desc": "Business management, CRM, invoicing, inventory",
+        "name": "Workflow Automation (Make / n8n)",
+        "level": "Expert",
+        "desc": "Seamless business automation to save time and boost productivity.",
         "expertise": [
-          "Custom modules",
-          "Automation",
-          "Integration"
+          "Complex API integrations",
+          "Custom AI workflows",
+          "Lead management automation"
         ]
       },
       {
@@ -587,16 +587,16 @@
     "subtitle": "Websites, applications, design or consulting — I support you from idea to realization.",
     "filters": {
       "all": "All",
-      "web": "Web development",
-      "mobile": "Mobile apps",
-      "design": "Design & identity",
-      "consulting": "Consulting & audit",
+      "web": "Websites",
+      "mobile": "Applications",
+      "ecommerce": "E-commerce",
+      "automatisation": "Automation & AI",
       "description": {
-        "all": "All my services for your digital presence",
-        "web": "Showcase sites, e-commerce and web applications, performant and scalable",
-        "mobile": "Native and hybrid apps for iOS, Android and tablets",
-        "design": "Visual identity, mockups and redesign for a professional image",
-        "consulting": "Digital strategy, technical audit and personalized support"
+        "all": "Discover all my services for your digital presence",
+        "web": "From showcase sites to complex web apps, high-performance and scalable",
+        "mobile": "Native and hybrid apps for iOS and Android",
+        "ecommerce": "Conversion-optimized online stores",
+        "automatisation": "Automate your business processes and deploy intelligent AI agents"
       }
     },
     "card": {
@@ -646,26 +646,22 @@
   },
 
   "servicesData": {
-    "badge": "Custom solutions",
+    "badge": "Tailored solutions",
     "title": "Digital solutions",
     "titleHighlight": "adapted to your needs",
-    "subtitle": "Websites, applications, design or consulting — I support you from idea to realization.",
+    "subtitle": "Websites, apps, e-commerce or automation — I support you from idea to launch.",
     "filters": {
       "all": "All",
       "web": "Websites",
       "mobile": "Applications",
-      "design": "Design & UX",
-      "consulting": "Consulting & Strategy",
       "ecommerce": "E-commerce",
-      "maintenance": "Maintenance",
+      "automatisation": "Automation & AI",
       "description": {
         "all": "Discover all my services for your digital presence",
-        "web": "Showcase sites to complex web applications, performant and scalable",
+        "web": "From showcase sites to complex web apps, high-performance and scalable",
         "mobile": "Native and hybrid apps for iOS and Android",
-        "design": "Intuitive interfaces and memorable user experiences",
-        "consulting": "Technical and strategic consulting for your digital projects",
-        "ecommerce": "Online stores optimized for conversion",
-        "maintenance": "Monitoring, updates and ongoing technical support"
+        "ecommerce": "Conversion-optimized online stores",
+        "automatisation": "Automate your business processes and deploy intelligent AI agents"
       }
     },
     "card": {
@@ -676,187 +672,131 @@
     },
     "services": {
       "site-vitrine": {
-    "title": "Showcase Website",
-    "shortDesc": "Your elegant and effective online presence",
-    "description": "An elegant and functional website to present your company, services, and achievements.",
-    "ctaText": "I want this site",
-    "features": [
-      "Tailored to your image, not an empty template",
-      "Your clients will see you perfectly on their phone",
-      "Your site will grow with your business",
-      "Prospects contact you in one click",
-      "Showcase your best work",
-      "You update the text yourself, without me"
-    ]
-  },
-  "site-ecommerce": {
-    "title": "E-commerce Website",
-    "shortDesc": "Sell online. Hassle-free.",
-    "description": "A complete online store to sell your products and manage orders easily.",
-    "ctaText": "See the store demo",
-    "features": [
-      "Your products are well presented and easy to find",
-      "A simple cart—your customers complete their purchases",
-      "Secure payment—your customers trust you",
-      "You know exactly what's left in stock",
-      "Track your orders without drowning",
-      "A clear dashboard to steer your sales"
-    ]
-  },
-  "application-web": {
-    "title": "Web Application",
-    "shortDesc": "Your business needs a tool. I'll code it.",
-    "description": "A custom web application to automate your processes and manage your activity.",
-    "ctaText": "Describe my need",
-    "features": [
-      "Your customers have their private space",
-      "Your data is organized and accessible",
-      "Manage everything from a simple interface",
-      "Get alerts when something happens",
-      "Visualize your activity at a glance",
-      "Export your data to Excel with one click"
-    ]
-  },
-  "plateforme-sur-mesure": {
-    "title": "Custom Platform",
-    "shortDesc": "When no off-the-shelf tool is enough.",
-    "description": "A fully customized platform to meet complex and specific needs.",
-    "ctaText": "Let's talk",
-    "features": [
-      "The tool does exactly what you need",
-      "It will evolve with your company",
-      "Your sensitive data is protected",
-      "I handle technical maintenance",
-      "Your team is trained and autonomous",
-      "You get priority support when you have questions"
-    ]
-  },
-  "app-ios-android": {
-    "title": "iOS & Android App",
-    "shortDesc": "Your customers are waiting on their phones.",
-    "description": "A native or hybrid app available on iPhone and Android.",
-    "ctaText": "See app pricing",
-    "features": [
-      "Your customers find you on the App Store and Google Play",
-      "A smooth experience, just like top-tier apps",
-      "Re-engage customers with a notification",
-      "They can use the app even offline",
-      "Updates happen automatically",
-      "See how many people are using the app"
-    ]
-  },
-  "app-reservation": {
-    "title": "Booking Application",
-    "shortDesc": "Fill your calendar. Automatically.",
-    "description": "An application to manage your reservations, appointments, and schedule.",
-    "ctaText": "Free up my time",
-    "features": [
-      "Customers book online 24/7",
-      "Your calendar fills itself without conflicts",
-      "No more forgotten appointments thanks to automatic reminders",
-      "Online payment—fewer unpaid invoices",
-      "Flexible cancellation management",
-      "Keep control with a pro dashboard"
-    ]
-  },
-  "app-entreprise": {
-    "title": "Business Application",
-    "shortDesc": "Your team organized. Everywhere. All the time.",
-    "description": "A private app for your teams: communication, tasks, documents.",
-    "ctaText": "Structure my team",
-    "features": [
-      "A space reserved only for your company",
-      "Chat with colleagues without mixing work and personal life",
-      "All important documents in one place",
-      "Everyone knows what they have to do",
-      "Notify your team about urgent info",
-      "Access information even offline"
-    ]
-  },
-  "identite-visuelle": {
-    "title": "Visual Identity",
-    "shortDesc": "Get noticed. For the right reasons.",
-    "description": "Create a visual identity that reflects you: logo, colors, typography.",
-    "ctaText": "I want a pro logo",
-    "features": [
-      "A unique logo that makes an impression",
-      "Brand guidelines to stay consistent",
-      "Colors that tell your story",
-      "Readable and elegant fonts",
-      "A business card people want to keep",
-      "Ready-made visuals for Facebook and Instagram"
-    ]
-  },
-  "maquettes-site": {
-    "title": "Website Mockups",
-    "shortDesc": "See your site before the first line of code.",
-    "description": "Clear mockups to see the final result and validate the user experience.",
-    "ctaText": "Request a mockup",
-    "features": [
-      "We structure each area before starting",
-      "You validate the design page by page",
-      "You also see the mobile version",
-      "Test navigation with a clickable prototype",
-      "Adjust as many times as needed",
-      "The developer receives clean files"
-    ]
-  },
-  "redesign": {
-    "title": "Design Overhaul",
-    "shortDesc": "Has your site aged? Give it a second youth.",
-    "description": "Modernize the look of your existing site for greater professionalism.",
-    "ctaText": "Modernize my site",
-    "features": [
-      "We keep what works, change what doesn't",
-      "A modern proposal to make a difference",
-      "Visitors find information faster",
-      "A harmonious and professional visual style",
-      "Your site finally adapts to mobile",
-      "More visitors take action"
-    ]
-  },
-  "audit-site": {
-    "title": "Site Audit",
-    "shortDesc": "A complete check-up of your online presence.",
-    "description": "A comprehensive analysis of your site to improve performance and visibility.",
-    "ctaText": "Diagnose my site",
-    "features": [
-      "We measure if your site is fast or slow",
-      "We check how Google sees you",
-      "We ensure your site is hard to hack",
-      "We test the display on all phones",
-      "A clear report with concrete actions",
-      "You know exactly where to start"
-    ]
-  },
-  "accompagnement": {
-    "title": "Strategic Support",
-    "shortDesc": "Don't face digital decisions alone.",
-    "description": "Advice and support to define your digital strategy and priorities.",
-    "ctaText": "Schedule a call",
-    "features": [
-      "We define together what you really need",
-      "We prioritize what delivers the fastest return",
-      "We choose the right tools for your budget",
-      "A week-by-week action plan",
-      "A monthly check-in to stay on track",
-      "We adjust if your situation changes"
-    ]
-  },
-  "formation": {
-    "title": "Training",
-    "shortDesc": "Gain autonomy with your tools.",
-    "description": "Personalized training to master the tools and technologies suited to your needs.",
-    "ctaText": "See the program",
-    "features": [
-      "Training tailored to your business",
-      "Learn by doing, not by listening",
-      "Cheat sheets to keep handy",
-      "I answer your questions after the training",
-      "Small groups so no one gets left behind",
-      "A certificate for your records"
-    ]
-  }
+        "title": "Showcase Website",
+        "shortDesc": "Your elegant and effective online presence",
+        "description": "An elegant and functional website to present your company, services, and achievements.",
+        "ctaText": "I want this site",
+        "features": [
+          "Tailored to your image, not an empty template",
+          "Your clients will see you perfectly on their phone",
+          "Your site will grow with your business",
+          "Prospects contact you in one click",
+          "Showcase your best work",
+          "You update the text yourself, without me"
+        ]
+      },
+      "site-ecommerce": {
+        "title": "E-commerce Website",
+        "shortDesc": "Sell online. Hassle-free.",
+        "description": "A complete online store to sell your products and manage orders easily.",
+        "ctaText": "See the store demo",
+        "features": [
+          "Your products are well presented and easy to find",
+          "A simple cart—your customers complete their purchases",
+          "Secure payment—your customers trust you",
+          "You know exactly what's left in stock",
+          "Track your orders without drowning",
+          "A clear dashboard to steer your sales"
+        ]
+      },
+      "application-web": {
+        "title": "Web Application",
+        "shortDesc": "Your business needs a tool. I'll code it.",
+        "description": "A custom web application to automate your processes and manage your activity.",
+        "ctaText": "Describe my need",
+        "features": [
+          "Your customers have their private space",
+          "Your data is organized and accessible",
+          "Manage everything from a simple interface",
+          "Get alerts when something happens",
+          "Visualize your activity at a glance",
+          "Export your data to Excel with one click"
+        ]
+      },
+      "plateforme-sur-mesure": {
+        "title": "Custom Platform",
+        "shortDesc": "When no off-the-shelf tool is enough.",
+        "description": "A fully customized platform to meet complex and specific needs.",
+        "ctaText": "Let's talk",
+        "features": [
+          "The tool does exactly what you need",
+          "It will evolve with your company",
+          "Your sensitive data is protected",
+          "I handle technical maintenance",
+          "Your team is trained and autonomous",
+          "You get priority support when you have questions"
+        ]
+      },
+      "app-ios-android": {
+        "title": "iOS & Android App",
+        "shortDesc": "Your customers are waiting on their phones.",
+        "description": "A native or hybrid app available on iPhone and Android.",
+        "ctaText": "See app pricing",
+        "features": [
+          "Your customers find you on the App Store and Google Play",
+          "A smooth experience, just like top-tier apps",
+          "Re-engage customers with a notification",
+          "They can use the app even offline",
+          "Updates happen automatically",
+          "See how many people are using the app"
+        ]
+      },
+      "app-reservation": {
+        "title": "Booking Application",
+        "shortDesc": "Fill your calendar. Automatically.",
+        "description": "An application to manage your reservations, appointments, and schedule.",
+        "ctaText": "Free up my time",
+        "features": [
+          "Customers book online 24/7",
+          "Your calendar fills itself without conflicts",
+          "No more forgotten appointments thanks to automatic reminders",
+          "Online payment—fewer unpaid invoices",
+          "Flexible cancellation management",
+          "Keep control with a pro dashboard"
+        ]
+      },
+      "app-entreprise": {
+        "title": "Business Application",
+        "shortDesc": "Your team organized. Everywhere. All the time.",
+        "description": "A private app for your teams: communication, tasks, documents.",
+        "ctaText": "Structure my team",
+        "features": [
+          "A space reserved only for your company",
+          "Chat with colleagues without mixing work and personal life",
+          "All important documents in one place",
+          "Everyone knows what they have to do",
+          "Notify your team about urgent info",
+          "Access information even offline"
+        ]
+      },
+      "business-automation": {
+        "title": "AI & Business Automation",
+        "shortDesc": "Scale your business, not your workload.",
+        "description": "Custom workflows via Make, n8n and AI to automate repetitive tasks and boost productivity.",
+        "ctaText": "Automate my business",
+        "features": [
+          "Connect all your tools (CRM, Email, ERP) into a single flow",
+          "AI lead qualification and instant response",
+          "Eliminate manual data entry errors",
+          "Automate customer follow-up and invoicing",
+          "Real-time business notifications where you need them",
+          "High ROI: save hundreds of hours every month"
+        ]
+      },
+      "ai-chatbot": {
+        "title": "Intelligent AI Agents",
+        "shortDesc": "An expert available 24/7 who knows your business.",
+        "description": "Custom AI chatbots trained on your data to handle sales and customer support.",
+        "ctaText": "Deploy my AI agent",
+        "features": [
+          "Trained specifically on your documents and business data",
+          "Available 24/7 in multiple languages",
+          "Capture and qualify leads directly in chat",
+          "Seamless integration with your existing CRM",
+          "Reduce support tickets by up to 70%",
+          "Human-like interaction aligned with your brand"
+        ]
+      }
     }
   },
 

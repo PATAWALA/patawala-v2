@@ -88,7 +88,7 @@
   },
 
   "hero": {
-    "badge": "Spécialisé en développement web & mobile",
+    "badge": "Spécialiste Full Stack & Automatisation AI",
     "title": "Bâtissons",
     "typed": {
       "strings": [
@@ -101,7 +101,7 @@
       ]
     },
     "mobilePhrase": "votre croissance numérique",
-    "subtitle": "Du simple site vitrine à votre application métier, je réalise votre projet de l'idée à la mise en ligne.",
+    "subtitle": "Bâtir l'avenir de votre business, un système rentable à la fois. Depuis le Bénin, je connecte vos ambitions aux standards mondiaux de l'excellence numérique.",
     "socialProof": {
       "stars": "30+ entrepreneurs satisfaits",
       "entrepreneurs": "Avis positifs"
@@ -308,13 +308,13 @@
         ]
       },
       {
-        "name": "Odoo / ERP",
-        "level": "Avancé",
-        "desc": "Gestion d'entreprise, CRM, facturation, inventaire",
+        "name": "Automatisation de Workflows",
+        "level": "Expert",
+        "desc": "Automatisation fluide des processus pour gagner du temps et booster la productivité.",
         "expertise": [
-          "Modules sur-mesure",
-          "Automatisation",
-          "Intégration"
+          "Intégrations d'API complexes",
+          "Workflows IA personnalisés",
+          "Automatisation de la gestion de leads"
         ]
       },
       {
@@ -588,16 +588,16 @@
     "subtitle": "Sites web, applications, design ou conseil — je vous accompagne de l'idée à la réalisation.",
     "filters": {
       "all": "Tous",
-      "web": "Développement web",
-      "mobile": "Applications mobiles",
-      "design": "Design & identité",
-      "consulting": "Conseil & audit",
+      "web": "Sites web",
+      "mobile": "Applications",
+      "ecommerce": "E-commerce",
+      "automatisation": "Automatisation & IA",
       "description": {
-        "all": "Tous mes services pour votre présence digitale",
-        "web": "Sites vitrine, e-commerce et applications web, performants et évolutifs",
-        "mobile": "Applications natives et hybrides pour iOS, Android et tablettes",
-        "design": "Identité visuelle, maquettes et refonte pour une image professionnelle",
-        "consulting": "Stratégie digitale, audit technique et accompagnement personnalisé"
+        "all": "Découvrez tous mes services pour votre présence digitale",
+        "web": "Sites vitrine aux applications web complexes, performants et évolutifs",
+        "mobile": "Applications natives et hybrides pour iOS et Android",
+        "ecommerce": "Boutiques en ligne optimisées pour la conversion",
+        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents"
       }
     },
     "card": {
@@ -650,23 +650,19 @@
     "badge": "Solutions sur mesure",
     "title": "Solutions digitales",
     "titleHighlight": "adaptées à vos besoins",
-    "subtitle": "Sites web, applications, design ou conseil — Je vous accompagne de l'idée à la réalisation.",
+    "subtitle": "Sites web, applications, e-commerce ou automatisation — Je vous accompagne de l'idée à la réalisation.",
     "filters": {
       "all": "Tous",
       "web": "Sites web",
       "mobile": "Applications",
-      "design": "Design & UX",
-      "consulting": "Conseil & Stratégie",
       "ecommerce": "E-commerce",
-      "maintenance": "Maintenance",
+      "automatisation": "Automatisation & IA",
       "description": {
         "all": "Découvrez tous mes services pour votre présence digitale",
         "web": "Sites vitrine aux applications web complexes, performants et évolutifs",
         "mobile": "Applications natives et hybrides pour iOS et Android",
-        "design": "Interfaces intuitives et expériences utilisateur mémorables",
-        "consulting": "Conseil technique et stratégique pour vos projets digitaux",
         "ecommerce": "Boutiques en ligne optimisées pour la conversion",
-        "maintenance": "Suivi, mises à jour et support technique continu"
+        "automatisation": "Automatisez vos processus métier et déployez des agents IA intelligents"
       }
     },
     "card": {
@@ -677,187 +673,131 @@
     },
     "services": {
       "site-vitrine": {
-      "title": "Site vitrine",
-      "shortDesc": "Votre vitrine en ligne, élégante et efficace",
-      "description": "Un site élégant et fonctionnel pour présenter votre entreprise, vos services et vos réalisations.",
-      "ctaText": "Je veux ce site",
-      "features": [
-        "À votre image, pas un template vide",
-        "Vos clients vous verront parfaitement sur leur téléphone",
-        "Votre site grandira avec votre activité",
-        "Vos prospects vous contactent en un clic",
-        "Mettez en valeur vos plus belles réalisations",
-        "Vous modifiez les textes vous-même, sans moi"
-      ]
-    },
-    "site-ecommerce": {
-      "title": "Site e-commerce",
-      "shortDesc": "Vendez en ligne. Sans prise de tête.",
-      "description": "Une boutique en ligne complète pour vendre vos produits et gérer vos commandes en toute simplicité.",
-      "ctaText": "Voir la démo boutique",
-      "features": [
-        "Vos produits bien présentés et faciles à trouver",
-        "Un panier simple, vos clients finalisent leurs achats",
-        "Paiement sécurisé, vos clients ont confiance",
-        "Vous savez exactement ce qu'il vous reste en stock",
-        "Suivez vos commandes sans vous noyer",
-        "Un tableau de bord clair pour piloter vos ventes"
-      ]
-    },
-    "application-web": {
-      "title": "Application web",
-      "shortDesc": "Votre métier a besoin d'un outil. Je le code.",
-      "description": "Une application web sur mesure pour automatiser vos processus et gérer votre activité.",
-      "ctaText": "Décrire mon besoin",
-      "features": [
-        "Vos clients ont leur espace privé",
-        "Vos données sont organisées et accessibles",
-        "Vous gérez tout depuis une interface simple",
-        "Recevez des alertes quand il se passe quelque chose",
-        "Visualisez votre activité en un coup d'œil",
-        "Exportez vos données en un clic pour Excel"
-      ]
-    },
-    "plateforme-sur-mesure": {
-      "title": "Plateforme sur-mesure",
-      "shortDesc": "Quand aucun outil du marché ne suffit.",
-      "description": "Une plateforme entièrement personnalisée pour répondre à des besoins complexes et spécifiques.",
-      "ctaText": "Parlons-en",
-      "features": [
-        "L'outil fait exactement ce dont vous avez besoin",
-        "Il évoluera avec votre entreprise",
-        "Vos données sensibles sont protégées",
-        "Je m'occupe de la maintenance technique",
-        "Votre équipe est formée et autonome",
-        "Vous êtes prioritaire en cas de question"
-      ]
-    },
-    "app-ios-android": {
-      "title": "Application iOS & Android",
-      "shortDesc": "Vos clients vous attendent sur leur téléphone.",
-      "description": "Une application native ou hybride disponible sur iPhone et Android.",
-      "ctaText": "Voir les tarifs apps",
-      "features": [
-        "Vos clients vous trouvent sur l'App Store et Google Play",
-        "Une expérience fluide, comme les grandes apps",
-        "Relancez vos clients avec une notification",
-        "Ils peuvent utiliser l'app même sans réseau",
-        "Les mises à jour se font toutes seules",
-        "Vous voyez combien de personnes utilisent l'app"
-      ]
-    },
-    "app-reservation": {
-      "title": "Application de réservation",
-      "shortDesc": "Remplissez votre agenda. Automatiquement.",
-      "description": "Une application pour gérer vos réservations, rendez-vous et planning.",
-      "ctaText": "Libérer mon temps",
-      "features": [
-        "Vos clients réservent en ligne 24h/24",
-        "Votre agenda se remplit tout seul, sans conflit",
-        "Fini les oublis grâce aux rappels automatiques",
-        "Encaissement en ligne, moins d'impayés",
-        "Gestion souple des désistements",
-        "Vous gardez la main avec un tableau pro"
-      ]
-    },
-    "app-entreprise": {
-      "title": "Application d'entreprise",
-      "shortDesc": "Votre équipe organisée. Partout. Tout le temps.",
-      "description": "Une application privée pour vos équipes : communication, tâches, documents.",
-      "ctaText": "Structurer mon équipe",
-      "features": [
-        "Un espace réservé uniquement à votre société",
-        "Discutez avec vos collègues sans mélanger pro/perso",
-        "Tous les documents importants au même endroit",
-        "Chacun sait ce qu'il a à faire",
-        "Prévenez votre équipe d'une info urgente",
-        "Consultez les infos même sans connexion"
-      ]
-    },
-    "identite-visuelle": {
-      "title": "Identité visuelle",
-      "shortDesc": "Faites-vous remarquer. Pour les bonnes raisons.",
-      "description": "Créez une identité visuelle qui vous ressemble : logo, couleurs, typographie.",
-      "ctaText": "Je veux un logo pro",
-      "features": [
-        "Un logo unique qui marque les esprits",
-        "Des règles graphiques pour rester cohérent",
-        "Des couleurs qui racontent votre histoire",
-        "Des polices lisibles et élégantes",
-        "Une carte de visite qui donne envie d'être gardée",
-        "Des visuels prêts pour Facebook et Instagram"
-      ]
-    },
-    "maquettes-site": {
-      "title": "Maquettes de site",
-      "shortDesc": "Visualisez votre site avant la première ligne de code.",
-      "description": "Des maquettes claires pour voir le rendu final et valider l'ergonomie.",
-      "ctaText": "Demander une maquette",
-      "features": [
-        "On structure chaque zone avant de commencer",
-        "Vous validez le design page par page",
-        "Vous voyez aussi le rendu sur téléphone",
-        "Testez la navigation avec un prototype cliquable",
-        "Ajustez autant de fois que nécessaire",
-        "Le développeur reçoit des fichiers propres"
-      ]
-    },
-    "redesign": {
-      "title": "Refonte design",
-      "shortDesc": "Votre site a vieilli ? Offrez-lui une seconde jeunesse.",
-      "description": "Modernisez l'apparence de votre site existant pour plus de professionnalisme.",
-      "ctaText": "Moderniser mon site",
-      "features": [
-        "On garde ce qui fonctionne, on change ce qui coince",
-        "Une proposition moderne pour faire la différence",
-        "Vos visiteurs trouvent l'info plus vite",
-        "Un style visuel harmonieux et pro",
-        "Votre site s'adapte enfin aux mobiles",
-        "Plus de visiteurs passent à l'action"
-      ]
-    },
-    "audit-site": {
-      "title": "Audit de site",
-      "shortDesc": "Le check-up complet de votre présence en ligne.",
-      "description": "Une analyse complète de votre site pour améliorer performances et visibilité.",
-      "ctaText": "Diagnostiquer mon site",
-      "features": [
-        "On mesure si votre site est rapide ou lent",
-        "On vérifie comment Google vous voit",
-        "On s'assure que votre site est difficile à pirater",
-        "On teste l'affichage sur tous les téléphones",
-        "Un rapport clair avec des actions concrètes",
-        "Vous savez exactement par où commencer"
-      ]
-    },
-    "accompagnement": {
-      "title": "Accompagnement stratégique",
-      "shortDesc": "Ne restez pas seul face à vos choix digitaux.",
-      "description": "Conseils et accompagnement pour définir votre stratégie digitale et vos priorités.",
-      "ctaText": "Prendre rendez-vous",
-      "features": [
-        "On définit ensemble ce dont vous avez vraiment besoin",
-        "On priorise ce qui rapporte le plus vite",
-        "On choisit les bons outils pour votre budget",
-        "Un plan d'action semaine par semaine",
-        "Un point mensuel pour rester sur la bonne voie",
-        "On ajuste si votre situation change"
-      ]
-    },
-    "formation": {
-      "title": "Formation",
-      "shortDesc": "Gagnez en autonomie sur vos outils.",
-      "description": "Formation personnalisée pour maîtriser les outils et technologies adaptés à vos besoins.",
-      "ctaText": "Voir le programme",
-      "features": [
-        "Une formation taillée pour votre activité",
-        "Vous apprenez en faisant, pas en écoutant",
-        "Des fiches mémo à garder sous la main",
-        "Je réponds à vos questions après la formation",
-        "En petit comité pour que personne ne décroche",
-        "Une attestation pour votre dossier"
-      ]
-    }
+        "title": "Site vitrine",
+        "shortDesc": "Votre vitrine en ligne, élégante et efficace",
+        "description": "Un site élégant et fonctionnel pour présenter votre entreprise, vos services et vos réalisations.",
+        "ctaText": "Je veux ce site",
+        "features": [
+          "À votre image, pas un template vide",
+          "Vos clients vous verront parfaitement sur leur téléphone",
+          "Votre site grandira avec votre activité",
+          "Vos prospects vous contactent en un clic",
+          "Mettez en valeur vos plus belles réalisations",
+          "Vous modifiez les textes vous-même, sans moi"
+        ]
+      },
+      "site-ecommerce": {
+        "title": "Site e-commerce",
+        "shortDesc": "Vendez en ligne. Sans prise de tête.",
+        "description": "Une boutique en ligne complète pour vendre vos produits et gérer vos commandes en toute simplicité.",
+        "ctaText": "Voir la démo boutique",
+        "features": [
+          "Vos produits bien présentés et faciles à trouver",
+          "Un panier simple, vos clients finalisent leurs achats",
+          "Paiement sécurisé, vos clients ont confiance",
+          "Vous savez exactement ce qu'il vous reste en stock",
+          "Suivez vos commandes sans vous noyer",
+          "Un tableau de bord clair pour piloter vos ventes"
+        ]
+      },
+      "application-web": {
+        "title": "Application web",
+        "shortDesc": "Votre métier a besoin d'un outil. Je le code.",
+        "description": "Une application web sur mesure pour automatiser vos processus et gérer votre activité.",
+        "ctaText": "Décrire mon besoin",
+        "features": [
+          "Vos clients ont leur espace privé",
+          "Vos données sont organisées et accessibles",
+          "Vous gérez tout depuis une interface simple",
+          "Recevez des alertes quand il se passe quelque chose",
+          "Visualisez votre activité en un coup d'œil",
+          "Exportez vos données en un clic pour Excel"
+        ]
+      },
+      "plateforme-sur-mesure": {
+        "title": "Plateforme sur-mesure",
+        "shortDesc": "Quand aucun outil du marché ne suffit.",
+        "description": "Une plateforme entièrement personnalisée pour répondre à des besoins complexes et spécifiques.",
+        "ctaText": "Parlons-en",
+        "features": [
+          "L'outil fait exactement ce dont vous avez besoin",
+          "Il évoluera avec votre entreprise",
+          "Vos données sensibles sont protégées",
+          "Je m'occupe de la maintenance technique",
+          "Votre équipe est formée et autonome",
+          "Vous êtes prioritaire en cas de question"
+        ]
+      },
+      "app-ios-android": {
+        "title": "Application iOS & Android",
+        "shortDesc": "Vos clients vous attendent sur leur téléphone.",
+        "description": "Une application native ou hybride disponible sur iPhone et Android.",
+        "ctaText": "Voir les tarifs apps",
+        "features": [
+          "Vos clients vous trouvent sur l'App Store et Google Play",
+          "Une expérience fluide, comme les grandes apps",
+          "Relancez vos clients avec une notification",
+          "Ils peuvent utiliser l'app même sans réseau",
+          "Les mises à jour se font toutes seules",
+          "Vous voyez combien de personnes utilisent l'app"
+        ]
+      },
+      "app-reservation": {
+        "title": "Application de réservation",
+        "shortDesc": "Remplissez votre agenda. Automatiquement.",
+        "description": "Une application pour gérer vos réservations, rendez-vous et planning.",
+        "ctaText": "Libérer mon temps",
+        "features": [
+          "Vos clients réservent en ligne 24h/24",
+          "Votre agenda se remplit tout seul, sans conflit",
+          "Fini les oublis grâce aux rappels automatiques",
+          "Encaissement en ligne, moins d'impayés",
+          "Gestion souple des désistements",
+          "Vous gardez la main avec un tableau pro"
+        ]
+      },
+      "app-entreprise": {
+        "title": "Application d'entreprise",
+        "shortDesc": "Votre équipe organisée. Partout. Tout le temps.",
+        "description": "Une application privée pour vos équipes : communication, tâches, documents.",
+        "ctaText": "Structurer mon équipe",
+        "features": [
+          "Un espace réservé uniquement à votre société",
+          "Discutez avec vos collègues sans mélanger pro/perso",
+          "Tous les documents importants au même endroit",
+          "Chacun sait ce qu'il a à faire",
+          "Prévenez votre équipe d'une info urgente",
+          "Consultez les infos même sans connexion"
+        ]
+      },
+      "business-automation": {
+        "title": "IA & Automatisation Business",
+        "shortDesc": "Scalez votre entreprise, pas votre charge de travail.",
+        "description": "Workflows sur-mesure via Make, n8n et l'IA pour automatiser vos tâches répétitives et exploser votre productivité.",
+        "ctaText": "Automatiser mon business",
+        "features": [
+          "Connectez tous vos outils (CRM, Email, ERP) en un flux unique",
+          "Qualification de leads par l'IA et réponse instantanée",
+          "Élimination totale des erreurs de saisie manuelle",
+          "Automatisation du suivi client et de la facturation",
+          "Notifications business en temps réel là où vous en avez besoin",
+          "ROI élevé : économisez des centaines d'heures chaque mois"
+        ]
+      },
+      "ai-chatbot": {
+        "title": "Agents IA Intelligents",
+        "shortDesc": "Un expert disponible 24h/24 qui connaît votre métier.",
+        "description": "Chatbots IA personnalisés entraînés sur vos données pour gérer vos ventes et votre support client.",
+        "ctaText": "Déployer mon agent IA",
+        "features": [
+          "Entraîné spécifiquement sur vos documents et données métier",
+          "Disponible 24h/24 pour répondre en plusieurs langues",
+          "Capture et qualification des prospects directement dans le chat",
+          "Intégration fluide avec votre CRM actuel",
+          "Réduction des tickets de support jusqu'à 70%",
+          "Interaction humaine respectant l'identité de votre marque"
+        ]
+      }
     }
   },
 

@@ -1,6 +1,6 @@
-import { Globe, Smartphone, Palette, TrendingUp, Code, Cloud, Shield, Zap, Layout, Grid } from 'lucide-react';
+import { Globe, Smartphone, ShoppingBag, Bot, Code, LayoutGrid } from 'lucide-react';
 
-export type ServiceCategory = 'all' | 'web' | 'mobile' | 'design' | 'consulting';
+export type ServiceCategory = 'all' | 'web' | 'mobile' | 'ecommerce' | 'automatisation';
 
 export interface Service {
   id: string;
@@ -43,29 +43,6 @@ export const servicesByCategory: Record<Exclude<ServiceCategory, 'all'>, Service
       ctaText: 'Créer mon site',
       icon: Globe,
       popular: false
-    },
-    {
-      id: 'site-ecommerce',
-      title: 'Site E-commerce',
-      shortDesc: 'Vendez vos produits en ligne facilement',
-      description: 'Une boutique en ligne complète pour vendre vos produits et gérer vos commandes simplement.',
-      technologies: ['Catalogue produits', 'Paiement sécurisé', 'Gestion stocks'],
-      features: [
-        'Catalogue produits',
-        'Panier d\'achat',
-        'Paiements sécurisés',
-        'Gestion des stocks',
-        'Commandes clients',
-        'Tableau de bord'
-      ],
-      pricing: {
-        type: 'forfait',
-        startingAt: 500,
-        currency: '€'
-      },
-      ctaText: 'Lancer ma boutique',
-      icon: Globe,
-      popular: true
     },
     {
       id: 'application-web',
@@ -187,157 +164,87 @@ export const servicesByCategory: Record<Exclude<ServiceCategory, 'all'>, Service
     }
   ],
 
-  design: [
+  ecommerce: [
     {
-      id: 'identite-visuelle',
-      title: 'Identité Visuelle',
-      shortDesc: 'Une image forte et cohérente',
-      description: 'Créez une identité visuelle qui vous ressemble : logo, couleurs, typographies.',
-      technologies: ['Logo', 'Charte graphique', 'Éléments visuels'],
+      id: 'site-ecommerce',
+      title: 'Site E-commerce',
+      shortDesc: 'Vendez vos produits en ligne facilement',
+      description: 'Une boutique en ligne complète pour vendre vos produits et gérer vos commandes simplement.',
+      technologies: ['Catalogue produits', 'Paiement sécurisé', 'Gestion stocks'],
       features: [
-        'Création de logo',
-        'Charte graphique',
-        'Palette de couleurs',
-        'Choix typographies',
-        'Cartes de visite',
-        'Kit réseaux sociaux'
+        'Catalogue produits',
+        'Panier d\'achat',
+        'Paiements sécurisés',
+        'Gestion des stocks',
+        'Commandes clients',
+        'Tableau de bord'
       ],
       pricing: {
         type: 'forfait',
-        startingAt: 200,
+        startingAt: 500,
         currency: '€'
       },
-      ctaText: 'Créer mon identité',
-      icon: Palette,
+      ctaText: 'Lancer ma boutique',
+      icon: ShoppingBag,
       popular: true
-    },
-    {
-      id: 'maquettes-site',
-      title: 'Maquettes de Site',
-      shortDesc: 'Visualisez votre site avant développement',
-      description: 'Des maquettes claires pour voir le rendu final et valider l\'ergonomie.',
-      technologies: ['Wireframes', 'Design mobile', 'Prototypes'],
-      features: [
-        'Wireframes fonctionnels',
-        'Design page par page',
-        'Version mobile incluse',
-        'Prototypes cliquables',
-        'Corps illimitées',
-        'Fichiers prêts pour dev'
-      ],
-      pricing: {
-        type: 'forfait',
-        startingAt: 250,
-        currency: '€'
-      },
-      ctaText: 'Visualiser mon site',
-      icon: Palette,
-      popular: false
-    },
-    {
-      id: 'redesign',
-      title: 'Refonte Design',
-      shortDesc: 'Donnez un coup de jeune à votre site',
-      description: 'Modernisez l\'apparence de votre site existant pour plus de professionnalisme.',
-      technologies: ['Design moderne', 'Optimisation UX', 'Harmonisation'],
-      features: [
-        'Analyse design existant',
-        'Proposition modernisation',
-        'Amélioration ergonomie',
-        'Harmonisation visuelle',
-        'Adaptation mobile',
-        'Optimisation conversion'
-      ],
-      pricing: {
-        type: 'forfait',
-        startingAt: 300,
-        currency: '€'
-      },
-      ctaText: 'Moderniser mon site',
-      icon: Palette,
-      popular: false
     }
   ],
 
-  consulting: [
+  automatisation: [
     {
-      id: 'audit-site',
-      title: 'Audit de Site',
-      shortDesc: 'Identifiez les points d\'amélioration',
-      description: 'Une analyse complète de votre site pour améliorer performances et visibilité.',
-      technologies: ['Performance', 'SEO', 'Sécurité'],
+      id: 'business-automation',
+      title: 'IA & Automatisation Business',
+      shortDesc: 'Scalez votre entreprise, pas votre charge de travail.',
+      description: 'Workflows sur-mesure via Make, n8n et l\'IA pour automatiser vos tâches répétitives et exploser votre productivité.',
+      technologies: ['Make', 'n8n', 'Zapier', 'API sur mesure'],
       features: [
-        'Analyse performance',
-        'Audit SEO complet',
-        'Vérification sécurité',
-        'Compatibilité mobile',
-        'Rapport détaillé',
-        'Recommandations'
+        'Connectez tous vos outils (CRM, Email, ERP) en un flux unique',
+        'Qualification de leads par l\'IA et réponse instantanée',
+        'Élimination totale des erreurs de saisie manuelle',
+        'Automatisation du suivi client et de la facturation',
+        'Notifications business en temps réel',
+        'ROI élevé : économisez des centaines d\'heures'
       ],
       pricing: {
         type: 'forfait',
-        startingAt: 150,
+        startingAt: 700,
         currency: '€'
       },
-      ctaText: 'Auditer mon site',
-      icon: TrendingUp,
+      ctaText: 'Automatiser mon business',
+      icon: Bot,
       popular: true
     },
     {
-      id: 'accompagnement',
-      title: 'Accompagnement Stratégique',
-      shortDesc: 'Un expert à vos côtés',
-      description: 'Conseil et accompagnement pour définir votre stratégie digitale et vos priorités.',
-      technologies: ['Stratégie', 'Conseil', 'Plan d\'action'],
+      id: 'ai-chatbot',
+      title: 'Agents IA Intelligents',
+      shortDesc: 'Un expert disponible 24h/24 qui connaît votre métier.',
+      description: 'Chatbots IA personnalisés entraînés sur vos données pour gérer vos ventes et votre support client.',
+      technologies: ['OpenAI', 'Vector DB', 'API', 'CRM Integration'],
       features: [
-        'Analyse de vos besoins',
-        'Définition priorités',
-        'Choix technologies',
-        'Plan d\'action',
-        'Suivi mensuel',
-        'Ajustements'
-      ],
-      pricing: {
-        type: 'horaire',
-        startingAt: 50,
-        currency: '€/h'
-      },
-      ctaText: 'Être accompagné',
-      icon: TrendingUp,
-      popular: false
-    },
-    {
-      id: 'formation',
-      title: 'Formation',
-      shortDesc: 'Montez en compétences',
-      description: 'Formation personnalisée pour maîtriser les outils et technologies adaptés à vos besoins.',
-      technologies: ['Programme sur mesure', 'Pratique', 'Support'],
-      features: [
-        'Programme personnalisé',
-        'Exercices pratiques',
-        'Support de cours',
-        'Suivi post-formation',
-        'Groupes réduits',
-        'Certificat'
+        'Entraîné spécifiquement sur vos documents métier',
+        'Disponible 24h/24 en plusieurs langues',
+        'Capture et qualification des prospects dans le chat',
+        'Intégration fluide avec votre CRM',
+        'Réduction des tickets de support jusqu\'à 70%',
+        'Interaction humaine respectant votre marque'
       ],
       pricing: {
         type: 'forfait',
-        startingAt: 300,
-        currency: '€/jour'
+        startingAt: 900,
+        currency: '€'
       },
-      ctaText: 'Me former',
-      icon: TrendingUp,
+      ctaText: 'Déployer mon agent IA',
+      icon: Bot,
       popular: false
     }
   ]
 };
 
-// Créer la liste de tous les services pour le filtre "Tous"
 export const allServices = [
   ...servicesByCategory.web,
   ...servicesByCategory.mobile,
-  ...servicesByCategory.design,
-  ...servicesByCategory.consulting
+  ...servicesByCategory.ecommerce,
+  ...servicesByCategory.automatisation
 ];
 
 export const categories = [
@@ -346,7 +253,7 @@ export const categories = [
     label: 'Développement Web', 
     icon: Globe,
     color: 'from-blue-500 to-cyan-500',
-    description: 'Sites internet, boutiques en ligne et applications web'
+    description: 'Sites internet, applications web et plateformes sur mesure'
   },
   { 
     id: 'mobile', 
@@ -356,27 +263,26 @@ export const categories = [
     description: 'Applications pour iOS, Android et tablettes'
   },
   { 
-    id: 'design', 
-    label: 'Design & Identité', 
-    icon: Palette,
-    color: 'from-green-500 to-emerald-500',
-    description: 'Identité visuelle, maquettes et refonte design'
+    id: 'ecommerce', 
+    label: 'E-commerce', 
+    icon: ShoppingBag,
+    color: 'from-emerald-500 to-green-500',
+    description: 'Boutiques en ligne optimisées pour la conversion'
   },
   { 
-    id: 'consulting', 
-    label: 'Conseil & Audit', 
-    icon: TrendingUp,
-    color: 'from-orange-500 to-red-500',
-    description: 'Stratégie, audit technique et accompagnement'
+    id: 'automatisation', 
+    label: 'Automatisation & IA', 
+    icon: Bot,
+    color: 'from-orange-500 to-amber-500',
+    description: 'Workflows intelligents et agents conversationnels sur mesure'
   }
 ] as const;
 
-// Ajouter le filtre "Tous" en premier
 export const filterCategories = [
   { 
     id: 'all', 
     label: 'Tous les services', 
-    icon: Grid,
+    icon: LayoutGrid,
     color: 'from-gray-500 to-gray-600',
     description: 'L\'ensemble de mes services'
   },
