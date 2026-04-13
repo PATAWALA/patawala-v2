@@ -932,7 +932,7 @@
         "id": 5,
         "title": "App Fitness",
         "description": "Application de coaching sportif avec suivi des performances",
-        "category": "Mobile",
+        "category": "Web",
         "tags": ["Next.js", "Firebase", "GraphQL"],
         "duration": "1 mois",
         "objective": "Permettre aux coachs de créer des programmes personnalisés et aux utilisateurs de suivre leurs séances et progrès.",

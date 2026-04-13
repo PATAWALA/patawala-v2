@@ -971,7 +971,7 @@
         "id": 5,
         "title": "Fitness App",
         "description": "Sports coaching app with performance tracking",
-        "category": "Mobile",
+        "category": "web",
         "tags": ["Next.js", "Firebase", "GraphQL"],
         "duration": "1 month",
         "objective": "Allow coaches to create personalized programs and users to track their sessions and progress.",
