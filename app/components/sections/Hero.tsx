@@ -5,7 +5,7 @@ import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import profileImage from '../../assets/images/horo1.png';
+import profileImage from '../../assets/images/hero1.png';
 import profile2Image from '../../assets/images/profile2.webp';
 import profile4Image from '../../assets/images/profile4.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
