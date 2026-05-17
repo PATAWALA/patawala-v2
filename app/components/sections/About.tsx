@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Lightbulb, MessagesSquare, Handshake, Sparkles, MessageSquare, Globe, Smartphone, User } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import profileImage from '../../assets/images/about1.png';
+import profileImage from '../../assets/images/about1.jpeg';
 import dynamic from 'next/dynamic';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
