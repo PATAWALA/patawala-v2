@@ -127,21 +127,21 @@
     "whoami": "Who am I?",
     "vision": {
       "cards": [
-        {
+{
     "title": "Tech Consulting & Strategy",
-    "description": "Rigorous technological choices aligned with your budget and business goals. I analyze your needs to design a clear roadmap, ensuring a smooth launch with zero technical risks or hidden costs."
+    "description": "Rigorous technological choices aligned with your business goals. I analyze your needs to design a clear roadmap, ensuring a smooth launch with zero risks or hidden costs."
   },
   {
     "title": "Long-Term Partnership",
-    "description": "A tailored, long-term fractional CTO (Chief Technology Officer) support. I don't just deliver a website: I secure your technical decisions, ensure maintenance, and scale your tools hand in hand with your business growth, from day one until your ultimate goals are achieved."
+    "description": "A tailored, long-term CTO support. I don't just deliver a product: I secure your technical decisions and scale your tools hand in hand with your business growth, from the initial vision to the complete fulfillment of your projects."
   },
   {
     "title": "Innovation & Performance",
-    "description": "Leveraging AI and modern architectures (Next.js, Supabase) to interconnect your tools, centralize your data through a CRM, and build powerful automations (n8n) that boost your sales and streamline your business workflows."
+    "description": "Leveraging modern architectures to interconnect your workflows, centralize your data streams, and build smart automations that optimize your daily business performance."
   },
   {
     "title": "Transparent Co-creation",
-    "description": "Your business vision guided by my technical expertise. We move forward in a smooth and transparent collaboration, step by step, to build robust, secure tools perfectly adapted to your market realities."
+    "description": "Your business vision guided by my technical expertise. We move forward in a smooth and transparent collaboration to build robust, secure digital solutions adapted to your reality."
   }
       ]
     },

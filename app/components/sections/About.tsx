@@ -85,10 +85,8 @@ const AboutSection = memo(function AboutSection() {
     if (!isReady) return;
     
     try {
-      // Récupérer directement l'objet vision
       const visionData = t('vision', 'about');
       
-      // Vérifier que c'est un objet avec des cartes
       if (visionData && 
           typeof visionData === 'object' && 
           visionData !== null && 
@@ -96,7 +94,6 @@ const AboutSection = memo(function AboutSection() {
           Array.isArray(visionData.cards) && 
           visionData.cards.length > 0) {
         
-        // Filtrer les cartes valides
         const validCards = visionData.cards.filter((card: any) => 
           card && 
           typeof card === 'object' &&
@@ -109,16 +106,13 @@ const AboutSection = memo(function AboutSection() {
         if (validCards.length > 0) {
           setVisionCards(validCards);
         } else {
-          // Fallback selon la langue
           setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
         }
       } else {
-        // Fallback selon la langue
         setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
       }
     } catch (error) {
       console.error('Erreur lors du chargement des cartes:', error);
-      // Fallback selon la langue
       setVisionCards(language === 'fr' ? DEFAULT_VISION_CARDS : DEFAULT_VISION_CARDS_EN);
     }
   }, [t, language, isReady]);
@@ -131,12 +125,10 @@ const AboutSection = memo(function AboutSection() {
   }, []);
 
   const handleParlerProjet = useCallback(() => {
-    // Naviguer vers la section contact
     scrollToSection('contact');
   }, [scrollToSection]);
 
   const handleVoirProjets = useCallback(() => {
-    // Naviguer vers la section projets
     scrollToSection('projets');
   }, [scrollToSection]);
 
@@ -145,40 +137,39 @@ const AboutSection = memo(function AboutSection() {
   }, []);
 
   // Animation variants pour Framer Motion
-  const fadeInUp : any = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
-  }
-};
-
-// Correction pour staggerContainer
-const staggerContainer : any  = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2
+  const fadeInUp: any = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }
     }
-  }
-};
+  };
+
+  const staggerContainer: any = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
 
   const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 0.5 } 
-  },
-  hover: { 
-    y: -5, 
-    boxShadow: '0 10px 30px -10px rgba(59,130,246,0.3)',
-    transition: { duration: 0.2 }
-  }
-};
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.5 } 
+    },
+    hover: { 
+      y: -5, 
+      boxShadow: '0 10px 30px -10px rgba(59,130,246,0.3)',
+      transition: { duration: 0.2 }
+    }
+  };
 
   // SKELETON LOADER
   if (isLoading || !isReady) {
@@ -345,17 +336,23 @@ const staggerContainer : any  = {
                 return (
                   <motion.div
                     key={index}
-                    className="bg-[#141B2B] rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative"
+                    className="bg-[#141B2B] rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative overflow-hidden"
                     role="article"
                     aria-labelledby={`vision-title-${index}`}
                     variants={cardVariants}
                     whileHover="hover"
                   >
+                    {/* Nombre en fond, grand et centré */}
+                    <span
+                      className="absolute inset-0 flex items-center justify-center text-7xl md:text-8xl font-black text-blue-500/20 select-none pointer-events-none z-0"
+                      aria-hidden="true"
+                    >
+                      {`0${index + 1}`}
+                    </span>
+
+                    {/* Contenu au-dessus */}
                     <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-5">
-                        <span className="text-4xl md:text-4xl font-black text-blue-400/80 tracking-tighter">
-                          {`0${index + 1}`}
-                        </span>
+                      <div className="flex justify-end mb-5">
                         <Icon className="w-7 h-7 md:w-7 md:h-7 text-blue-400/70" aria-hidden="true" />
                       </div>
 

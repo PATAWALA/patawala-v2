@@ -128,21 +128,21 @@
     "whoami": "Qui suis-je ?",
     "vision": {
       "cards": [
-        {
+{
     "title": "Conseil Tech & Stratégie",
-    "description": "Des choix technologiques rigoureux alignés sur votre budget et vos objectifs business. J'analyse vos besoins pour concevoir une feuille de route claire, garantissant un lancement fluide, sans risques techniques ni coûts cachés."
+    "description": "Des choix technologiques rigoureux alignés sur vos objectifs business. J'analyse vos besoins pour concevoir une feuille de route claire, garantissant un lancement fluide, sans risques ni coûts cachés."
   },
   {
     "title": "Partenariat Long Terme",
-    "description": "Un accompagnement CTO (Directeur Technique) sur-mesure et durable. Je ne me contente pas de livrer un site : je sécurise vos choix techniques, j'assure la maintenance et je fais évoluer vos outils main dans la main avec votre croissance, du premier jour jusqu'à l'atteinte de vos plus grandes ambitions."
+    "description": "Un accompagnement CTO sur-mesure et durable. Je ne me contente pas de livrer un produit : je sécurise vos choix techniques et fais évoluer vos outils main dans la main avec votre croissance, de la vision de départ jusqu'à l'accomplissement total de vos projets."
   },
   {
     "title": "Innovation & Performance",
-    "description": "L'intégration de l'IA et des architectures modernes (Next.js, Supabase) pour interconnecter vos outils, centraliser vos données à travers un CRM et concevoir des automatisations puissantes (n8n) qui boostent vos ventes et optimisent vos processus."
+    "description": "L'intégration des architectures modernes pour interconnecter vos outils de travail, centraliser vos flux d'information et concevoir des automatisations intelligentes qui optimisent vos performances au quotidien."
   },
   {
     "title": "Co-création Transparente",
-    "description": "Votre vision métier guidée par mon expertise technique. Nous avançons dans une collaboration fluide et transparente, étape par étape, pour donner vie à des outils robustes, sécurisés et parfaitement adaptés aux réalités de votre marché."
+    "description": "Votre vision métier guidée par mon expertise technique. Nous avançons dans une collaboration fluide et transparente pour donner vie à des solutions numériques robustes, sécurisées et adaptées à vos réalités."
   }
       ]
     },
