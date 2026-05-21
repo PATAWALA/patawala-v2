@@ -10,11 +10,21 @@ import {
   Truck 
 } from 'lucide-react';
 
+// Import des images (format .webp ou .jpg selon tes fichiers)
+import agExpertImage from '../../assets/images/projects/ag-expert.jpg';
+import phenixImage from '../../assets/images/projects/phenix.jpg';
+import biancaImage from '../../assets/images/projects/bianca.jpg';
+import longrichImage from '../../assets/images/projects/longrich.jpg';
+import eliteImage from '../../assets/images/projects/elite.jpg';
+import chinaCodeImage from '../../assets/images/projects/china-code.jpg';
+import cordierImage from '../../assets/images/projects/cordier.jpg';
+import socotraImage from '../../assets/images/projects/socotra.jpg'; // placeholder
+
 export interface Project {
   id: number;
   title: string;
   description: string;
-  image: any;
+  image: any;           // l'image importée (objet)
   tags: string[];
   icon: any;
   category: string;
@@ -34,7 +44,7 @@ export const projets: Project[] = [
     id: 1,
     title: 'AG EXPERT Consulting',
     description: 'Agence de consulting multisectorielle basée en Côte d\'Ivoire — 10 domaines d\'expertise, génération de leads et crédibilité en ligne.',
-    image: '/images/projects/ag-expert.jpg',
+    image: agExpertImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Building2,
     category: 'Site Vitrine',
@@ -57,7 +67,7 @@ export const projets: Project[] = [
     id: 2,
     title: 'PHÉNIX GROUP & JF DÉCOR',
     description: 'Entreprise de construction, aménagement et paysagisme d\'exception en Côte d\'Ivoire.',
-    image: '/images/projects/phenix.jpg',
+    image: phenixImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Paintbrush,
     category: 'Site Vitrine',
@@ -80,7 +90,7 @@ export const projets: Project[] = [
     id: 3,
     title: 'Bianca Roan — Courtage Immobilier',
     description: 'Site personnel d’une courtière immobilière au Canada, alliant crédibilité, conseils et génération de leads.',
-    image: '/images/projects/bianca.jpg',
+    image: biancaImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Home,
     category: 'Site Vitrine',
@@ -103,7 +113,7 @@ export const projets: Project[] = [
     id: 4,
     title: 'La Maison Longrich',
     description: 'Plateforme de vente et de recrutement pour un partenaire Longrich, accélérant les ventes et les affiliations.',
-    image: '/images/projects/longrich.jpg',
+    image: longrichImage,
     tags: ['WordPress', 'Elementor', 'WooCommerce'],
     icon: ShoppingBag,
     category: 'Site E-commerce',
@@ -126,7 +136,7 @@ export const projets: Project[] = [
     id: 5,
     title: 'Elite Auto & Goods',
     description: 'Plateforme de vente de véhicules et biens divers basée à Dubaï, conçue pour élargir la clientèle et booster les ventes.',
-    image: '/images/projects/elite.jpg',
+    image: eliteImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Car,
     category: 'Site Vitrine',
@@ -149,7 +159,7 @@ export const projets: Project[] = [
     id: 6,
     title: 'Miss Amani — CHINA CODE',
     description: 'Page de capture pour une masterclass gratuite sur l’importation depuis la Chine, générant des leads qualifiés pour l’entrepreneure.',
-    image: '/images/projects/china-code.jpg',
+    image: chinaCodeImage,
     tags: ['Systeme.io', 'Marketing', 'Landing Page'],
     icon: GraduationCap,
     category: 'Landing Page',
@@ -172,7 +182,7 @@ export const projets: Project[] = [
     id: 7,
     title: 'Cordier Jardins',
     description: 'Site vitrine pour deux paysagistes belges, visant à générer des devis partout en Belgique avec une crédibilité maximale.',
-    image: '/images/projects/cordier.jpg',
+    image: cordierImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Flower,
     category: 'Site Vitrine',
@@ -195,7 +205,7 @@ export const projets: Project[] = [
     id: 8,
     title: 'SOCOTRA — Transport & Logistique',
     description: 'Site vitrine en cours de conception pour le leader ivoirien du transport routier ouest-africain.',
-    image: '/images/projects/socotra.jpg',
+    image: socotraImage,
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Truck,
     category: 'Site Vitrine',
