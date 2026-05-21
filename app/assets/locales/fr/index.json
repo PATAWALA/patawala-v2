@@ -1128,36 +1128,36 @@
   },
 
   "realisations": {
-    "badge": "Réalisations",
-    "title": "Projets",
-    "titleHighlight": "accompagnés",
-    "subtitle": "Une sélection de sites web et applications conçus pour répondre à des besoins variés, du MVP au projet d'envergure.",
-    "card": {
-      "learnMore": "En savoir plus",
-      "tags": {
-        "more": "+{{count}}"
-      }
-    },
-    "buttons": {
-      "viewAll": "Voir tous les projets",
-      "backToHome": "Retour à l'accueil",
-      "discuss": "Parler de mon projet"
-    },
-    "footer": {
-      "note": "* Chaque projet est unique et a fait l'objet d'une collaboration étroite avec le client"
-    },
-    "altImage": "Image du projet {{title}}",
-    "stats": {
-      "projects": "Projets livrés",
-      "rating": "Note moyenne"
-    },
-    "categories": {
-      "ecommerce": "E-commerce",
-      "mobile": "Mobile",
-      "saas": "SaaS",
-      "web": "Web"
+  "badge": "Réalisations",
+  "title": "Projets",
+  "titleHighlight": "accompagnés",
+  "subtitle": "Une sélection de sites web et applications conçus pour répondre à des besoins variés, du MVP au projet d'envergure.",
+  "card": {
+    "viewProject": "Voir le projet",
+    "tags": {
+      "more": "+{{count}}"
     }
   },
+  "buttons": {
+    "viewAll": "Voir tous les projets",
+    "backToHome": "Retour à l'accueil",
+    "discuss": "Parler de mon projet"
+  },
+  "footer": {
+    "note": "* Chaque projet est unique et a fait l'objet d'une collaboration étroite avec le client"
+  },
+  "altImage": "Image du projet {{title}}",
+  "stats": {
+    "projects": "Projets livrés",
+    "rating": "Note moyenne"
+  },
+  "categories": {
+    "ecommerce": "E-commerce",
+    "mobile": "Mobile",
+    "saas": "SaaS",
+    "web": "Web"
+  }
+},
 
   "footer": {
     "role": "Développeur Full-Stack",

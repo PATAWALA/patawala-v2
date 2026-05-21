@@ -1169,36 +1169,36 @@
   },
 
   "realisations": {
-    "badge": "Achievements",
-    "title": "Projects",
-    "titleHighlight": "supported",
-    "subtitle": "A selection of websites and applications designed to meet various needs, from MVP to large-scale projects.",
-    "card": {
-      "learnMore": "Learn more",
-      "tags": {
-        "more": "+{{count}}"
-      }
-    },
-    "buttons": {
-      "viewAll": "See all projects",
-      "backToHome": "Back to home",
-      "discuss": "Discuss my project"
-    },
-    "footer": {
-      "note": "* Each project is unique and involved close collaboration with the client"
-    },
-    "altImage": "Project image {{title}}",
-    "stats": {
-      "projects": "Projects delivered",
-      "rating": "Average rating"
-    },
-    "categories": {
-      "ecommerce": "E-commerce",
-      "mobile": "Mobile",
-      "saas": "SaaS",
-      "web": "Web"
+  "badge": "Works",
+  "title": "Projects",
+  "titleHighlight": "I've accompanied",
+  "subtitle": "A selection of websites and applications designed for varied needs, from MVP to large-scale projects.",
+  "card": {
+    "viewProject": "View Project",
+    "tags": {
+      "more": "+{{count}}"
     }
   },
+  "buttons": {
+    "viewAll": "View All Projects",
+    "backToHome": "Back to Home",
+    "discuss": "Discuss My Project"
+  },
+  "footer": {
+    "note": "* Each project is unique and the result of close collaboration with the client"
+  },
+  "altImage": "Project image {{title}}",
+  "stats": {
+    "projects": "Projects delivered",
+    "rating": "Average rating"
+  },
+  "categories": {
+    "ecommerce": "E-commerce",
+    "mobile": "Mobile",
+    "saas": "SaaS",
+    "web": "Web"
+  }
+},
 
   "footer": {
     "role": "Full-Stack Developer",

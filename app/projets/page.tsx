@@ -86,7 +86,7 @@ const ProjetsPage = memo(function ProjetsPage() {
     hover: { y: -5, boxShadow: '0 20px 25px -5px rgba(59,130,246,0.2), 0 10px 10px -5px rgba(6,182,212,0.1)' }
   };
 
-  // SKELETON LOADER (inchangé)
+  // SKELETON LOADER
   if (isLoading || !isReady) {
     return (
       <main className="min-h-screen pt-24 pb-20 bg-[#0A0F1C] relative overflow-hidden">
@@ -209,7 +209,8 @@ const ProjetsPage = memo(function ProjetsPage() {
             const Icon = projet.icon;
             const showImage = hasValidImage(projet.image);
             const translatedProjet = getTranslatedProject(projet);
-            const isInProgress = !showImage;
+            // Seul SOCOTRA (status "En cours") affichera le badge
+            const isInProgress = projet.status === 'En cours';
             const hasExternalLink = projet.lien && projet.lien !== '#';
 
             return (
