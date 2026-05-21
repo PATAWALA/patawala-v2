@@ -129,21 +129,21 @@
     "vision": {
       "cards": [
         {
-          "title": "Conseil Tech & Stratégie",
-          "description": "Des choix technologiques adaptés à votre budget et vos objectifs, pour un lancement sans risque ni coûts cachés."
-        },
-        {
-          "title": "Partenariat Long Terme",
-          "description": "Un accompagnement CTO sur-mesure : je sécurise vos choix techniques et fais évoluer vos outils avec votre croissance."
-        },
-        {
-          "title": "Innovation & Performance",
-          "description": "L'IA et les architectures modernes pour automatiser vos processus, booster vos ventes et vous démarquer."
-        },
-        {
-          "title": "Co-création Transparente",
-          "description": "Votre vision guidée par mon expertise : une collaboration fluide pour des outils robustes et durables."
-        }
+    "title": "Conseil Tech & Stratégie",
+    "description": "Des choix technologiques rigoureux alignés sur votre budget et vos objectifs business. J'analyse vos besoins pour concevoir une feuille de route claire, garantissant un lancement fluide, sans risques techniques ni coûts cachés."
+  },
+  {
+    "title": "Partenariat Long Terme",
+    "description": "Un accompagnement CTO (Directeur Technique) sur-mesure et durable. Je ne me contente pas de livrer un site : je sécurise vos choix techniques, j'assure la maintenance et je fais évoluer vos outils main dans la main avec votre croissance, du premier jour jusqu'à l'atteinte de vos plus grandes ambitions."
+  },
+  {
+    "title": "Innovation & Performance",
+    "description": "L'intégration de l'IA et des architectures modernes (Next.js, Supabase) pour interconnecter vos outils, centraliser vos données à travers un CRM et concevoir des automatisations puissantes (n8n) qui boostent vos ventes et optimisent vos processus."
+  },
+  {
+    "title": "Co-création Transparente",
+    "description": "Votre vision métier guidée par mon expertise technique. Nous avançons dans une collaboration fluide et transparente, étape par étape, pour donner vie à des outils robustes, sécurisés et parfaitement adaptés aux réalités de votre marché."
+  }
       ]
     },
     "profile": {

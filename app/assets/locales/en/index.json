@@ -128,21 +128,21 @@
     "vision": {
       "cards": [
         {
-          "title": "Tech Consulting & Strategy",
-          "description": "Technology choices tailored to your budget and goals, ensuring a risk-free launch with no hidden costs."
-        },
-        {
-          "title": "Long-term Partnership",
-          "description": "Custom CTO support: I secure your technical choices and scale your tools alongside your growth."
-        },
-        {
-          "title": "Innovation & Performance",
-          "description": "AI and modern architectures to automate your processes, boost your sales, and stand out."
-        },
-        {
-          "title": "Transparent Co-creation",
-          "description": "Your vision guided by my expertise: a fluid collaboration for robust and sustainable tools."
-        }
+    "title": "Tech Consulting & Strategy",
+    "description": "Rigorous technological choices aligned with your budget and business goals. I analyze your needs to design a clear roadmap, ensuring a smooth launch with zero technical risks or hidden costs."
+  },
+  {
+    "title": "Long-Term Partnership",
+    "description": "A tailored, long-term fractional CTO (Chief Technology Officer) support. I don't just deliver a website: I secure your technical decisions, ensure maintenance, and scale your tools hand in hand with your business growth, from day one until your ultimate goals are achieved."
+  },
+  {
+    "title": "Innovation & Performance",
+    "description": "Leveraging AI and modern architectures (Next.js, Supabase) to interconnect your tools, centralize your data through a CRM, and build powerful automations (n8n) that boost your sales and streamline your business workflows."
+  },
+  {
+    "title": "Transparent Co-creation",
+    "description": "Your business vision guided by my technical expertise. We move forward in a smooth and transparent collaboration, step by step, to build robust, secure tools perfectly adapted to your market realities."
+  }
       ]
     },
     "profile": {
