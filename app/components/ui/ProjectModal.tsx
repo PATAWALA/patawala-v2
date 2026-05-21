@@ -1,6 +1,6 @@
 'use client';
 
-import { X, CheckCircle, ArrowRight, Target, Lightbulb, Sparkles } from 'lucide-react';
+import { X, CheckCircle, ArrowRight, Target, Lightbulb, Sparkles, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 import { Project } from '@/app/projets/data/projets';
 import { useState, useEffect } from 'react';
@@ -12,7 +12,6 @@ interface ProjectModalProps {
   onClose: () => void;
 }
 
-// Interface pour les données de projet traduites
 interface TranslatedProject {
   id: number;
   title: string;
@@ -32,20 +31,14 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   const [translatedProject, setTranslatedProject] = useState<TranslatedProject | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  // Attendre que les traductions soient chargées
   useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
+    if (!isLoading) setIsReady(true);
   }, [isLoading]);
 
-  // Charger les données traduites du projet
   useEffect(() => {
     if (project && isReady) {
       try {
-        // Récupérer les projets depuis projetsData.projects
         const projectsData = t('projects', 'projetsData');
-        
         if (Array.isArray(projectsData) && projectsData.length > 0) {
           const foundProject = projectsData.find((p: any) => p.id === project.id);
           if (foundProject) {
@@ -53,7 +46,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             return;
           }
         }
-        
         // Fallback vers les données originales
         setTranslatedProject({
           id: project.id,
@@ -68,8 +60,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
           solution: project.solution || '',
           features: project.fonctionnalites || []
         });
-      } catch (error) {
-        console.error('Erreur chargement projet traduit:', error);
+      } catch {
         setTranslatedProject({
           id: project.id,
           title: project.title,
@@ -87,7 +78,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     }
   }, [project, t, language, isReady]);
 
-  // TRADUCTIONS SIMPLES
+  // Traductions simples
   const translations = {
     category: t('category', 'projectModal') || 'Catégorie',
     close: t('close', 'projectModal') || 'Fermer',
@@ -96,9 +87,9 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
     sectionsSolution: t('sections.solution', 'projectModal') || 'Solution apportée',
     sectionsFeatures: t('sections.features', 'projectModal') || 'Fonctionnalités clés',
     buttonsDiscuss: t('buttons.discuss', 'projectModal') || 'Discuter d\'un projet similaire',
+    buttonsVisitSite: t('buttons.visitSite', 'projectModal') || 'Visiter le site',
   };
 
-  // Bloquer le défilement du body quand le modal est ouvert
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -112,7 +103,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
   if (!project || !translatedProject || !isReady) return null;
 
-  // Fonction pour vérifier si l'image est valide
   const hasValidImage = (image: any): boolean => {
     if (!image) return false;
     if (typeof image === 'object') return true;
@@ -121,17 +111,15 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
   };
 
   const showImage = hasValidImage(project.image);
+  const hasExternalLink = project.lien && project.lien !== '#';
 
-  // Redirection vers la section contact
   const handleContactRedirect = () => {
-    onClose(); // Ferme le modal
-    // Petit délai pour laisser l'animation de fermeture se terminer
+    onClose();
     setTimeout(() => {
       const contactSection = document.getElementById('contact');
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: 'smooth' });
       } else {
-        // Fallback : rediriger vers la page d'accueil avec l'ancre
         window.location.href = '/#contact';
       }
     }, 300);
@@ -167,12 +155,10 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             </div>
           )}
 
-          {/* Badge catégorie */}
           <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-white border border-white/20">
             {translations.category} : {translatedProject.category}
           </div>
 
-          {/* Bouton fermer */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors border border-white/20 z-10"
@@ -184,7 +170,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
         {/* Contenu */}
         <div className="p-6 sm:p-8">
-          {/* Titre et description */}
           <div className="mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               {translatedProject.title}
@@ -194,7 +179,6 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             </p>
           </div>
 
-          {/* Tags */}
           <div className="flex flex-wrap gap-2 mb-8">
             {translatedProject.tags.map((tag) => (
               <span
@@ -206,9 +190,7 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             ))}
           </div>
 
-          {/* Grille d'informations */}
           <div className="space-y-6">
-            {/* Objectif */}
             {translatedProject.objective && (
               <div className="bg-[#141B2B] rounded-xl p-5 border border-[#1F2937] hover:border-blue-500/30 transition-colors group animate-slideIn" style={{ animationDelay: '0.1s' }}>
                 <div className="flex items-start gap-3">
@@ -216,18 +198,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                     <Target size={18} className="text-blue-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {translations.sectionsObjective}
-                    </h3>
-                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                      {translatedProject.objective}
-                    </p>
+                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{translations.sectionsObjective}</h3>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{translatedProject.objective}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Challenge */}
             {translatedProject.challenge && (
               <div className="bg-[#141B2B] rounded-xl p-5 border border-[#1F2937] hover:border-amber-500/30 transition-colors group animate-slideIn" style={{ animationDelay: '0.2s' }}>
                 <div className="flex items-start gap-3">
@@ -235,18 +212,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                     <Lightbulb size={18} className="text-amber-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {translations.sectionsChallenge}
-                    </h3>
-                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                      {translatedProject.challenge}
-                    </p>
+                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{translations.sectionsChallenge}</h3>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{translatedProject.challenge}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Solution */}
             {translatedProject.solution && (
               <div className="bg-[#141B2B] rounded-xl p-5 border border-[#1F2937] hover:border-green-500/30 transition-colors group animate-slideIn" style={{ animationDelay: '0.3s' }}>
                 <div className="flex items-start gap-3">
@@ -254,18 +226,13 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
                     <CheckCircle size={18} className="text-green-400" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
-                      {translations.sectionsSolution}
-                    </h3>
-                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                      {translatedProject.solution}
-                    </p>
+                    <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{translations.sectionsSolution}</h3>
+                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">{translatedProject.solution}</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Fonctionnalités */}
             {translatedProject.features && translatedProject.features.length > 0 && (
               <div className="bg-[#141B2B] rounded-xl p-5 border border-[#1F2937] animate-slideIn" style={{ animationDelay: '0.4s' }}>
                 <h3 className="text-base sm:text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -284,11 +251,23 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
             )}
           </div>
 
-          {/* Bouton de contact */}
-          <div className="flex justify-center mt-8 pt-6 border-t border-[#1F2937]">
+          {/* Boutons d'action */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8 pt-6 border-t border-[#1F2937]">
+            {hasExternalLink && (
+              <a
+                href={project.lien}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/20"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span>{translations.buttonsVisitSite}</span>
+                <ExternalLink size={18} />
+              </a>
+            )}
             <button
               onClick={handleContactRedirect}
-              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 sm:px-6 sm:py-3 rounded-xl font-semibold flex items-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] group"
+              className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all shadow-lg shadow-blue-500/20 active:scale-[0.98] group"
               aria-label={translations.buttonsDiscuss}
             >
               <span>{translations.buttonsDiscuss}</span>
@@ -300,44 +279,19 @@ export default function ProjectModal({ project, isOpen, onClose }: ProjectModalP
 
       <style jsx>{`
         @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
-        
         @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.9) translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-          }
+          from { opacity: 0; transform: scale(0.9) translateY(20px); }
+          to { opacity: 1; transform: scale(1) translateY(0); }
         }
-        
         @keyframes slideIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        
-        .animate-fadeIn {
-          animation: fadeIn 0.2s ease-out;
-        }
-        
-        .animate-scaleIn {
-          animation: scaleIn 0.3s ease-out;
-        }
-        
+        .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
+        .animate-scaleIn { animation: scaleIn 0.3s ease-out; }
         .animate-slideIn {
           opacity: 0;
           animation: slideIn 0.3s ease-out forwards;

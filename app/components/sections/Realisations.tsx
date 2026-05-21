@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, ExternalLink, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
@@ -68,7 +68,7 @@ export default function RealisationsSection() {
     return !!image && typeof image !== 'string';
   }, []);
 
-  // Variants pour Framer Motion (avec any pour éviter les erreurs TS)
+  // Variants Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
@@ -129,7 +129,7 @@ export default function RealisationsSection() {
   return (
     <>
       <section id="projets" className="py-20 md:py-28 bg-[#0A0F1C] relative overflow-hidden">
-        {/* FOND */}
+        {/* FOND (inchangé) */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
           <div
             className="absolute inset-0 opacity-50"
@@ -221,6 +221,7 @@ export default function RealisationsSection() {
               const Icon = projet.icon;
               const showImage = hasValidImage(projet.image);
               const translated = getTranslatedProject(projet);
+              const hasExternalLink = projet.lien && projet.lien !== '#';
 
               return (
                 <motion.div
@@ -285,10 +286,24 @@ export default function RealisationsSection() {
                     </div>
 
                     <div className="flex justify-center w-full mt-auto pt-4">
-                      <span className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm tracking-tight">
-                        {t('card.learnMore', 'realisations')}
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                      </span>
+                      {hasExternalLink ? (
+                        <a
+                          href={projet.lien}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-colors hover:from-blue-600 hover:to-cyan-600"
+                          aria-label={`Voir le projet ${translated.title}`}
+                        >
+                          {t('card.viewProject', 'realisations')}
+                          <ExternalLink size={14} />
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm tracking-tight">
+                          {t('card.viewProject', 'realisations')}
+                          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      )}
                     </div>
                   </div>
                 </motion.div>

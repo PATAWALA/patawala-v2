@@ -805,13 +805,13 @@
     }
   },
 
-  "projetsPage": {
+   "projetsPage": {
     "badge": "Projets",
     "title": "Quelques projets",
     "titleHighlight": "que j'ai accompagnés",
     "subtitle": "Une sélection de sites et applications conçus pour répondre à des besoins spécifiques.",
     "card": {
-      "learnMore": "En savoir plus",
+      "viewProject": "Voir le projet",
       "tags": {
         "more": "+{{count}}"
       }
@@ -829,14 +829,13 @@
     },
     "altImage": "Image du projet {{title}}"
   },
-
   "projetsData": {
     "badge": "Réalisations",
     "title": "Projets",
     "titleHighlight": "accompagnés",
     "subtitle": "Une sélection de sites web et applications conçus pour répondre à des besoins variés, du MVP au projet d'envergure.",
     "card": {
-      "learnMore": "En savoir plus",
+      "viewProject": "Voir le projet",
       "tags": {
         "more": "+{{count}}"
       }
@@ -850,201 +849,169 @@
     },
     "altImage": "Image du projet {{title}}",
     "projects": [
-
-
       {
         "id": 1,
-        "title": "E-commerce Mode Africaine",
-        "description": "Plateforme de vente en ligne pour créateurs africains avec paiements locaux",
-        "category": "E-commerce",
-        "tags": ["Next.js", "Stripe", "Tailwind"],
-        "duration": "3 mois",
-        "objective": "Créer une plateforme e-commerce qui permet aux créateurs africains de vendre leurs produits à l'international tout en proposant des moyens de paiement locaux (Mobile Money, Orange Money, etc.).",
-        "challenge": "Intégrer plusieurs passerelles de paiement locales tout en maintenant une expérience utilisateur fluide et sécurisée.",
-        "solution": "Développement d'une solution sur mesure avec Next.js pour le frontend et intégration de multiples passerelles de paiement adaptées au marché africain. Interface intuitive pour les créateurs et expérience d'achat fluide pour les clients.",
+        "title": "AG EXPERT Consulting",
+        "description": "Agence de consulting multisectorielle en Côte d'Ivoire — 10 domaines d'expertise, génération de leads et crédibilité.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "3 semaines",
+        "lien": "https://ag-expert.vercel.app/",
+        "objective": "Offrir une présence digitale à la hauteur de l'agence, attirer PME et grands comptes, présenter clairement 10 domaines d'intervention et transformer les visiteurs en leads qualifiés.",
+        "challenge": "Structurer une offre large sans perdre le visiteur, tout en renvoyant une image de confiance et de résultats mesurables.",
+        "solution": "Site rapide Next.js avec navigation claire, fiches expertise percutantes, chiffres clés et bouton d'appel à l'action omniprésent. Le design épuré et les performances renforcent la crédibilité.",
         "features": [
-          "Catalogue produits avec filtres avancés",
-          "Panier d'achat persistant",
-          "Paiements multiples (carte, Mobile Money)",
-          "Dashboard vendeur avec statistiques",
-          "Gestion des commandes et livraisons",
-          "Espace client avec historique"
+          "Présentation des 10 expertises avec résultats attendus",
+          "Bouton 'Parler à un expert' sur chaque page",
+          "Chiffres clés (satisfaction, clients)",
+          "Formulaire de contact optimisé pour la conversion",
+          "Navigation simplifiée et responsive",
+          "Temps de chargement < 2 secondes"
         ]
       },
       {
         "id": 2,
-        "title": "Application Livraison",
-        "description": "App de livraison de repas avec suivi en temps réel",
-        "category": "Mobile",
-        "tags": ["React Native", "Node.js", "MongoDB"],
-        "duration": "4 mois",
-        "objective": "Développer une application mobile de livraison de repas permettant aux utilisateurs de commander dans les restaurants locaux et de suivre leur commande en temps réel.",
-        "challenge": "Optimiser le suivi en temps réel des livreurs tout en préservant l'autonomie de la batterie.",
-        "solution": "Application cross-platform avec React Native, API REST avec Node.js et base de données MongoDB. Intégration de cartographie pour le suivi des livreurs et système de notifications push.",
+        "title": "PHÉNIX GROUP & JF DÉCOR",
+        "description": "Construction, aménagement et paysagisme d'exception en Côte d'Ivoire.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "3 semaines",
+        "lien": "https://ph-nix-group.vercel.app/",
+        "objective": "Offrir une vitrine haut de gamme reflétant le savoir-faire architectural et paysager, générer des demandes de devis qualifiées et rassurer une clientèle exigeante.",
+        "challenge": "Montrer des réalisations spectaculaires tout en maintenant un site très rapide et en guidant l'utilisateur vers la demande de devis.",
+        "solution": "Site immersif avec grandes visuelles, sections détaillant les trois piliers (construction, aménagement, paysagisme artistique) et un parcours fluide vers le devis gratuit.",
         "features": [
-          "Géolocalisation des restaurants",
-          "Passation de commandes",
-          "Suivi en temps réel du livreur",
-          "Paiement en ligne",
-          "Système de notation",
-          "Notifications push"
+          "Galerie de réalisations filtrante",
+          "Demande de devis en 2 clics",
+          "Présentation détaillée des 3 piliers",
+          "Chiffres de confiance (150+ projets, 25 ans)",
+          "Design premium adapté au luxe",
+          "Formulaire de contact simple"
         ]
       },
       {
         "id": 3,
-        "title": "Dashboard Gestion PME",
-        "description": "Outil de gestion complet pour PME (factures, stocks, clients)",
-        "category": "SaaS",
-        "tags": ["Vue.js", "Laravel", "MySQL"],
-        "duration": "5 mois",
-        "objective": "Centraliser la gestion des opérations quotidiennes (facturation, stocks, relation client) dans une interface unique et intuitive.",
-        "challenge": "Créer une interface simple mais puissante capable de gérer des données complexes en temps réel.",
-        "solution": "Application web progressive avec Vue.js pour l'interface utilisateur et Laravel pour l'API backend. Base de données MySQL optimisée pour les requêtes complexes de reporting.",
+        "title": "Bianca Roan — Courtage Immobilier",
+        "description": "Site personnel d'une courtière immobilière au Canada, alliant crédibilité, conseils et génération de leads.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "2 semaines",
+        "lien": "https://bianca-roan.vercel.app/",
+        "objective": "Centraliser toute l'information sur Bianca pour convaincre vendeurs et acheteurs, et maximiser les prises de rendez-vous qualifiés.",
+        "challenge": "Rendre accessible un parcours très riche sans alourdir la navigation, et convertir le visiteur en prospect.",
+        "solution": "Site épuré avec sections claires : philosophie, diplômes, formation continue, propriétés et bouton 'Parler à Bianca'. Transparence et expertise mises en avant.",
         "features": [
-          "Gestion des factures et devis",
-          "Suivi des stocks en temps réel",
-          "CRM intégré",
-          "Tableaux de bord personnalisables",
-          "Export de rapports",
-          "Gestion multi-utilisateurs"
+          "Présentation chronologique de la formation continue",
+          "Affichage des distinctions et accréditations",
+          "Bouton 'Parler à Bianca' permanent",
+          "Liste des biens à vendre avec visuels",
+          "Design sobre et professionnel",
+          "Optimisé pour la conversion en rendez-vous"
         ]
       },
       {
         "id": 4,
-        "title": "Site Vitrine Immobilier",
-        "description": "Site pour agence immobilière avec visites virtuelles",
-        "category": "Web",
-        "tags": ["WordPress", "Elementor", "Maps API"],
-        "duration": "2 mois",
-        "objective": "Créer un site vitrine moderne pour présenter les biens immobiliers avec intégration de visites virtuelles et formulaire de contact.",
-        "challenge": "Intégrer des visites virtuelles 360° sans compromettre les performances du site.",
-        "solution": "Site WordPress avec Elementor pour une interface visuelle attrayante. Intégration de l'API Google Maps pour la localisation des biens et plugin de visites virtuelles.",
+        "title": "La Maison Longrich",
+        "description": "Plateforme de vente et de recrutement pour un partenaire Longrich, accélérant les ventes et les affiliations.",
+        "category": "Site E-commerce",
+        "tags": ["WordPress", "Elementor", "WooCommerce"],
+        "duration": "2 semaines",
+        "lien": "https://lamaisonlongrich.com/",
+        "objective": "Présenter les produits Longrich, expliquer le fonctionnement de la multinationale et inciter les visiteurs à devenir partenaires via un tunnel clair.",
+        "challenge": "Structurer l'information pour à la fois vendre des produits et recruter de nouveaux distributeurs, avec une solution simple à maintenir.",
+        "solution": "Site WordPress avec WooCommerce, pages explicatives sur la société et les avantages partenaires, boutons d'action pour s'inscrire au réseau.",
         "features": [
-          "Catalogue de biens avec filtres",
-          "Visites virtuelles 360°",
-          "Formulaire de contact",
-          "Localisation sur carte",
-          "Blog immobilier",
-          "Espace agent"
+          "Boutique en ligne avec catalogue produits",
+          "Page 'Devenir partenaire' avec formulaire",
+          "Explication du plan de rémunération",
+          "Témoignages et preuves sociales",
+          "Facilité de mise à jour par le client",
+          "Tunnel de conversion optimisé"
         ]
       },
       {
         "id": 5,
-        "title": "App Fitness",
-        "description": "Application de coaching sportif avec suivi des performances",
-        "category": "Web",
-        "tags": ["Next.js", "Firebase", "GraphQL"],
-        "duration": "1 mois",
-        "objective": "Permettre aux coachs de créer des programmes personnalisés et aux utilisateurs de suivre leurs séances et progrès.",
-        "challenge": "Créer une expérience fluide hors-ligne avec synchronisation automatique.",
-        "solution": "Application web, Firebase pour l'authentification et les données en temps réel, GraphQL pour les requêtes optimisées.",
+        "title": "Elite Auto & Goods",
+        "description": "Plateforme de vente de véhicules et biens divers basée à Dubaï, conçue pour élargir la clientèle et booster les ventes.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "2 semaines",
+        "lien": "https://elite-eta-three.vercel.app/",
+        "objective": "Rendre le catalogue accessible 24h/24, avec des prix attractifs et un processus de commande simplifié pour augmenter le chiffre d'affaires.",
+        "challenge": "Présenter un inventaire varié de manière claire et inciter au contact sans intermédiaire lourd.",
+        "solution": "Site rapide Next.js avec grille de produits filtrante, fiches détaillées et appels à l'action directs (WhatsApp, formulaire). Prix transparents et photos réelles.",
         "features": [
-          "Programmes personnalisés",
-          "Suivi des séances",
-          "Statistiques de progression",
-          "Vidéos d'exercices",
-          "Chat avec le coach",
-          "Notifications de rappel"
+          "Catalogue avec filtres (marque, prix, type)",
+          "Fiches produits détaillées avec photos",
+          "Bouton de contact direct (WhatsApp)",
+          "Formulaire de demande de disponibilité",
+          "Interface responsive et rapide",
+          "Section 'Nouveautés' dynamique"
         ]
       },
       {
         "id": 6,
-        "title": "Plateforme E-learning",
-        "description": "Plateforme de cours en ligne avec quiz et certifications",
-        "category": "Web",
-        "tags": ["React", "Django", "PostgreSQL"],
-        "duration": "2 mois",
-        "objective": "Créer une plateforme d'apprentissage en ligne avec gestion des cours, quiz automatiques et génération de certificats.",
-        "challenge": "Gérer des milliers d'utilisateurs simultanés avec des contenus multimédias lourds.",
-        "solution": "Frontend React avec Redux pour la gestion d'état, backend Django REST framework, base de données PostgreSQL. Système de quiz interactif et génération automatique de PDF pour les certificats.",
+        "title": "Miss Amani — CHINA CODE",
+        "description": "Page de capture pour une masterclass gratuite sur l'importation depuis la Chine, générant des leads qualifiés.",
+        "category": "Landing Page",
+        "tags": ["Systeme.io", "Marketing", "Landing Page"],
+        "duration": "1 semaine",
+        "lien": "https://missamani-bychina.systeme.io/chinacode",
+        "objective": "Créer une page de capture percutante pour remplir une masterclass (13 places) et convertir les participants en élèves payants par la suite.",
+        "challenge": "Convaincre en quelques secondes avec un message fort et une offre gratuite irrésistible, puis collecter les inscriptions.",
+        "solution": "Landing page Systeme.io avec hero percutant (urgence, preuve sociale), bio inspirante et formulaire simple. L'urgence et la rareté maximisent les conversions.",
         "features": [
-          "Catalogue de cours",
-          "Lecteur vidéo intégré",
-          "Quiz interactifs",
-          "Certificats téléchargeables",
-          "Suivi de progression",
-          "Espace apprenant et formateur"
+          "Section héro avec timer / urgence",
+          "Preuves sociales (nombre d'inscrits, témoignages)",
+          "Bio inspirante de la formatrice",
+          "Formulaire de réservation simplifié",
+          "Indication claire du prix (gratuit)",
+          "Design optimisé mobile"
         ]
       },
       {
         "id": 7,
-        "title": "Site Association Caritative",
-        "description": "Site de donation avec campagne de crowdfunding et suivi des dons en temps réel.",
-        "category": "Web",
-        "tags": ["Next.js", "Stripe", "Tailwind", "Prisma"],
-        "duration": "2.5 mois",
-        "objective": "Créer une plateforme de donation en ligne permettant de lancer des campagnes de crowdfunding et de suivre les dons en temps réel.",
-        "challenge": "Mettre en place un système de dons récurrents et ponctuels avec une expérience utilisateur fluide et sécurisée.",
-        "solution": "Développement avec Next.js pour le frontend et l'API, intégration de Stripe pour les paiements, et Prisma pour la gestion des données. Interface intuitive avec suivi en temps réel des campagnes.",
+        "title": "Cordier Jardins",
+        "description": "Site vitrine pour deux paysagistes belges, génération de devis partout en Belgique avec une crédibilité maximale.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "2 semaines",
+        "lien": "https://cordier-jardins.vercel.app/",
+        "objective": "Devenir le réflexe 'devis paysagiste' en Belgique : un site clair mettant en avant 15 ans d'expérience, des valeurs fortes et 98% d'avis 5 étoiles pour convertir les visiteurs en demandes de devis.",
+        "challenge": "Projeter confiance et qualité artisanale à travers un site vitrine simple.",
+        "solution": "Site épuré avec section 'Qui sommes-nous' humaine, engagements clairs et formulaire de devis gratuit en 48h. Avis clients et photos de réalisations rassurent immédiatement.",
         "features": [
-          "Création et gestion de campagnes",
-          "Dons ponctuels et récurrents",
-          "Suivi en temps réel des collectes",
-          "Témoignages et remerciements",
-          "Certificats de don",
-          "Dashboard administrateur"
+          "Formulaire de devis gratuit avec délai de réponse affiché",
+          "Galerie de réalisations avant/après",
+          "Présentation des deux artisans et de leurs valeurs",
+          "Affichage des engagements (assurance, propreté)",
+          "Bouton d'appel à l'action principal",
+          "98% d'avis 5 étoiles mis en avant"
         ]
       },
       {
         "id": 8,
-        "title": "Application Santé",
-        "description": "Application de suivi médical avec rappels de médicaments et partage de données sécurisé.",
-        "category": "Mobile",
-        "tags": ["React Native", "Next.js", "Node.js", "MongoDB", "JWT"],
-        "duration": "1 mois",
-        "objective": "Développer une application web et mobile permettant aux patients de suivre leur traitement médical avec des rappels et de partager leurs données avec leurs médecins de façon sécurisée.",
-        "challenge": "Garantir la sécurité des données médicales tout en offrant une expérience utilisateur simple et intuitive.",
-        "solution": "Application React Native avec authentification JWT, backend Node.js et MongoDB. Chiffrement des données sensibles et système de notifications push pour les rappels.",
+        "title": "SOCOTRA — Transport & Logistique",
+        "description": "Site vitrine en cours de conception pour le leader ivoirien du transport routier ouest-africain.",
+        "category": "Site Vitrine",
+        "tags": ["Next.js", "Tailwind", "React"],
+        "duration": "En conception",
+        "lien": "#",
+        "objective": "Moderniser l'image de SOCOTRA et faciliter les demandes de devis pour le transport de matières premières et conteneurs à travers 7 pays.",
+        "challenge": "Traduire la puissance et la fiabilité de l'entreprise dans une interface moderne tout en structurant une offre complexe.",
+        "solution": "Site Next.js mettant en avant l'historique, les distinctions, les valeurs et un formulaire de demande de transport personnalisé. Géolocalisation et certifications au cœur du design.",
         "features": [
-          "Profil patient sécurisé",
-          "Rappels de médicaments personnalisés",
-          "Carnet de santé numérique",
-          "Partage de données avec les médecins",
-          "Historique des traitements",
-          "Notifications push"
-        ]
-      },
-      {
-        "id": 9,
-        "title": "ERP pour Logistique",
-        "description": "Système de gestion logistique avec suivi de flotte, gestion des commandes et reporting.",
-        "category": "SaaS",
-        "tags": ["Vue.js", "Laravel", "MySQL", "WebSockets"],
-        "duration": "2 mois",
-        "objective": "Créer un ERP sur mesure pour gérer l'ensemble des opérations logistiques : flotte de véhicules, commandes clients, tournées de livraison et reporting.",
-        "challenge": "Coordonner les données en temps réel entre les livreurs, les gestionnaires de flotte et les clients.",
-        "solution": "Application web avec Vue.js pour l'interface, Laravel pour l'API et WebSockets pour les mises à jour en temps réel. Tableaux de bord personnalisables et système de reporting avancé.",
-        "features": [
-          "Gestion de flotte en temps réel",
-          "Planification des tournées",
-          "Suivi des commandes",
-          "Gestion des stocks d'entrepôt",
-          "Reporting et analytics",
-          "Interface pour livreurs (mobile)"
-        ]
-      },
-      {
-        "id": 10,
-        "title": "Marketplace Artisanat",
-        "description": "Marketplace pour artisans locaux avec gestion des vendeurs et paiements sécurisés.",
-        "category": "E-commerce",
-        "tags": ["Next.js", "Stripe", "PostgreSQL", "Redis"],
-        "duration": "1 mois",
-        "objective": "Lancer une marketplace permettant aux artisans locaux de vendre leurs créations en ligne avec une commission équitable et des outils de gestion simples.",
-        "challenge": "Créer un système multi-vendeurs avec gestion des commissions, des stocks et des paiements séparés.",
-        "solution": "Développement avec Next.js pour le frontend et l'API, Stripe Connect pour les paiements multi-vendeurs, PostgreSQL pour les données et Redis pour le cache. Dashboard vendeur intuitif et système de modération des produits.",
-        "features": [
-          "Inscription et gestion de boutique",
-          "Catalogue produits avec recherche avancée",
-          "Paiements sécurisés (Stripe Connect)",
-          "Gestion des commandes et livraisons",
-          "Dashboard vendeur avec statistiques",
-          "Système de notation et avis"
-        ]
+          "Formulaire de demande de devis transport",
+          "Carte de présence (7 pays)",
+          "Présentation de la flotte et des certifications",
+          "Distinctions et prix d'excellence",
+          "Espace valeurs et engagements",
+          "Design corporate moderne"
+        ],
+        "status": "En cours"
       }
     ]
   },
-
   "projectModal": {
     "close": "Fermer",
     "category": "Catégorie",
@@ -1055,11 +1022,11 @@
       "features": "Fonctionnalités clés"
     },
     "buttons": {
-      "discuss": "Discuter d'un projet similaire"
+      "discuss": "Discuter d'un projet similaire",
+      "visitSite": "Visiter le site"
     },
     "altImage": "Image du projet {{title}}"
   },
-
   "booking": {
     "badge": "30 minutes offertes",
     "title": {

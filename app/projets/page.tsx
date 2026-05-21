@@ -1,7 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, Sparkles, MessageSquare } from 'lucide-react';
+import { ArrowRight, ExternalLink, Sparkles, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -210,6 +210,7 @@ const ProjetsPage = memo(function ProjetsPage() {
             const showImage = hasValidImage(projet.image);
             const translatedProjet = getTranslatedProject(projet);
             const isInProgress = !showImage;
+            const hasExternalLink = projet.lien && projet.lien !== '#';
 
             return (
               <motion.div
@@ -275,24 +276,38 @@ const ProjetsPage = memo(function ProjetsPage() {
                     )}
                   </div>
                   <div className="flex justify-center w-full mt-auto pt-4">
-                    <span
-                      className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group-hover:text-blue-300 transition-colors cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openModal(projet);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
+                    {hasExternalLink ? (
+                      <a
+                        href={projet.lien}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors hover:from-blue-600 hover:to-cyan-600"
+                        aria-label={`Voir le projet ${translatedProjet.title}`}
+                      >
+                        {t('card.viewProject', 'projetsPage')}
+                        <ExternalLink size={14} />
+                      </a>
+                    ) : (
+                      <span
+                        className="inline-flex items-center gap-2 text-blue-400 font-medium text-sm group-hover:text-blue-300 transition-colors cursor-pointer"
+                        onClick={(e) => {
                           e.stopPropagation();
                           openModal(projet);
-                        }
-                      }}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <span>{t('card.learnMore', 'projetsPage')}</span>
-                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.stopPropagation();
+                            openModal(projet);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        <span>{t('card.viewProject', 'projetsPage')}</span>
+                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    )}
                   </div>
                 </div>
               </motion.div>
