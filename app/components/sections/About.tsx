@@ -336,21 +336,13 @@ const AboutSection = memo(function AboutSection() {
                 return (
                   <motion.div
                     key={index}
-                    className="bg-[#141B2B] rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-colors duration-300 relative overflow-hidden"
+                    className="rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-all duration-300 relative overflow-hidden bg-gradient-to-br from-[#111827] via-[#1A2036] to-[#0F1525] hover:bg-gradient-to-br hover:from-[#1A2036] hover:via-[#1D2848] hover:to-[#121A2F] shadow-lg hover:shadow-blue-500/10"
                     role="article"
                     aria-labelledby={`vision-title-${index}`}
                     variants={cardVariants}
                     whileHover="hover"
                   >
-                    {/* Nombre en fond, grand et centré */}
-                    <span
-                      className="absolute inset-0 flex items-center justify-center text-7xl md:text-8xl font-black text-blue-500/20 select-none pointer-events-none z-0"
-                      aria-hidden="true"
-                    >
-                      {`0${index + 1}`}
-                    </span>
-
-                    {/* Contenu au-dessus */}
+                    {/* Contenu */}
                     <div className="relative z-10">
                       <div className="flex justify-end mb-5">
                         <Icon className="w-7 h-7 md:w-7 md:h-7 text-blue-400/70" aria-hidden="true" />
