@@ -80,7 +80,7 @@ const AboutSection = memo(function AboutSection() {
     }
   }, [isLoading]);
 
-  // Récupérer les cartes de vision - SIMPLIFIÉ
+  // Récupérer les cartes de vision
   useEffect(() => {
     if (!isReady) return;
     
@@ -336,16 +336,19 @@ const AboutSection = memo(function AboutSection() {
                 return (
                   <motion.div
                     key={index}
-                    className="rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#1F2937] hover:border-blue-500/30 transition-all duration-300 relative overflow-hidden bg-gradient-to-br from-[#111827] via-[#1A2036] to-[#0F1525] hover:bg-gradient-to-br hover:from-[#1A2036] hover:via-[#1D2848] hover:to-[#121A2F] shadow-lg hover:shadow-blue-500/10"
+                    className="rounded-2xl md:rounded-3xl p-6 md:p-7 border border-[#2a334b] hover:border-blue-400/40 transition-all duration-300 relative overflow-hidden bg-gradient-to-br from-[#10172a] via-[#1a2540] to-[#0b1120] shadow-[0_4px_24px_rgba(0,0,0,0.6)] group"
                     role="article"
                     aria-labelledby={`vision-title-${index}`}
                     variants={cardVariants}
                     whileHover="hover"
                   >
+                    {/* Lueur subtile en haut à droite */}
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl pointer-events-none" />
+
                     {/* Contenu */}
                     <div className="relative z-10">
                       <div className="flex justify-end mb-5">
-                        <Icon className="w-7 h-7 md:w-7 md:h-7 text-blue-400/70" aria-hidden="true" />
+                        <Icon className="w-7 h-7 md:w-7 md:h-7 text-blue-400 drop-shadow-[0_0_6px_rgba(59,130,246,0.5)]" aria-hidden="true" />
                       </div>
 
                       <h3 id={`vision-title-${index}`} className="text-xl md:text-2xl font-bold mb-4 text-white tracking-tight">
