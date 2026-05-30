@@ -71,7 +71,7 @@ export const projets: Project[] = [
     tags: ['Next.js', 'Tailwind', 'React'],
     icon: Paintbrush,
     category: 'Site Vitrine',
-    lien: 'https://ph-nix-group.vercel.app/',
+    lien: 'https://www.phenixgroupdecor.com',
     client: 'PHÉNIX GROUP & JF DÉCOR',
     duree: '3 semaines',
     objectif: 'Offrir une vitrine haut de gamme qui reflète le savoir-faire architectural et paysager de PHÉNIX GROUP, générer des demandes de devis qualifiées et rassurer une clientèle exigeante (hôtels, restaurants, résidences de luxe).',
