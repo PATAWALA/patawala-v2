@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { key: 'about', href: '/#about', label: 'À propos' },
   { key: 'projects', href: '/projets', label: 'Réalisations' },
   { key: 'blog', href: '/blog', label: 'Blog' },
-  { key: 'contact', href: '/#contact', label: 'Contact' }
+  { key: 'contact', href: '/contact', label: 'Contact' }
 ] as const;
 
 export default function Navigation() {
@@ -102,6 +102,7 @@ export default function Navigation() {
     if (href === '/projets') return pathname === '/projets';
     if (href === '/services') return pathname === '/services';
     if (href === '/blog') return pathname === '/blog';
+    if (href === '/contact') return pathname === '/contact';
     if (pathname === '/') {
       if (href === '/') return activeSection === 'hero';
       if (href.includes('#')) {
@@ -171,6 +172,7 @@ export default function Navigation() {
                 {NAV_ITEMS.map((item) => {
                   const active = isLinkActive(item.href);
                   
+                  // Lien vers une section (ancre)
                   if (item.href.includes('#')) {
                     return (
                       <a
@@ -185,6 +187,7 @@ export default function Navigation() {
                       </a>
                     );
                   }
+                  // Lien vers une page
                   return (
                     <a
                       key={item.key}
