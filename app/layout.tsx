@@ -87,8 +87,8 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  verification: {
-    google: 'VOTRE-CODE-VERIFICATION-GOOGLE-SEARCH-CONSOLE',
+    verification: {
+    google: 'JsLn-cAbRgE_Dmw18OjOWigWtZU1X7cONrLGZrk2D64',
   },
   category: 'technology',
 };
