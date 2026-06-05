@@ -11,7 +11,6 @@ import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
 import { Suspense, memo } from 'react';
 
-// Configuration du viewport
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: dark)', color: '#070B12' },
@@ -21,7 +20,6 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-// Métadonnées (sans themeColor)
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.patawala.com'),
   title: {
@@ -87,7 +85,7 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-    verification: {
+  verification: {
     google: 'JsLn-cAbRgE_Dmw18OjOWigWtZU1X7cONrLGZrk2D64',
   },
   category: 'technology',
@@ -104,7 +102,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="scroll-smooth">
+    <html lang="fr" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
