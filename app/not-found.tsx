@@ -52,10 +52,9 @@ export default function NotFound() {
     backButton: t('backButton', 'notFound') || 'Retour à la page précédente',
   };
 
-  // Variants pour les animations Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
 
   const staggerContainer: any = {
@@ -69,55 +68,52 @@ export default function NotFound() {
 
   if (isLoading || !isReady) {
     return (
-      <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]" />
+      <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center p-4 pt-24">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px]" />
+        </div>
         <div className="relative z-10 max-w-3xl w-full">
           <div className="relative mb-8 flex justify-center">
             <div className="flex items-center justify-center gap-2 sm:gap-4">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-gray-800/50 rounded-lg animate-pulse" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-surface rounded-lg animate-pulse" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-surface rounded-lg animate-pulse" />
+              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 bg-surface rounded-lg animate-pulse" />
             </div>
           </div>
           <div className="text-center mb-8">
-            <div className="w-64 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto mb-6 animate-pulse" />
-            <div className="w-12 h-12 bg-gray-800/50 rounded-full mx-auto animate-pulse" />
+            <div className="w-64 h-8 bg-surface rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-surface rounded-lg mx-auto mb-6 animate-pulse" />
+            <div className="w-12 h-12 bg-surface rounded-full mx-auto animate-pulse" />
           </div>
-          <div className="bg-[#141B2B]/50 rounded-2xl p-6 mb-8 border border-gray-800/50">
-            <div className="w-48 h-6 bg-gray-800/50 rounded-lg mb-4 animate-pulse" />
+          <div className="bg-surface rounded-2xl p-6 mb-8" style={{ boxShadow: '0 10px 30px -10px rgba(0,0,0,0.4)' }}>
+            <div className="w-48 h-6 bg-border rounded-lg mb-4 animate-pulse" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-20 bg-gray-800/50 rounded-xl animate-pulse" />
+                <div key={i} className="h-20 bg-border rounded-xl animate-pulse" />
               ))}
             </div>
           </div>
-          <div className="w-48 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+          <div className="w-48 h-6 bg-border rounded-lg mx-auto animate-pulse" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0F1C] relative overflow-hidden flex items-center justify-center p-4 pt-24">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`,
-          }}
-          aria-hidden="true"
-        />
+    <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center p-4 pt-24">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-primary/[0.02] rounded-full blur-[120px]" />
       </div>
 
       <motion.div
-        className="absolute top-20 left-10 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl"
         animate={{ x: mousePosition.x, y: mousePosition.y }}
         transition={{ type: 'tween', duration: 0.1 }}
         aria-hidden="true"
       />
       <motion.div
-        className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+        className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
         animate={{ x: -mousePosition.x, y: -mousePosition.y }}
         transition={{ type: 'tween', duration: 0.1 }}
         aria-hidden="true"
@@ -133,7 +129,7 @@ export default function NotFound() {
           <div className="relative">
             <div className="flex items-center justify-center gap-2 sm:gap-4">
               <motion.div
-                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none"
+                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-primary/10 select-none"
                 variants={fadeInUp}
               >
                 4
@@ -144,13 +140,13 @@ export default function NotFound() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               >
-                <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 select-none">
+                <div className="text-8xl sm:text-9xl md:text-[12rem] font-black text-gradient-gold select-none">
                   0
                 </div>
-                <div className="absolute inset-0 bg-blue-500/30 rounded-full blur-xl animate-ping-slow" />
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-ping-slow" />
               </motion.div>
               <motion.div
-                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-blue-500/10 select-none"
+                className="text-8xl sm:text-9xl md:text-[12rem] font-black text-primary/10 select-none"
                 variants={fadeInUp}
               >
                 4
@@ -166,16 +162,16 @@ export default function NotFound() {
           variants={staggerContainer}
         >
           <motion.h1
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4"
             variants={fadeInUp}
           >
             {translations.title}
           </motion.h1>
           <motion.div
-            className="flex items-center justify-center gap-2 text-gray-300 mb-6"
+            className="flex items-center justify-center gap-2 text-muted mb-6"
             variants={fadeInUp}
           >
-            <AlertCircle size={20} className="text-blue-400" />
+            <AlertCircle size={20} className="text-primary" />
             <p className="text-lg sm:text-xl">{translations.message}</p>
           </motion.div>
           <motion.div
@@ -184,66 +180,67 @@ export default function NotFound() {
             animate={{ rotate: [0, 5, -5, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <Frown size={48} className="text-blue-400/50" />
+            <Frown size={48} className="text-primary/30" />
           </motion.div>
         </motion.div>
 
         <motion.div
-          className="bg-[#141B2B]/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 mb-8 border border-[#1F2937] shadow-xl"
+          className="bg-surface rounded-2xl p-6 sm:p-8 mb-8"
+          style={{ boxShadow: '0 15px 40px -15px rgba(0,0,0,0.5)' }}
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
         >
           <motion.h2
-            className="text-xl sm:text-2xl font-semibold text-white mb-4 flex items-center gap-2"
+            className="text-xl sm:text-2xl font-semibold text-foreground mb-4 flex items-center gap-2"
             variants={fadeInUp}
           >
-            <Compass size={24} className="text-blue-400" />
+            <Compass size={24} className="text-primary" />
             {translations.suggestionsTitle}
           </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Link href="/" passHref>
               <motion.div
-                className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20"
+                className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl hover:bg-primary/10 transition-all cursor-pointer group border border-primary/10"
                 variants={fadeInUp}
                 whileHover="hover"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Home size={20} className="text-white" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Home size={20} className="text-background" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">{translations.homeTitle}</span>
-                  <p className="text-xs text-gray-400">{translations.homeDesc}</p>
+                  <span className="font-semibold text-foreground">{translations.homeTitle}</span>
+                  <p className="text-xs text-muted">{translations.homeDesc}</p>
                 </div>
               </motion.div>
             </Link>
             <Link href="/projets" passHref>
               <motion.div
-                className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group border border-blue-500/20"
+                className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl hover:bg-primary/10 transition-all cursor-pointer group border border-primary/10"
                 variants={fadeInUp}
                 whileHover="hover"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Compass size={20} className="text-white" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Compass size={20} className="text-background" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">{translations.projectsTitle}</span>
-                  <p className="text-xs text-gray-400">{translations.projectsDesc}</p>
+                  <span className="font-semibold text-foreground">{translations.projectsTitle}</span>
+                  <p className="text-xs text-muted">{translations.projectsDesc}</p>
                 </div>
               </motion.div>
             </Link>
             <Link href="/#contact" passHref>
               <motion.div
-                className="flex items-center gap-3 p-4 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-all cursor-pointer group sm:col-span-2 border border-blue-500/20"
+                className="flex items-center gap-3 p-4 bg-primary/5 rounded-xl hover:bg-primary/10 transition-all cursor-pointer group sm:col-span-2 border border-primary/10"
                 variants={fadeInUp}
                 whileHover="hover"
               >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Search size={20} className="text-white" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-primary to-amber-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Search size={20} className="text-background" />
                 </div>
                 <div>
-                  <span className="font-semibold text-white">{translations.contactTitle}</span>
-                  <p className="text-xs text-gray-400">{translations.contactDesc}</p>
+                  <span className="font-semibold text-foreground">{translations.contactTitle}</span>
+                  <p className="text-xs text-muted">{translations.contactDesc}</p>
                 </div>
               </motion.div>
             </Link>
@@ -258,7 +255,7 @@ export default function NotFound() {
         >
           <button
             onClick={handleGoBack}
-            className="inline-flex items-center gap-2 text-blue-400 hover:text-cyan-400 transition-colors group"
+            className="inline-flex items-center gap-2 text-primary hover:text-amber-400 transition-colors group"
           >
             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             <span>{translations.backButton}</span>
@@ -269,7 +266,7 @@ export default function NotFound() {
           {particles.map((particle) => (
             <div
               key={particle.id}
-              className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-particle"
+              className="absolute w-1 h-1 bg-primary/20 rounded-full animate-particle"
               style={{
                 left: particle.left,
                 top: particle.top,

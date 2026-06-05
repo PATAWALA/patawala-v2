@@ -1,11 +1,7 @@
 'use client';
 
 import { memo, useCallback, useEffect, useState } from 'react';
-import {
-  Code, Database, Cloud, Shield,
-  Award, Rocket, Globe,
-  Settings, MousePointer, CheckCircle, ArrowRight
-} from 'lucide-react';
+import { Award, Rocket, Globe, Settings, MousePointer, Cloud, Shield, Code, Database, CheckCircle, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { motion } from 'framer-motion';
 
@@ -14,125 +10,44 @@ interface TechItem {
   level: string;
   desc: string;
   expertise: string[];
+  mastery?: number;
 }
 
-const LIGHT_POINTS = [
-  { left: '15%', top: '25%' },
-  { left: '75%', top: '60%' },
-  { left: '40%', top: '80%' },
-  { left: '85%', top: '15%' },
-];
-
-const DEFAULT_TECH_STACK_FR: TechItem[] = [
-  {
-    name: "Next.js / React",
-    level: "Expert",
-    desc: "Applications web modernes et performantes",
-    expertise: ["SSR/SSG", "App Router", "Server Components", "Optimisation SEO"]
-  },
-  {
-    name: "Node.js / Express",
-    level: "Avancé",
-    desc: "API REST et microservices",
-    expertise: ["API RESTful", "Microservices", "WebSockets", "Base de données"]
-  },
-  {
-    name: "WordPress / WooCommerce",
-    level: "Expert",
-    desc: "Sites vitrines et e-commerce",
-    expertise: ["Thèmes sur mesure", "Plugins", "Optimisation", "Sécurité"]
-  },
-  {
-    name: "Odoo / ERP",
-    level: "Expert",
-    desc: "Solutions de gestion intégrées",
-    expertise: ["Modules", "Personnalisation", "Intégration", "Migration"]
-  },
-  {
-    name: "Infrastructure Cloud",
-    level: "Avancé",
-    desc: "Déploiement et scalabilité",
-    expertise: ["AWS", "Vercel", "Netlify", "CI/CD"]
-  },
-  {
-    name: "Sécurité & Performance",
-    level: "Expert",
-    desc: "Optimisation et protection",
-    expertise: ["Lighthouse 90+", "Web Vitals", "Sécurité", "RGPD"]
-  }
-];
-
-const DEFAULT_TECH_STACK_EN: TechItem[] = [
-  {
-    name: "Next.js / React",
-    level: "Expert",
-    desc: "Modern and performant web applications",
-    expertise: ["SSR/SSG", "App Router", "Server Components", "SEO Optimization"]
-  },
-  {
-    name: "Node.js / Express",
-    level: "Advanced",
-    desc: "REST APIs and microservices",
-    expertise: ["RESTful API", "Microservices", "WebSockets", "Databases"]
-  },
-  {
-    name: "WordPress / WooCommerce",
-    level: "Expert",
-    desc: "Showcase sites and e-commerce",
-    expertise: ["Custom Themes", "Plugins", "Optimization", "Security"]
-  },
-  {
-    name: "Odoo / ERP",
-    level: "Expert",
-    desc: "Integrated management solutions",
-    expertise: ["Modules", "Customization", "Integration", "Migration"]
-  },
-  {
-    name: "Cloud Infrastructure",
-    level: "Advanced",
-    desc: "Deployment and scalability",
-    expertise: ["AWS", "Vercel", "Netlify", "CI/CD"]
-  },
-  {
-    name: "Security & Performance",
-    level: "Expert",
-    desc: "Optimization and protection",
-    expertise: ["Lighthouse 90+", "Web Vitals", "Security", "GDPR"]
-  }
+const DEFAULT_TECH_STACK: TechItem[] = [
+  { name: "Next.js / React", level: "Expert", desc: "Applications web modernes et performantes", expertise: ["SSR/SSG", "App Router", "Server Components"], mastery: 90 },
+  { name: "Node.js / Express", level: "Avancé", desc: "API REST et microservices", expertise: ["API RESTful", "Microservices", "WebSockets"], mastery: 80 },
+  { name: "WordPress / WooCommerce", level: "Expert", desc: "Sites vitrines et e-commerce", expertise: ["Thèmes sur mesure", "Plugins", "Optimisation"], mastery: 90 },
+  { name: "Odoo / ERP", level: "Expert", desc: "Solutions de gestion intégrées", expertise: ["Modules", "Personnalisation", "Intégration"], mastery: 90 },
+  { name: "Infrastructure Cloud", level: "Avancé", desc: "Déploiement et scalabilité", expertise: ["AWS", "Vercel", "CI/CD"], mastery: 85 },
+  { name: "Sécurité & Performance", level: "Expert", desc: "Optimisation et protection", expertise: ["Lighthouse 90+", "Web Vitals", "Sécurité"], mastery: 90 }
 ];
 
 const TechExpertise = memo(function TechExpertise() {
-  const { t, language, isLoading } = useTranslation();
+  const { t, isLoading } = useTranslation();
   const [techStack, setTechStack] = useState<TechItem[]>([]);
   const [isReady, setIsReady] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading) setIsReady(true);
-  }, [isLoading]);
+  useEffect(() => { if (!isLoading) setIsReady(true); }, [isLoading]);
 
   useEffect(() => {
     if (!isReady) return;
     try {
       const techData = t('techStack', 'tech');
-      if (Array.isArray(techData) && techData.length > 0) {
-        setTechStack(techData);
-      } else {
-        setTechStack(language === 'fr' ? DEFAULT_TECH_STACK_FR : DEFAULT_TECH_STACK_EN);
-      }
+      setTechStack(Array.isArray(techData) && techData.length > 0 ? techData : DEFAULT_TECH_STACK);
     } catch {
-      setTechStack(language === 'fr' ? DEFAULT_TECH_STACK_FR : DEFAULT_TECH_STACK_EN);
+      setTechStack(DEFAULT_TECH_STACK);
     }
-  }, [t, language, isReady]);
+  }, [t, isReady]);
 
   const getIcon = (techName: string) => {
     if (techName.includes('Next.js') || techName.includes('React')) return Rocket;
     if (techName.includes('WordPress')) return Globe;
     if (techName.includes('Odoo') || techName.includes('ERP')) return Settings;
     if (techName.includes('Systeme.io')) return MousePointer;
-    if (techName.includes('Infrastructure') || techName.includes('DevOps') || techName.includes('Cloud')) return Cloud;
-    if (techName.includes('Sécurité') || techName.includes('Security') || techName.includes('Performance')) return Shield;
+    if (techName.includes('Infrastructure') || techName.includes('Cloud')) return Cloud;
+    if (techName.includes('Sécurité') || techName.includes('Performance')) return Shield;
     if (techName.includes('Node.js')) return Code;
-    if (techName.includes('Base de données') || techName.includes('Database')) return Database;
+    if (techName.includes('Base de données')) return Database;
     return Code;
   };
 
@@ -140,87 +55,22 @@ const TechExpertise = memo(function TechExpertise() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const getTechLevel = useCallback((tech: TechItem) => {
-    const isExpert = tech.level === 'Expert' || tech.level === 'Expert' || tech.level === 'Avancé';
-    const isAdvanced = tech.level === 'Avancé' || tech.level === 'Advanced';
-    return {
-      isExpert,
-      isAdvanced,
-      percentage: isExpert ? '90%' : isAdvanced ? '80%' : '70%',
-      badgeClass: isExpert
-        ? 'bg-blue-500/20 text-blue-400'
-        : isAdvanced
-        ? 'bg-blue-500/10 text-blue-400'
-        : 'bg-gray-700 text-gray-200'
-    };
-  }, []);
-
-  // Animation variants (avec any pour éviter les erreurs TS)
-  const fadeInUp: any = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
-  };
-
-  const staggerContainer: any = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
-  };
-
-  const cardVariants: any = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-    hover: { y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
-  };
-
-  // SKELETON LOADER (inchangé, juste copié pour continuité)
   if (isLoading || !isReady || techStack.length === 0) {
     return (
-      <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-        </div>
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          <div className="w-full flex justify-center mb-6 md:mb-8">
-            <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <div className="flex justify-center mb-8"><div className="w-36 h-10 bg-surface rounded-full animate-pulse" /></div>
+          <div className="text-center mb-12 space-y-4">
+            <div className="w-56 h-10 bg-surface rounded-lg mx-auto animate-pulse" />
+            <div className="w-72 h-6 bg-surface rounded-lg mx-auto animate-pulse" />
           </div>
-          <div className="text-center mb-10 md:mb-16">
-            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto mb-16">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-[#141B2B]/50 rounded-xl p-5 border border-gray-800/50">
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="w-24 h-5 bg-gray-800/50 rounded animate-pulse" />
-                      <div className="w-16 h-5 bg-gray-800/50 rounded-full animate-pulse" />
-                    </div>
-                    <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
-                  </div>
-                </div>
-                <div className="space-y-2 mb-4">
-                  <div className="w-full h-3 bg-gray-800/50 rounded animate-pulse" />
-                  <div className="w-3/4 h-3 bg-gray-800/50 rounded animate-pulse" />
-                  <div className="w-1/2 h-3 bg-gray-800/50 rounded animate-pulse" />
-                </div>
-                <div className="mt-4 pt-4 border-t border-gray-800/50">
-                  <div className="flex justify-between mb-2">
-                    <div className="w-16 h-4 bg-gray-800/50 rounded animate-pulse" />
-                    <div className="w-8 h-4 bg-gray-800/50 rounded animate-pulse" />
-                  </div>
-                  <div className="w-full h-2 bg-gray-800/50 rounded-full animate-pulse" />
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1,2,3,4,5,6].map(i => (
+              <div key={i} className="bg-surface rounded-2xl p-6 space-y-3">
+                <div className="flex gap-3"><div className="w-10 h-10 bg-border rounded-xl animate-pulse" /><div className="flex-1"><div className="w-20 h-4 bg-border rounded animate-pulse" /></div></div>
+                <div className="w-full h-12 bg-border rounded animate-pulse" />
               </div>
             ))}
-          </div>
-          <div className="text-center">
-            <div className="inline-flex flex-col items-center gap-4 p-6 bg-[#141B2B]/50 rounded-2xl border border-gray-800/50 max-w-2xl mx-auto">
-              <div className="w-64 h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-32 h-8 bg-gray-800/50 rounded animate-pulse" />
-            </div>
           </div>
         </div>
       </section>
@@ -228,154 +78,126 @@ const TechExpertise = memo(function TechExpertise() {
   }
 
   return (
-    <section
-      className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
-      aria-label={language === 'fr' ? "Expertise technique" : "Technical expertise"}
-    >
-      {/* FOND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-        <motion.div
-          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          aria-hidden="true"
-        />
-        <motion.div
-          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          aria-hidden="true"
-        />
-        {LIGHT_POINTS.map((point, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
-            style={{ left: point.left, top: point.top }}
-            aria-hidden="true"
-          />
-        ))}
+    <section id="expertise" className="py-16 sm:py-20 lg:py-24 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-secondary/[0.02] rounded-full blur-[120px]" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
+        
         {/* Badge */}
-        <motion.div
-          className="w-full flex justify-center mb-6 md:mb-8"
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-            <Award size={14} className="text-blue-400" />
-            <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
-              {t('badge', 'tech')}
-            </span>
+        <motion.div className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
+          <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-primary"
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.05) 100%)',
+              border: '1px solid rgba(212,175,55,0.3)',
+              boxShadow: '0 0 20px -5px rgba(212,175,55,0.2), inset 0 0 10px rgba(212,175,55,0.05)'
+            }}>
+            <Award size={16} />
+            <span className="text-sm font-semibold">{t('badge', 'tech')}</span>
           </div>
         </motion.div>
 
         {/* Titre */}
-        <motion.div
-          className="text-center mb-10 md:mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerContainer}
-        >
-          <motion.h2
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 text-white px-4 tracking-tight"
-            variants={fadeInUp}
-          >
-            <span>{t('title', 'tech')}</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
-              {t('titleHighlight', 'tech')}
-            </span>
-          </motion.h2>
-          <motion.p
-            className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 font-medium"
-            variants={fadeInUp}
-          >
+        <motion.div className="text-center mb-14"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-3 leading-tight">
+            {t('title', 'tech')}
+          </h2>
+          <p className="text-gradient-gold text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-4">
+            {t('titleHighlight', 'tech')}
+          </p>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-amber-400 rounded-full mx-auto mb-5" />
+          <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto">
             {t('subtitle', 'tech')}
-          </motion.p>
+          </p>
         </motion.div>
 
-        {/* Grille des technos */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8 max-w-7xl mx-auto mb-16 md:mb-20 auto-rows-fr"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={staggerContainer}
-        >
-          {techStack.map((tech) => {
+        {/* Grille */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+          {techStack.map((tech, index) => {
             const Icon = getIcon(tech.name);
-            const { percentage, badgeClass } = getTechLevel(tech);
+            const isExpert = tech.level === 'Expert';
+            const mastery = tech.mastery || (isExpert ? 90 : 80);
 
             return (
-              <motion.div
-                key={tech.name}
-                className="bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-colors duration-300 relative flex flex-col will-change-transform"
-                variants={cardVariants}
-                whileHover="hover"
-              >
-                <div className="relative z-10 flex-1 flex flex-col">
-                  <div className="flex items-start gap-3 sm:gap-4 mb-4">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                      <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-blue-400" />
+              <motion.div key={tech.name}
+                className="group relative bg-surface rounded-2xl p-6 flex flex-col overflow-hidden"
+                style={{ 
+                  boxShadow: '0 10px 30px -10px rgba(0,0,0,0.4)',
+                  border: '1px solid rgba(30,42,62,0.3)'
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
+                whileHover={{ 
+                  y: -4, 
+                  boxShadow: '0 20px 40px -15px rgba(212,175,55,0.15)',
+                  borderColor: 'rgba(212,175,55,0.3)'
+                }}>
+
+                {/* Lueur au hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ background: 'radial-gradient(circle at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 60%)' }} />
+
+                <div className="relative z-10 flex flex-col h-full">
+                  {/* Icône + Titre + Badge */}
+                  <div className="flex items-start gap-4 mb-5">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ 
+                        background: 'linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.05) 100%)',
+                        border: '1px solid rgba(212,175,55,0.2)',
+                        boxShadow: '0 0 15px -3px rgba(212,175,55,0.1)'
+                      }}>
+                      <Icon size={22} className="text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                        <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight">
-                          {tech.name}
-                        </h3>
-                        <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs font-bold tracking-tight ${badgeClass}`}>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
+                        <h3 className="text-base font-bold text-foreground truncate">{tech.name}</h3>
+                        <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold flex-shrink-0"
+                          style={isExpert ? {
+                            background: 'linear-gradient(135deg, rgba(212,175,55,0.2) 0%, rgba(212,175,55,0.08) 100%)',
+                            border: '1px solid rgba(212,175,55,0.3)',
+                            color: '#D4AF37',
+                            boxShadow: '0 0 12px -3px rgba(212,175,55,0.2), inset 0 0 6px rgba(212,175,55,0.05)',
+                          } : {
+                            background: 'linear-gradient(135deg, rgba(0,229,255,0.12) 0%, rgba(0,229,255,0.04) 100%)',
+                            border: '1px solid rgba(0,229,255,0.2)',
+                            color: '#00E5FF',
+                            boxShadow: '0 0 12px -3px rgba(0,229,255,0.12), inset 0 0 6px rgba(0,229,255,0.03)',
+                          }}>
                           {tech.level}
                         </span>
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-300 font-medium">
-                        {tech.desc}
-                      </p>
+                      <p className="text-sm text-muted leading-relaxed">{tech.desc}</p>
                     </div>
                   </div>
 
-                  <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-5 flex-1">
+                  {/* Expertise */}
+                  <div className="space-y-2 mb-6 flex-1">
                     {tech.expertise.slice(0, 3).map((item: string) => (
-                      <div key={item} className="flex items-center gap-2">
-                        <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400 flex-shrink-0" />
-                        <span className="text-xs sm:text-sm text-gray-200 font-medium truncate">
-                          {item}
-                        </span>
+                      <div key={item} className="flex items-center gap-2.5">
+                        <CheckCircle size={13} className="text-primary flex-shrink-0" />
+                        <span className="text-sm text-muted">{item}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-[#1F2937]">
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <span className="text-gray-400 font-medium">
-                        {t('mastery', 'tech')}
-                      </span>
-                      <span className="text-blue-400 font-bold">
-                        {percentage}
-                      </span>
+                  {/* Barre de progression */}
+                  <div className="pt-4 border-t border-border/30">
+                    <div className="flex justify-between text-xs mb-2">
+                      <span className="text-muted text-[10px] uppercase tracking-wider">{t('mastery', 'tech')}</span>
+                      <span className="text-primary font-bold">{mastery}%</span>
                     </div>
-                    <div className="w-full h-1.5 bg-gray-700 rounded-full mt-2 overflow-hidden">
+                    <div className="w-full h-2 bg-border/30 rounded-full overflow-hidden">
                       <motion.div
-                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400"
+                        className="h-full rounded-full"
+                        style={{ background: 'linear-gradient(90deg, #D4AF37 0%, #F5D05C 100%)', boxShadow: '0 0 10px -2px rgba(212,175,55,0.4)' }}
                         initial={{ width: 0 }}
-                        whileInView={{ width: percentage }}
+                        whileInView={{ width: `${mastery}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                       />
@@ -385,27 +207,21 @@ const TechExpertise = memo(function TechExpertise() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
         {/* Note + CTA */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <div className="inline-flex flex-col items-center gap-6 p-6 md:p-8 bg-[#141B2B] rounded-2xl border border-[#1F2937] shadow-md max-w-2xl mx-auto hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
-            <p className="text-sm sm:text-base text-gray-200 font-semibold">
-              {t('note', 'tech')}
-            </p>
-            <button
-              onClick={scrollToContact}
-              className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm sm:text-base group hover:text-blue-300 transition-colors tracking-tight"
-              aria-label={t('cta', 'tech')}
-            >
-              <span>{t('cta', 'tech')}</span>
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        <motion.div className="text-center"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <div className="inline-flex flex-col items-center gap-5 p-6 sm:p-8 bg-surface rounded-2xl max-w-2xl mx-auto"
+            style={{ 
+              boxShadow: '0 10px 30px -10px rgba(0,0,0,0.4)',
+              border: '1px solid rgba(30,42,62,0.3)'
+            }}>
+            <p className="text-sm sm:text-base text-muted">{t('note', 'tech')}</p>
+            <button onClick={scrollToContact}
+              className="btn-gold text-sm px-6 py-3 group">
+              {t('cta', 'tech')}
+              <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </motion.div>

@@ -1,3 +1,4 @@
+// app/services/ServicesPageClient.tsx
 'use client';
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
@@ -195,30 +196,30 @@ const ServicesPage = memo(function ServicesPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+      <main className="min-h-screen pt-32 pb-20 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 right-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 left-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="w-32 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
-            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+            <div className="w-32 h-8 bg-surface rounded-full mx-auto mb-6 animate-pulse" />
+            <div className="w-64 h-10 bg-surface rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-96 h-6 bg-surface rounded-lg mx-auto animate-pulse" />
           </div>
           <div className="mb-8">
             <div className="flex justify-center">
-              <div className="flex gap-2 p-2 bg-gray-800/50 rounded-2xl">
+              <div className="flex gap-2 p-2 bg-surface rounded-2xl">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="w-24 h-10 bg-gray-700/50 rounded-xl animate-pulse" />
+                  <div key={i} className="w-24 h-10 bg-border rounded-xl animate-pulse" />
                 ))}
               </div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="bg-[#141B2B]/50 rounded-xl h-64 animate-pulse" />
+              <div key={i} className="bg-surface rounded-xl h-64 animate-pulse" />
             ))}
           </div>
         </div>
@@ -228,25 +229,18 @@ const ServicesPage = memo(function ServicesPage() {
 
   return (
     <main
-      className="min-h-screen pt-32 pb-20 bg-[#0A0F1C] relative overflow-hidden"
+      className="min-h-screen pt-32 pb-20 bg-background relative overflow-hidden"
       aria-labelledby="services-title"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
+      <div className="absolute inset-0 pointer-events-none">
         <motion.div
-          className="absolute top-20 right-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
+          className="absolute top-20 right-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl"
           animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true"
         />
         <motion.div
-          className="absolute bottom-40 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+          className="absolute bottom-40 left-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
           animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           aria-hidden="true"
@@ -254,7 +248,7 @@ const ServicesPage = memo(function ServicesPage() {
         {lightPoints.map((point, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
+            className="absolute w-1 h-1 bg-primary/10 rounded-full"
             style={{ left: point.left, top: point.top }}
             aria-hidden="true"
           />
@@ -270,22 +264,22 @@ const ServicesPage = memo(function ServicesPage() {
           variants={staggerContainer}
         >
           <motion.div variants={fadeInUp}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-              <Sparkles size={16} className="text-blue-400" />
-              <span className="text-sm font-medium text-blue-400">{translations.badge}</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6 border border-primary/20 backdrop-blur-sm">
+              <Sparkles size={16} className="text-primary" />
+              <span className="text-sm font-medium text-primary">{translations.badge}</span>
             </div>
           </motion.div>
           <motion.h1
             id="services-title"
-            className="text-4xl md:text-5xl font-bold mb-4 text-white"
+            className="text-4xl md:text-5xl font-bold mb-4 text-foreground"
             variants={fadeInUp}
           >
             {translations.title}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2">
+            <span className="block text-gradient-gold mt-2">
               {translations.titleHighlight}
             </span>
           </motion.h1>
-          <motion.p className="text-lg text-gray-300" variants={fadeInUp}>
+          <motion.p className="text-lg text-muted" variants={fadeInUp}>
             {translations.subtitle}
           </motion.p>
         </motion.div>
@@ -301,22 +295,22 @@ const ServicesPage = memo(function ServicesPage() {
             {showFilterLeftArrow && (
               <button
                 onClick={() => scrollFilters('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-[#0A0F1C] to-transparent pr-6 pl-2 py-2"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-r from-background to-transparent pr-6 pl-2 py-2"
                 aria-label="Filtres précédents"
               >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
-                  <ChevronLeft size={18} className="text-white" />
+                <div className="bg-primary/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-primary transition-colors">
+                  <ChevronLeft size={18} className="text-background" />
                 </div>
               </button>
             )}
             {showFilterRightArrow && (
               <button
                 onClick={() => scrollFilters('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-[#0A0F1C] to-transparent pl-6 pr-2 py-2"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-gradient-to-l from-background to-transparent pl-6 pr-2 py-2"
                 aria-label="Filtres suivants"
               >
-                <div className="bg-blue-500/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-blue-600 transition-colors">
-                  <ChevronRight size={18} className="text-white" />
+                <div className="bg-primary/90 backdrop-blur-sm p-1.5 rounded-full shadow-lg hover:bg-primary transition-colors">
+                  <ChevronRight size={18} className="text-background" />
                 </div>
               </button>
             )}
@@ -339,8 +333,8 @@ const ServicesPage = memo(function ServicesPage() {
                       onClick={() => handleCategoryChange(category.id)}
                       className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap
                         ${isActive
-                          ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                          : 'bg-[#141B2B] text-gray-400 hover:text-white'
+                          ? 'bg-primary text-background shadow-lg'
+                          : 'bg-surface text-muted hover:text-foreground'
                         }`}
                       aria-label={`Filtrer par ${category.label}`}
                       aria-pressed={isActive}
@@ -357,7 +351,7 @@ const ServicesPage = memo(function ServicesPage() {
           </div>
 
           <div className="hidden lg:flex justify-center">
-            <div className="inline-flex bg-[#141B2B] rounded-2xl p-1.5 shadow-md">
+            <div className="inline-flex bg-surface rounded-2xl p-1.5 shadow-md">
               {filterCategories.map((category) => {
                 const Icon = category.icon;
                 const isActive = activeCategory === category.id;
@@ -367,8 +361,8 @@ const ServicesPage = memo(function ServicesPage() {
                     onClick={() => handleCategoryChange(category.id)}
                     className={`flex items-center gap-3 px-6 py-3 rounded-xl font-medium transition-all
                       ${isActive
-                        ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                        : 'text-gray-400 hover:text-white hover:bg-[#1E2638]'
+                        ? 'bg-primary text-background shadow-lg'
+                        : 'text-muted hover:text-foreground hover:bg-surface-elevated'
                       }`}
                     aria-label={`Filtrer par ${category.label}`}
                     aria-pressed={isActive}
@@ -385,7 +379,7 @@ const ServicesPage = memo(function ServicesPage() {
 
           <motion.p
             key={activeCategory}
-            className="text-center text-gray-400 mt-4 max-w-2xl mx-auto"
+            className="text-center text-muted mt-4 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
@@ -416,10 +410,10 @@ const ServicesPage = memo(function ServicesPage() {
           variants={staggerContainer}
         >
           <motion.div className="text-center mb-10" variants={fadeInUp}>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
               {translations.faqTitle}
             </h2>
-            <p className="text-gray-400">{translations.faqSubtitle}</p>
+            <p className="text-muted">{translations.faqSubtitle}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -427,15 +421,15 @@ const ServicesPage = memo(function ServicesPage() {
               item.question && item.answer && (
                 <motion.div
                   key={index}
-                  className="bg-[#141B2B] p-6 rounded-xl shadow-md border border-[#1F2937] hover:shadow-lg transition-shadow"
+                  className="bg-surface p-6 rounded-xl shadow-md border border-border hover:shadow-lg transition-shadow"
                   variants={fadeInUp}
                   whileHover={{ y: -3 }}
                 >
                   <div className="flex items-start gap-3">
-                    <HelpCircle size={20} className="text-blue-400 flex-shrink-0 mt-0.5" />
+                    <HelpCircle size={20} className="text-primary flex-shrink-0 mt-0.5" />
                     <div>
-                      <h3 id={`faq-q-${index}`} className="font-bold text-white mb-2">{item.question}</h3>
-                      <p className="text-sm text-gray-400">{item.answer}</p>
+                      <h3 id={`faq-q-${index}`} className="font-bold text-foreground mb-2">{item.question}</h3>
+                      <p className="text-sm text-muted">{item.answer}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -451,13 +445,13 @@ const ServicesPage = memo(function ServicesPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">
+          <h3 className="text-xl md:text-2xl font-bold mb-4 text-foreground">
             {translations.ctaTitle}
           </h3>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/#contact" passHref>
               <motion.button
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 hover:from-blue-600 hover:to-cyan-600 transition-colors shadow-lg hover:shadow-xl mx-auto sm:mx-0"
+                className="btn-gold px-8 py-4 rounded-xl font-semibold text-lg flex items-center gap-3 mx-auto sm:mx-0"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -468,7 +462,7 @@ const ServicesPage = memo(function ServicesPage() {
           </div>
         </motion.div>
 
-        <p className="text-center text-xs text-gray-500 mt-8">
+        <p className="text-center text-xs text-muted mt-8">
           {translations.disclaimer}
         </p>
       </div>

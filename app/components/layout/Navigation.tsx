@@ -9,9 +9,9 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 const NAV_ITEMS = [
   { key: 'home', href: '/', label: 'Accueil' },
   { key: 'services', href: '/services', label: 'Services' },
-  { key: 'expertise', href: '/#techexpertise', label: 'Expertise' },
+  { key: 'expertise', href: '/#expertise', label: 'Expertise' },
   { key: 'about', href: '/#about', label: 'À propos' },
-  { key: 'projects', href: '/#projets', label: 'Projets' },
+  { key: 'projects', href: '/projets', label: 'Réalisations' },
   { key: 'blog', href: '/blog', label: 'Blog' },
   { key: 'contact', href: '/#contact', label: 'Contact' }
 ] as const;
@@ -25,14 +25,13 @@ export default function Navigation() {
   const menuRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  // Détection des sections sur la page d'accueil
   useEffect(() => {
     if (pathname !== '/') {
       setActiveSection('');
       return;
     }
 
-    const sections = ['hero', 'techexpertise', 'about', 'projets', 'contact'];
+    const sections = ['hero', 'expertise', 'about', 'contact'];
     
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -53,7 +52,6 @@ export default function Navigation() {
     return () => observerRef.current?.disconnect();
   }, [pathname]);
 
-  // Fermeture du menu mobile
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
@@ -74,7 +72,6 @@ export default function Navigation() {
     };
   }, [isOpen]);
 
-  // Scroll vers une section
   const scrollToSection = (sectionId: string) => {
     setTimeout(() => {
       const element = document.getElementById(sectionId);
@@ -101,8 +98,10 @@ export default function Navigation() {
     }
   };
 
-  // Déterminer si un lien est actif
   const isLinkActive = (href: string) => {
+    if (href === '/projets') return pathname === '/projets';
+    if (href === '/services') return pathname === '/services';
+    if (href === '/blog') return pathname === '/blog';
     if (pathname === '/') {
       if (href === '/') return activeSection === 'hero';
       if (href.includes('#')) {
@@ -110,24 +109,24 @@ export default function Navigation() {
         return activeSection === sectionId;
       }
     }
-    return pathname === href;
+    return false;
   };
 
   if (isLoading) {
     return (
       <nav className="fixed w-full z-50 top-0 lg:top-4 font-sans">
         <div className="lg:container lg:mx-auto lg:px-6">
-          <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
+          <div className="lg:rounded-2xl py-2 lg:py-3 px-4 lg:px-8" style={{ background: 'rgba(7,11,18,0.6)', backdropFilter: 'blur(12px)', boxShadow: '0 0 20px -5px rgba(212,175,55,0.15)' }}>
             <div className="flex justify-between items-center">
-              <div className="h-8 w-48 bg-gray-800/50 rounded animate-pulse" />
+              <div className="h-8 w-48 bg-surface rounded animate-pulse" />
               <div className="hidden lg:flex items-center gap-6">
                 {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                  <div key={i} className="h-4 w-16 bg-gray-800/50 rounded animate-pulse" />
+                  <div key={i} className="h-4 w-16 bg-surface rounded animate-pulse" />
                 ))}
               </div>
               <div className="flex items-center gap-2">
-                <div className="h-8 w-16 bg-gray-800/50 rounded-full animate-pulse" />
-                <div className="h-8 w-8 bg-gray-800/50 rounded-full animate-pulse lg:hidden" />
+                <div className="h-8 w-16 bg-surface rounded-full animate-pulse" />
+                <div className="h-8 w-8 bg-surface rounded-full animate-pulse lg:hidden" />
               </div>
             </div>
           </div>
@@ -142,10 +141,16 @@ export default function Navigation() {
       className="fixed w-full z-50 top-0 lg:top-4 font-sans"
     >
       <div className="lg:container lg:mx-auto lg:px-6">
-        <div className="bg-[#0A0F1C]/80 backdrop-blur-sm lg:rounded-2xl border-b lg:border border-[#1F2937]/50 py-2 lg:py-3 px-4 lg:px-8 shadow-lg">
+        <div 
+          className="lg:rounded-2xl py-2 lg:py-3 px-4 lg:px-8"
+          style={{ 
+            background: 'rgba(7,11,18,0.6)', 
+            backdropFilter: 'blur(12px)',
+            boxShadow: '0 0 20px -5px rgba(212,175,55,0.15), 0 0 0 1px rgba(212,175,55,0.08)'
+          }}
+        >
           {/* Version Desktop */}
           <div className="hidden lg:grid lg:grid-cols-3 items-center">
-            {/* Logo à gauche */}
             <div className="flex justify-start">
               <a 
                 href="/" 
@@ -155,13 +160,12 @@ export default function Navigation() {
                 }}
                 className="flex items-center font-bold group py-1"
               >
-                <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl sm:text-2xl italic">
+                <span className="text-gradient-gold text-xl sm:text-2xl italic">
                   Abdoulaye Patawala
                 </span>
               </a>
             </div>
 
-            {/* Liens centrés */}
             <div className="flex justify-center">
               <div className="flex items-center gap-6">
                 {NAV_ITEMS.map((item) => {
@@ -174,7 +178,7 @@ export default function Navigation() {
                         href={item.href}
                         onClick={(e) => handleAnchorClick(e, item.href)}
                         className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
-                          active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
+                          active ? 'text-primary' : 'text-muted hover:text-primary'
                         }`}
                       >
                         {t(`navItems.${item.key}`, 'navigation') || item.label}
@@ -190,7 +194,7 @@ export default function Navigation() {
                         window.location.href = item.href;
                       }}
                       className={`text-sm font-medium transition-colors cursor-pointer whitespace-nowrap py-1 ${
-                        active ? 'text-blue-400' : 'text-gray-300 hover:text-blue-400'
+                        active ? 'text-primary' : 'text-muted hover:text-primary'
                       }`}
                     >
                       {t(`navItems.${item.key}`, 'navigation') || item.label}
@@ -200,7 +204,6 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Language Switcher à droite */}
             <div className="flex justify-end">
               <LanguageSwitcher />
             </div>
@@ -208,7 +211,6 @@ export default function Navigation() {
 
           {/* Version Mobile */}
           <div className="flex lg:hidden items-center justify-between">
-            {/* Logo à gauche */}
             <a 
               href="/" 
               onClick={(e) => {
@@ -217,16 +219,15 @@ export default function Navigation() {
               }}
               className="flex items-center font-bold group py-1"
             >
-              <span className="bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent text-xl italic">
+              <span className="text-gradient-gold text-xl italic">
                 Patawala
               </span>
             </a>
 
-            {/* Language Switcher et Hamburger à droite */}
             <div className="flex items-center gap-2">
               <LanguageSwitcher />
               <button
-                className="flex items-center justify-center w-10 h-10 text-gray-300 hover:text-blue-400 transition-colors"
+                className="flex items-center justify-center w-10 h-10 text-muted hover:text-primary transition-colors"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
               >
@@ -237,12 +238,12 @@ export default function Navigation() {
         </div>
       </div>
 
-      {/* Mobile Menu - OVERLAY COMPLET */}
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 top-0 bg-white/20 backdrop-blur-2xl z-40 overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 top-0 z-40 overflow-y-auto" style={{ background: 'rgba(7,11,18,0.98)', backdropFilter: 'blur(20px)' }}>
           <button
             onClick={() => setIsOpen(false)}
-            className="absolute top-6 right-6 p-2 text-white hover:text-cyan-400 transition-colors"
+            className="absolute top-6 right-6 p-2 text-foreground hover:text-primary transition-colors"
             aria-label="Fermer le menu"
           >
             <X className="w-8 h-8" />
@@ -261,7 +262,7 @@ export default function Navigation() {
                       setIsOpen(false);
                     }}
                     className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
-                      active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
+                      active ? 'text-primary' : 'text-foreground hover:text-primary'
                     }`}
                   >
                     {t(`navItems.${item.key}`, 'navigation') || item.label}
@@ -278,7 +279,7 @@ export default function Navigation() {
                     window.location.href = item.href;
                   }}
                   className={`w-full text-center py-6 text-3xl font-bold tracking-tight transition-colors ${
-                    active ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
+                    active ? 'text-primary' : 'text-foreground hover:text-primary'
                   }`}
                 >
                   {t(`navItems.${item.key}`, 'navigation') || item.label}

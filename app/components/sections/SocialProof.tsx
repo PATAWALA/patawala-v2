@@ -5,14 +5,6 @@ import { Star, Quote, Building2, Users, ChevronLeft, ChevronRight, ArrowRight, M
 import { useTranslation } from '@/app/hooks/useTranslation';
 import { motion } from 'framer-motion';
 
-// Points lumineux fixes (déterministes)
-const LIGHT_POINTS = [
-  { left: '15%', top: '25%' },
-  { left: '75%', top: '60%' },
-  { left: '40%', top: '80%' },
-  { left: '85%', top: '15%' },
-];
-
 interface Testimonial {
   name: string;
   content: string;
@@ -30,91 +22,15 @@ interface ProjectType {
   cta: string;
 }
 
-// Données par défaut pour les témoignages
 const DEFAULT_TESTIMONIALS_FR = [
-  {
-    name: "Jean Kouassi",
-    content: "Abdoulaye a su comprendre rapidement nos besoins et nous a proposé une solution technique parfaitement adaptée à notre startup. Son accompagnement a été crucial dans notre développement.",
-    country: "Côte d'Ivoire"
-  },
-  {
-    name: "Marie Dubois",
-    content: "Un vrai partenaire technique ! Il ne se contente pas de développer, il apporte des idées et des conseils qui font la différence. Je recommande vivement.",
-    country: "France"
-  },
-  {
-    name: "César Dossou",
-    content: "Service irréprochable, résultat livré. Je recommande.",
-    country: "Congo"
-  },
-  {
-    name: "Maurice Acoumba",
-    content: "Un vrai partenaire à l'écoute. Satisfait du travail accompli.",
-    country: "Cameroun"
-  },
-  {
-    name: "Jean Edikou",
-    content: "Site soigné, équipe à l'écoute. Une belle collaboration.",
-    country: "Bénin"
-  },
-  {
-    name: "Chimène Koumai",
-    content: "Rapide, professionnel, à l'écoute. Merci pour tout.",
-    country: "Togo"
-  },
-  {
-    name: "Gérard Agatou'n",
-    content: "Une confiance aveugle. Un travail agréable et efficace.",
-    country: "Sénégal"
-  },
-  {
-    name: "Camille Benerd",
-    content: "Un site qui me ressemble enfin. Merci pour ta patience et ton attention.",
-    country: "Belgique"
-  }
-];
-
-const DEFAULT_TESTIMONIALS_EN = [
-  {
-    name: "John Smith",
-    content: "Abdoulaye quickly understood our needs and proposed a technical solution perfectly adapted to our startup. His support was crucial in our development.",
-    country: "USA"
-  },
-  {
-    name: "Sarah Johnson",
-    content: "A true technical partner! He doesn't just develop, he brings ideas and advice that make a difference. I highly recommend.",
-    country: "UK"
-  },
-  {
-    name: "Michael Brown",
-    content: "Impeccable service, delivered result. I recommend.",
-    country: "Canada"
-  },
-  {
-    name: "Emma Wilson",
-    content: "A true partner who listens. Satisfied with the work done.",
-    country: "Australia"
-  },
-  {
-    name: "David Lee",
-    content: "Polished site, attentive team. A great collaboration.",
-    country: "Singapore"
-  },
-  {
-    name: "Lisa Chen",
-    content: "Fast, professional, attentive. Thank you for everything.",
-    country: "China"
-  },
-  {
-    name: "Robert Garcia",
-    content: "Blind trust. Pleasant and efficient work.",
-    country: "Spain"
-  },
-  {
-    name: "Patricia Martin",
-    content: "A site that finally reflects me. Thank you for your patience and attention.",
-    country: "France"
-  }
+  { name: "Jean Kouassi", content: "Abdoulaye a su comprendre rapidement nos besoins et nous a proposé une solution technique parfaitement adaptée à notre startup. Son accompagnement a été crucial dans notre développement.", country: "Côte d'Ivoire" },
+  { name: "Marie Dubois", content: "Un vrai partenaire technique ! Il ne se contente pas de développer, il apporte des idées et des conseils qui font la différence. Je recommande vivement.", country: "France" },
+  { name: "César Dossou", content: "Service irréprochable, résultat livré. Je recommande.", country: "Congo" },
+  { name: "Maurice Acoumba", content: "Un vrai partenaire à l'écoute. Satisfait du travail accompli.", country: "Cameroun" },
+  { name: "Jean Edikou", content: "Site soigné, équipe à l'écoute. Une belle collaboration.", country: "Bénin" },
+  { name: "Chimène Koumai", content: "Rapide, professionnel, à l'écoute. Merci pour tout.", country: "Togo" },
+  { name: "Gérard Agatou'n", content: "Une confiance aveugle. Un travail agréable et efficace.", country: "Sénégal" },
+  { name: "Camille Benerd", content: "Un site qui me ressemble enfin. Merci pour ta patience et ton attention.", country: "Belgique" }
 ];
 
 const SocialProof = memo(function SocialProof() {
@@ -122,264 +38,104 @@ const SocialProof = memo(function SocialProof() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
-  const animationRef = useRef<number>();
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isReady, setIsReady] = useState(false);
 
-  // Dictionnaire des drapeaux (défini en dehors des blocs)
   const flags: {[key: string]: string} = {
-    "Côte d'Ivoire": '🇨🇮',
-    'France': '🇫🇷',
-    'Congo': '🇨🇬',
-    'Cameroun': '🇨🇲',
-    'Bénin': '🇧🇯',
-    'Togo': '🇹🇬',
-    'Sénégal': '🇸🇳',
-    'Belgique': '🇧🇪',
-    'USA': '🇺🇸',
-    'UK': '🇬🇧',
-    'Canada': '🇨🇦',
-    'Australia': '🇦🇺',
-    'Singapore': '🇸🇬',
-    'China': '🇨🇳',
-    'Spain': '🇪🇸'
+    "Côte d'Ivoire": '🇨🇮', 'France': '🇫🇷', 'Congo': '🇨🇬', 'Cameroun': '🇨🇲',
+    'Bénin': '🇧🇯', 'Togo': '🇹🇬', 'Sénégal': '🇸🇳', 'Belgique': '🇧🇪',
   };
 
   const gradients = [
-    'from-blue-500 to-cyan-500',
-    'from-emerald-500 to-teal-500',
+    'from-primary to-amber-500',
+    'from-secondary to-cyan-400',
     'from-amber-500 to-orange-500',
-    'from-green-500 to-emerald-500',
-    'from-indigo-500 to-purple-500',
-    'from-pink-500 to-rose-500',
+    'from-emerald-500 to-teal-500',
+    'from-primary to-amber-400',
     'from-violet-500 to-purple-500',
-    'from-red-500 to-pink-500'
+    'from-secondary to-blue-400',
+    'from-rose-500 to-pink-500',
   ];
 
-  // Attendre que les traductions soient chargées
-  useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
-  }, [isLoading]);
+  useEffect(() => { if (!isLoading) setIsReady(true); }, [isLoading]);
 
-  // Charger les témoignages
   useEffect(() => {
     if (!isReady) return;
-
     try {
-      // Récupérer les témoignages
-      const testimonialsData = t('testimonials', 'testimonials');
-      
-      let testimonialsArray = [];
-      
-      if (Array.isArray(testimonialsData) && testimonialsData.length > 0) {
-        testimonialsArray = testimonialsData;
-      } else {
-        // Fallback par langue
-        testimonialsArray = language === 'fr' ? DEFAULT_TESTIMONIALS_FR : DEFAULT_TESTIMONIALS_EN;
-      }
-
-      const enrichedTestimonials = testimonialsArray.map((testimonial: any, index: number) => {
-        const name = testimonial.name || '';
-        const nameParts = name.split(' ');
-        const initials = nameParts.length > 1 
-          ? (nameParts[0][0] + nameParts[nameParts.length-1][0]).toUpperCase()
-          : name.substring(0, 2).toUpperCase();
-
-        return {
-          name: testimonial.name || '',
-          content: testimonial.content || '',
-          country: testimonial.country || '',
-          rating: 5,
-          initials,
-          gradient: gradients[index % gradients.length],
-          flag: flags[testimonial.country] || '🌍'
-        };
-      });
-      
-      setTestimonials(enrichedTestimonials);
-    } catch (error) {
-      console.error('Erreur chargement témoignages:', error);
-      // Fallback en cas d'erreur
-      const fallback = language === 'fr' ? DEFAULT_TESTIMONIALS_FR : DEFAULT_TESTIMONIALS_EN;
-      const enriched = fallback.map((t, i) => ({
-        ...t,
-        rating: 5,
-        initials: t.name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase(),
-        gradient: gradients[i % gradients.length],
-        flag: flags[t.country] || '🌍'
+      const data = t('testimonials', 'testimonials');
+      const arr = Array.isArray(data) && data.length > 0 ? data : DEFAULT_TESTIMONIALS_FR;
+      setTestimonials(arr.map((t: any, i: number) => {
+        const parts = (t.name || '').split(' ');
+        const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length-1][0]).toUpperCase() : (t.name || '').substring(0, 2).toUpperCase();
+        return { ...t, rating: 5, initials, gradient: gradients[i % gradients.length], flag: flags[t.country] || '🌍' };
       }));
-      setTestimonials(enriched);
+    } catch {
+      setTestimonials(DEFAULT_TESTIMONIALS_FR.map((t, i) => ({
+        ...t, rating: 5, initials: t.name.split(' ').map(p => p[0]).join('').substring(0,2).toUpperCase(),
+        gradient: gradients[i % gradients.length], flag: flags[t.country] || '🌍'
+      })));
     }
-  }, [t, language, isReady]);
+  }, [t, isReady]);
 
-  // Types de projets avec fallback
   const projectTypes: ProjectType[] = [
-    {
-      icon: Building2,
-      title: t('projectTypes.startup.title', 'testimonials') || (language === 'fr' ? 'Startups & Scale-ups' : 'Startups & Scale-ups'),
-      description: t('projectTypes.startup.description', 'testimonials') || (language === 'fr' ? 'Développement de MVPs et solutions évolutives' : 'MVP development and scalable solutions'),
-      cta: t('projectTypes.startup.cta', 'testimonials') || (language === 'fr' ? 'Discuter de startup' : 'Discuss startup')
-    },
-    {
-      icon: Users,
-      title: t('projectTypes.sme.title', 'testimonials') || (language === 'fr' ? 'PME & Grands Comptes' : 'SME & Large Companies'),
-      description: t('projectTypes.sme.description', 'testimonials') || (language === 'fr' ? 'Accompagnement sur mesure pour votre transformation digitale' : 'Tailored support for your digital transformation'),
-      cta: t('projectTypes.sme.cta', 'testimonials') || (language === 'fr' ? 'Discuter de mon projet' : 'Discuss my project')
-    }
+    { icon: Building2, title: t('projectTypes.startup.title', 'testimonials') || 'Startups & Scale-ups', description: t('projectTypes.startup.description', 'testimonials') || 'Développement de MVPs et solutions évolutives', cta: t('projectTypes.startup.cta', 'testimonials') || 'Discuter de startup' },
+    { icon: Users, title: t('projectTypes.sme.title', 'testimonials') || 'PME & Grands Comptes', description: t('projectTypes.sme.description', 'testimonials') || 'Accompagnement sur mesure pour votre transformation digitale', cta: t('projectTypes.sme.cta', 'testimonials') || 'Discuter de mon projet' }
   ];
 
   const scrollToContact = useCallback(() => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  // Animation de défilement horizontal
   useEffect(() => {
-    if (testimonials.length === 0 || !scrollRef.current || !isReady) return;
-    
+    if (!scrollRef.current || testimonials.length === 0 || !isReady) return;
     let rafId: number;
-    let lastTimestamp = 0;
     const speed = 0.5;
-
-    const scroll = (timestamp: number) => {
-      if (!scrollRef.current) {
-        rafId = requestAnimationFrame(scroll);
-        return;
-      }
-
+    const scroll = () => {
+      if (!scrollRef.current) { rafId = requestAnimationFrame(scroll); return; }
       const { current } = scrollRef;
       const maxScroll = current.scrollWidth - current.clientWidth;
-
-      if (maxScroll <= 0) {
-        rafId = requestAnimationFrame(scroll);
-        return;
-      }
-
-      let newScrollLeft = current.scrollLeft + speed;
-
-      if (newScrollLeft >= maxScroll) {
-        newScrollLeft = 0;
-      }
-
-      current.scrollLeft = newScrollLeft;
-
-      if (timestamp - lastTimestamp > 200) {
-        setShowLeftArrow(newScrollLeft > 20);
-        setShowRightArrow(newScrollLeft + current.clientWidth < current.scrollWidth - 20);
-        lastTimestamp = timestamp;
-      }
-
+      if (maxScroll <= 0) { rafId = requestAnimationFrame(scroll); return; }
+      let newScroll = current.scrollLeft + speed;
+      if (newScroll >= maxScroll) newScroll = 0;
+      current.scrollLeft = newScroll;
+      setShowLeftArrow(newScroll > 20);
+      setShowRightArrow(newScroll + current.clientWidth < current.scrollWidth - 20);
       rafId = requestAnimationFrame(scroll);
     };
-
     rafId = requestAnimationFrame(scroll);
-
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    return () => cancelAnimationFrame(rafId);
   }, [testimonials.length, isReady]);
 
-  const checkScrollButtons = useCallback(() => {
-    if (scrollRef.current) {
-      const { current } = scrollRef;
-      setShowLeftArrow(current.scrollLeft > 20);
-      setShowRightArrow(current.scrollLeft + current.clientWidth < current.scrollWidth - 20);
-    }
+  const scroll = useCallback((direction: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    scrollRef.current.scrollBy({ left: direction === 'left' ? -384 : 384, behavior: 'smooth' });
+    setTimeout(() => {
+      if (scrollRef.current) {
+        const { current } = scrollRef;
+        setShowLeftArrow(current.scrollLeft > 20);
+        setShowRightArrow(current.scrollLeft + current.clientWidth < current.scrollWidth - 20);
+      }
+    }, 300);
   }, []);
 
-  const scroll = useCallback((direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const { current } = scrollRef;
-      const cardWidth = 360;
-      const gap = 24;
-      const scrollAmount = direction === 'left' ? -(cardWidth + gap) : (cardWidth + gap);
-
-      current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      setTimeout(checkScrollButtons, 300);
-    }
-  }, [checkScrollButtons]);
-
-  useEffect(() => {
-    checkScrollButtons();
-    window.addEventListener('resize', checkScrollButtons, { passive: true });
-    return () => window.removeEventListener('resize', checkScrollButtons);
-  }, [checkScrollButtons]);
-
-  // Animation variants (avec any pour éviter les erreurs TypeScript)
-  const fadeInUp: any = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
-  };
-
-  const staggerContainer: any = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
-  };
-
-  const cardHover: any = {
-    hover: { y: -5, boxShadow: '0 10px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
-  };
-
-  // SKELETON LOADER
   if (isLoading || !isReady || testimonials.length === 0) {
     return (
-      <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 relative z-10">
-          {/* En-tête skeleton */}
-          <div className="text-center mb-12 md:mb-16">
-            <div className="w-48 h-8 bg-gray-800/50 rounded-full mx-auto mb-6 animate-pulse" />
-            <div className="w-64 h-10 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-96 h-6 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+      <section className="py-20 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none"><div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/[0.03] rounded-full blur-[120px]" /></div>
+        <div className="container mx-auto px-6 relative z-10 max-w-7xl">
+          <div className="text-center mb-12 space-y-4">
+            <div className="w-40 h-10 bg-surface rounded-full mx-auto animate-pulse" />
+            <div className="w-56 h-10 bg-surface rounded-lg mx-auto animate-pulse" />
+            <div className="w-72 h-6 bg-surface rounded-lg mx-auto animate-pulse" />
           </div>
-
-          {/* Carrousel skeleton */}
-          <div className="flex gap-4 md:gap-6 justify-center mb-16">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B]/50 rounded-xl p-5 border border-gray-800/50">
-                <div className="w-8 h-8 bg-gray-800/50 rounded-full mb-3 animate-pulse" />
-                <div className="flex gap-1 mb-3">
-                  {[1, 2, 3, 4, 5].map((j) => (
-                    <div key={j} className="w-3 h-3 bg-gray-800/50 rounded-full animate-pulse" />
-                  ))}
-                </div>
-                <div className="w-full h-16 bg-gray-800/50 rounded-lg mb-4 animate-pulse" />
-                <div className="flex items-center gap-3 pt-3 border-t border-gray-800/50">
-                  <div className="w-10 h-10 bg-gray-800/50 rounded-full animate-pulse" />
-                  <div className="flex-1">
-                    <div className="w-24 h-4 bg-gray-800/50 rounded mb-2 animate-pulse" />
-                    <div className="w-16 h-3 bg-gray-800/50 rounded animate-pulse" />
-                  </div>
-                </div>
+          <div className="flex gap-4 justify-center mb-16">
+            {[1,2,3].map(i => (
+              <div key={i} className="min-w-[300px] bg-surface rounded-2xl p-6 space-y-3">
+                <div className="w-8 h-8 bg-border rounded-full animate-pulse" />
+                <div className="w-full h-16 bg-border rounded-lg animate-pulse" />
+                <div className="flex gap-3 pt-3 border-t border-border"><div className="w-10 h-10 bg-border rounded-full animate-pulse" /><div className="flex-1 space-y-2"><div className="w-24 h-4 bg-border rounded animate-pulse" /><div className="w-16 h-3 bg-border rounded animate-pulse" /></div></div>
               </div>
             ))}
-          </div>
-
-          {/* Projets skeleton */}
-          <div className="max-w-4xl mx-auto">
-            <div className="w-64 h-8 bg-gray-800/50 rounded-lg mx-auto mb-8 animate-pulse" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {[1, 2].map((i) => (
-                <div key={i} className="bg-[#141B2B]/50 rounded-xl p-5 border border-gray-800/50">
-                  <div className="flex gap-3 mb-4">
-                    <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
-                    <div className="flex-1">
-                      <div className="w-32 h-5 bg-gray-800/50 rounded mb-2 animate-pulse" />
-                      <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
-                    </div>
-                  </div>
-                  <div className="w-full h-8 bg-gray-800/50 rounded-lg animate-pulse" />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -389,247 +145,138 @@ const SocialProof = memo(function SocialProof() {
   const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials];
 
   return (
-    <section
-      className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden"
-      aria-label={language === 'fr' ? "Témoignages clients" : "Client testimonials"}
-    >
-      {/* FOND AVEC POINTS FIXES */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-
-        <motion.div 
-          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" 
-          animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          aria-hidden="true" 
-        />
-        <motion.div 
-          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" 
-          animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          aria-hidden="true" 
-        />
-
-        {LIGHT_POINTS.map((point, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
-            style={{ left: point.left, top: point.top }}
-            aria-hidden="true"
-          />
-        ))}
+    <section id="temoignages" className="py-16 sm:py-20 lg:py-24 bg-background relative overflow-hidden">
+      {/* Fond subtil */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/[0.03] rounded-full blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-secondary/[0.02] rounded-full blur-[120px]" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* En-tête */}
-        <motion.div 
-          className="text-center mb-12 md:mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          variants={staggerContainer}
-        >
-          <motion.div variants={fadeInUp}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20 backdrop-blur-sm">
-              <Award size={14} className="text-blue-400" />
-              <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
-                {t('badge', 'testimonials')}
-              </span>
-            </div>
-          </motion.div>
+      <div className="container mx-auto px-6 relative z-10 max-w-7xl">
+        
+        {/* Badge section - AVEC OMBRE */}
+        <motion.div className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}>
+          <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full"
+            style={{
+              background: 'linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 100%)',
+              border: '1px solid rgba(212,175,55,0.22)',
+              color: '#D4AF37',
+              boxShadow: '0 0 18px -4px rgba(212,175,55,0.18), inset 0 0 8px rgba(212,175,55,0.05)',
+            }}>
+            <Award size={16} />
+            <span className="text-sm font-semibold">{t('badge', 'testimonials')}</span>
+          </div>
+        </motion.div>
 
-          <motion.h2 
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-white tracking-tight"
-            variants={fadeInUp}
-          >
-            <span>
-              {t('title', 'testimonials')}
-            </span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 font-black tracking-tight">
-              {t('titleHighlight', 'testimonials')}
-            </span>
-          </motion.h2>
-
-          <motion.p 
-            className="text-base sm:text-lg md:text-xl text-gray-200 max-w-2xl mx-auto px-4 font-medium"
-            variants={fadeInUp}
-          >
+        {/* Titre */}
+        <motion.div className="text-center mb-14"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-3 leading-tight">
+            {t('title', 'testimonials')}
+          </h2>
+          <p className="text-gradient-gold text-2xl sm:text-3xl lg:text-4xl font-extrabold mb-4">
+            {t('titleHighlight', 'testimonials')}
+          </p>
+          <div className="w-20 h-1 bg-gradient-to-r from-primary to-amber-400 rounded-full mx-auto mb-5" />
+          <p className="text-base sm:text-lg text-muted max-w-2xl mx-auto">
             {t('subtitle', 'testimonials')}
-          </motion.p>
+          </p>
         </motion.div>
 
         {/* Carrousel */}
-        <motion.div 
-          className="relative max-w-7xl mx-auto mb-16 md:mb-20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          {/* Flèches */}
-          <>
-            <button
-              onClick={() => scroll('left')}
-              className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none"
-              style={{ opacity: showLeftArrow ? 1 : 0 }}
-              aria-label={language === 'fr' ? "Témoignages précédents" : "Previous testimonials"}
-              disabled={!showLeftArrow}
-            >
-              <ChevronLeft size={20} />
-            </button>
+        <div className="relative max-w-7xl mx-auto mb-16">
+          <button onClick={() => scroll('left')}
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-20 bg-surface rounded-full p-3 text-muted hover:text-primary transition-all duration-200"
+            style={{ opacity: showLeftArrow ? 1 : 0, pointerEvents: showLeftArrow ? 'auto' : 'none', boxShadow: '0 4px 15px -5px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,42,62,0.4)' }}>
+            <ChevronLeft size={20} />
+          </button>
+          <button onClick={() => scroll('right')}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 z-20 bg-surface rounded-full p-3 text-muted hover:text-primary transition-all duration-200"
+            style={{ opacity: showRightArrow ? 1 : 0, pointerEvents: showRightArrow ? 'auto' : 'none', boxShadow: '0 4px 15px -5px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,42,62,0.4)' }}>
+            <ChevronRight size={20} />
+          </button>
 
-            <button
-              onClick={() => scroll('right')}
-              className="absolute -right-4 top-1/2 -translate-y-1/2 z-20 bg-[#141B2B] rounded-full p-3 shadow-lg hover:shadow-xl border border-[#1F2937] hover:border-blue-500 text-gray-300 hover:text-blue-400 transition-all duration-200 disabled:opacity-0 disabled:pointer-events-none"
-              style={{ opacity: showRightArrow ? 1 : 0 }}
-              aria-label={language === 'fr' ? "Témoignages suivants" : "Next testimonials"}
-              disabled={!showRightArrow}
-            >
-              <ChevronRight size={20} />
-            </button>
-          </>
-
-          {/* Conteneur des témoignages */}
-          <div
-            ref={scrollRef}
-            className="flex overflow-x-auto gap-4 md:gap-6 pb-8 scrollbar-hide"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none',
-              WebkitOverflowScrolling: 'touch',
-              scrollBehavior: 'auto'
-            }}
-          >
+          <div ref={scrollRef} className="flex overflow-x-auto gap-5 pb-6 scrollbar-hide"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             {duplicatedTestimonials.map((testimonial, index) => (
-              <motion.div
-                key={`${testimonial.name}-${index}`}
-                className="min-w-[280px] sm:min-w-[320px] md:min-w-[360px] bg-[#141B2B] rounded-xl md:rounded-2xl p-5 md:p-6 border border-[#1F2937] shadow-md hover:shadow-xl transition-shadow duration-300 relative flex-shrink-0 will-change-transform"
-                whileHover={{ y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)' }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="relative z-10">
-                  <Quote className="w-6 h-6 md:w-8 md:h-8 text-blue-500/20 mb-2 md:mb-3" />
-
-                  <div className="flex mb-2 md:mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="fill-blue-400 text-blue-400" size={14} />
-                    ))}
+              <motion.div key={`${testimonial.name}-${index}`}
+                className="min-w-[290px] sm:min-w-[340px] md:min-w-[370px] bg-surface rounded-2xl p-6 flex-shrink-0"
+                style={{ boxShadow: '0 8px 25px -10px rgba(0,0,0,0.4)' }}
+                whileHover={{ y: -4, boxShadow: '0 15px 35px -12px rgba(212,175,55,0.1)' }}>
+                
+                <Quote size={22} className="text-primary/15 mb-3" />
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={13} className="fill-primary text-primary" />
+                  ))}
+                </div>
+                <p className="text-sm text-muted italic mb-4 line-clamp-3 leading-relaxed">"{testimonial.content}"</p>
+                <div className="flex items-center gap-3 pt-3 border-t border-border/50">
+                  {/* Avatar avec ombre */}
+                  <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-xs font-bold text-white flex-shrink-0`}
+                    style={{ boxShadow: '0 4px 12px -3px rgba(0,0,0,0.4)' }}>
+                    {testimonial.initials}
                   </div>
-
-                  <p className="text-gray-200 mb-3 md:mb-4 italic text-xs sm:text-sm md:text-base font-medium line-clamp-3">
-                    "{testimonial.content}"
-                  </p>
-
-                  <div className="flex items-center gap-2 md:gap-3 pt-2 md:pt-3 border-t border-[#1F2937]">
-                    <div className={`relative w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br ${testimonial.gradient} flex items-center justify-center text-white text-xs md:text-sm font-black border-2 border-[#1F2937] shadow-md flex-shrink-0 tracking-tight`}>
-                      {testimonial.initials}
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="font-extrabold text-white text-xs sm:text-sm md:text-base tracking-tight truncate">
-                        {testimonial.name}
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-gray-400 mt-0.5 font-medium">
-                        <MapPin size={10} className="text-blue-400 flex-shrink-0" />
-                        <span className="truncate">{testimonial.flag} {testimonial.country}</span>
-                      </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-foreground truncate">{testimonial.name}</p>
+                    <div className="flex items-center gap-1 text-xs text-muted mt-0.5">
+                      <MapPin size={10} className="text-primary/60 flex-shrink-0" />
+                      <span className="truncate">{testimonial.flag} {testimonial.country}</span>
                     </div>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Types de projets */}
-        <motion.div 
-          className="max-w-4xl mx-auto mb-12 md:mb-16"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainer}
-        >
-          <motion.h3 
-            className="text-xl sm:text-2xl md:text-3xl font-extrabold text-center mb-8 md:mb-10 text-white tracking-tight"
-            variants={fadeInUp}
-          >
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-xl sm:text-2xl font-extrabold text-center text-foreground mb-8">
             {t('projectTypes.title', 'testimonials')}
-          </motion.h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
-            {projectTypes.map((type, idx) => (
-              <motion.div
-                key={type.title}
-                className="bg-[#141B2B] rounded-xl sm:rounded-2xl p-5 sm:p-6 md:p-8 border border-[#1F2937] shadow-md hover:shadow-xl hover:border-blue-500/30 transition-all duration-300"
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="flex items-start gap-3 sm:gap-4 mb-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
-                    <type.icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {projectTypes.map((type) => (
+              <motion.div key={type.title}
+                className="bg-surface rounded-2xl p-6 sm:p-7"
+                style={{ boxShadow: '0 8px 25px -10px rgba(0,0,0,0.4)' }}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4 }}
+                whileHover={{ y: -3, boxShadow: '0 15px 35px -12px rgba(212,175,55,0.08)' }}>
+                <div className="flex items-start gap-4 mb-5">
+                  {/* Icône avec ombre */}
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 100%)',
+                      border: '1px solid rgba(212,175,55,0.18)',
+                      boxShadow: '0 0 12px -3px rgba(212,175,55,0.12)',
+                    }}>
+                    <type.icon size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight">
-                      {type.title}
-                    </h4>
-                    <p className="text-xs sm:text-sm md:text-base text-gray-300 mt-1 font-medium line-clamp-2">
-                      {type.description}
-                    </p>
+                    <h4 className="text-base sm:text-lg font-bold text-foreground">{type.title}</h4>
+                    <p className="text-sm text-muted mt-1">{type.description}</p>
                   </div>
                 </div>
-
-                <div className="mt-4 pt-4 border-t border-[#1F2937]">
-                  <button
-                    onClick={scrollToContact}
-                    className="w-full flex items-center justify-between group"
-                    aria-label={type.cta}
-                  >
-                    <span className="text-blue-400 font-semibold text-sm sm:text-base md:text-lg tracking-tight">
-                      {type.cta}
-                    </span>
-                    <motion.div 
-                      className="bg-blue-500/10 p-2 rounded-full transition-colors duration-200 group-hover:bg-blue-500/20"
-                      whileHover={{ x: 3 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <ArrowRight size={16} className="text-blue-400" />
-                    </motion.div>
+                <div className="pt-4 border-t border-border/50">
+                  <button onClick={scrollToContact} className="w-full flex items-center justify-between text-primary font-semibold text-sm hover:text-amber-400 transition-colors group">
+                    {type.cta}
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
 
       <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .line-clamp-3 {
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
       `}</style>
     </section>
   );
 });
 
 SocialProof.displayName = 'SocialProof';
-
 export default SocialProof;

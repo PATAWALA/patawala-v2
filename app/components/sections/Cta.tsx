@@ -2,15 +2,12 @@
 
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
-  Calendar, Sparkles, CheckCircle, MessageCircle, Phone,
+  Sparkles, CheckCircle, MessageCircle, Phone,
   Mail, MapPin, Heart, Smartphone, Send, Clock,
   Instagram, Linkedin, Twitter, Github, Facebook
 } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/app/hooks/useTranslation';
-
-const BookingModal = dynamic(() => import('../ui/BookingModal'), { ssr: false });
 
 interface ContactInfo {
   whatsapp: [string, string];
@@ -47,7 +44,6 @@ const SOCIAL_LINKS = [
 
 const CTASection = memo(function CTASection() {
   const { t, language, isLoading } = useTranslation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
   const [contactInfo, setContactInfo] = useState<ContactInfo>(DEFAULT_CONTACT_INFO_FR);
@@ -78,10 +74,7 @@ const CTASection = memo(function CTASection() {
     }
   }, [t, language, isReady]);
 
-  const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
-  const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
   const handleDirectWhatsApp = useCallback(() => window.open('https://wa.me/22962278090', '_blank'), []);
-  const handleWhatsAppClick = useCallback((phoneNumber: string) => window.open(`https://wa.me/${phoneNumber}`, '_blank'), []);
 
   const handleCopy = useCallback((text: string, displayText: string) => {
     navigator.clipboard.writeText(text);
@@ -93,7 +86,6 @@ const CTASection = memo(function CTASection() {
     }, 2000);
   }, []);
 
-  // Variants Framer Motion
   const fadeInUp: any = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] } }
@@ -104,44 +96,39 @@ const CTASection = memo(function CTASection() {
     visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
   };
 
-  const cardHover: any = {
-    hover: { y: -5, boxShadow: '0 15px 30px -10px rgba(59,130,246,0.3)', transition: { duration: 0.2 } }
-  };
-
-  // SKELETON LOADER (inchangé)
   if (isLoading || !isReady) {
     return (
-      <section className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
+      <section className="py-16 md:py-24 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-20 left-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-40 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 sm:px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center mb-12">
             <div className="w-full flex justify-center mb-6">
-              <div className="w-32 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+              <div className="w-32 h-8 bg-surface rounded-full animate-pulse" />
             </div>
-            <div className="w-48 h-8 bg-gray-800/50 rounded-lg mx-auto mb-4 animate-pulse" />
-            <div className="w-64 h-6 bg-gray-800/50 rounded-lg mx-auto mb-6 animate-pulse" />
-            <div className="w-96 h-4 bg-gray-800/50 rounded-lg mx-auto animate-pulse" />
+            <div className="w-48 h-8 bg-surface rounded-lg mx-auto mb-4 animate-pulse" />
+            <div className="w-64 h-6 bg-surface rounded-lg mx-auto mb-6 animate-pulse" />
+            <div className="w-96 h-4 bg-surface rounded-lg mx-auto animate-pulse" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
             {[1, 2].map((i) => (
-              <div key={i} className="bg-[#141B2B]/50 rounded-xl border border-gray-800/50 p-6">
-                <div className="w-32 h-6 bg-gray-800/50 rounded mb-4 animate-pulse" />
+              <div key={i} className="bg-surface rounded-xl border border-border p-6">
+                <div className="w-32 h-6 bg-border rounded mb-4 animate-pulse" />
                 <div className="space-y-3">
                   {[1, 2, 3].map((j) => (
-                    <div key={j} className="flex flex-col sm:flex-row gap-2 p-3 bg-gray-800/30 rounded-lg">
+                    <div key={j} className="flex flex-col sm:flex-row gap-2 p-3 bg-border/30 rounded-lg">
                       <div className="flex items-center gap-3 flex-1">
-                        <div className="w-8 h-8 bg-gray-800/50 rounded-full animate-pulse" />
+                        <div className="w-8 h-8 bg-border rounded-full animate-pulse" />
                         <div className="flex-1">
-                          <div className="w-16 h-3 bg-gray-800/50 rounded mb-2 animate-pulse" />
-                          <div className="w-24 h-4 bg-gray-800/50 rounded animate-pulse" />
+                          <div className="w-16 h-3 bg-border rounded mb-2 animate-pulse" />
+                          <div className="w-24 h-4 bg-border rounded animate-pulse" />
                         </div>
                       </div>
                       <div className="flex gap-2 w-full sm:w-auto">
-                        <div className="flex-1 sm:w-16 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
-                        <div className="flex-1 sm:w-16 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
+                        <div className="flex-1 sm:w-16 h-8 bg-border rounded-lg animate-pulse" />
+                        <div className="flex-1 sm:w-16 h-8 bg-border rounded-lg animate-pulse" />
                       </div>
                     </div>
                   ))}
@@ -151,10 +138,8 @@ const CTASection = memo(function CTASection() {
           </div>
           <div className="max-w-2xl mx-auto text-center">
             <div className="flex justify-center gap-4 mb-6">
-              <div className="w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
-              <div className="w-32 h-12 bg-gray-800/50 rounded-xl animate-pulse" />
+              <div className="w-32 h-12 bg-border rounded-xl animate-pulse" />
             </div>
-            <div className="w-48 h-12 bg-gray-800/50 rounded-xl mx-auto animate-pulse" />
           </div>
         </div>
       </section>
@@ -163,49 +148,34 @@ const CTASection = memo(function CTASection() {
 
   return (
     <>
-      <section id="contact" className="py-16 md:py-24 bg-[#0A0F1C] relative overflow-hidden" aria-labelledby="contact-title">
+      {showCopyAlert && (
+        <motion.div
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          <CheckCircle size={18} />
+          <span className="text-sm font-bold">{copiedText} ✓</span>
+        </motion.div>
+      )}
 
-        {/* Alert de copie */}
-        {showCopyAlert && (
+      <section id="contact" className="py-16 md:py-24 bg-background relative overflow-hidden" aria-labelledby="contact-title">
+        <div className="absolute inset-0 pointer-events-none">
           <motion.div
-            className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-          >
-            <CheckCircle size={18} />
-            <span className="text-sm font-bold tracking-tight">{copiedText} ✓</span>
-          </motion.div>
-        )}
-
-        {/* FOND */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.05) 0px, rgba(59,130,246,0.05) 1px, transparent 1px, transparent 60px)`
-            }}
-            aria-hidden="true"
-          />
-          <motion.div
-            className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"
+            className="absolute top-20 left-10 w-80 h-80 bg-primary/10 rounded-full blur-3xl"
             animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.3, 0.2] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
             aria-hidden="true"
           />
           <motion.div
-            className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
+            className="absolute bottom-40 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"
             animate={{ scale: [1, 1.08, 1], opacity: [0.15, 0.25, 0.15] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
             aria-hidden="true"
           />
           {lightPoints.map((point, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400/10 rounded-full"
-              style={{ left: point.left, top: point.top }}
-              aria-hidden="true"
-            />
+            <div key={i} className="absolute w-1 h-1 bg-primary/10 rounded-full" style={{ left: point.left, top: point.top }} aria-hidden="true" />
           ))}
         </div>
 
@@ -218,9 +188,9 @@ const CTASection = memo(function CTASection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/20 backdrop-blur-sm">
-                <Sparkles size={14} className="text-blue-400" />
-                <span className="text-xs sm:text-sm font-bold text-blue-400 tracking-tight">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 backdrop-blur-sm">
+                <Sparkles size={14} className="text-primary" />
+                <span className="text-xs sm:text-sm font-bold text-primary tracking-tight">
                   {t('badge', 'contact')}
                 </span>
               </div>
@@ -234,16 +204,16 @@ const CTASection = memo(function CTASection() {
             >
               <motion.h2
                 id="contact-title"
-                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 px-4 text-white leading-tight tracking-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 md:mb-6 px-4 text-foreground leading-tight tracking-tight"
                 variants={fadeInUp}
               >
                 <span>{t('title', 'contact')}</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-2 font-black tracking-tight">
+                <span className="block text-gradient-gold mt-2 font-black tracking-tight">
                   {t('titleHighlight', 'contact')}
                 </span>
               </motion.h2>
               <motion.p
-                className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto px-4 font-medium"
+                className="text-base sm:text-lg md:text-xl text-muted mb-6 md:mb-8 max-w-2xl mx-auto px-4 font-medium"
                 variants={fadeInUp}
               >
                 {t('subtitle', 'contact')}
@@ -261,37 +231,37 @@ const CTASection = memo(function CTASection() {
           >
             {/* Direct Contact Card */}
             <motion.div
-              className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg"
+              className="bg-surface rounded-xl border border-border p-4 sm:p-6 hover:border-primary/30 transition-all duration-300 shadow-lg"
               variants={fadeInUp}
               whileHover="hover"
             >
-              <h3 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2 tracking-tight">
-                <Phone size={18} className="text-blue-400" />
+              <h3 className="text-lg font-extrabold text-foreground mb-4 flex items-center gap-2 tracking-tight">
+                <Phone size={18} className="text-primary" />
                 <span>{t('contactCards.direct.title', 'contact')}</span>
               </h3>
 
               <div className="space-y-3">
                 {/* Appels */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-background rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Smartphone size={16} className="text-blue-400" />
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Smartphone size={16} className="text-primary" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-gray-400 font-medium">{t('contactCards.direct.calls', 'contact')}</p>
-                      <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.calls[1]}</p>
+                      <p className="text-xs text-muted font-medium">{t('contactCards.direct.calls', 'contact')}</p>
+                      <p className="text-sm text-foreground font-bold truncate tracking-tight">{contactInfo.calls[1]}</p>
                     </div>
                   </div>
                   <div className="flex flex-row gap-2 w-full sm:w-auto">
                     <a
                       href={`tel:${contactInfo.calls[0]}`}
-                      className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold text-center tracking-tight"
+                      className="flex-1 sm:flex-initial px-3 py-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors text-xs text-primary font-bold text-center tracking-tight"
                     >
                       {language === 'fr' ? 'Appeler' : 'Call'}
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.calls[0], contactInfo.calls[1])}
-                      className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold tracking-tight"
+                      className="flex-1 sm:flex-initial px-3 py-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors text-xs text-primary font-bold tracking-tight"
                     >
                       {t('buttons.copy', 'contact')}
                     </button>
@@ -306,7 +276,7 @@ const CTASection = memo(function CTASection() {
                     </div>
                     <div className="text-left min-w-0 flex-1">
                       <p className="text-xs text-red-400 font-bold tracking-tight">{t('contactCards.direct.emergency', 'contact')}</p>
-                      <p className="text-sm text-white font-black truncate tracking-tight">{contactInfo.emergency[1]}</p>
+                      <p className="text-sm text-foreground font-black truncate tracking-tight">{contactInfo.emergency[1]}</p>
                     </div>
                   </div>
                   <div className="flex flex-row gap-2 w-full sm:w-auto">
@@ -329,38 +299,38 @@ const CTASection = memo(function CTASection() {
 
             {/* Info Card */}
             <motion.div
-              className="bg-[#141B2B] rounded-xl border border-[#1F2937] p-4 sm:p-6 hover:border-blue-500/30 transition-all duration-300 shadow-lg"
+              className="bg-surface rounded-xl border border-border p-4 sm:p-6 hover:border-primary/30 transition-all duration-300 shadow-lg"
               variants={fadeInUp}
               whileHover="hover"
             >
-              <h3 className="text-lg font-extrabold text-white mb-4 flex items-center gap-2 tracking-tight">
-                <Mail size={18} className="text-blue-400" />
+              <h3 className="text-lg font-extrabold text-foreground mb-4 flex items-center gap-2 tracking-tight">
+                <Mail size={18} className="text-primary" />
                 <span>{t('contactCards.info.title', 'contact')}</span>
               </h3>
 
               <div className="space-y-3">
                 {/* Email */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-[#1F2937] rounded-lg gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 bg-background rounded-lg gap-2">
                   <div className="flex items-center gap-3 min-w-0 flex-1">
-                    <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Mail size={16} className="text-blue-400" />
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Mail size={16} className="text-primary" />
                     </div>
                     <div className="text-left min-w-0 flex-1">
-                      <p className="text-xs text-gray-400 font-medium">{t('contactCards.info.email', 'contact')}</p>
-                      <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.email}</p>
+                      <p className="text-xs text-muted font-medium">{t('contactCards.info.email', 'contact')}</p>
+                      <p className="text-sm text-foreground font-bold truncate tracking-tight">{contactInfo.email}</p>
                     </div>
                   </div>
                   <div className="flex flex-row gap-2 w-full sm:w-auto">
                     <a
                       href={`mailto:${contactInfo.email}`}
-                      className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors flex items-center justify-center gap-1"
+                      className="flex-1 sm:flex-initial px-3 py-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors flex items-center justify-center gap-1"
                     >
-                      <Send size={14} className="text-blue-400" />
-                      <span className="text-xs text-blue-400 font-bold sm:hidden tracking-tight">Email</span>
+                      <Send size={14} className="text-primary" />
+                      <span className="text-xs text-primary font-bold sm:hidden tracking-tight">Email</span>
                     </a>
                     <button
                       onClick={() => handleCopy(contactInfo.email, contactInfo.email)}
-                      className="flex-1 sm:flex-initial px-3 py-2 bg-blue-500/20 rounded-lg hover:bg-blue-500/30 transition-colors text-xs text-blue-400 font-bold tracking-tight"
+                      className="flex-1 sm:flex-initial px-3 py-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors text-xs text-primary font-bold tracking-tight"
                     >
                       {t('buttons.copy', 'contact')}
                     </button>
@@ -368,20 +338,20 @@ const CTASection = memo(function CTASection() {
                 </div>
 
                 {/* Localisation */}
-                <div className="flex items-center gap-3 p-3 bg-[#1F2937] rounded-lg">
-                  <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin size={16} className="text-cyan-400" />
+                <div className="flex items-center gap-3 p-3 bg-background rounded-lg">
+                  <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MapPin size={16} className="text-secondary" />
                   </div>
                   <div className="text-left min-w-0">
-                    <p className="text-xs text-gray-400 font-medium">{t('contactCards.info.location', 'contact')}</p>
-                    <p className="text-sm text-white font-bold truncate tracking-tight">{contactInfo.location}</p>
+                    <p className="text-xs text-muted font-medium">{t('contactCards.info.location', 'contact')}</p>
+                    <p className="text-sm text-foreground font-bold truncate tracking-tight">{contactInfo.location}</p>
                   </div>
                 </div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons – uniquement WhatsApp et disponibilité */}
           <motion.div
             className="max-w-2xl mx-auto text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
@@ -392,18 +362,18 @@ const CTASection = memo(function CTASection() {
             <div className="flex justify-center mb-6">
               <div className="flex flex-row flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:gap-x-4">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.firstExchange', 'contact')}</span>
+                  <CheckCircle size={12} className="text-primary" />
+                  <span className="text-xs text-muted sm:text-sm font-medium">{t('guarantees.firstExchange', 'contact')}</span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline">•</span>
+                <span className="text-border hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.free30min', 'contact')}</span>
+                  <Clock size={12} className="text-primary" />
+                  <span className="text-xs text-muted sm:text-sm font-medium">{t('guarantees.free30min', 'contact')}</span>
                 </div>
-                <span className="text-gray-600 hidden sm:inline">•</span>
+                <span className="text-border hidden sm:inline">•</span>
                 <div className="flex items-center gap-1.5">
-                  <Heart size={12} className="sm:w-3.5 sm:h-3.5 text-blue-400" />
-                  <span className="text-xs text-gray-300 sm:text-sm font-medium">{t('guarantees.noCommitment', 'contact')}</span>
+                  <Heart size={12} className="text-primary" />
+                  <span className="text-xs text-muted sm:text-sm font-medium">{t('guarantees.noCommitment', 'contact')}</span>
                 </div>
               </div>
             </div>
@@ -415,27 +385,17 @@ const CTASection = memo(function CTASection() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <MessageCircle size={18} className="sm:w-5 sm:h-5" />
+                <MessageCircle size={18} />
                 <span>{t('buttons.whatsapp', 'contact')}</span>
-              </motion.button>
-
-              <motion.button
-                onClick={handleOpenModal}
-                className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-xs sm:w-auto min-h-[44px] active:scale-[0.98] tracking-tight"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Calendar size={18} className="sm:w-5 sm:h-5" />
-                <span>{t('buttons.schedule', 'contact')}</span>
               </motion.button>
             </div>
 
-            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-[#141B2B] rounded-xl border border-[#1F2937] shadow-lg hover:shadow-xl hover:border-blue-500/30 transition-all duration-300">
+            <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-surface rounded-xl border border-border shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm sm:text-base text-gray-200 font-semibold">{t('availability.thisWeek', 'contact')}</span>
+                <span className="text-sm sm:text-base text-foreground font-semibold">{t('availability.thisWeek', 'contact')}</span>
               </div>
-              <span className="text-lg sm:text-xl font-black text-blue-400 tracking-tight">
+              <span className="text-lg sm:text-xl font-black text-primary tracking-tight">
                 2 {t('availability.slots', 'contact')}
               </span>
             </div>
@@ -450,10 +410,10 @@ const CTASection = memo(function CTASection() {
             variants={staggerContainer}
           >
             <motion.h3
-              className="text-center text-lg font-extrabold text-white mb-6 flex items-center justify-center gap-2 tracking-tight"
+              className="text-center text-lg font-extrabold text-foreground mb-6 flex items-center justify-center gap-2 tracking-tight"
               variants={fadeInUp}
             >
-              <Heart size={18} className="text-blue-400" />
+              <Heart size={18} className="text-primary" />
               <span>{t('social.title', 'contact')}</span>
             </motion.h3>
 
@@ -464,14 +424,14 @@ const CTASection = memo(function CTASection() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-2 p-3 bg-[#141B2B] rounded-lg border border-[#1F2937] ${social.color} transition-all duration-300 hover:scale-105 group`}
+                  className={`flex items-center gap-2 p-3 bg-surface rounded-lg border border-border ${social.color} transition-all duration-300 hover:scale-105 group`}
                   variants={fadeInUp}
                   whileHover={{ y: -3 }}
                 >
-                  <social.icon size={18} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
+                  <social.icon size={18} className="text-muted group-hover:text-foreground transition-colors flex-shrink-0" />
                   <div className="flex-1 text-left overflow-hidden">
-                    <p className="text-xs text-gray-400 font-medium">{social.name}</p>
-                    <p className="text-xs text-white font-bold truncate tracking-tight">{social.username}</p>
+                    <p className="text-xs text-muted font-medium">{social.name}</p>
+                    <p className="text-xs text-foreground font-bold truncate tracking-tight">{social.username}</p>
                   </div>
                 </motion.a>
               ))}
@@ -479,8 +439,6 @@ const CTASection = memo(function CTASection() {
           </motion.div>
         </div>
       </section>
-
-      <BookingModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </>
   );
 });

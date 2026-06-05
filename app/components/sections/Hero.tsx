@@ -3,7 +3,6 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, Sparkles, Star } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import profileImage from '../../assets/images/hero1.png';
 import profile2Image from '../../assets/images/profile2.webp';
@@ -12,7 +11,6 @@ import { useTranslation } from '@/app/hooks/useTranslation';
 
 const HeroSection = memo(function HeroSection() {
   const { t, tArray, language, isLoading } = useTranslation();
-  const router = useRouter();
   const [displayText, setDisplayText] = useState('');
   const [stringIndex, setStringIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -24,31 +22,22 @@ const HeroSection = memo(function HeroSection() {
   const pauseTimeoutRef = useRef<NodeJS.Timeout>();
   
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   
   const typedStrings = tArray('typed.strings', 'hero');
   
-  const fallbackStrings = language === 'fr' 
-    ? [ "votre site internet haute performance.",
-        "votre agent IA sur-mesure.",
-        "votre tunnel de vente optimisé.",
-        "vos automatisations intelligentes.",
-        "votre application métier rentable.",
-        "la stratégie digitale de votre business."]
-    : [        "your high-performance website.",
-        "your custom AI agent.",
-        "your optimized sales funnel.",
-        "your smart automations.",
-        "your profitable business app.",
-        "your digital growth strategy."];
+  const fallbackStrings = [
+    "votre site internet haute performance.",
+    "votre agent IA sur-mesure.",
+    "votre tunnel de vente optimisé.",
+    "vos automatisations intelligentes.",
+    "votre application métier rentable.",
+    "la stratégie digitale de votre business."
+  ];
 
   const stringsToUse = typedStrings.length > 0 ? typedStrings : fallbackStrings;
 
@@ -78,7 +67,7 @@ const HeroSection = memo(function HeroSection() {
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    const typingSpeed = isMobile ? 120 : 180;
+    const typingSpeed = isMobile ? 120 : 80;
 
     timeoutRef.current = setTimeout(() => {
       if (isDeleting) {
@@ -123,22 +112,21 @@ const HeroSection = memo(function HeroSection() {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
-  const navigateToServices = useCallback(() => {
-    window.location.href = '/services';
+  const scrollToExpertise = useCallback(() => {
+    document.getElementById('expertise')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
   const avatarImages = [
-    { src: profile2Image, alt: t('altImages.avatar', 'hero') || 'Client' },
-    { src: profile4Image, alt: t('altImages.avatar', 'hero') || 'Client' },
+    { src: profile2Image, alt: 'Client satisfait' },
+    { src: profile4Image, alt: 'Client satisfait' },
   ];
 
-  // Animation variants pour Framer Motion
-  const fadeInUp : any = {
+  const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
-  };
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  } as const;
 
-  const staggerContainer : any = {
+  const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -147,23 +135,23 @@ const HeroSection = memo(function HeroSection() {
         delayChildren: 0.2
       }
     }
-  };
+  } as const;
 
   if (isLoading && !isReady) {
     return (
-      <section className="min-h-screen relative overflow-hidden flex items-center pt-16 bg-[#0B1120]">
+      <section className="min-h-screen relative flex items-center bg-background">
         <div className="container mx-auto px-4">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-700 rounded w-48 mx-auto mb-8"></div>
+            <div className="h-8 bg-border rounded-full w-48 mx-auto mb-8"></div>
             <div className="flex flex-col lg:flex-row gap-10">
               <div className="flex-1 space-y-6">
-                <div className="h-12 bg-gray-700 rounded w-3/4 mx-auto lg:mx-0"></div>
-                <div className="h-12 bg-gray-700 rounded w-full"></div>
-                <div className="h-24 bg-gray-700 rounded w-full"></div>
-                <div className="h-16 bg-gray-700 rounded w-64"></div>
+                <div className="h-12 bg-border rounded-lg w-3/4 mx-auto lg:mx-0"></div>
+                <div className="h-12 bg-border rounded-lg w-full"></div>
+                <div className="h-24 bg-border rounded-lg w-full"></div>
+                <div className="h-16 bg-border rounded-lg w-64"></div>
               </div>
               <div className="flex-1">
-                <div className="w-full max-w-[400px] aspect-square bg-gray-700 rounded-2xl mx-auto"></div>
+                <div className="w-full max-w-[400px] aspect-square bg-border rounded-2xl mx-auto"></div>
               </div>
             </div>
           </div>
@@ -175,50 +163,43 @@ const HeroSection = memo(function HeroSection() {
   return (
     <section
       id="hero"
-      className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12 font-sans"
+      className="min-h-screen relative overflow-hidden flex items-center pt-16 sm:pt-20 md:pt-24 lg:pt-10 xl:pt-12"
       aria-label={language === 'fr' ? "Section d'accueil" : "Hero section"}
     >
       {/* FOND */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        <div
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(59,130,246,0.08) 0px, rgba(59,130,246,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 opacity-50"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, rgba(6,182,212,0.08) 0px, rgba(6,182,212,0.08) 1px, transparent 1px, transparent 60px)`
-          }}
-          aria-hidden="true"
-        />
+      <div className="absolute inset-0 bg-background">
         <motion.div 
-          className="absolute top-20 left-10 w-80 h-80 bg-blue-500/30 rounded-full blur-3xl" 
+          className="absolute top-20 left-10 w-80 h-80 bg-primary/10 rounded-full blur-[100px]" 
           animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true" 
         />
         <motion.div 
-          className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl" 
+          className="absolute bottom-40 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-[100px]" 
           animate={{ scale: [1, 1.08, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           aria-hidden="true" 
         />
       </div>
 
       <div className="container mx-auto px-4 sm:px-4 md:px-6 relative z-10 py-8 sm:py-6 md:py-8 lg:py-12">
-        {/* Badge principal */}
+        {/* Badge avec ombre */}
         <motion.div 
           className="w-full hidden md:flex justify-center mb-6 md:mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 px-5 py-2.5 rounded-full border border-blue-500/20 backdrop-blur-sm">
-            <Sparkles size={16} className="text-blue-400" aria-hidden="true" />
-            <span className="text-sm md:text-sm font-semibold whitespace-nowrap">
+          <div 
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-primary"
+            style={{ 
+              background: 'linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(212,175,55,0.05) 100%)',
+              border: '1px solid rgba(212,175,55,0.3)',
+              boxShadow: '0 0 20px -5px rgba(212,175,55,0.2), inset 0 0 10px rgba(212,175,55,0.05)'
+            }}
+          >
+            <Sparkles size={16} aria-hidden="true" />
+            <span className="text-sm font-semibold whitespace-nowrap">
               {t('badge', 'hero')}
             </span>
           </div>
@@ -234,17 +215,15 @@ const HeroSection = memo(function HeroSection() {
           >
             {/* TITRE */}
             <motion.h1 
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight text-white mb-1 md:mb-5"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-1 md:mb-5"
               variants={fadeInUp}
             >
-              <span>
+              <span className="block text-foreground">
                 {t('title', 'hero')}
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mt-1 md:mt-2 font-black">
-                <span className="text-xl md:text-3xl lg:text-4xl xl:text-5xl text-blue-400">
-                  {displayText}
-                  <span className="animate-pulse ml-1">|</span>
-                </span>
+              <span className="block text-gradient-gold mt-1 md:mt-2 min-h-[1.2em]">
+                {displayText}
+                <span className="animate-pulse ml-1">|</span>
               </span>
             </motion.h1>
 
@@ -253,7 +232,7 @@ const HeroSection = memo(function HeroSection() {
               className="space-y-2 md:space-y-3 mb-3 md:mb-4 px-1 sm:px-2"
               variants={fadeInUp}
             >
-              <p className="text-sm md:text-lg lg:text-xl text-white font-bold leading-tight md:leading-relaxed">
+              <p className="text-sm md:text-lg lg:text-xl text-foreground/80 leading-tight md:leading-relaxed">
                 {t('subtitle', 'hero')}
               </p>
             </motion.div>
@@ -267,7 +246,7 @@ const HeroSection = memo(function HeroSection() {
                 {avatarImages.map((avatar, index) => (
                   <div
                     key={index}
-                    className="relative w-7 h-7 md:w-7 md:h-7 rounded-full border-2 border-[#1F2937] overflow-hidden bg-[#141B2B] shadow-lg"
+                    className="relative w-7 h-7 md:w-7 md:h-7 rounded-full border-2 border-border overflow-hidden bg-surface shadow-lg"
                     style={{ zIndex: 2 - index }}
                   >
                     <Image
@@ -277,7 +256,6 @@ const HeroSection = memo(function HeroSection() {
                       className="object-cover scale-150"
                       sizes="(max-width: 768px) 28px, 32px"
                       loading="lazy"
-                      placeholder="blur"
                     />
                   </div>
                 ))}
@@ -289,14 +267,14 @@ const HeroSection = memo(function HeroSection() {
                     <Star
                       key={i}
                       size={10}
-                      className="md:w-3 md:h-3 fill-orange-400 text-orange-400"
+                      className="md:w-3 md:h-3 fill-primary text-primary"
                       aria-hidden="true"
                     />
                   ))}
                 </div>
                 <div className="flex items-center gap-0.5">
-                  <span className="text-xs md:text-base font-bold text-white">30+</span>
-                  <span className="text-[9px] md:text-sm text-gray-400 whitespace-nowrap">
+                  <span className="text-xs md:text-base font-bold text-foreground">30+</span>
+                  <span className="text-[9px] md:text-sm text-muted whitespace-nowrap">
                     {t('socialProof.entrepreneurs', 'hero')}
                   </span>
                 </div>
@@ -310,18 +288,18 @@ const HeroSection = memo(function HeroSection() {
             >
               <motion.button
                 onClick={scrollToContact}
-                className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-bold text-xs md:text-lg flex items-center justify-center gap-1 md:gap-2 hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-blue-500/30 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
+                className="btn-gold text-xs md:text-lg px-3 md:px-7 lg:px-8 py-3 md:py-3.5 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px]"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 aria-label={t('buttons.project', 'hero')}
               >
                 <span>{t('buttons.project', 'hero')}</span>
-                <ArrowRight size={16} className="md:w-5 md:h-5 flex-shrink-0" aria-hidden="true" />
+                <ArrowRight size={16} className="md:w-5 md:h-5 flex-shrink-0 ml-2" aria-hidden="true" />
               </motion.button>
 
               <motion.button
-                onClick={navigateToServices}
-                className="bg-transparent text-white px-3 md:px-7 lg:px-8 py-3 md:py-3.5 rounded-xl font-semibold text-xs md:text-lg border-2 border-gray-600 hover:border-blue-400 hover:text-blue-400 hover:bg-blue-500/5 transition-all duration-300 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px] tracking-tight"
+                onClick={scrollToExpertise}
+                className="btn-cyan-outline text-xs md:text-lg px-3 md:px-7 lg:px-8 py-3 md:py-3.5 flex-1 md:flex-none whitespace-nowrap min-h-[44px] md:min-h-[56px]"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 aria-label={t('buttons.portfolio', 'hero')}
@@ -336,34 +314,41 @@ const HeroSection = memo(function HeroSection() {
             className="flex-1 flex justify-center relative order-1 lg:order-2 w-full"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
           >
             <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[400px] md:max-w-sm lg:max-w-md">
-              {/* Cercles décoratifs */}
+              {/* Cercles décoratifs OR */}
               <motion.div 
-                className="absolute -inset-4 md:-inset-6 rounded-full border-2 border-blue-500/30" 
+                className="absolute -inset-4 md:-inset-6 rounded-full"
+                style={{ border: '2px solid rgba(212,175,55,0.3)' }}
                 animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 aria-hidden="true" 
               />
               <motion.div 
-                className="absolute -inset-6 md:-inset-10 rounded-full border border-cyan-500/20" 
+                className="absolute -inset-6 md:-inset-10 rounded-full"
+                style={{ border: '1px solid rgba(212,175,55,0.15)' }}
                 animate={{ rotate: -360 }}
-                transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                 aria-hidden="true" 
               />
               <motion.div 
-                className="absolute -inset-2 md:-inset-4 rounded-full bg-gradient-to-r from-blue-500/5 to-cyan-500/5 blur-md" 
+                className="absolute -inset-2 md:-inset-4 rounded-full"
+                style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%)' }}
                 animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 aria-hidden="true" 
               />
               
               {/* Image avec flottement */}
               <motion.div 
-                className="relative rounded-2xl overflow-hidden shadow-xl border-4 border-[#1F2937] bg-[#141B2B]"
+                className="relative rounded-2xl overflow-hidden bg-surface"
+                style={{ 
+                  border: '2px solid rgba(30,42,62,0.5)',
+                  boxShadow: '0 25px 50px -12px rgba(212, 175, 55, 0.2), 0 0 30px -5px rgba(212, 175, 55, 0.1)' 
+                }}
                 animate={{ y: [0, -8, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               >
                 <div className="aspect-square relative">
                   <Image
@@ -376,7 +361,6 @@ const HeroSection = memo(function HeroSection() {
                     fetchPriority="high"
                     loading="eager"
                     quality={90}
-                    placeholder="blur"
                   />
                 </div>
               </motion.div>

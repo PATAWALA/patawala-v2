@@ -5,21 +5,22 @@ import { ArrowRight, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Service } from './data/servicesData';
 import { useTranslation } from '@/app/hooks/useTranslation';
-import { useRouter } from 'next/navigation';
 
 interface ServiceCardProps {
   service: Service;
   delay: number;
 }
 
+const WHATSAPP_NUMBER = '22962278090';
+
 const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardProps) {
   const Icon = service.icon;
   const { t, language } = useTranslation();
-  const router = useRouter();
 
-  const goToContact = useCallback(() => {
-    router.push('/#contact');
-  }, [router]);
+  const goToWhatsApp = useCallback(() => {
+    const message = encodeURIComponent(`Bonjour Abdoulaye, je suis intéressé par le service "${service.title}". Pouvez-vous m'en dire plus ?`);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  }, [service.title]);
 
   const translatedService = useMemo(() => {
     const translated = t(`services.${service.id}`, 'servicesData');
@@ -29,8 +30,8 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
   const cardLabels = useMemo(() => {
     return {
-      popular: t('card.popular', 'servicesData') || (language === 'fr' ? 'Populaire' : 'Popular'),
-      more: t('card.features.more', 'servicesData') || (language === 'fr' ? '+{{count}} autres' : '+{{count}} more')
+      popular: t('card.popular', 'servicesData') || 'Populaire',
+      more: t('card.features.more', 'servicesData') || '+{{count}} autres'
     };
   }, [t, language]);
 
@@ -45,93 +46,71 @@ const ServiceCard = memo(function ServiceCard({ service, delay }: ServiceCardPro
 
   const cardTitleId = `service-${service.id}-title`;
 
-  // Variants pour l'animation d'entrée
-  const cardVariants : any = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" ,
-        delay: delay
-      }
-    }
-  };
-
   return (
     <motion.article
-      className="group bg-[#141B2B] rounded-2xl overflow-hidden shadow-md transition-all duration-300 border border-[#1F2937] h-full flex flex-col relative focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] font-sans"
-      style={{ isolation: 'isolate' }}
+      className="group bg-surface rounded-2xl p-6 flex flex-col h-full"
+      style={{ boxShadow: '0 10px 30px -10px rgba(0,0,0,0.4)' }}
       aria-labelledby={cardTitleId}
-      role="article"
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      whileHover="hover"
-    >
-      <div className="p-6 sm:p-6 pb-4">
-        <div className="flex items-start justify-between mb-4 sm:mb-4">
-          <motion.div
-            className="w-14 h-14 sm:w-12 sm:h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-cyan-500/20 transition-colors duration-300"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            <Icon size={28} className="sm:w-6 sm:h-6 text-blue-400 group-hover:text-cyan-400 transition-colors duration-300" />
-          </motion.div>
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay }}
+      whileHover={{ y: -4, boxShadow: '0 20px 40px -15px rgba(212,175,55,0.1)' }}>
 
-          {service.popular && (
-            <span
-              className="bg-[#FF9800] text-white text-sm sm:text-xs font-bold px-4 py-2 sm:px-3 sm:py-1.5 rounded-full shadow-[0_4px_10px_rgba(255,152,0,0.4)]"
-              aria-label={cardLabels.popular}
-            >
-              {cardLabels.popular}
-            </span>
-          )}
+      {/* Icône + Badge populaire */}
+      <div className="flex items-start justify-between mb-5">
+        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/15 flex items-center justify-center"
+          style={{ boxShadow: '0 0 12px -3px rgba(212,175,55,0.1)' }}>
+          <Icon size={22} className="text-primary" />
         </div>
 
-        <h3
-          id={cardTitleId}
-          className="text-2xl sm:text-xl font-bold text-white mb-3 sm:mb-2 group-hover:text-cyan-400 transition-colors duration-300 tracking-tight"
-        >
-          {title}
-        </h3>
-
-        <p className="text-gray-400 text-base sm:text-sm mb-4 sm:mb-4 leading-relaxed">
-          {shortDesc}
-        </p>
-
-        <p className="text-base sm:text-sm text-gray-500 border-t border-[#1F2937] pt-4 sm:pt-4 leading-relaxed">
-          {description}
-        </p>
+        {service.popular && (
+          <span className="px-3 py-1.5 rounded-full text-xs font-bold text-background"
+            style={{
+              background: 'linear-gradient(135deg, #D4AF37 0%, #F5D05C 100%)',
+              boxShadow: '0 4px 15px -3px rgba(212,175,55,0.4)',
+            }}>
+            {cardLabels.popular}
+          </span>
+        )}
       </div>
 
-      <div className="px-6 sm:px-6 pb-6 sm:pb-6 flex-1">
-        <div className="space-y-3 sm:space-y-2 mb-6 sm:mb-6">
-          {visibleFeatures.map((feature: string, idx: number) => (
-            <div key={idx} className="flex items-start gap-2 sm:gap-2">
-              <CheckCircle size={18} className="sm:w-3.5 sm:h-3.5 text-cyan-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
-              <span className="text-base sm:text-sm text-gray-300 leading-relaxed">{feature}</span>
-            </div>
-          ))}
-          {moreCount > 0 && (
-            <div className="text-sm sm:text-xs text-gray-500 ml-7 sm:ml-6">
-              {cardLabels.more.replace('{{count}}', String(moreCount))}
-            </div>
-          )}
-        </div>
+      {/* Titre */}
+      <h3 id={cardTitleId} className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+        {title}
+      </h3>
 
-        <motion.button
-          onClick={goToContact}
-          className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-medium py-5 sm:py-3 px-4 rounded-xl flex items-center justify-center gap-2 sm:gap-2 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg shadow-blue-500/25 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] active:scale-[0.98] min-h-[60px] sm:min-h-[44px]"
-          aria-label={ctaText}
-          whileTap={{ scale: 0.98 }}
-        >
-          <span className="text-base sm:text-sm font-semibold">{ctaText}</span>
-          <ArrowRight size={20} className="sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
-        </motion.button>
+      {/* Description courte */}
+      <p className="text-sm text-muted mb-3">{shortDesc}</p>
+
+      {/* Description longue */}
+      <p className="text-sm text-muted/70 border-t border-border/50 pt-4 mb-5 leading-relaxed">
+        {description}
+      </p>
+
+      {/* Features */}
+      <div className="space-y-2.5 mb-6 flex-1">
+        {visibleFeatures.map((feature: string, idx: number) => (
+          <div key={idx} className="flex items-start gap-2.5">
+            <CheckCircle size={14} className="text-primary flex-shrink-0 mt-0.5" />
+            <span className="text-sm text-muted leading-relaxed">{feature}</span>
+          </div>
+        ))}
+        {moreCount > 0 && (
+          <p className="text-xs text-muted/50 ml-7">
+            {cardLabels.more.replace('{{count}}', String(moreCount))}
+          </p>
+        )}
       </div>
+
+      {/* Bouton WhatsApp */}
+      <motion.button onClick={goToWhatsApp}
+        className="btn-gold w-full text-sm py-3.5 group"
+        whileTap={{ scale: 0.98 }}
+        aria-label={ctaText}>
+        <span>{ctaText}</span>
+        <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+      </motion.button>
     </motion.article>
   );
 });

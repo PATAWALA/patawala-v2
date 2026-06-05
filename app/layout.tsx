@@ -1,27 +1,42 @@
-import type { Metadata } from 'next';
+// app/layout.tsx
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { ServiceProvider } from './services/context/ServiceContext';
-import { LanguageProvider } from './context/LanguageContext'; 
+import { LanguageProvider } from './context/LanguageContext';
 import Navigation from './components/layout/Navigation';
 import Footer from './components/layout/Footer';
 import Chatbot from './components/ui/Chatbot';
 import LoadingScreen from './components/ui/LoadingScreen';
-
 import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'sonner';
 import { Suspense, memo } from 'react';
 
+// Configuration du viewport
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: dark)', color: '#070B12' },
+    { media: '(prefers-color-scheme: light)', color: '#070B12' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+};
+
+// Métadonnées (sans themeColor)
 export const metadata: Metadata = {
-  metadataBase: new URL('https://patawala-v2-nry6.vercel.app'),
+  metadataBase: new URL('https://www.patawala.com'),
   title: {
-    default: 'Patawala | Développeur Full-Stack & Automatisation IA',
-    template: '%s | Patawala'
+    default: 'Patawala | Architecte Full-Stack & Agent IA Haut de Gamme',
+    template: '%s | Patawala',
   },
-  description: 'Développeur web mobile et architecte d\'agents IA. Je transforme vos idées en solutions digitales intelligentes et performantes. Automatisation, applications modernes, innovation technologique.',
-  keywords: ['développeur full-stack', 'développeur mobile', 'agents IA', 'automatisation', 'Next.js', 'React Native', 'intelligence artificielle', 'consultant tech', 'freelance expert'],
-  authors: [{ name: 'Patawala', url: 'https://patawala-v2-nry6.vercel.app' }],
+  description: 'Je conçois des architectures digitales sur-mesure et des agents IA qui automatisent l\'intelligent. Transformez votre vision en un avantage concurrentiel décisif.',
+  keywords: [
+    'architecte full-stack premium', 'développeur react native expert',
+    'agent ia sur mesure', 'automatisation entreprise',
+    'consultant next.js', 'développement web luxe', 'freelance tech haut de gamme'
+  ],
+  authors: [{ name: 'Patawala', url: 'https://www.patawala.com' }],
   creator: 'Patawala',
-  publisher: 'Patawala',
+  publisher: 'Patawala - Architectures Digitales Premium',
   robots: {
     index: true,
     follow: true,
@@ -34,50 +49,50 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://patawala-v2-nry6.vercel.app',
+    canonical: 'https://www.patawala.com',
   },
   openGraph: {
-    title: 'Patawala | Développeur Full-Stack & Architecte IA',
-    description: 'Expert en développement web/mobile et agents IA. Automatisation intelligente, applications performantes, innovation digitale. Transformez votre vision en réalité.',
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://patawala-v2-nry6.vercel.app/',
-    siteName: 'Patawala',
+    url: 'https://www.patawala.com',
+    siteName: 'Patawala - Tech Architect',
+    title: 'Patawala | Architecte Full-Stack & Agent IA',
+    description: 'Au-delà du code, de l\'architecture stratégique. Solutions web, mobile et IA pour des résultats mesurables.',
     images: [
       {
-        url: '/favicon.ico',
+        url: '/og-image-gold.png',
         width: 1200,
         height: 630,
-        alt: 'Patawala - Développeur Full-Stack & Architecte IA',
-        type: 'image/x-icon',
+        alt: 'Patawala - Architecte Full-Stack & Solutions IA Haut de Gamme',
+        type: 'image/png',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Patawala | Développeur Full-Stack & Architecte IA',
-    description: 'Expert en développement web/mobile et agents IA. Création de solutions digitales intelligentes et performantes.',
-    images: ['/favicon.ico'],
+    title: 'Patawala | Architecte Full-Stack & Agent IA',
+    description: 'Des architectures digitales qui transforment votre business. Expert Next.js, React Native & IA.',
+    images: ['/og-image-gold.png'],
     creator: '@patawala',
-    site: '@patawala',
   },
   icons: {
     icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/favicon.ico',
-    },
+    apple: '/apple-icon.png',
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Patawala',
+  },
+  formatDetection: {
+    telephone: false,
   },
   verification: {
-    google: 'votre-code-verification-google',
-    // Ajoutez vos autres verifications si nécessaire
+    google: 'VOTRE-CODE-VERIFICATION-GOOGLE-SEARCH-CONSOLE',
   },
   category: 'technology',
 };
 
-// Composants mémoïsés pour éviter les re-rendus inutiles
 const MemoizedNavigation = memo(Navigation);
 const MemoizedFooter = memo(Footer);
 const MemoizedChatbot = memo(Chatbot);
@@ -91,76 +106,72 @@ export default function RootLayout({
   return (
     <html lang="fr" className="scroll-smooth">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
-        <meta name="theme-color" content="#0A0F1C" />
-        <meta name="author" content="Patawala" />
-        <meta name="copyright" content="Patawala" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-TileColor" content="#0A0F1C" />
-        
-        {/* Structured Data pour améliorer le SEO */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Patawala",
-              "url": "https://patawala-v2-nry6.vercel.app",
-              "sameAs": [
-                "https://github.com/patawala",
-                "https://linkedin.com/in/patawala",
-                "https://twitter.com/patawala"
+              "@type": "ProfessionalService",
+              "name": "Patawala - Architecte Full-Stack & Solutions IA",
+              "url": "https://www.patawala.com",
+              "description": "Architecte full-stack premium spécialisé en développement web, mobile et agents IA sur mesure.",
+              "founder": {
+                "@type": "Person",
+                "name": "Patawala",
+                "jobTitle": "Architecte Full-Stack & Expert IA",
+                "url": "https://www.patawala.com",
+                "sameAs": [
+                  "https://github.com/patawala",
+                  "https://linkedin.com/in/patawala",
+                  "https://twitter.com/patawala"
+                ]
+              },
+              "serviceType": [
+                "Développement Web Premium",
+                "Développement Mobile React Native",
+                "Agents IA & Automatisation",
+                "Architecture Logicielle",
+                "Consulting Tech"
               ],
-              "jobTitle": "Développeur Full-Stack & Architecte IA",
-              "description": "Expert en développement web/mobile et agents IA. Spécialiste en automatisation et solutions digitales innovantes.",
-              "knowsAbout": ["Développement Web", "Développement Mobile", "Intelligence Artificielle", "Automatisation", "Next.js", "React", "React Native", "Agents IA"],
-              "worksFor": {
-                "@type": "Organization",
-                "name": "Patawala Consulting"
+              "areaServed": {
+                "@type": "Continent",
+                "name": "Europe, Afrique, Amérique du Nord"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Réservation",
+                "url": "https://www.patawala.com#contact",
+                "availableLanguage": ["French", "English"]
               }
             })
           }}
         />
       </head>
-      <body className="font-sans antialiased bg-[#0A0F1C] text-gray-200">
+      <body className="font-sans antialiased bg-background text-foreground">
         <LanguageProvider>
           <ServiceProvider>
-            {/* Toaster avec configuration optimisée */}
-            <MemoizedToaster 
+            <MemoizedToaster
               position="top-right"
               toastOptions={{
                 duration: 4000,
                 style: {
-                  background: '#1e40af',
-                  color: '#fff',
+                  background: '#0F1521',
+                  color: '#F2F4F8',
+                  border: '1px solid #1E2A3E',
                 },
               }}
             />
-            
-            {/* LoadingScreen avec Suspense pour le chargement différé */}
             <Suspense fallback={null}>
               <LoadingScreen />
             </Suspense>
-            
-            {/* Navigation - toujours visible */}
             <MemoizedNavigation />
-            
-            {/* Contenu principal */}
             <main className="min-h-screen">
               {children}
             </main>
-            
-            {/* Footer - toujours visible */}
             <MemoizedFooter />
-            
-            {/* Chatbot - chargé de manière différée */}
             <Suspense fallback={null}>
               <MemoizedChatbot />
             </Suspense>
-            
-            {/* Analytics - toujours en dernier */}
             <Analytics />
           </ServiceProvider>
         </LanguageProvider>

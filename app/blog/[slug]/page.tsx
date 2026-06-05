@@ -1,10 +1,7 @@
+// app/blog/[slug]/ArticlePageClient.tsx
 'use client';
 
-import { 
-  Calendar, Clock, ArrowLeft, 
-  ArrowRight, MessageCircle,
-  Maximize2, Minimize2
-} from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, ArrowRight, MessageCircle, Maximize2, Minimize2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -14,175 +11,75 @@ import profileImage from '../../assets/images/profile3.webp';
 import { useTranslation } from '@/app/hooks/useTranslation';
 
 interface ArticlePageProps {
-  params: {
-    slug: string;
-  };
+  params: { slug: string };
 }
 
-export default function ArticlePage({ params }: ArticlePageProps) {
-  const { t, language, isLoading } = useTranslation();
+export default function ArticlePageClient({ params }: ArticlePageProps) {
+  const { t, isLoading } = useTranslation();
   const baseArticle = getArticleBySlug(params.slug);
   const [fontSize, setFontSize] = useState(100);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  // Attendre que les traductions soient chargées
-  useEffect(() => {
-    if (!isLoading) {
-      setIsReady(true);
-    }
-  }, [isLoading]);
+  useEffect(() => { if (!isLoading) setIsReady(true); }, [isLoading]);
+  if (!baseArticle) notFound();
 
-  if (!baseArticle) {
-    notFound();
-  }
-
-  // Appliquer les traductions à l'article - CORRIGÉ
   const article = useMemo(() => {
     if (!isReady) return baseArticle;
-    
     const key = `article${baseArticle.id}`;
-    
-    // Récupérer depuis 'articles' pour le contenu complet
-    const translatedTitle = t(`${key}.title`, 'articles');
-    const translatedExcerpt = t(`${key}.excerpt`, 'articles');
-    const translatedCategory = t(`${key}.category`, 'articles');
-    const translatedTags = t(`${key}.tags`, 'articles');
-    const translatedContent = t(`${key}.content`, 'articles');
-
     return {
       ...baseArticle,
-      title: typeof translatedTitle === 'string' ? translatedTitle : baseArticle.title,
-      excerpt: typeof translatedExcerpt === 'string' ? translatedExcerpt : baseArticle.excerpt,
-      category: typeof translatedCategory === 'string' ? translatedCategory : baseArticle.category,
-      tags: Array.isArray(translatedTags) ? translatedTags : baseArticle.tags,
-      content: typeof translatedContent === 'string' ? translatedContent : baseArticle.content,
+      title: (typeof t(`${key}.title`, 'articles') === 'string' ? t(`${key}.title`, 'articles') : baseArticle.title) as string,
+      excerpt: (typeof t(`${key}.excerpt`, 'articles') === 'string' ? t(`${key}.excerpt`, 'articles') : baseArticle.excerpt) as string,
+      category: (typeof t(`${key}.category`, 'articles') === 'string' ? t(`${key}.category`, 'articles') : baseArticle.category) as string,
+      tags: (Array.isArray(t(`${key}.tags`, 'articles')) ? t(`${key}.tags`, 'articles') : baseArticle.tags) as string[],
+      content: (typeof t(`${key}.content`, 'articles') === 'string' ? t(`${key}.content`, 'articles') : baseArticle.content) as string,
     };
-  }, [baseArticle, t, language, isReady]);
+  }, [baseArticle, t, isReady]);
 
-  // Articles similaires traduits - CORRIGÉ (utilise 'articles' pour les titres)
-  const baseRelated = useMemo(() => 
-    getRelatedArticles(article.id, article.category, 3),
-    [article.id, article.category]
-  );
-  
+  const baseRelated = useMemo(() => getRelatedArticles(article.id, article.category, 3), [article.id, article.category]);
   const relatedArticles = useMemo(() => {
     if (!isReady) return baseRelated;
-    
-    return baseRelated.map(related => {
-      const key = `article${related.id}`;
-      const translatedTitle = t(`${key}.title`, 'articles');
-      return {
-        ...related,
-        title: typeof translatedTitle === 'string' ? translatedTitle : related.title,
-      };
-    });
-  }, [baseRelated, t, language, isReady]);
+    return baseRelated.map(related => ({
+      ...related,
+      title: (typeof t(`article${related.id}.title`, 'articles') === 'string' ? t(`article${related.id}.title`, 'articles') : related.title) as string,
+    }));
+  }, [baseRelated, t, isReady]);
 
-  // Handlers
-  const increaseFont = useCallback(() => {
-    setFontSize(prev => Math.min(prev + 10, 200));
-  }, []);
-
-  const decreaseFont = useCallback(() => {
-    setFontSize(prev => Math.max(prev - 10, 70));
-  }, []);
-
+  const increaseFont = useCallback(() => setFontSize(prev => Math.min(prev + 10, 200)), []);
+  const decreaseFont = useCallback(() => setFontSize(prev => Math.max(prev - 10, 70)), []);
   const toggleFullscreen = useCallback(() => {
     const elem = document.querySelector('.article-content-area');
     if (elem) {
-      if (!document.fullscreenElement) {
-        elem.requestFullscreen();
-        setIsFullscreen(true);
-      } else {
-        document.exitFullscreen();
-        setIsFullscreen(false);
-      }
+      if (!document.fullscreenElement) { elem.requestFullscreen(); setIsFullscreen(true); }
+      else { document.exitFullscreen(); setIsFullscreen(false); }
     }
   }, []);
 
-  // Effet pour le changement de plein écran
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    const h = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', h);
+    return () => document.removeEventListener('fullscreenchange', h);
   }, []);
 
-  const whatsappLink = 'https://wa.me/22962278090';
-
-  // Labels traduits
   const labels = useMemo(() => ({
     backToBlog: t('backToBlog', 'blog') || 'Retour au blog',
-    whatsappMessage: t('whatsappMessage', 'blog') || 'Envoyer un message WhatsApp',
     message: t('message', 'blog') || 'Message',
-    decreaseFont: t('decreaseFont', 'blog') || 'Réduire la taille du texte',
-    increaseFont: t('increaseFont', 'blog') || 'Agrandir la taille du texte',
-    exitFullscreen: t('exitFullscreen', 'blog') || 'Quitter le plein écran',
-    fullscreen: t('fullscreen', 'blog') || 'Lecture plein écran',
     relatedArticles: t('relatedArticles', 'blog') || 'Articles similaires',
-    readMore: t('readMore', 'blog') || 'Lire'
-  }), [t, isReady]);
+    readMore: t('readMore', 'blog') || 'Lire',
+  }), [t]);
 
-  // SKELETON LOADER
   if (isLoading || !isReady) {
     return (
-      <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-          <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl" />
-        </div>
-
-        <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-          {/* Bouton retour skeleton */}
-          <div className="mb-4 sm:mb-6 md:mb-8">
-            <div className="w-32 h-8 bg-gray-800/50 rounded-lg animate-pulse" />
-          </div>
-
-          {/* Image skeleton */}
-          <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10 bg-gray-800/50 animate-pulse" />
-
-          {/* En-tête skeleton */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8">
-            <div className="flex-1 space-y-4">
-              <div className="w-32 h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-3/4 h-8 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-2/3 h-6 bg-gray-800/50 rounded animate-pulse" />
-              <div className="flex gap-2">
-                <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
-                <div className="w-16 h-6 bg-gray-800/50 rounded-full animate-pulse" />
-              </div>
-            </div>
-            <div className="lg:w-80 xl:w-96">
-              <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/50 rounded-xl">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-700/50 rounded-full animate-pulse" />
-                  <div className="space-y-2">
-                    <div className="w-24 h-4 bg-gray-700/50 rounded animate-pulse" />
-                    <div className="w-16 h-3 bg-gray-700/50 rounded animate-pulse" />
-                  </div>
-                </div>
-                <div className="w-16 h-8 bg-gray-700/50 rounded-lg animate-pulse" />
-              </div>
-            </div>
-          </div>
-
-          {/* Barre d'outils skeleton */}
-          <div className="flex justify-end gap-2 mb-4 sm:mb-6">
-            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
-            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
-            <div className="w-10 h-10 bg-gray-800/50 rounded-lg animate-pulse" />
-          </div>
-
-          {/* Contenu skeleton */}
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-800/50">
+      <main className="min-h-screen pt-20 pb-16 bg-background">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="animate-pulse space-y-10">
+            <div className="w-32 h-8 bg-surface rounded-lg" />
+            <div className="w-full h-72 bg-surface rounded-3xl" />
             <div className="space-y-4">
-              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-3/4 h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-full h-4 bg-gray-800/50 rounded animate-pulse" />
-              <div className="w-5/6 h-4 bg-gray-800/50 rounded animate-pulse" />
+              <div className="w-3/4 h-10 bg-surface rounded-lg" />
+              <div className="w-1/2 h-6 bg-surface rounded-lg" />
+              <div className="w-full h-60 bg-surface rounded-2xl" />
             </div>
           </div>
         </div>
@@ -191,230 +88,103 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   }
 
   return (
-    <main className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 bg-[#0A0F1C] relative overflow-hidden">
-      {/* FOND ULTRA-OPTIMISÉ */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0B1120] via-[#0A0F1C] to-[#1a1f35]">
-        {/* Lignes subtiles */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, 
-            rgba(59,130,246,0.05) 0px, 
-            rgba(59,130,246,0.05) 1px, 
-            transparent 1px, 
-            transparent 60px)`
-        }}></div>
+    <main className="min-h-screen pt-24 sm:pt-28 pb-24 bg-background relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-[800px] h-[800px] bg-primary/[0.02] rounded-full blur-[180px]" />
+        <div className="absolute -bottom-40 -left-40 w-[700px] h-[700px] bg-primary/[0.02] rounded-full blur-[150px]" />
+      </div>
+
+      {/* Contenu centré et aéré */}
+      <div className="container mx-auto px-6 sm:px-10 lg:px-16 max-w-3xl relative z-10">
         
-        {/* Cercles flous */}
-        <div className="absolute top-20 left-10 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-40 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
-      </div>
-      
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-        {/* Bouton retour */}
-        <div className="mb-4 sm:mb-6 md:mb-8">
-          <Link href="/blog" passHref>
-            <button className="group inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl border-2 border-blue-500/50 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/20 transition-all text-xs sm:text-sm">
-              <ArrowLeft size={14} className="sm:w-4 sm:h-4 text-blue-400 group-hover:text-blue-300 group-hover:-translate-x-1 transition-all" />
-              <span className="text-blue-400 group-hover:text-blue-300 font-medium">
-                {labels.backToBlog}
-              </span>
-            </button>
-          </Link>
+        {/* Retour */}
+        <Link href="/blog" className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors text-sm mb-12 group">
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          {labels.backToBlog}
+        </Link>
+
+        {/* Catégorie + Date */}
+        <div className="flex items-center gap-4 text-sm text-muted mb-6">
+          <span className="px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold">{article.category}</span>
+          <span className="flex items-center gap-1.5"><Calendar size={14} className="text-primary/60" />{article.publishedAt}</span>
+          <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary/60" />{article.readTime}</span>
         </div>
-      </div>
 
-      {/* Image pleine largeur */}
-      <div className="relative w-screen left-1/2 -translate-x-1/2 h-48 xs:h-56 sm:h-72 md:h-96 mb-6 sm:mb-8 md:mb-10">
-        <Image
-          src={article.image}
-          alt={article.title}
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-          quality={75}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent"></div>
-        <div className="absolute top-2 sm:top-3 md:top-4 left-3 sm:left-4 md:left-6 lg:left-8">
-          <span className="px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 bg-black/50 backdrop-blur-sm rounded-full text-xs sm:text-sm font-semibold text-blue-400 border border-blue-500/20 shadow-md">
-            {article.category}
-          </span>
-        </div>
-      </div>
+        {/* Titre */}
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-light text-foreground leading-tight mb-8 tracking-tight">
+          {article.title}
+        </h1>
 
-      {/* Conteneur principal */}
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl relative z-10">
-        {/* En-tête */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 sm:gap-5 md:gap-6 mb-6 sm:mb-8">
-          {/* Partie gauche : titre, date, tags */}
-          <div className="flex-1">
-            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-400 mb-2">
-              <span className="flex items-center gap-1 sm:gap-1.5">
-                <Calendar size={12} className="sm:w-4 sm:h-4 text-blue-400" />
-                {article.publishedAt}
-              </span>
-              <span className="w-1 h-1 bg-gray-600 rounded-full"></span>
-              <span className="flex items-center gap-1 sm:gap-1.5">
-                <Clock size={12} className="sm:w-4 sm:h-4 text-blue-400" />
-                {article.readTime}
-              </span>
-            </div>
-
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight mb-3 sm:mb-4">
-              {article.title}
-            </h1>
-
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
-              {article.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-2 sm:px-3 py-1 sm:py-1.5 bg-blue-500/20 text-blue-400 text-xs sm:text-sm font-medium rounded-full backdrop-blur-sm"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
+        {/* Auteur */}
+        <div className="flex items-center gap-4 mb-12 pb-10 border-b border-border/30">
+          <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary/20">
+            <Image src={profileImage} alt={article.author.name} width={48} height={48} className="object-cover" />
           </div>
-
-          {/* Partie droite : auteur + bouton WhatsApp */}
-          <div className="lg:w-80 xl:w-96">
-            <div className="flex items-center justify-between p-3 sm:p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-[#1F2937]">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden ring-2 ring-blue-500/20">
-                  <Image
-                    src={profileImage}
-                    alt={article.author.name}
-                    fill
-                    className="object-cover"
-                    sizes="48px"
-                    loading="lazy"
-                    quality={70}
-                  />
-                </div>
-                <div>
-                  <p className="font-semibold text-white text-sm sm:text-base">{article.author.name}</p>
-                  <p className="text-xs sm:text-sm text-gray-400">{article.author.role}</p>
-                </div>
-              </div>
-              
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors shadow-md hover:shadow-lg"
-                title={labels.whatsappMessage}
-              >
-                <MessageCircle size={14} className="sm:w-4 sm:h-4" />
-                <span>{labels.message}</span>
-              </a>
-            </div>
+          <div>
+            <p className="font-semibold text-foreground">{article.author.name}</p>
+            <p className="text-sm text-muted">{article.author.role}</p>
           </div>
+          <a href="https://wa.me/22962278090" target="_blank" rel="noopener noreferrer"
+            className="ml-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-white"
+            style={{ background: 'linear-gradient(135deg, #22C55E 0%, #16A34A 100%)', boxShadow: '0 4px 15px -3px rgba(34,197,94,0.4)' }}>
+            <MessageCircle size={14} />{labels.message}
+          </a>
         </div>
 
-        {/* Barre d'outils de lecture */}
-        <div className="flex items-center justify-end gap-2 mb-4 sm:mb-6">
-          <button
-            onClick={decreaseFont}
-            className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title={labels.decreaseFont}
-          >
-            A−
-          </button>
-          <span className="text-sm text-gray-400 min-w-[45px] text-center">{fontSize}%</span>
-          <button
-            onClick={increaseFont}
-            className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium border border-[#1F2937]"
-            title={labels.increaseFont}
-          >
-            A+
-          </button>
-          <button
-            onClick={toggleFullscreen}
-            className="p-2 bg-black/30 backdrop-blur-sm text-white rounded-lg hover:bg-blue-600 transition border border-[#1F2937]"
-            title={isFullscreen ? labels.exitFullscreen : labels.fullscreen}
-          >
-            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+        {/* Image */}
+        <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden mb-14" style={{ boxShadow: '0 20px 50px -15px rgba(0,0,0,0.5)' }}>
+          <Image src={article.image} alt={article.title} fill className="object-cover" priority sizes="100vw" quality={90} />
+        </div>
+
+        {/* Outils lecture */}
+        <div className="flex justify-end items-center gap-3 mb-10">
+          <button onClick={decreaseFont} className="w-8 h-8 rounded-lg bg-surface text-muted hover:text-primary text-xs font-medium" style={{ boxShadow: '0 4px 10px -5px rgba(0,0,0,0.3)' }}>A−</button>
+          <span className="text-xs text-muted w-10 text-center">{fontSize}%</span>
+          <button onClick={increaseFont} className="w-8 h-8 rounded-lg bg-surface text-muted hover:text-primary text-xs font-medium" style={{ boxShadow: '0 4px 10px -5px rgba(0,0,0,0.3)' }}>A+</button>
+          <button onClick={toggleFullscreen} className="w-8 h-8 rounded-lg bg-surface text-muted hover:text-primary" style={{ boxShadow: '0 4px 10px -5px rgba(0,0,0,0.3)' }}>
+            {isFullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
           </button>
         </div>
 
-        {/* Zone de lecture */}
-        <div
-          className="article-content-area bg-black/30 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-[#1F2937] transition-all mx-auto lg:mx-0 lg:max-w-4xl"
-          style={{ fontSize: `${fontSize}%` }}
-        >
-          <div
-            className="prose prose-invert max-w-none"
-            style={{ overflowX: 'auto' }}
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          />
+        {/* Contenu */}
+        <div className="article-content-area bg-surface rounded-3xl p-8 sm:p-12 mb-20" 
+          style={{ fontSize: `${fontSize}%`, boxShadow: '0 15px 40px -15px rgba(0,0,0,0.4)' }}>
+          <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted prose-a:text-primary prose-strong:text-foreground prose-li:text-muted prose-img:rounded-2xl" 
+            dangerouslySetInnerHTML={{ __html: article.content }} />
         </div>
 
-        {/* Styles tableaux */}
-        <style jsx>{`
-          .article-content-area table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5em 0;
-            font-size: 0.9rem;
-          }
-          .article-content-area th,
-          .article-content-area td {
-            border: 1px solid #374151;
-            padding: 0.75rem;
-            text-align: left;
-          }
-          .article-content-area th {
-            background-color: #1F2937;
-            color: white;
-            font-weight: 600;
-          }
-          .article-content-area tr:nth-child(even) {
-            background-color: #111827;
-          }
-          .article-content-area tr:hover {
-            background-color: #1E293B;
-          }
-        `}</style>
+        {/* Tags */}
+        <div className="flex flex-wrap gap-2 mb-16">
+          {article.tags.map(tag => (
+            <span key={tag} className="px-3 py-1.5 rounded-full bg-primary/5 text-primary text-sm font-medium">#{tag}</span>
+          ))}
+        </div>
 
         {/* Articles similaires */}
         {relatedArticles.length > 0 && (
-          <div className="mt-10 sm:mt-12 md:mt-16">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-5 md:mb-6 text-white flex items-center gap-2 sm:gap-3">
-              <span className="w-1 h-4 sm:h-5 md:h-6 bg-gradient-to-b from-blue-500 to-cyan-500 rounded-full"></span>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-light text-foreground mb-10 flex items-center gap-3">
+              <span className="w-1.5 h-6 bg-gradient-to-b from-primary to-amber-400 rounded-full" />
               {labels.relatedArticles}
             </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
-              {relatedArticles.map((related, index) => (
-                <Link href={`/blog/${related.slug}`} key={related.id} passHref>
-                  <div
-                    className="group bg-black/30 backdrop-blur-sm rounded-lg sm:rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-[#1F2937] h-full cursor-pointer hover:-translate-y-1"
-                  >
-                    <div className="relative h-20 xs:h-24 sm:h-28 md:h-32 overflow-hidden">
-                      <Image
-                        src={related.image}
-                        alt={related.title}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                        sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 25vw"
-                        loading="lazy"
-                        quality={70}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {relatedArticles.map(related => (
+                <Link href={`/blog/${related.slug}`} key={related.id}>
+                  <article className="group bg-surface rounded-2xl overflow-hidden h-full cursor-pointer"
+                    style={{ boxShadow: '0 10px 30px -10px rgba(0,0,0,0.4)' }}>
+                    <div className="relative h-44 overflow-hidden">
+                      <Image src={related.image} alt={related.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" sizes="33vw" loading="lazy" quality={75} />
                     </div>
-                    <div className="p-2 sm:p-3">
-                      <h3 className="font-bold text-white mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors text-[10px] sm:text-xs md:text-sm">
-                        {related.title}
-                      </h3>
-                      <div className="flex items-center gap-1 text-[8px] sm:text-[10px] text-gray-400 mb-1.5">
-                        <Calendar size={8} className="text-blue-400" />
-                        <span>{related.publishedAt}</span>
+                    <div className="p-5">
+                      <div className="flex items-center gap-2 text-xs text-muted mb-3">
+                        <Calendar size={12} className="text-primary/60" />{related.publishedAt}
                       </div>
-                      <div className="flex items-center gap-0.5 text-blue-400 font-medium text-[8px] sm:text-[10px] group/link">
-                        <span>{labels.readMore}</span>
-                        <ArrowRight size={6} className="group-hover/link:translate-x-1 transition-transform" />
-                      </div>
+                      <h3 className="text-sm font-semibold text-foreground mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{related.title}</h3>
+                      <span className="text-primary font-medium text-xs flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                        {labels.readMore}<ArrowRight size={13} />
+                      </span>
                     </div>
-                  </div>
+                  </article>
                 </Link>
               ))}
             </div>
